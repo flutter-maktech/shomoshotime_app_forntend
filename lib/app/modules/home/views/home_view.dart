@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:shomoshotime/app/data/app_colors.dart';
+import 'package:shomoshotime/app/data/app_text_styles.dart';
+import '../../common_widgets/custom_button.dart';
 import '../../common_widgets/primary_app_bar.dart';
 import '../controllers/home_controller.dart';
 
@@ -47,6 +49,15 @@ class HomeView extends GetView<HomeController> {
                             blurRadius: 20,
                             spreadRadius: 5,
                             offset: Offset(0, 10),
+                          ),
+                        ],
+                      ),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            "Welcome back,\nSarah!",
+                            style: AppTextStyles.spaceGroteskMedium20,
                           ),
                         ],
                       ),
