@@ -10,4 +10,11 @@ class AppColors{
   static const Color profileIcons = Color(0xff595959);
   static const Color profileBlack = Color(0xff2a2a2a);
   static const Color profileYellow = Color(0xffffbf23);
+  static const Color appBarBack = Color(0xffF8F8F8);
+  static const Color appBarSub = Color(0xff595959);
+  static const Color appBarCircleAvatar = Color(0xfffffbed);
+  static const Color appBarCircleAvatarColor = Color(0xffFFD160);
+  static const Color homeStack = Color(0xffEDEBE4);
+
 }
+

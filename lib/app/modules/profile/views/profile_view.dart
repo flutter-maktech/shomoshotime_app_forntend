@@ -46,7 +46,7 @@ class ProfileView extends GetView<ProfileController> {
                       ),
                       SizedBox(height: 24),
                       Image.asset(
-                        ImagePath.profile_premium,
+                        ImagePath.profilePremium,
                         height: 36.h,
                         width: 117.w,
                       ),
@@ -66,7 +66,7 @@ class ProfileView extends GetView<ProfileController> {
                       Row(
                         children: [
                           Image.asset(
-                            ImagePath.profile_notebook,
+                            ImagePath.profileNotebook,
                             height: 20.h,
                             width: 20.w,
                           ),
