@@ -10,7 +10,7 @@ part 'app_routes.dart';
 class AppPages {
   AppPages._();
 
-  static const INITIAL = Routes.HOME;
+  static const INITIAL = Routes.PROFILE;
 
   static final routes = [
     GetPage(
@@ -23,5 +23,6 @@ class AppPages {
       page: () => const ProfileView(),
       binding: ProfileBinding(),
     ),
+
   ];
 }
