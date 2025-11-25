@@ -10,13 +10,15 @@ import '../modules/spi_fundamentals/bindings/spi_fundamentals_binding.dart';
 import '../modules/spi_fundamentals/views/spi_fundamentals_view.dart';
 import '../modules/study_guides/bindings/study_guides_binding.dart';
 import '../modules/study_guides/views/study_guides_view.dart';
+import '../modules/vascular_flashcards/bindings/vascular_flashcards_binding.dart';
+import '../modules/vascular_flashcards/views/vascular_flashcards_view.dart';
 
 part 'app_routes.dart';
 
 class AppPages {
   AppPages._();
 
-  static const INITIAL = Routes.SPI_FUNDAMENTALS;
+  static const INITIAL = Routes.STUDY_GUIDES;
 
   static final routes = [
     GetPage(
@@ -43,6 +45,11 @@ class AppPages {
       name: _Paths.FLASH_CARDS,
       page: () => const FlashCardsView(),
       binding: FlashCardsBinding(),
+    ),
+    GetPage(
+      name: _Paths.VASCULAR_FLASHCARDS,
+      page: () => const VascularFlashcardsView(),
+      binding: VascularFlashcardsBinding(),
     ),
   ];
 }

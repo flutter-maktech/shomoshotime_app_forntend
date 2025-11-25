@@ -1,23 +1,13 @@
 import 'package:get/get.dart';
 
 class StudyGuidesController extends GetxController {
-  //TODO: Implement StudyGuidesController
-
-  final count = 0.obs;
-  @override
-  void onInit() {
-    super.onInit();
+  RxInt select=0.obs;
+  void  changeValue(int index){
+    select.value= index;
   }
 
-  @override
-  void onReady() {
-    super.onReady();
+  var selectIndex=0.obs;
+  void changeIndex(int index){
+    selectIndex.value=index;
   }
-
-  @override
-  void onClose() {
-    super.onClose();
-  }
-
-  void increment() => count.value++;
 }

@@ -10,6 +10,9 @@ class AppColors{
   static const Color appBarCircleAvatar = Color(0xfffffbed);
   static const Color appBarCircleAvatarColor = Color(0xffFFD160);
   static const Color homeStack = Color(0xffEDEBE4);
+  static const Color lightYellow = Color(0xffFFF8E5);
+  static const Color grey = Color(0xffB2B2B2);
+  static const Color greyLight = Color(0xff9E9E9E);
 
 }
 
