@@ -5,7 +5,7 @@ import 'app_text_styles.dart';
 
 ThemeData themeData() {
   return ThemeData(
-    // fontFamily: 'Nunito',
+    fontFamily: 'Arial',
     scaffoldBackgroundColor: AppColors.whiteColor,
     appBarTheme: AppBarTheme(
       backgroundColor: AppColors.whiteColor,
