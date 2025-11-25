@@ -6,6 +6,8 @@ import 'package:shomoshotime/app/data/app_colors.dart';
 import 'package:shomoshotime/app/data/app_text_styles.dart';
 import 'package:shomoshotime/app/data/image_path.dart';
 import 'package:shomoshotime/app/modules/common_widgets/custom_button.dart';
+import 'package:shomoshotime/app/modules/common_widgets/custom_rich_text.dart';
+import 'package:shomoshotime/app/routes/app_pages.dart';
 
 import '../../common_widgets/custom_text_field.dart';
 import '../controllers/sign_in_controller.dart';
@@ -20,14 +22,15 @@ class SignInView extends GetView<SignInController> {
         child: SingleChildScrollView(
           child: Container(
             width: double.infinity,
-            padding: EdgeInsets.symmetric(horizontal: 16.h,vertical: 40.h),
-            margin: EdgeInsets.symmetric(horizontal: 16.h),
+            padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 40.h),
+            margin: EdgeInsets.symmetric(horizontal: 16.w,vertical: 30.h),
             decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(8.h),
+              borderRadius: BorderRadius.circular(8.r),
               color: AppColors.containerColor,
             ),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.center,
+          
               children: [
                 Image.asset(ImagePath.signIn, height: 84.h),
                 SizedBox(height: 32.h),
@@ -46,32 +49,16 @@ class SignInView extends GetView<SignInController> {
                   topHintText: 'Password',
                   suffixIcon: Icon(Icons.visibility_off_outlined),
                 ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-
-                  children: [
-                    Expanded(
-                      child: Text(
-                        'Log In',
-                        maxLines: 1,
-                        overflow: TextOverflow.ellipsis,
-                        style: AppTextStyles.regular16.copyWith(
-                          color: AppColors.blackColor,
-                        ),
-                      ),
+                Align(
+                  alignment: AlignmentDirectional.centerEnd,
+                  child: Text(
+                    'Forgot password?',
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                    style: AppTextStyles.bold16.copyWith(
+                      color: AppColors.blueColor,
                     ),
-
-                    Expanded(
-                      child: Text(
-                        'Forgot password?',
-                        maxLines: 1,
-                        overflow: TextOverflow.ellipsis,
-                        style: AppTextStyles.bold16.copyWith(
-                          color: AppColors.blueColor,
-                        ),
-                      ),
-                    ),
-                  ],
+                  ),
                 ),
                 Padding(
                   padding: EdgeInsets.symmetric(vertical: 31.h),
@@ -113,8 +100,12 @@ class SignInView extends GetView<SignInController> {
                   ],
                 ),
                 SizedBox(height: 31.h),
-
+          
                 CustomButton(childText: 'Sign In'),
+                SizedBox(height: 30.h,),
+                CustomRichText(firstText: "Don't have ony account?", secondText: 'Sign Up',onTap: (){
+                  Get.toNamed(Routes.SIGN_UP);}),
+
               ],
             ),
           ),

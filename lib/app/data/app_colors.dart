@@ -13,5 +13,6 @@ class AppColors{
   static const Color appBarCircleAvatarColor = Color(0xffFFD160);
   static const Color homeStack = Color(0xffEDEBE4);
 
+
 }
 

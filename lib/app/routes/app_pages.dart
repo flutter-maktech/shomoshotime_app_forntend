@@ -8,12 +8,14 @@ import '../modules/forgot_password_2/bindings/forgot_password_2_binding.dart';
 import '../modules/forgot_password_2/views/forgot_password_2_view.dart';
 import '../modules/home/bindings/home_binding.dart';
 import '../modules/home/views/home_view.dart';
-import '../modules/log_in/bindings/log_in_binding.dart';
-import '../modules/log_in/views/log_in_view.dart';
 import '../modules/profile/bindings/profile_binding.dart';
 import '../modules/profile/views/profile_view.dart';
 import '../modules/sign_in/bindings/sign_in_binding.dart';
 import '../modules/sign_in/views/sign_in_view.dart';
+import '../modules/sign_up/bindings/sign_up_binding.dart';
+import '../modules/sign_up/views/sign_up_view.dart';
+import '../modules/sign_up_otp/bindings/sign_up_otp_binding.dart';
+import '../modules/sign_up_otp/views/sign_up_otp_view.dart';
 
 part 'app_routes.dart';
 
@@ -39,11 +41,6 @@ class AppPages {
       binding: SignInBinding(),
     ),
     GetPage(
-      name: _Paths.LOG_IN,
-      page: () => const LogInView(),
-      binding: LogInBinding(),
-    ),
-    GetPage(
       name: _Paths.FORGOT_PASSWORD,
       page: () => const ForgotPasswordView(),
       binding: ForgotPasswordBinding(),
@@ -57,6 +54,16 @@ class AppPages {
       name: _Paths.FORGOT_PASSWORD_2,
       page: () => const ForgotPassword2View(),
       binding: ForgotPassword2Binding(),
+    ),
+    GetPage(
+      name: _Paths.SIGN_UP,
+      page: () => const SignUpView(),
+      binding: SignUpBinding(),
+    ),
+    GetPage(
+      name: _Paths.SIGN_UP_OTP,
+      page: () => const SignUpOtpView(),
+      binding: SignUpOtpBinding(),
     ),
   ];
 }

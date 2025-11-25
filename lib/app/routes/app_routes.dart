@@ -6,10 +6,11 @@ abstract class Routes {
   static const HOME = _Paths.HOME;
   static const PROFILE = _Paths.PROFILE;
   static const SIGN_IN = _Paths.SIGN_IN;
-  static const LOG_IN = _Paths.LOG_IN;
   static const FORGOT_PASSWORD = _Paths.FORGOT_PASSWORD;
   static const ENTER_CODE = _Paths.ENTER_CODE;
   static const FORGOT_PASSWORD_2 = _Paths.FORGOT_PASSWORD_2;
+  static const SIGN_UP = _Paths.SIGN_UP;
+  static const SIGN_UP_OTP = _Paths.SIGN_UP_OTP;
 }
 
 abstract class _Paths {
@@ -17,8 +18,9 @@ abstract class _Paths {
   static const HOME = '/home';
   static const PROFILE = '/profile';
   static const SIGN_IN = '/sign-in';
-  static const LOG_IN = '/log-in';
   static const FORGOT_PASSWORD = '/forgot-password';
   static const ENTER_CODE = '/enter-code';
   static const FORGOT_PASSWORD_2 = '/forgot-password-2';
+  static const SIGN_UP = '/sign-up';
+  static const SIGN_UP_OTP = '/sign-up-otp';
 }
