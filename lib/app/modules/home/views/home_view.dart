@@ -155,12 +155,19 @@ class HomeView extends GetView<HomeController> {
         Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text(title, style: AppTextStyles.spaceGroteskMedium20),
+            Text(
+              title,
+              style: AppTextStyles.spaceGroteskMedium20,
+              overflow: TextOverflow.ellipsis,
+              maxLines: 1,
+            ),
             Text(
               subTitle,
               style: AppTextStyles.regular14.copyWith(
                 color: AppColors.appBarSub,
               ),
+              overflow: TextOverflow.ellipsis,
+              maxLines: 1,
             ),
           ],
         ),
@@ -171,6 +178,8 @@ class HomeView extends GetView<HomeController> {
             style: AppTextStyles.regular14.copyWith(
               color: AppColors.primaryGray,
             ),
+            overflow: TextOverflow.ellipsis,
+            maxLines: 1,
           ),
         ),
       ],
