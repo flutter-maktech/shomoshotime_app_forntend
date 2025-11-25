@@ -8,5 +8,7 @@ class AppColors{
   static const Color containerColor = Color(0xfff9f9f9);
   static const Color appBarBack = Color(0xffF8F8F8);
   static const Color appBarSub = Color(0xff595959);
+  static const Color blueColor = Color(0xff0c8ce9);
+
 }
 

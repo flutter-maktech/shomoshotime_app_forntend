@@ -6,6 +6,7 @@ import 'package:shomoshotime/app/data/app_colors.dart';
 import 'package:shomoshotime/app/data/app_text_styles.dart';
 import 'package:shomoshotime/app/data/image_path.dart';
 
+import '../../common_widgets/custom_text_field.dart';
 import '../controllers/sign_in_controller.dart';
 
 class SignInView extends GetView<SignInController> {
@@ -15,30 +16,70 @@ class SignInView extends GetView<SignInController> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(title: const Text('SignInView'), centerTitle: true),
-      body: Padding(
-        padding: EdgeInsets.symmetric(horizontal: 16.h),
-        child: Container(
-          width:double.infinity,
-
+      body: Container(
+          width: double.infinity,
+          padding: EdgeInsets.symmetric(horizontal: 16.h),
+          margin: EdgeInsets.symmetric(horizontal: 16.h),
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(8.h),
-            color: AppColors.hintTextColor,
+            color: AppColors.containerColor,
           ),
-          child:Column(
+          child: Column(
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              Image.asset(ImagePath.signIn,height: 84.h,),
-              SizedBox(height: 32.h,
+              Image.asset(ImagePath.signIn, height: 84.h),
+              SizedBox(height: 32.h),
+              Text('Sign In', style: AppTextStyles.bold32),
+              Text(
+                'Access your account to continue.',
+                style: AppTextStyles.regular16,
               ),
-              Text('Sign In',style: AppTextStyles.bold32,),
-              Text('Access your account to continue.',style: AppTextStyles.regular16,),
-              SizedBox(height: 32.h,),
-              TextField(),
+              SizedBox(height: 32.h),
+              CustomTextField(hintText: 'youremail@here', topHintText: 'Email'),
+              CustomTextField(
+                hintText: '**********',
+                topHintText: 'Password',
+                suffixIcon: Icon(Icons.visibility_off_outlined),
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
 
-            ],
-          ),
-        ),
-      ),
+                children: [
+                  Text('Log In',
+                      style: AppTextStyles.regular16.copyWith(
+                        color: AppColors.blackColor,)),
+
+                  Text('Forgot password?',
+                      style: AppTextStyles.bold16.copyWith(
+                        color: AppColors.blueColor,)),
+                ],
+              ),
+              Padding(
+                padding:  EdgeInsets.symmetric(vertical: 31.h),
+                child: OutlinedButton(onPressed: (){}, child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                  Padding(
+                    padding:  EdgeInsets.symmetric(vertical: 5.h),
+                    child: Image.asset(ImagePath.googleLogo,height: 20.h,width: 20.w,),
+                  ),
+                  SizedBox(width: 9.w,),
+                  Text('Sign In With Google',style: AppTextStyles.regular16,)
+                ],)),
+              ),
+            Row(children: [
+              Expanded(child: Divider(color: AppColors.blackColor,)),
+              Padding(
+                padding:  EdgeInsets.symmetric(horizontal: 7.h),
+                child: Text('Or',style: AppTextStyles.regular16.copyWith(color: AppColors.hintTextColor),),
+              ),
+              Expanded(child: Divider(color: AppColors.blackColor,))
+            ],)
+
+            ],))
+
+
+
     );
   }
 }
