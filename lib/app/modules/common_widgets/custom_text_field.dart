@@ -21,7 +21,7 @@ class CustomTextField extends StatelessWidget {
         children: [
 
 
-          Text(topHintText!,style: AppTextStyles.regular12.copyWith(color: AppColors.hintTextColor),),
+          Text(topHintText ?? '',style: AppTextStyles.regular12.copyWith(color: AppColors.hintTextColor),),
           SizedBox(height:4.h ,),
           TextField(
 

@@ -71,9 +71,10 @@ class EnterCodeView extends GetView<EnterCodeController> {
                       ),
                       Padding(
                         padding: EdgeInsets.only(top: 30.h, bottom: 40.h),
-                        child: InkWell(onTap: (){
-                          Get.toNamed(Routes.SIGN_IN);
-                        },
+                        child: InkWell(
+                            onTap: (){
+                              Get.toNamed(Routes.SIGN_UP_OTP);
+                            },
                             child: CustomButton(childText: 'Next')),
                       ),
                     ],
