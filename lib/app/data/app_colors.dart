@@ -15,6 +15,20 @@ class AppColors{
   static const Color appBarCircleAvatar = Color(0xfffffbed);
   static const Color appBarCircleAvatarColor = Color(0xffFFD160);
   static const Color homeStack = Color(0xffEDEBE4);
+  static const Color profileActive = Color(0xff5bbeff);
+  static const Color profilePassed = Color(0xff00ff51);
+  static const Color profileFailed = Color(0xffff2200);
+  static const Color editProfileTextField = Color(0xfff4f4f4);
+  static const Color subscriptionPlanSelectedPlan = Color(0xffffdd8d);
+  static const Color subscriptionPlanWeekly = Color(0xfffcefd1);
+  static const Color subscriptionPlanMonthly = Color(0xffecfbff);
+  static const Color subscriptionPlanAnnually = Color(0xfff4f2ff);
+  static const Color subscriptionPlanButton = Color(0xff9b9b9b);
+  static const Color subscriptionPlanMostPapular = Color(0xff3c88d1);
+  static const Color paymentMethods = Color(0xffe3e3e3);
+  static const Color addCardCheck = Color(0xff535353);
+
+
 
 }
 
