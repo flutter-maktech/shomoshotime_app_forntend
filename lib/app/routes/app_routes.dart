@@ -5,10 +5,16 @@ abstract class Routes {
   Routes._();
   static const HOME = _Paths.HOME;
   static const PROFILE = _Paths.PROFILE;
+  static const STUDY_GUIDES = _Paths.STUDY_GUIDES;
+  static const SPI_FUNDAMENTALS = _Paths.SPI_FUNDAMENTALS;
+  static const FLASH_CARDS = _Paths.FLASH_CARDS;
 }
 
 abstract class _Paths {
   _Paths._();
   static const HOME = '/home';
   static const PROFILE = '/profile';
+  static const STUDY_GUIDES = '/study-guides';
+  static const SPI_FUNDAMENTALS = '/spi-fundamentals';
+  static const FLASH_CARDS = '/flash-cards';
 }
