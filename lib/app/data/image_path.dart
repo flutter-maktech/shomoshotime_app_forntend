@@ -5,4 +5,5 @@ class ImagePath {
   static const String profile = '$baseUrl/profile.png';
   static const String notification = '$baseUrl/notification.png';
   static const String chart = '$baseUrl/chart.png';
+  static const String clock = '$baseUrl/clock.png';
 }
