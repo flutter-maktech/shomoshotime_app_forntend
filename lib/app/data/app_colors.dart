@@ -36,5 +36,6 @@ class AppColors{
   static const Color addCardCheck = Color(0xff535353);
   static const Color disableBottomNavColor = Color(0xffF1ECE6);
   static const Color bottomNavIconColor = Color(0xff5C4C3D);
+  static const Color incorrectColor = Color(0xff3D3D3D);
 }
 

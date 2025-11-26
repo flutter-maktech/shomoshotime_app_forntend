@@ -6,7 +6,7 @@ abstract class Routes {
   static const HOME = _Paths.HOME;
   static const PROFILE = _Paths.PROFILE;
   static const SPI_PRACTICE_BANK_QUS = _Paths.SPI_PRACTICE_BANK_QUS;
-  static const SPI_PRACTICE_BANK_AND = _Paths.SPI_PRACTICE_BANK_AND;
+  static const SPI_PRACTICE_BANK_ANS = _Paths.SPI_PRACTICE_BANK_ANS;
   static const CONTINUE_LEARNING = _Paths.CONTINUE_LEARNING;
   static const CATEGORY_PROGRESS = _Paths.CATEGORY_PROGRESS;
   static const EDIT_PROFILE = _Paths.EDIT_PROFILE;
@@ -22,7 +22,7 @@ abstract class _Paths {
   static const HOME = '/home';
   static const PROFILE = '/profile';
   static const SPI_PRACTICE_BANK_QUS = '/spi-practice-bank-qus';
-  static const SPI_PRACTICE_BANK_AND = '/spi-practice-bank-and';
+  static const SPI_PRACTICE_BANK_ANS = '/spi-practice-bank-ans';
   static const CONTINUE_LEARNING = '/continue-learning';
   static const CATEGORY_PROGRESS = '/category-progress';
   static const CUSTOM_BOTTOM_NAVIGATION_BAR = '/custom-bottom-navigation-bar';

@@ -10,6 +10,7 @@ class ImagePath {
   static const String mockExamIcon = '$baseUrl/mock_exam_icon.png';
   static const String appLogo = '$baseUrl/app_logo.png';
   static const String arrowBack = '$baseUrl/arrow_back.png';
+  static const String arrowForward = '$baseUrl/arrow_forward.png';
   static const String notification = '$baseUrl/notification.png';
   static const String chart = '$baseUrl/chart.png';
   static const String clock = '$baseUrl/clock.png';
@@ -19,4 +20,5 @@ class ImagePath {
   static const String paymentLogoMastercard = '$baseUrl/payment_logo_mastercard.png';
   static const String paymentLogoVisa = '$baseUrl/payment_logo_visa.png';
   static const String spiPracticeBank= '$baseUrl/spi_practice_bank.png';
+  static const String incorrect= '$baseUrl/incorrect.png';
 }

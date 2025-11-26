@@ -1,19 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:get/get.dart';
+import 'package:get/get_state_manager/src/rx_flutter/rx_obx_widget.dart';
+import 'package:get/get_state_manager/src/simple/get_view.dart';
 import 'package:shomoshotime/app/data/app_colors.dart';
 import 'package:shomoshotime/app/data/app_text_styles.dart';
 import 'package:shomoshotime/app/data/image_path.dart';
 import 'package:shomoshotime/app/modules/common_widgets/custom_app_bar.dart';
 import 'package:shomoshotime/app/modules/common_widgets/custom_button.dart';
 import 'package:shomoshotime/app/modules/common_widgets/custom_progress.dart';
+import '../../spi_practice_bank_qus/controllers/spi_practice_bank_qus_controller.dart';
+import '../../spi_practice_bank_qus/widget/custom_radio.dart';
 
-import '../../../routes/app_pages.dart';
-import '../controllers/spi_practice_bank_qus_controller.dart';
-import '../widget/custom_radio.dart';
-
-class SpiPracticeBankQusView extends GetView<SpiPracticeBankQusController> {
-  const SpiPracticeBankQusView({super.key});
+class SpiPracticeBankAnsView extends GetView<SpiPracticeBankQusController> {
+  const SpiPracticeBankAnsView({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -105,11 +104,46 @@ class SpiPracticeBankQusView extends GetView<SpiPracticeBankQusController> {
                       ),
                     ),
                     SizedBox(height: 20.h),
-                    CustomButton(
-                      childText: "Submit Answer",
-                      onTap: () {
-                        Get.toNamed(Routes.SPI_PRACTICE_BANK_ANS);
-                      },
+                    Container(
+                      padding: EdgeInsets.all(12.sp),
+                      width: double.infinity,
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(4.sp),
+                        color: AppColors.profileFailed.withAlpha(20),
+                        border: Border.all(
+                          color: AppColors.profileFailed.withAlpha(35),
+                        ),
+                      ),
+                      child: Column(
+                        children: [
+                          Row(
+                            children: [
+                              Image.asset(ImagePath.incorrect, height: 20.h),
+                              SizedBox(width: 8.h),
+                              Text(
+                                "Incorrect",
+                                style: AppTextStyles.regular14.copyWith(
+                                  color: AppColors.profileFailed,
+                                ),
+                              ),
+                            ],
+                          ),
+                          SizedBox(height: 8.h),
+                          Text(
+                            "Diagnostic ultrasound typically uses frequencies between 2-15 MHz Higher frequencies providebetter resolution bur nave less penetration depth.",
+                            style: AppTextStyles.regular14.copyWith(
+                              color: AppColors.incorrectColor,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                    Padding(
+                      padding: EdgeInsets.symmetric(vertical: 20.h),
+                      child: CustomButton(
+                        childText: "Next Question",
+                        childImage: ImagePath.arrowForward,
+                      ),
                     ),
                   ],
                 ),

@@ -1,6 +1,6 @@
 import 'package:get/get.dart';
 
-class SpiPracticeBankQusController extends GetxController {
+class SpiPracticeBankAnsController extends GetxController {
   RxInt selectedIndex = (-1).obs;
 
   void selectOption(int index) {

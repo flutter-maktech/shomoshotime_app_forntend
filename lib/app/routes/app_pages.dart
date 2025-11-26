@@ -15,8 +15,8 @@ import '../modules/payment_methods/bindings/payment_methods_binding.dart';
 import '../modules/payment_methods/views/payment_methods_view.dart';
 import '../modules/profile/bindings/profile_binding.dart';
 import '../modules/profile/views/profile_view.dart';
-import '../modules/spi_practice_bank_and/bindings/spi_practice_bank_and_binding.dart';
-import '../modules/spi_practice_bank_and/views/spi_practice_bank_and_view.dart';
+import '../modules/spi_practice_bank_ans/bindings/spi_practice_bank_ans_binding.dart';
+import '../modules/spi_practice_bank_ans/views/spi_practice_bank_ans_view.dart';
 import '../modules/spi_practice_bank_qus/bindings/spi_practice_bank_qus_binding.dart';
 import '../modules/spi_practice_bank_qus/views/spi_practice_bank_qus_view.dart';
 import '../modules/subscription_plan/bindings/subscription_plan_binding.dart';
@@ -71,9 +71,9 @@ class AppPages {
       binding: SpiPracticeBankQusBinding(),
     ),
     GetPage(
-      name: _Paths.SPI_PRACTICE_BANK_AND,
-      page: () => const SpiPracticeBankAndView(),
-      binding: SpiPracticeBankAndBinding(),
+      name: _Paths.SPI_PRACTICE_BANK_ANS,
+      page: () => const SpiPracticeBankAnsView(),
+      binding: SpiPracticeBankAnsBinding(),
     ),
     GetPage(
       name: _Paths.CONTINUE_LEARNING,
