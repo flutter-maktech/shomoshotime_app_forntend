@@ -9,6 +9,12 @@ abstract class Routes {
   static const SPI_PRACTICE_BANK_AND = _Paths.SPI_PRACTICE_BANK_AND;
   static const CONTINUE_LEARNING = _Paths.CONTINUE_LEARNING;
   static const CATEGORY_PROGRESS = _Paths.CATEGORY_PROGRESS;
+  static const EDIT_PROFILE = _Paths.EDIT_PROFILE;
+  static const SUBSCRIPTION_PLAN = _Paths.SUBSCRIPTION_PLAN;
+  static const PAYMENT_METHODS = _Paths.PAYMENT_METHODS;
+  static const ADD_CARD = _Paths.ADD_CARD;
+  static const CUSTOM_BOTTOM_NAVIGATION_BAR =
+      _Paths.CUSTOM_BOTTOM_NAVIGATION_BAR;
 }
 
 abstract class _Paths {
@@ -19,4 +25,9 @@ abstract class _Paths {
   static const SPI_PRACTICE_BANK_AND = '/spi-practice-bank-and';
   static const CONTINUE_LEARNING = '/continue-learning';
   static const CATEGORY_PROGRESS = '/category-progress';
+  static const CUSTOM_BOTTOM_NAVIGATION_BAR = '/custom-bottom-navigation-bar';
+  static const EDIT_PROFILE = '/edit-profile';
+  static const SUBSCRIPTION_PLAN = '/subscription-plan';
+  static const PAYMENT_METHODS = '/payment-methods';
+  static const ADD_CARD = '/add-card';
 }

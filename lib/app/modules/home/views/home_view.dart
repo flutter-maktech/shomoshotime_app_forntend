@@ -4,8 +4,6 @@ import 'package:get/get.dart';
 import 'package:shomoshotime/app/data/app_colors.dart';
 import 'package:shomoshotime/app/data/app_text_styles.dart';
 import '../../../routes/app_pages.dart';
-import '../../common_widgets/custom_button.dart';
-import '../../common_widgets/custom_progress.dart';
 import '../../common_widgets/custom_progress_container.dart';
 import '../../common_widgets/primary_app_bar.dart';
 import '../controllers/home_controller.dart';
