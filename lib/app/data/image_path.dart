@@ -1,6 +1,6 @@
 class ImagePath {
   static const String baseUrl = 'assets/images';
-  static const String profile = '$baseUrl/profile_image.png';
+  static const String profile = '$baseUrl/profile.png';
   static const String profilePremium = '$baseUrl/profile_premium.png';
   static const String profileNotebook = '$baseUrl/profile_notebook.png';
   static const String dashBoardIcon = '$baseUrl/dash_board_icon.png';

@@ -36,10 +36,19 @@ class ProfileView extends GetView<ProfileController> {
                   ),
                   child: Column(
                     children: [
-                      Image.asset(
-                        ImagePath.profile,
-                        width: 160.w,
-                        height: 160.h,
+                      CircleAvatar(
+                        backgroundColor: AppColors.appBarCircleAvatar,
+                        maxRadius: 110,
+                        child: Padding(
+                          padding: EdgeInsets.all(1.sp),
+                          child: InkWell(
+                            onTap: () {},
+                            child: ClipRRect(
+                              borderRadius: BorderRadiusGeometry.circular(100),
+                              child: Image.asset(ImagePath.profile, fit: BoxFit.cover),
+                            ),
+                          ),
+                        ),
                       ),
                       SizedBox(height: 10.h),
                       Text("Sarah Johnson", style: AppTextStyles.spaceGroteskLarge16),
