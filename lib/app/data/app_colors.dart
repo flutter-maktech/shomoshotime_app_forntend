@@ -10,8 +10,10 @@ class AppColors{
   static const Color profileIcons = Color(0xff595959);
   static const Color profileBlack = Color(0xff2a2a2a);
   static const Color profileYellow = Color(0xffffbf23);
+  static const Color containerColor = Color(0xfff9f9f9);
   static const Color appBarBack = Color(0xffF8F8F8);
   static const Color appBarSub = Color(0xff595959);
+  static const Color blueColor = Color(0xff0c8ce9);
   static const Color appBarCircleAvatar = Color(0xfffffbed);
   static const Color appBarCircleAvatarColor = Color(0xffFFD160);
   static const Color homeStack = Color(0xffEDEBE4);
@@ -37,5 +39,7 @@ class AppColors{
   static const Color disableBottomNavColor = Color(0xffF1ECE6);
   static const Color bottomNavIconColor = Color(0xff5C4C3D);
   static const Color incorrectColor = Color(0xff3D3D3D);
+
+
 }
 

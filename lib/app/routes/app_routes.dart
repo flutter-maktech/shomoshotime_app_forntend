@@ -13,14 +13,33 @@ abstract class Routes {
   static const SUBSCRIPTION_PLAN = _Paths.SUBSCRIPTION_PLAN;
   static const PAYMENT_METHODS = _Paths.PAYMENT_METHODS;
   static const ADD_CARD = _Paths.ADD_CARD;
-  static const CUSTOM_BOTTOM_NAVIGATION_BAR =
-      _Paths.CUSTOM_BOTTOM_NAVIGATION_BAR;
+  static const CUSTOM_BOTTOM_NAVIGATION_BAR = _Paths.CUSTOM_BOTTOM_NAVIGATION_BAR;
+  static const SIGN_IN = _Paths.SIGN_IN;
+  static const FORGOT_PASSWORD = _Paths.FORGOT_PASSWORD;
+  static const ENTER_CODE = _Paths.ENTER_CODE;
+  static const FORGOT_PASSWORD_2 = _Paths.FORGOT_PASSWORD_2;
+  static const SIGN_UP = _Paths.SIGN_UP;
+  static const SIGN_UP_OTP = _Paths.SIGN_UP_OTP;
+  static const COMPREHENSIVE = _Paths.COMPREHENSIVE;
+  static const INTERACTIVE_FLASHCARDS = _Paths.INTERACTIVE_FLASHCARDS;
+  static const PRACTICE = _Paths.PRACTICE;
+  static const REALISTIC = _Paths.REALISTIC;
 }
 
 abstract class _Paths {
   _Paths._();
   static const HOME = '/home';
   static const PROFILE = '/profile';
+  static const SIGN_IN = '/sign-in';
+  static const FORGOT_PASSWORD = '/forgot-password';
+  static const ENTER_CODE = '/enter-code';
+  static const FORGOT_PASSWORD_2 = '/forgot-password-2';
+  static const SIGN_UP = '/sign-up';
+  static const SIGN_UP_OTP = '/sign-up-otp';
+  static const COMPREHENSIVE = '/comprehensive';
+  static const INTERACTIVE_FLASHCARDS = '/interactive-flashcards';
+  static const PRACTICE = '/practice';
+  static const REALISTIC = '/realistic';
   static const SPI_PRACTICE_BANK_QUS = '/spi-practice-bank-qus';
   static const SPI_PRACTICE_BANK_ANS = '/spi-practice-bank-ans';
   static const CONTINUE_LEARNING = '/continue-learning';
