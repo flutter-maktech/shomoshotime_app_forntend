@@ -5,6 +5,7 @@ import 'package:shomoshotime/app/data/app_colors.dart';
 import 'package:shomoshotime/app/data/app_text_styles.dart';
 import 'package:shomoshotime/app/data/image_path.dart';
 import 'package:shomoshotime/app/modules/common_widgets/custom_button.dart';
+import 'package:shomoshotime/app/modules/custom_bottom_navigation_bar/views/custom_bottom_navigation_bar_view.dart';
 import '../controllers/profile_controller.dart';
 import '../widget/custom_achievements.dart';
 import '../widget/custom_icons.dart';
@@ -227,6 +228,7 @@ class ProfileView extends GetView<ProfileController> {
               StatusColor: AppColors.profileGray,
               TextColor: AppColors.profileBlack,
             ),
+
           ],
         ),
       ),

@@ -20,8 +20,8 @@ part 'app_routes.dart';
 class AppPages {
   AppPages._();
 
-  static const INITIAL = Routes.CUSTOM_BOTTOM_NAVIGATION_BAR;
-  static const INITIAL = Routes.PROFILE;
+  static const INITIAL = Routes.PAYMENT_METHODS;
+
 
   static final routes = [
     GetPage(

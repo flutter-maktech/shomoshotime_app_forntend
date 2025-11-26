@@ -55,7 +55,7 @@ class SubscriptionPlanView extends GetView<SubscriptionPlanController> {
                     color: AppColors.subscriptionPlanWeekly,
                   ),
                   child: Padding(
-                    padding: EdgeInsets.all(24.sp),
+                    padding: EdgeInsets.all(16.sp),
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
@@ -123,7 +123,7 @@ class SubscriptionPlanView extends GetView<SubscriptionPlanController> {
                     color: AppColors.subscriptionPlanMonthly,
                   ),
                   child: Padding(
-                    padding: EdgeInsets.all(24.sp),
+                    padding: EdgeInsets.all(16.sp),
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
@@ -205,7 +205,7 @@ class SubscriptionPlanView extends GetView<SubscriptionPlanController> {
                     color: AppColors.subscriptionPlanAnnually,
                   ),
                   child: Padding(
-                    padding: EdgeInsets.all(24.sp),
+                    padding: EdgeInsets.all(16.sp),
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [

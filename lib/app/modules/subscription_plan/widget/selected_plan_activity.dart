@@ -13,9 +13,9 @@ class SelectedPlanActivity extends StatelessWidget {
   Widget build(BuildContext context) {
     return Row(
       children: [
-        Icon(Icons.check),
+        Flexible(flex: 1,child: Icon(Icons.check)),
         SizedBox(width: 2.5.w),
-        Text(text,style: AppTextStyles.regular16,),
+        Flexible(flex: 6,child: Text(text,style: AppTextStyles.regular16,overflow: TextOverflow.ellipsis,)),
       ],
     );
   }

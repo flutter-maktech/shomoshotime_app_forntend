@@ -23,13 +23,23 @@ class PaymentMethodsView extends GetView<PaymentMethodsController> {
               children: [
                 Row(
                   children: [
-                    Image.asset(
-                      ImagePath.paymentCreditCard,
-                      height: 32.h,
-                      width: 32.w,
+                    Flexible(
+                      flex: 1,
+                      child: Image.asset(
+                        ImagePath.paymentCreditCard,
+                        height: 32.h,
+                        width: 32.w,
+                      ),
                     ),
                     SizedBox(width: 10.w),
-                    Text("Credit/Debit Card", style: AppTextStyles.regular20),
+                    Flexible(
+                      flex: 2,
+                      child: Text(
+                        "Credit/Debit Card",
+                        style: AppTextStyles.regular20,
+                        overflow: TextOverflow.ellipsis,
+                      ),
+                    ),
                   ],
                 ),
                 SizedBox(height: 24.h),
@@ -44,26 +54,33 @@ class PaymentMethodsView extends GetView<PaymentMethodsController> {
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        Image.asset(
-                          ImagePath.paymentLogoMastercard,
-                          height: 24.h,
-                          width: 31.w,
+                        Flexible(flex: 1,
+                          child: Image.asset(
+                            ImagePath.paymentLogoMastercard,
+                            height: 24.h,
+                            width: 31.w,
+                          ),
                         ),
-                        Text(
-                          "Axis Bank  **** 1234",
-                          style: AppTextStyles.regular16,
+                        Flexible(flex: 3,
+                          child: Text(
+                            "Axis Bank  **** 1234",
+                            style: AppTextStyles.regular16,
+                            overflow: TextOverflow.ellipsis,
+                          ),
                         ),
                         Obx(
                           () => Transform.scale(
                             scale: 1.6,
-                            child: RadioMenuButton(
-                              style: ButtonStyle(),
-                              value: 1,
-                              groupValue: controller.selectedValue.value,
-                              onChanged: (value) {
-                                controller.UpdateSelection(value!);
-                              },
-                              child: Text(""),
+                            child: Flexible(flex: 1,
+                              child: RadioMenuButton(
+                                style: ButtonStyle(),
+                                value: 1,
+                                groupValue: controller.selectedValue.value,
+                                onChanged: (value) {
+                                  controller.UpdateSelection(value!);
+                                },
+                                child: Text(""),
+                              ),
                             ),
                           ),
                         ),
@@ -83,26 +100,33 @@ class PaymentMethodsView extends GetView<PaymentMethodsController> {
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        Image.asset(
-                          ImagePath.paymentLogoVisa,
-                          height: 16.h,
-                          width: 50.w,
+                        Flexible(flex: 1,
+                          child: Image.asset(
+                            ImagePath.paymentLogoVisa,
+                            height: 16.h,
+                            width: 50.w,
+                          ),
                         ),
-                        Text(
-                          "Axis Bank  **** 1234",
-                          style: AppTextStyles.regular16,
+                        Flexible(flex: 3,
+                          child: Text(
+                            "Axis Bank  **** 1234",
+                            style: AppTextStyles.regular16,
+                            overflow: TextOverflow.ellipsis,
+                          ),
                         ),
                         Obx(
                           () => Transform.scale(
                             scale: 1.6,
-                            child: RadioMenuButton(
-                              style: ButtonStyle(),
-                              value: 2,
-                              groupValue: controller.selectedValue.value,
-                              onChanged: (value) {
-                                controller.UpdateSelection(value!);
-                              },
-                              child: Text(""),
+                            child: Flexible(flex: 1,
+                              child: RadioMenuButton(
+                                style: ButtonStyle(),
+                                value: 2,
+                                groupValue: controller.selectedValue.value,
+                                onChanged: (value) {
+                                  controller.UpdateSelection(value!);
+                                },
+                                child: Text(""),
+                              ),
                             ),
                           ),
                         ),
@@ -139,7 +163,7 @@ class PaymentMethodsView extends GetView<PaymentMethodsController> {
                     ),
                   ),
                 ),
-                SizedBox(height: 350.h),
+                SizedBox(height: 320.h),
                 CustomButton(
                   childText: "Check out",
                   buttonColor: AppColors.profileYellow,
