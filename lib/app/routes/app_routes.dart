@@ -7,6 +7,10 @@ abstract class Routes {
   static const PROFILE = _Paths.PROFILE;
   static const CUSTOM_BOTTOM_NAVIGATION_BAR =
       _Paths.CUSTOM_BOTTOM_NAVIGATION_BAR;
+  static const STUDY_GUIDES = _Paths.STUDY_GUIDES;
+  static const SPI_FUNDAMENTALS = _Paths.SPI_FUNDAMENTALS;
+  static const FLASH_CARDS = _Paths.FLASH_CARDS;
+  static const VASCULAR_FLASHCARDS = _Paths.VASCULAR_FLASHCARDS;
 }
 
 abstract class _Paths {
@@ -14,4 +18,8 @@ abstract class _Paths {
   static const HOME = '/home';
   static const PROFILE = '/profile';
   static const CUSTOM_BOTTOM_NAVIGATION_BAR = '/custom-bottom-navigation-bar';
+  static const STUDY_GUIDES = '/study-guides';
+  static const SPI_FUNDAMENTALS = '/spi-fundamentals';
+  static const FLASH_CARDS = '/flash-cards';
+  static const VASCULAR_FLASHCARDS = '/vascular-flashcards';
 }

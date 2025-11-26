@@ -5,4 +5,13 @@ class ImagePath {
   static const String practiceIcon = '$baseUrl/practice_icon.png';
   static const String flashCardIcon = '$baseUrl/flash_card_icon.png';
   static const String mockExamIcon = '$baseUrl/mock_exam_icon.png';
+  static const String appLogo = '$baseUrl/app_logo.png';
+  static const String arrowBack = '$baseUrl/arrow_back.png';
+  static const String profile = '$baseUrl/profile.png';
+  static const String notification = '$baseUrl/notification.png';
+  static const String bookImage = '$baseUrl/book-open-02.png';
+  static const String layerImage = '$baseUrl/layers-01.png';
+  static const String vectorImage = '$baseUrl/Vector.png';
+  static const String arrowCircle = '$baseUrl/arrowCircle.png';
+  static const String clockImage = '$baseUrl/clock-01.png';
 }
