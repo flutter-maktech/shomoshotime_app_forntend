@@ -4,6 +4,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:shomoshotime/app/modules/common_widgets/custom_button.dart';
 import 'package:shomoshotime/app/modules/common_widgets/custom_text_field.dart';
+import 'package:shomoshotime/app/routes/app_pages.dart';
 
 import '../../../data/app_colors.dart';
 import '../../../data/app_text_styles.dart';
@@ -56,7 +57,13 @@ class SignUpOtpView extends GetView<SignUpOtpController> {
 
                       Padding(
                         padding:  EdgeInsets.only(top: 30.h,bottom: 40.h),
-                        child: CustomButton(childText: 'Confirm'),
+                        child: InkWell(
+                          onTap: (){
+
+                            Get.toNamed(Routes.FORGOT_PASSWORD);
+                          },
+
+                            child: CustomButton(childText: 'Confirm')),
                       )
 
 
