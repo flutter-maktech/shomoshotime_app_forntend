@@ -11,6 +11,7 @@ abstract class Routes {
   static const FORGOT_PASSWORD_2 = _Paths.FORGOT_PASSWORD_2;
   static const SIGN_UP = _Paths.SIGN_UP;
   static const SIGN_UP_OTP = _Paths.SIGN_UP_OTP;
+  static const COMPREHENSIVE = _Paths.COMPREHENSIVE;
 }
 
 abstract class _Paths {
@@ -23,4 +24,5 @@ abstract class _Paths {
   static const FORGOT_PASSWORD_2 = '/forgot-password-2';
   static const SIGN_UP = '/sign-up';
   static const SIGN_UP_OTP = '/sign-up-otp';
+  static const COMPREHENSIVE = '/comprehensive';
 }

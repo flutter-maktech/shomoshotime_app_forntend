@@ -1,5 +1,7 @@
 import 'package:get/get.dart';
 
+import '../modules/comprehensive/bindings/comprehensive_binding.dart';
+import '../modules/comprehensive/views/comprehensive_view.dart';
 import '../modules/enter_code/bindings/enter_code_binding.dart';
 import '../modules/enter_code/views/enter_code_view.dart';
 import '../modules/forgot_password/bindings/forgot_password_binding.dart';
@@ -64,6 +66,11 @@ class AppPages {
       name: _Paths.SIGN_UP_OTP,
       page: () => const SignUpOtpView(),
       binding: SignUpOtpBinding(),
+    ),
+    GetPage(
+      name: _Paths.COMPREHENSIVE,
+      page: () => const ComprehensiveView(),
+      binding: ComprehensiveBinding(),
     ),
   ];
 }

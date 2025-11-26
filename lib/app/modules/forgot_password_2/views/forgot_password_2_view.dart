@@ -1,7 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import 'package:get/get.dart';
+import 'package:shomoshotime/app/routes/app_pages.dart';
 
+import '../../../data/app_colors.dart';
+import '../../../data/app_text_styles.dart';
+import '../../../data/image_path.dart';
+import '../../common_widgets/custom_button.dart';
+import '../../common_widgets/custom_text_field.dart';
 import '../controllers/forgot_password_2_controller.dart';
 
 class ForgotPassword2View extends GetView<ForgotPassword2Controller> {
@@ -9,15 +16,48 @@ class ForgotPassword2View extends GetView<ForgotPassword2Controller> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('ForgotPassword2View'),
-        centerTitle: true,
-      ),
-      body: const Center(
-        child: Text(
-          'ForgotPassword2View is working',
-          style: TextStyle(fontSize: 20),
-        ),
+
+      body: Center(
+        child: SafeArea(
+          child: SingleChildScrollView(
+            child: Center(
+              child: Padding(
+                padding: EdgeInsets.symmetric(horizontal: 16.h),
+                child: Container(
+                  padding: EdgeInsets.symmetric(
+                    horizontal: 16.w,
+                    vertical: 40.h,
+                  ),
+                  width: double.infinity,
+                  decoration: BoxDecoration(
+                    color: AppColors.containerColor,
+                    borderRadius: BorderRadius.circular(8.r),
+                  ),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      Image.asset(ImagePath.signIn, height: 84.h),
+                      SizedBox(height: 32.h),
+                      Text('Forgot Password ', style: AppTextStyles.bold32),
+                      Text(
+                        "Enter your email to reset your password.",
+                        style: AppTextStyles.regular16,
+                      ),
+                      CustomTextField(hintText: '************',topHintText: 'Add new password',),
+                      CustomTextField(hintText: '**********',topHintText: 'Confirm Password',suffixIcon: Icon(Icons.visibility_off_outlined),),
+                      InkWell(
+                          onTap: (){
+                            Get.toNamed(Routes.COMPREHENSIVE);
+                          },
+                          child: CustomButton(childText: 'Save new password')),
+ 
+                    ],
+                  ),
+                ),
+              ),
+            ),
+          ),
+        ),    
       ),
     );
   }
