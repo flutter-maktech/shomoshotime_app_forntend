@@ -27,7 +27,8 @@ part 'app_routes.dart';
 class AppPages {
   AppPages._();
 
-  static const INITIAL = Routes.SPI_PRACTICE_BANK_QUS;
+  static const INITIAL = Routes.PROFILE;
+
 
   static final routes = [
     GetPage(

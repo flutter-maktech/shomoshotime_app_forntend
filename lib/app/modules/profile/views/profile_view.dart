@@ -4,6 +4,7 @@ import 'package:get/get.dart';
 import 'package:shomoshotime/app/data/app_colors.dart';
 import 'package:shomoshotime/app/data/app_text_styles.dart';
 import 'package:shomoshotime/app/data/image_path.dart';
+import 'package:shomoshotime/app/modules/common_widgets/custom_app_bar.dart';
 import 'package:shomoshotime/app/modules/common_widgets/custom_button.dart';
 import 'package:shomoshotime/app/modules/custom_bottom_navigation_bar/views/custom_bottom_navigation_bar_view.dart';
 import '../controllers/profile_controller.dart';
@@ -17,7 +18,9 @@ class ProfileView extends GetView<ProfileController> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text('ProfileView'), centerTitle: true),
+      appBar: CustomAppBar(
+        title: 'Edit Profile',
+      ),
       body: SingleChildScrollView(
         child: Padding(
           padding: EdgeInsets.all(16.sp),
@@ -36,10 +39,19 @@ class ProfileView extends GetView<ProfileController> {
                   ),
                   child: Column(
                     children: [
-                      Image.asset(
-                        ImagePath.profile,
-                        width: 160.w,
-                        height: 160.h,
+                      CircleAvatar(
+                        backgroundColor: AppColors.appBarCircleAvatar,
+                        maxRadius: 80,
+                        child: Padding(
+                          padding: EdgeInsets.all(8.sp),
+                          child: InkWell(
+                            onTap: (){},
+                            child: ClipRRect(
+                              borderRadius: BorderRadiusGeometry.circular(100),
+                              child: Image.asset(ImagePath.profile, fit: BoxFit.cover),
+                            ),
+                          ),
+                        ),
                       ),
                       SizedBox(height: 10.h),
                       Text("Sarah Johnson", style: AppTextStyles.spaceGroteskLarge16),
