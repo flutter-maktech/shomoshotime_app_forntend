@@ -30,5 +30,7 @@ class AppColors{
 
 
 
+  static const Color disableBottomNavColor = Color(0xffF1ECE6);
+  static const Color bottomNavIconColor = Color(0xff5C4C3D);
 }
 

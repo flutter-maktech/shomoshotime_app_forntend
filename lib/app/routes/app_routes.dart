@@ -9,12 +9,15 @@ abstract class Routes {
   static const SUBSCRIPTION_PLAN = _Paths.SUBSCRIPTION_PLAN;
   static const PAYMENT_METHODS = _Paths.PAYMENT_METHODS;
   static const ADD_CARD = _Paths.ADD_CARD;
+  static const CUSTOM_BOTTOM_NAVIGATION_BAR =
+      _Paths.CUSTOM_BOTTOM_NAVIGATION_BAR;
 }
 
 abstract class _Paths {
   _Paths._();
   static const HOME = '/home';
   static const PROFILE = '/profile';
+  static const CUSTOM_BOTTOM_NAVIGATION_BAR = '/custom-bottom-navigation-bar';
   static const EDIT_PROFILE = '/edit-profile';
   static const SUBSCRIPTION_PLAN = '/subscription-plan';
   static const PAYMENT_METHODS = '/payment-methods';

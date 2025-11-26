@@ -4,6 +4,8 @@ import '../modules/add_card/bindings/add_card_binding.dart';
 import '../modules/add_card/views/add_card_view.dart';
 import '../modules/edit_profile/bindings/edit_profile_binding.dart';
 import '../modules/edit_profile/views/edit_profile_view.dart';
+import '../modules/custom_bottom_navigation_bar/bindings/custom_bottom_navigation_bar_binding.dart';
+import '../modules/custom_bottom_navigation_bar/views/custom_bottom_navigation_bar_view.dart';
 import '../modules/home/bindings/home_binding.dart';
 import '../modules/home/views/home_view.dart';
 import '../modules/payment_methods/bindings/payment_methods_binding.dart';
@@ -18,6 +20,7 @@ part 'app_routes.dart';
 class AppPages {
   AppPages._();
 
+  static const INITIAL = Routes.CUSTOM_BOTTOM_NAVIGATION_BAR;
   static const INITIAL = Routes.PROFILE;
 
   static final routes = [
@@ -30,6 +33,11 @@ class AppPages {
       name: _Paths.PROFILE,
       page: () => const ProfileView(),
       binding: ProfileBinding(),
+    ),
+    GetPage(
+      name: _Paths.CUSTOM_BOTTOM_NAVIGATION_BAR,
+      page: () => const CustomBottomNavigationBarView(),
+      binding: CustomBottomNavigationBarBinding(),
     ),
     GetPage(
       name: _Paths.EDIT_PROFILE,

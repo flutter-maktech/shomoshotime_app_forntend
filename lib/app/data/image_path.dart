@@ -3,6 +3,11 @@ class ImagePath {
   static const String profile = '$baseUrl/profile_image.png';
   static const String profilePremium = '$baseUrl/profile_premium.png';
   static const String profileNotebook = '$baseUrl/profile_notebook.png';
+  static const String dashBoardIcon = '$baseUrl/dash_board_icon.png';
+  static const String studyGuidesIcon = '$baseUrl/study_guides_icon.png';
+  static const String practiceIcon = '$baseUrl/practice_icon.png';
+  static const String flashCardIcon = '$baseUrl/flash_card_icon.png';
+  static const String mockExamIcon = '$baseUrl/mock_exam_icon.png';
   static const String appLogo = '$baseUrl/app_logo.png';
   static const String arrowBack = '$baseUrl/arrow_back.png';
   static const String notification = '$baseUrl/notification.png';
