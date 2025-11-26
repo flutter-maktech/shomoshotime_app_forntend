@@ -46,6 +46,7 @@ class ProfileView extends GetView<ProfileController> {
                       Text(
                         "sarah.johnson@example.corn",
                         style: AppTextStyles.regular14,
+                        overflow: TextOverflow.ellipsis,
                       ),
                       SizedBox(height: 24),
                       Image.asset(

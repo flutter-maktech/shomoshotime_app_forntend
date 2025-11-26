@@ -21,7 +21,8 @@ class CustomSubscription extends StatelessWidget {
     this.StatusColor = AppColors.profileActive,
     this.TextColor = AppColors.whiteColor,
     this.statusWidth,
-    this.Textpersan, this.statushigth,
+    this.Textpersan,
+    this.statushigth,
   });
 
   @override
@@ -36,33 +37,49 @@ class CustomSubscription extends StatelessWidget {
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(textTitel, style: AppTextStyles.spaceGroteskMedium16),
-                Text(textSubTitel, style: AppTextStyles.regular12),
-              ],
-            ),
-            Column(
-              children: [
-                if (Textpersan != null)
-                  Text(Textpersan!, style: AppTextStyles.spaceGroteskMedium32),
-                SizedBox(height: 5.h),
-                Container(
-                  height: statushigth,
-                  width: statusWidth,
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(4),
-                    color: StatusColor,
+            Flexible(
+              flex: 1,
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    textTitel,
+                    style: AppTextStyles.spaceGroteskMedium16,
+                    overflow: TextOverflow.ellipsis,
                   ),
-                  child: Center(
-                    child: Text(
-                      status,
-                      style: AppTextStyles.regular14.copyWith(color: TextColor),
+                  Text(textSubTitel, style: AppTextStyles.regular12),
+                ],
+              ),
+            ),
+            Flexible(
+              flex: 1,
+              child: Column(
+                children: [
+                  if (Textpersan != null)
+                    Text(
+                      Textpersan!,
+                      style: AppTextStyles.spaceGroteskMedium32,
+                      overflow: TextOverflow.ellipsis,
+                    ),
+                  SizedBox(height: 5.h),
+                  Container(
+                    height: statushigth,
+                    width: statusWidth,
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(4),
+                      color: StatusColor,
+                    ),
+                    child: Center(
+                      child: Text(
+                        status,
+                        style: AppTextStyles.regular14.copyWith(
+                          color: TextColor,
+                        ),
+                      ),
                     ),
                   ),
-                ),
-              ],
+                ],
+              ),
             ),
           ],
         ),

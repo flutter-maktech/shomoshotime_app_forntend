@@ -18,7 +18,7 @@ part 'app_routes.dart';
 class AppPages {
   AppPages._();
 
-  static const INITIAL = Routes.ADD_CARD;
+  static const INITIAL = Routes.PROFILE;
 
   static final routes = [
     GetPage(

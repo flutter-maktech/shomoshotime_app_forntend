@@ -17,9 +17,10 @@ class CustomProfileDistyle extends StatelessWidget {
   Widget build(BuildContext context) {
     return Row(
       children: [
-        Icon(icon, color: AppColors.profileIcons),
+        Flexible(flex: 1,child: Icon(icon, color: AppColors.profileIcons)),
         SizedBox(width: 8),
-        Text(text, style: AppTextStyles.regular12),
+        Flexible(flex: 1,child: Text(text, style: AppTextStyles.regular12,overflow: TextOverflow.ellipsis,)),
+
       ],
     );
   }

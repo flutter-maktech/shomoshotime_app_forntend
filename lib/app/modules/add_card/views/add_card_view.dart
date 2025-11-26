@@ -38,27 +38,38 @@ class AddCardView extends GetView<AddCardController> {
                       children: [
                         Row(
                           children: [
-                            Image.asset(
-                              ImagePath.paymentCreditCard,
-                              height: 32.h,
-                              width: 32.w,
+                            Flexible(flex: 1,
+                              child: Image.asset(
+                                ImagePath.paymentCreditCard,
+                                height: 32.h,
+                                width: 32.w,
+                              ),
                             ),
                             SizedBox(width: 10.w),
-                            Text(
-                              "Credit/Debit Card",
-                              style: AppTextStyles.regular20,
+                            Flexible(flex: 2,
+                              child: Text(
+                                "Credit/Debit Card",
+                                style: AppTextStyles.regular20,
+                                overflow: TextOverflow.ellipsis,
+                              ),
                             ),
                           ],
                         ),
                         SizedBox(height: 24.h),
-                        Text("Credit/Debit Card", style: AppTextStyles.regular12),
+                        Text(
+                          "Credit/Debit Card",
+                          style: AppTextStyles.regular12,
+                        ),
                         SizedBox(height: 8.h),
                         CustomAddCard(text: "Credit/Debit Card"),
                         SizedBox(height: 24.h),
-                        Text("Credit/Debit Card", style: AppTextStyles.regular12),
+                        Text(
+                          "Credit/Debit Card",
+                          style: AppTextStyles.regular12,
+                        ),
                         CustomAddCard(text: "Credit/Debit Card"),
                         SizedBox(height: 24.h),
-                        Row(
+                        Row(crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Expanded(
                               child: Column(
@@ -67,6 +78,7 @@ class AddCardView extends GetView<AddCardController> {
                                   Text(
                                     "Expiration Date",
                                     style: AppTextStyles.regular12,
+                                    overflow: TextOverflow.ellipsis,
                                   ),
                                   SizedBox(height: 8.h),
                                   CustomAddCard(text: "02/2028"),
@@ -89,22 +101,27 @@ class AddCardView extends GetView<AddCardController> {
                         SizedBox(height: 24.h),
                         Row(
                           children: [
-                            Container(
-                              height: 24.h,
-                              width: 24.w,
-                              decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(6),
-                                color: AppColors.addCardCheck,
-                              ),
-                              child: Icon(
-                                Icons.check,
-                                color: AppColors.whiteColor,
+                            Flexible(flex: 1,
+                              child: Container(
+                                height: 24.h,
+                                width: 24.w,
+                                decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(6),
+                                  color: AppColors.addCardCheck,
+                                ),
+                                child: Icon(
+                                  Icons.check,
+                                  color: AppColors.whiteColor,
+                                ),
                               ),
                             ),
                             SizedBox(width: 8.w),
-                            Text(
-                              "Save this card for faster payment",
-                              style: AppTextStyles.regular16,
+                            Flexible(flex: 1,
+                              child: Text(
+                                "Save this card for faster payment",
+                                style: AppTextStyles.regular16,
+                                overflow:TextOverflow.ellipsis,
+                              ),
                             ),
                           ],
                         ),
@@ -112,8 +129,11 @@ class AddCardView extends GetView<AddCardController> {
                     ),
                   ),
                 ),
-                SizedBox(height: 170.h,),
-                CustomButton(childText: "Pay Now",buttonColor: AppColors.profileYellow,)
+                SizedBox(height: 170.h),
+                CustomButton(
+                  childText: "Pay Now",
+                  buttonColor: AppColors.profileYellow,
+                ),
               ],
             ),
           ),
