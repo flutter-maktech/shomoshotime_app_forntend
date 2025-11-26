@@ -127,9 +127,9 @@ class HomeView extends GetView<HomeController> {
                                 itemBuilder: (context, index) =>
                                     CustomProgressContainer(
                                       title: 'SPI Study Guide - Chapter 5',
-                                      subTitleContainerText: 'Study',
-                                      subTitleText: '2 Hours Ago',
-                                      progress: .7,
+                                      suffixTitle: '156 / 240',
+                                      progress: .8,
+                                      progressComplete: '55% Complete',
                                     ),
                               ),
 

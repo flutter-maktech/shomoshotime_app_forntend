@@ -5,6 +5,7 @@ import 'package:shomoshotime/app/data/app_colors.dart';
 class CustomProgress extends StatelessWidget {
   final double progress; // 0.0 to 1.0
   final Color? backgroundColor;
+  final Color? progressColor;
   final double? height;
 
   const CustomProgress({
@@ -12,6 +13,7 @@ class CustomProgress extends StatelessWidget {
     required this.progress,
     this.backgroundColor,
     this.height,
+    this.progressColor,
   });
 
   @override
@@ -32,9 +34,10 @@ class CustomProgress extends StatelessWidget {
               widthFactor: progress.clamp(0.0, 1.0),
               child: Container(
                 decoration: BoxDecoration(
-                  gradient: LinearGradient(
-                    colors: [AppColors.whiteColor, AppColors.primaryColor],
-                  ),
+                  color: progressColor,
+                  gradient: progressColor == null ?  LinearGradient(
+                    colors: [ AppColors.whiteColor, AppColors.primaryColor],
+                  ) : null,
                   borderRadius: BorderRadius.circular(100),
                 ),
               ),
