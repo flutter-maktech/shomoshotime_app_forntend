@@ -3,6 +3,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:shomoshotime/app/data/app_colors.dart';
 import 'package:shomoshotime/app/data/app_text_styles.dart';
+import '../../../routes/app_pages.dart';
 import '../../common_widgets/custom_button.dart';
 import '../../common_widgets/custom_progress.dart';
 import '../../common_widgets/custom_progress_container.dart';
@@ -89,7 +90,9 @@ class HomeView extends GetView<HomeController> {
                               buildRow(
                                 title: 'Continue Learning',
                                 subTitle: 'Pick up where you left off',
-                                onTap: () {},
+                                onTap: () {
+                                  Get.toNamed(Routes.CONTINUE_LEARNING);
+                                },
                               ),
                               SizedBox(height: 22.h),
                               ListView.builder(
@@ -108,9 +111,11 @@ class HomeView extends GetView<HomeController> {
                               ),
                               SizedBox(height: 45.h),
                               buildRow(
-                                title: 'Continue Learning',
-                                subTitle: 'Pick up where you left off',
-                                onTap: () {},
+                                title: 'Category Progress',
+                                subTitle: 'Your mastery across specialties',
+                                onTap: () {
+                                  Get.toNamed(Routes.CATEGORY_PROGRESS);
+                                },
                               ),
                               SizedBox(height: 22.h),
                               ListView.builder(
@@ -173,13 +178,16 @@ class HomeView extends GetView<HomeController> {
         ),
         InkWell(
           onTap: onTap,
-          child: Text(
-            ' View All ',
-            style: AppTextStyles.regular14.copyWith(
-              color: AppColors.primaryGray,
+          child: Padding(
+            padding: EdgeInsets.symmetric(horizontal: 3.w),
+            child: Text(
+              'View All',
+              style: AppTextStyles.regular14.copyWith(
+                color: AppColors.primaryGray,
+              ),
+              overflow: TextOverflow.ellipsis,
+              maxLines: 1,
             ),
-            overflow: TextOverflow.ellipsis,
-            maxLines: 1,
           ),
         ),
       ],

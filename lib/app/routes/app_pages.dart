@@ -1,5 +1,9 @@
 import 'package:get/get.dart';
 
+import '../modules/category_progress/bindings/category_progress_binding.dart';
+import '../modules/category_progress/views/category_progress_view.dart';
+import '../modules/continue_learning/bindings/continue_learning_binding.dart';
+import '../modules/continue_learning/views/continue_learning_view.dart';
 import '../modules/home/bindings/home_binding.dart';
 import '../modules/home/views/home_view.dart';
 import '../modules/profile/bindings/profile_binding.dart';
@@ -36,6 +40,16 @@ class AppPages {
       name: _Paths.SPI_PRACTICE_BANK_AND,
       page: () => const SpiPracticeBankAndView(),
       binding: SpiPracticeBankAndBinding(),
+    ),
+    GetPage(
+      name: _Paths.CONTINUE_LEARNING,
+      page: () => const ContinueLearningView(),
+      binding: ContinueLearningBinding(),
+    ),
+    GetPage(
+      name: _Paths.CATEGORY_PROGRESS,
+      page: () => const CategoryProgressView(),
+      binding: CategoryProgressBinding(),
     ),
   ];
 }

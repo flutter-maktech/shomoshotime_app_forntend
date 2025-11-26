@@ -7,6 +7,8 @@ abstract class Routes {
   static const PROFILE = _Paths.PROFILE;
   static const SPI_PRACTICE_BANK_QUS = _Paths.SPI_PRACTICE_BANK_QUS;
   static const SPI_PRACTICE_BANK_AND = _Paths.SPI_PRACTICE_BANK_AND;
+  static const CONTINUE_LEARNING = _Paths.CONTINUE_LEARNING;
+  static const CATEGORY_PROGRESS = _Paths.CATEGORY_PROGRESS;
 }
 
 abstract class _Paths {
@@ -15,4 +17,6 @@ abstract class _Paths {
   static const PROFILE = '/profile';
   static const SPI_PRACTICE_BANK_QUS = '/spi-practice-bank-qus';
   static const SPI_PRACTICE_BANK_AND = '/spi-practice-bank-and';
+  static const CONTINUE_LEARNING = '/continue-learning';
+  static const CATEGORY_PROGRESS = '/category-progress';
 }
