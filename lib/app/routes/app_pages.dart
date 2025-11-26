@@ -12,8 +12,12 @@ import '../modules/home/bindings/home_binding.dart';
 import '../modules/home/views/home_view.dart';
 import '../modules/interactive_flashcards/bindings/interactive_flashcards_binding.dart';
 import '../modules/interactive_flashcards/views/interactive_flashcards_view.dart';
+import '../modules/practice/bindings/practice_binding.dart';
+import '../modules/practice/views/practice_view.dart';
 import '../modules/profile/bindings/profile_binding.dart';
 import '../modules/profile/views/profile_view.dart';
+import '../modules/realistic/bindings/realistic_binding.dart';
+import '../modules/realistic/views/realistic_view.dart';
 import '../modules/sign_in/bindings/sign_in_binding.dart';
 import '../modules/sign_in/views/sign_in_view.dart';
 import '../modules/sign_up/bindings/sign_up_binding.dart';
@@ -78,6 +82,16 @@ class AppPages {
       name: _Paths.INTERACTIVE_FLASHCARDS,
       page: () => const InteractiveFlashcardsView(),
       binding: InteractiveFlashcardsBinding(),
+    ),
+    GetPage(
+      name: _Paths.PRACTICE,
+      page: () => const PracticeView(),
+      binding: PracticeBinding(),
+    ),
+    GetPage(
+      name: _Paths.REALISTIC,
+      page: () => const RealisticView(),
+      binding: RealisticBinding(),
     ),
   ];
 }

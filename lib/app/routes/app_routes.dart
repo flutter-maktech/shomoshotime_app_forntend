@@ -13,6 +13,8 @@ abstract class Routes {
   static const SIGN_UP_OTP = _Paths.SIGN_UP_OTP;
   static const COMPREHENSIVE = _Paths.COMPREHENSIVE;
   static const INTERACTIVE_FLASHCARDS = _Paths.INTERACTIVE_FLASHCARDS;
+  static const PRACTICE = _Paths.PRACTICE;
+  static const REALISTIC = _Paths.REALISTIC;
 }
 
 abstract class _Paths {
@@ -27,4 +29,6 @@ abstract class _Paths {
   static const SIGN_UP_OTP = '/sign-up-otp';
   static const COMPREHENSIVE = '/comprehensive';
   static const INTERACTIVE_FLASHCARDS = '/interactive-flashcards';
+  static const PRACTICE = '/practice';
+  static const REALISTIC = '/realistic';
 }

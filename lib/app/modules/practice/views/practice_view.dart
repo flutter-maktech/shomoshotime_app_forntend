@@ -2,15 +2,15 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import 'package:get/get.dart';
-import 'package:shomoshotime/app/data/app_text_styles.dart';
-import 'package:shomoshotime/app/data/image_path.dart';
-import 'package:shomoshotime/app/modules/common_widgets/custom_button.dart';
-import 'package:shomoshotime/app/routes/app_pages.dart';
 
-import '../controllers/comprehensive_controller.dart';
+import '../../../data/app_text_styles.dart';
+import '../../../data/image_path.dart';
+import '../../../routes/app_pages.dart';
+import '../../common_widgets/custom_button.dart';
+import '../controllers/practice_controller.dart';
 
-class ComprehensiveView extends GetView<ComprehensiveController> {
-  const ComprehensiveView({super.key});
+class PracticeView extends GetView<PracticeController> {
+  const PracticeView({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -23,25 +23,29 @@ class ComprehensiveView extends GetView<ComprehensiveController> {
                 padding: EdgeInsets.symmetric(horizontal: 16.h),
                 child: Column(
                   children: [
-                    Image.asset(ImagePath.comprehensiveStudy, height: 200.h),
+                    Image.asset(ImagePath.practice, height: 200.h),
                     SizedBox(height: 100.h),
+
                     Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
+
                       children: [
                         Text(
-                          'Comprehensive Study Guides',maxLines: 1,overflow: TextOverflow.ellipsis,
+                          'Practice Questions',
+                          maxLines: 1,
+                          overflow: TextOverflow.ellipsis,
                           style: AppTextStyles.bold32,
                         ),
                         Text(
-                          'Access detailed study materials for SPI, Vascular, OB/GYN,and Abdomen specialties',
+                          'Test your knowledge With thousands of practice questions',
                           style: AppTextStyles.regular16,
                         ),
+                        SizedBox(height: 40.h),
                       ],
                     ),
-                    SizedBox(height: 40.h),
                     InkWell(
                       onTap: () {
-                        Get.toNamed(Routes.INTERACTIVE_FLASHCARDS);
+                        Get.toNamed(Routes.REALISTIC);
                       },
                       child: CustomButton(childText: 'NEXT'),
                     ),
