@@ -51,12 +51,17 @@ class SignInView extends GetView<SignInController> {
                 ),
                 Align(
                   alignment: AlignmentDirectional.centerEnd,
-                  child: Text(
-                    'Forgot password?',
-                    maxLines: 1,
-                    overflow: TextOverflow.ellipsis,
-                    style: AppTextStyles.bold16.copyWith(
-                      color: AppColors.blueColor,
+                  child: InkWell(
+                    onTap: (){
+                      Get.toNamed(Routes.FORGOT_PASSWORD);
+                    },
+                    child: Text(
+                      'Forgot password?',
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
+                      style: AppTextStyles.bold16.copyWith(
+                        color: AppColors.blueColor,
+                      ),
                     ),
                   ),
                 ),

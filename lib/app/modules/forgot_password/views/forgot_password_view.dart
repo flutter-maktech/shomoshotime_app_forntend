@@ -51,7 +51,9 @@ class ForgotPasswordView extends GetView<ForgotPasswordController> {
                             Get.toNamed(Routes.FORGOT_PASSWORD_2);
                           },
 
-                            child: CustomButton(childText: 'Send code')),
+                            child: CustomButton(childText: 'Send code',onTap: (){
+                              Get.toNamed(Routes.FORGOT_PASSWORD_2);
+                            },)),
                       ),
                     ],
                   ),

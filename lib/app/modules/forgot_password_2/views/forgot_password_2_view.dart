@@ -47,7 +47,7 @@ class ForgotPassword2View extends GetView<ForgotPassword2Controller> {
                       CustomTextField(hintText: '**********',topHintText: 'Confirm Password',suffixIcon: Icon(Icons.visibility_off_outlined),),
                       InkWell(
                           onTap: (){
-                            Get.toNamed(Routes.COMPREHENSIVE);
+                            Get.toNamed(Routes.SIGN_UP);
                           },
                           child: CustomButton(childText: 'Save new password')),
  

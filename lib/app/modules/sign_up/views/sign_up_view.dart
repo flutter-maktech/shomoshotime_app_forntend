@@ -54,11 +54,13 @@ class SignUpView extends GetView<SignUpController> {
                 ),
                 InkWell(
                     onTap: (){
-                      Get.toNamed(Routes.ENTER_CODE);
-
+                      Get.offAllNamed(Routes.ENTER_CODE);
                     },
                     child: CustomButton(childText: "Sign Up")),
                 CustomRichText(firstText: 'Already Have an account ?', secondText: 'Sign In',
+                  onTap: (){
+                  Get.toNamed(Routes.SIGN_IN);
+                  },
                 ),
 
               ],
