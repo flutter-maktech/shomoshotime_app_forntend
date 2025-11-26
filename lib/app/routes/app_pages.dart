@@ -10,6 +10,8 @@ import '../modules/forgot_password_2/bindings/forgot_password_2_binding.dart';
 import '../modules/forgot_password_2/views/forgot_password_2_view.dart';
 import '../modules/home/bindings/home_binding.dart';
 import '../modules/home/views/home_view.dart';
+import '../modules/interactive_flashcards/bindings/interactive_flashcards_binding.dart';
+import '../modules/interactive_flashcards/views/interactive_flashcards_view.dart';
 import '../modules/profile/bindings/profile_binding.dart';
 import '../modules/profile/views/profile_view.dart';
 import '../modules/sign_in/bindings/sign_in_binding.dart';
@@ -71,6 +73,11 @@ class AppPages {
       name: _Paths.COMPREHENSIVE,
       page: () => const ComprehensiveView(),
       binding: ComprehensiveBinding(),
+    ),
+    GetPage(
+      name: _Paths.INTERACTIVE_FLASHCARDS,
+      page: () => const InteractiveFlashcardsView(),
+      binding: InteractiveFlashcardsBinding(),
     ),
   ];
 }
