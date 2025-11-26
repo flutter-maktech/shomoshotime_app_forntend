@@ -15,6 +15,13 @@ class AppColors{
   static const Color appBarCircleAvatar = Color(0xfffffbed);
   static const Color appBarCircleAvatarColor = Color(0xffFFD160);
   static const Color homeStack = Color(0xffEDEBE4);
+  static const Color homeGridColorOne = Color(0xff5BBEFF);
+  static const Color homeGridColorTwo = Color(0xffFFC744);
+  static const Color homeGridColorThree = Color(0xffB06DEE);
+  static const Color homeGridColorFour = Color(0xff3DC3C4);
+  static const Color progressBg = Color(0xffEAECF0);
+  static const Color progressContainerBg = Color(0xffF9F9FA);
+  static const Color primaryGray = Color(0xffAAAAAA);
   static const Color profileActive = Color(0xff5bbeff);
   static const Color profilePassed = Color(0xff00ff51);
   static const Color profileFailed = Color(0xffff2200);
@@ -27,9 +34,6 @@ class AppColors{
   static const Color subscriptionPlanMostPapular = Color(0xff3c88d1);
   static const Color paymentMethods = Color(0xffe3e3e3);
   static const Color addCardCheck = Color(0xff535353);
-
-
-
   static const Color disableBottomNavColor = Color(0xffF1ECE6);
   static const Color bottomNavIconColor = Color(0xff5C4C3D);
 }
