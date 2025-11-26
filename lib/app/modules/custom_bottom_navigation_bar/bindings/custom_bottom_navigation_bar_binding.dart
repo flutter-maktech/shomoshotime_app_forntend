@@ -9,5 +9,8 @@ class CustomBottomNavigationBarBinding extends Bindings {
     Get.lazyPut<CustomBottomNavigationBarController>(
       () => CustomBottomNavigationBarController(),
     );
+    Get.lazyPut<HomeController>(
+      () => HomeController(),
+    );
   }
 }
