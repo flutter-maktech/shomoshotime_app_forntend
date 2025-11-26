@@ -5,10 +5,13 @@ abstract class Routes {
   Routes._();
   static const HOME = _Paths.HOME;
   static const PROFILE = _Paths.PROFILE;
+  static const CUSTOM_BOTTOM_NAVIGATION_BAR =
+      _Paths.CUSTOM_BOTTOM_NAVIGATION_BAR;
 }
 
 abstract class _Paths {
   _Paths._();
   static const HOME = '/home';
   static const PROFILE = '/profile';
+  static const CUSTOM_BOTTOM_NAVIGATION_BAR = '/custom-bottom-navigation-bar';
 }

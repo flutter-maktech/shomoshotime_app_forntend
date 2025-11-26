@@ -5,5 +5,7 @@ class AppColors{
   static const Color blackColor = Color(0xff000000);
   static const Color primaryColor = Color(0xffFFBF23);
   static const Color hintTextColor = Color(0xff606060);
+  static const Color disableBottomNavColor = Color(0xffF1ECE6);
+  static const Color bottomNavIconColor = Color(0xff5C4C3D);
 }
 

@@ -31,7 +31,7 @@ dependencies:
   flutter:
     sdk: flutter
 
-  # The following adds the Cupertino Icons font to your application.
+  # The following adds the Cupertino Icons fonts to your application.
   # Use with the CupertinoIcons class for iOS style icons.
   cupertino_icons: ^1.0.8
   get: ^4.7.2
@@ -54,15 +54,14 @@ dev_dependencies:
 # The following section is specific to Flutter packages.
 flutter:
 
-  # The following line ensures that the Material Icons font is
+  # The following line ensures that the Material Icons fonts is
   # included with your application, so that you can use the icons in
   # the material Icons class.
   uses-material-design: true
 
   # To add assets to your application, add an assets section, like this:
-  # assets:
-  #   - images/a_dot_burr.jpeg
-  #   - images/a_dot_ham.jpeg
+  assets:
+    - assets/images/
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/to/resolution-aware-images
@@ -72,20 +71,43 @@ flutter:
 
   # To add custom fonts to your application, add a fonts section here,
   # in this "flutter" section. Each entry in this list should have a
-  # "family" key with the font family name, and a "fonts" key with a
-  # list giving the asset and other descriptors for the font. For
+  # "family" key with the fonts family name, and a "fonts" key with a
+  # list giving the asset and other descriptors for the fonts. For
   # example:
-  # fonts:
-  #   - family: Schyler
-  #     fonts:
-  #       - asset: fonts/Schyler-Regular.ttf
-  #       - asset: fonts/Schyler-Italic.ttf
-  #         style: italic
-  #   - family: Trajan Pro
-  #     fonts:
-  #       - asset: fonts/TrajanPro.ttf
-  #       - asset: fonts/TrajanPro_Bold.ttf
-  #         weight: 700
+  fonts:
+    - family: SpaceGrotesk
+      fonts:
+        - asset: assets/fonts/space_grotesk/SpaceGrotesk-Bold.ttf
+        - asset: assets/fonts/space_grotesk/SpaceGrotesk-Light.ttf
+        - asset: assets/fonts/space_grotesk/SpaceGrotesk-Medium.ttf
+        - asset: assets/fonts/space_grotesk/SpaceGrotesk-Regular.ttf
+        - asset: assets/fonts/space_grotesk/SpaceGrotesk-SemiBold.ttf
+    - family: Arial
+      fonts:
+        - asset: assets/fonts/ariel/ARIAL.TTF
+        - asset: assets/fonts/ariel/ARIALBD.TTF
+        - asset: assets/fonts/ariel/ARIALBD 1.TTF
+        - asset: assets/fonts/ariel/ARIALBI.TTF
+        - asset: assets/fonts/ariel/ARIALBI 1.TTF
+        - asset: assets/fonts/ariel/ARIALBLACKITALIC.TTF
+        - asset: assets/fonts/ariel/ArialCE.ttf
+        - asset: assets/fonts/ariel/arialceb.ttf
+        - asset: assets/fonts/ariel/ArialCEBoldItalic.ttf
+        - asset: assets/fonts/ariel/ArialCEItalic.ttf
+        - asset: assets/fonts/ariel/ArialCEMTBlack.ttf
+        - asset: assets/fonts/ariel/ARIALI.TTF
+        - asset: assets/fonts/ariel/ARIALI 1.TTF
+        - asset: assets/fonts/ariel/ARIALLGT.TTF
+        - asset: assets/fonts/ariel/ARIALLGTITL.TTF
+        - asset: assets/fonts/ariel/ArialMdm.ttf
+        - asset: assets/fonts/ariel/ArialMdmItl.ttf
+        - asset: assets/fonts/ariel/ARIALN.TTF
+        - asset: assets/fonts/ariel/ARIALNB.TTF
+        - asset: assets/fonts/ariel/ARIALNBI.TTF
+        - asset: assets/fonts/ariel/ARIALNI.TTF
+        - asset: assets/fonts/ariel/ARIBLK.TTF
+
+
   #
   # For details regarding fonts from package dependencies,
   # see https://flutter.dev/to/font-from-package
