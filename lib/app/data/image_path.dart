@@ -18,4 +18,5 @@ class ImagePath {
   static const String paymentCreditCard = '$baseUrl/Payment_credit-card.png';
   static const String paymentLogoMastercard = '$baseUrl/payment_logo_mastercard.png';
   static const String paymentLogoVisa = '$baseUrl/payment_logo_visa.png';
+  static const String spiPracticeBank= '$baseUrl/spi_practice_bank.png';
 }
