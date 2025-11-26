@@ -42,6 +42,24 @@ class SpiPracticeBankQusView extends GetView<SpiPracticeBankQusController> {
                 ),
               ],
             ),
+            SizedBox(
+              height: 30.h,
+            ),
+
+
+            Container(
+              padding: EdgeInsets.all(14.sp),
+              width: double.infinity,
+              decoration: BoxDecoration(
+                color: AppColors.homeStack,
+                borderRadius: BorderRadius.circular(8)
+              ),
+              child: Column(
+                children: [
+                  Text('What is the typical frequency range for diagnostic ultrasound?'),
+                ],
+              ),
+            ),
 
           ],
         ),
