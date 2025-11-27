@@ -57,14 +57,14 @@ class StudyGuidesView extends GetView<StudyGuidesController> {
                 child: Container(
                   color: AppColors.appBarBack,
                   width: double.infinity,
-                  height: 46 .h,
+                  height: 46.h,
                   child: Padding(
                     padding: EdgeInsets.symmetric(
                       horizontal: 12.w,
                       vertical: 8.h,
                     ),
                     child: Obx(
-                          () => Row(
+                      () => Row(
                         mainAxisAlignment: MainAxisAlignment.spaceAround,
                         children: [
                           buildContainer('All', 0),
@@ -80,8 +80,8 @@ class StudyGuidesView extends GetView<StudyGuidesController> {
               ),
             ),
             Obx(() {
-              if(controller.select.value ==0){
-                return  SliverList(
+              if (controller.select.value == 0) {
+                return SliverList(
                   delegate: SliverChildBuilderDelegate((context, index) {
                     return Padding(
                       padding: const EdgeInsets.symmetric(
@@ -97,7 +97,7 @@ class StudyGuidesView extends GetView<StudyGuidesController> {
                     );
                   }, childCount: 4),
                 );
-              }else{
+              } else {
                 return SliverList(
                   delegate: SliverChildBuilderDelegate((context, index) {
                     return Padding(
@@ -108,7 +108,10 @@ class StudyGuidesView extends GetView<StudyGuidesController> {
                       child: Container(
                         width: double.infinity,
                         // height: 400,
-                        padding: EdgeInsets.symmetric(horizontal: 18, vertical: 18),
+                        padding: EdgeInsets.symmetric(
+                          horizontal: 18,
+                          vertical: 18,
+                        ),
                         decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(12),
                           color: AppColors.appBarBack,
@@ -126,7 +129,10 @@ class StudyGuidesView extends GetView<StudyGuidesController> {
                                     color: AppColors.primaryColor,
                                   ),
                                   child: Center(
-                                    child: Image.asset(ImagePath.bookImage, scale: 4),
+                                    child: Image.asset(
+                                      ImagePath.bookImage,
+                                      scale: 4,
+                                    ),
                                   ),
                                 ),
                                 Spacer(),
@@ -136,7 +142,10 @@ class StudyGuidesView extends GetView<StudyGuidesController> {
                                     borderRadius: BorderRadius.circular(6),
                                   ),
                                   child: Padding(
-                                    padding: EdgeInsets.symmetric(horizontal: 10, vertical: 6),
+                                    padding: EdgeInsets.symmetric(
+                                      horizontal: 10,
+                                      vertical: 6,
+                                    ),
                                     child: Text(
                                       "SPI",
                                       style: AppTextStyles.regular14.copyWith(
@@ -147,15 +156,18 @@ class StudyGuidesView extends GetView<StudyGuidesController> {
                                 ),
                               ],
                             ),
-                            SizedBox(height: 10.h,),
-                            Text('SPI Fundamentals', style: AppTextStyles.bold18),
+                            SizedBox(height: 10.h),
+                            Text(
+                              'SPI Fundamentals',
+                              style: AppTextStyles.bold18,
+                            ),
                             Text(
                               'Master the core principles of ultrasound physics and',
-                              style: AppTextStyles.regular14.copyWith(color: AppColors.appBarSub),
+                              style: AppTextStyles.regular14.copyWith(
+                                color: AppColors.appBarSub,
+                              ),
                             ),
                             SizedBox(height: 15.h),
-
-
 
                             SizedBox(height: 20.h),
                             CustomButton(childText: 'Continue to listen'),
@@ -166,70 +178,62 @@ class StudyGuidesView extends GetView<StudyGuidesController> {
                   }, childCount: 4),
                 );
               }
-            })
-
+            }),
           ],
         ),
       ),
     );
   }
 
-
   DecoratedBox buildToggleButton() {
     return DecoratedBox(
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(170),
-                        color: AppColors.appBarBack,
-                      ),
-                      child: Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 8.0),
-                        child: Obx(
-                          () => Row(
-                            children: [
-                              Expanded(
-                                child: ElevatedButton(
-                                  onPressed: () {
-                                    controller.changeValue(0);
-                                  },
-                                  style: ElevatedButton.styleFrom(
-                                    backgroundColor:
-                                        controller.select.value == 0
-                                        ? AppColors.primaryColor
-                                        : AppColors.whiteColor,
-                                    shape: RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.circular(
-                                        120,
-                                      ),
-                                    ),
-                                  ),
-                                  child: Text('Read'),
-                                ),
-                              ),
-                              SizedBox(width: 8.w),
-                              Expanded(
-                                child: ElevatedButton(
-                                  onPressed: () {
-                                    controller.changeValue(1);
-                                  },
-                                  style: ElevatedButton.styleFrom(
-                                    backgroundColor:
-                                        controller.select.value == 1
-                                        ? AppColors.primaryColor
-                                        : AppColors.whiteColor,
-                                    shape: RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.circular(
-                                        120,
-                                      ),
-                                    ),
-                                  ),
-                                  child: Text('Audio'),
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-                      ),
-                    );
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(170),
+        color: AppColors.appBarBack,
+      ),
+      child: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 8.0),
+        child: Obx(
+          () => Row(
+            children: [
+              Expanded(
+                child: ElevatedButton(
+                  onPressed: () {
+                    controller.changeValue(0);
+                  },
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: controller.select.value == 0
+                        ? AppColors.primaryColor
+                        : AppColors.whiteColor,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(120),
+                    ),
+                  ),
+                  child: Text('Read'),
+                ),
+              ),
+              SizedBox(width: 8.w),
+              Expanded(
+                child: ElevatedButton(
+                  onPressed: () {
+                    controller.changeValue(1);
+                  },
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: controller.select.value == 1
+                        ? AppColors.primaryColor
+                        : AppColors.whiteColor,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(120),
+                    ),
+                  ),
+                  child: Text('Audio'),
+                ),
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
   }
 
   GestureDetector buildContainer(String title, int index) {
@@ -273,5 +277,3 @@ class StudyGuidesView extends GetView<StudyGuidesController> {
     );
   }
 }
-
-
