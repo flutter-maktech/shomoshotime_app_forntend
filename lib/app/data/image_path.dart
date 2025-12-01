@@ -9,4 +9,6 @@ class ImagePath {
   static const String vectorImage = '$baseUrl/Vector.png';
   static const String arrowCircle = '$baseUrl/arrowCircle.png';
   static const String clockImage = '$baseUrl/clock-01.png';
+  static const String frameImage = '$baseUrl/frame.png';
+  static const String frame21Image = '$baseUrl/Frame 21.png';
 }
