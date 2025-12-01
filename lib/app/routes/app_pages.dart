@@ -1,5 +1,4 @@
 import 'package:get/get.dart';
-
 import '../modules/custom_bottom_navigation_bar/bindings/custom_bottom_navigation_bar_binding.dart';
 import '../modules/custom_bottom_navigation_bar/views/custom_bottom_navigation_bar_view.dart';
 import '../modules/audio_play_card/bindings/audio_play_card_binding.dart';
