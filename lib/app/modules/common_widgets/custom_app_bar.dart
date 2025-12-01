@@ -38,13 +38,14 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
         title: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text(title ?? '', style: AppTextStyles.medium20),
-            Text(
-              subTitle ?? '',
-              style: AppTextStyles.medium14.copyWith(
-                color: AppColors.appBarSub,
+            Text(title ?? '', style: AppTextStyles.spaceGroteskMedium20),
+            if (subTitle != null)
+              Text(
+                subTitle ?? '',
+                style: AppTextStyles.regular14.copyWith(
+                  color: AppColors.appBarSub,
+                ),
               ),
-            ),
           ],
         ),
       ),

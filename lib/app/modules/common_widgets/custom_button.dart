@@ -5,6 +5,8 @@ import '../../data/app_text_styles.dart';
 
 class CustomButton extends StatelessWidget {
   final String childText;
+  final String? childImage;
+  final Color? childImageColor;
   final void Function()? onTap;
   final Color? buttonColor;
   final Color? buttonChildColor;
@@ -15,6 +17,8 @@ class CustomButton extends StatelessWidget {
     this.onTap,
     this.buttonColor,
     this.buttonChildColor,
+    this.childImage,
+    this.childImageColor,
   });
 
   @override
@@ -29,13 +33,28 @@ class CustomButton extends StatelessWidget {
           color: buttonColor ?? AppColors.primaryColor,
           borderRadius: BorderRadius.circular(8),
         ),
-        child: Center(
-          child: Text(
-            childText,
-            style: AppTextStyles.spaceGroteskMedium16.copyWith(
-              color: buttonChildColor ?? AppColors.blackColor,
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            Text(
+              childText,
+              style: AppTextStyles.spaceGroteskMedium16.copyWith(
+                color: buttonChildColor ?? AppColors.blackColor,
+              ),
             ),
-          ),
+            if (childImage != null)
+              Row(
+                children: [
+                  SizedBox(width: 8.w),
+                  Image.asset(
+                    childImage!,
+                    height: 22.h,
+                    color: childImageColor ?? AppColors.blackColor,
+                  ),
+                ],
+              ),
+          ],
         ),
       ),
     );

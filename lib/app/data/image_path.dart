@@ -1,5 +1,9 @@
 class ImagePath {
   static const String baseUrl = 'assets/images';
+  static const String signIn = '$baseUrl/sign_in_pic.png';
+  static const String profile = '$baseUrl/profile.png';
+  static const String profilePremium = '$baseUrl/profile_premium.png';
+  static const String profileNotebook = '$baseUrl/profile_notebook.png';
   static const String dashBoardIcon = '$baseUrl/dash_board_icon.png';
   static const String studyGuidesIcon = '$baseUrl/study_guides_icon.png';
   static const String practiceIcon = '$baseUrl/practice_icon.png';
@@ -7,7 +11,7 @@ class ImagePath {
   static const String mockExamIcon = '$baseUrl/mock_exam_icon.png';
   static const String appLogo = '$baseUrl/app_logo.png';
   static const String arrowBack = '$baseUrl/arrow_back.png';
-  static const String profile = '$baseUrl/profile.png';
+  static const String arrowForward = '$baseUrl/arrow_forward.png';
   static const String notification = '$baseUrl/notification.png';
   static const String bookImage = '$baseUrl/book-open-02.png';
   static const String layerImage = '$baseUrl/layers-01.png';
@@ -16,4 +20,18 @@ class ImagePath {
   static const String clockImage = '$baseUrl/clock-01.png';
   static const String frameImage = '$baseUrl/frame.png';
   static const String frame21Image = '$baseUrl/Frame 21.png';
+  static const String googleLogo = '$baseUrl/google_logo.png';
+  static const String comprehensiveStudy = '$baseUrl/comprehensive_study.png';
+  static const String interactive = '$baseUrl/interactive_flashcards.png';
+  static const String practice = '$baseUrl/practice_questions.png';
+  static const String realistic = '$baseUrl/realistic_mock_exams.png';
+  static const String chart = '$baseUrl/chart.png';
+  static const String clock = '$baseUrl/clock.png';
+  static const String profileCupLogo = '$baseUrl/profile_cup_logo.png';
+  static const String editProfileIcon = '$baseUrl/edit_profile_edit_icon.png';
+  static const String paymentCreditCard = '$baseUrl/Payment_credit-card.png';
+  static const String paymentLogoMastercard = '$baseUrl/payment_logo_mastercard.png';
+  static const String paymentLogoVisa = '$baseUrl/payment_logo_visa.png';
+  static const String spiPracticeBank= '$baseUrl/spi_practice_bank.png';
+  static const String incorrect= '$baseUrl/incorrect.png';
 }
