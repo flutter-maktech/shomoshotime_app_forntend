@@ -9,6 +9,8 @@ abstract class Routes {
   static const SPI_FUNDAMENTALS = _Paths.SPI_FUNDAMENTALS;
   static const FLASH_CARDS = _Paths.FLASH_CARDS;
   static const VASCULAR_FLASHCARDS = _Paths.VASCULAR_FLASHCARDS;
+  static const AUDIO_PLAY_CARD = _Paths.AUDIO_PLAY_CARD;
+  static const PRACTICE = _Paths.PRACTICE;
 }
 
 abstract class _Paths {
@@ -19,4 +21,6 @@ abstract class _Paths {
   static const SPI_FUNDAMENTALS = '/spi-fundamentals';
   static const FLASH_CARDS = '/flash-cards';
   static const VASCULAR_FLASHCARDS = '/vascular-flashcards';
+  static const AUDIO_PLAY_CARD = '/audio-play-card';
+  static const PRACTICE = '/practice';
 }
