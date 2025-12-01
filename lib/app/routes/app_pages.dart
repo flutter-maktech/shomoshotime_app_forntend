@@ -2,10 +2,14 @@ import 'package:get/get.dart';
 
 import '../modules/custom_bottom_navigation_bar/bindings/custom_bottom_navigation_bar_binding.dart';
 import '../modules/custom_bottom_navigation_bar/views/custom_bottom_navigation_bar_view.dart';
+import '../modules/audio_play_card/bindings/audio_play_card_binding.dart';
+import '../modules/audio_play_card/views/audio_play_card_view.dart';
 import '../modules/flash_cards/bindings/flash_cards_binding.dart';
 import '../modules/flash_cards/views/flash_cards_view.dart';
 import '../modules/home/bindings/home_binding.dart';
 import '../modules/home/views/home_view.dart';
+import '../modules/practice/bindings/practice_binding.dart';
+import '../modules/practice/views/practice_view.dart';
 import '../modules/profile/bindings/profile_binding.dart';
 import '../modules/profile/views/profile_view.dart';
 import '../modules/spi_fundamentals/bindings/spi_fundamentals_binding.dart';
@@ -40,7 +44,7 @@ class AppPages {
     ),
     GetPage(
       name: _Paths.STUDY_GUIDES,
-      page: () => const StudyGuidesView(),
+      page: () => StudyGuidesView(),
       binding: StudyGuidesBinding(),
     ),
     GetPage(
@@ -57,6 +61,16 @@ class AppPages {
       name: _Paths.VASCULAR_FLASHCARDS,
       page: () => const VascularFlashcardsView(),
       binding: VascularFlashcardsBinding(),
+    ),
+    GetPage(
+      name: _Paths.AUDIO_PLAY_CARD,
+      page: () => const AudioPlayCardView(),
+      binding: AudioPlayCardBinding(),
+    ),
+    GetPage(
+      name: _Paths.PRACTICE,
+      page: () => const PracticeView(),
+      binding: PracticeBinding(),
     ),
   ];
 }
