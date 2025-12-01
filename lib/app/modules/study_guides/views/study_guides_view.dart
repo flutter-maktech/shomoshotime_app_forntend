@@ -1,3 +1,4 @@
+import 'package:audioplayers/audioplayers.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
@@ -168,7 +169,6 @@ class StudyGuidesView extends GetView<StudyGuidesController> {
                               ),
                             ),
                             SizedBox(height: 15.h),
-
                             SizedBox(height: 20.h),
                             CustomButton(childText: 'Continue to listen'),
                           ],
