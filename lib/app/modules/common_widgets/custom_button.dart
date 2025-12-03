@@ -7,7 +7,7 @@ class CustomButton extends StatelessWidget {
   final String childText;
   final String? childImage;
   final Color? childImageColor;
-  final void Function()? onTap;
+  final VoidCallback? onTap;
   final Color? buttonColor;
   final Color? buttonChildColor;
 

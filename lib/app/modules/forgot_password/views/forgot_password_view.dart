@@ -20,43 +20,47 @@ class ForgotPasswordView extends GetView<ForgotPasswordController> {
       body: Center(
         child: SafeArea(
           child: SingleChildScrollView(
-            child: Center(
-              child: Padding(
-                padding: EdgeInsets.symmetric(horizontal: 16.h),
-                child: Container(
-                  padding: EdgeInsets.symmetric(
-                    horizontal: 16.w,
-                    vertical: 40.h,
-                  ),
-                  width: double.infinity,
-                  decoration: BoxDecoration(
-                    color: AppColors.containerColor,
-                    borderRadius: BorderRadius.circular(8.r),
-                  ),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: [
-                      Image.asset(ImagePath.signIn, height: 84.h),
-                      SizedBox(height: 32.h),
-                      Text('Forgot Password ', style: AppTextStyles.bold32),
-                      Text(
-                        "Enter your email to reset your password.",
-                        style: AppTextStyles.regular16,
-                      ),
-                      CustomTextField(hintText: 'youremail@here',topHintText: 'Email',),
-                      Padding(
-                        padding:  EdgeInsets.only(top: 30.h,bottom: 40.h),
-                        child: InkWell(
-                          onTap: (){
+            child: Padding(
+              padding: EdgeInsets.symmetric(horizontal: 16.h),
+              child: Container(
+                padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 16.h),
+                width: double.infinity,
+                decoration: BoxDecoration(
+                  color: AppColors.containerColor,
+                  borderRadius: BorderRadius.circular(8.r),
+                ),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    Image.asset(ImagePath.signIn, height: 84.h),
+                    SizedBox(height: 32.h),
+                    Text('Forgot Password ', style: AppTextStyles.bold32),
+                    Text(
+                      "Enter your email to reset your password.",
+                      style: AppTextStyles.regular16,
+                      textAlign: TextAlign.center,
+                    ),
+                    CustomTextField(
+                      hintText: 'youremail@here',
+                      topHintText: 'Email',
+                    ),
+                    Padding(
+                      padding: EdgeInsets.only(top: 30.h, bottom: 40.h),
+                      child: InkWell(
+                        onTap: () {
+                          Get.toNamed(Routes.FORGOT_PASSWORD_2);
+                        },
+
+                        child: CustomButton(
+                          childText: 'Send code',
+                          onTap: () {
                             Get.toNamed(Routes.FORGOT_PASSWORD_2);
                           },
-
-                            child: CustomButton(childText: 'Send code',onTap: (){
-                              Get.toNamed(Routes.FORGOT_PASSWORD_2);
-                            },)),
+                        ),
                       ),
-                    ],
-                  ),
+                    ),
+                  ],
                 ),
               ),
             ),

@@ -13,6 +13,13 @@ class ImagePath {
   static const String arrowBack = '$baseUrl/arrow_back.png';
   static const String arrowForward = '$baseUrl/arrow_forward.png';
   static const String notification = '$baseUrl/notification.png';
+  static const String bookImage = '$baseUrl/book-open-02.png';
+  static const String layerImage = '$baseUrl/layers-01.png';
+  static const String vectorImage = '$baseUrl/Vector.png';
+  static const String arrowCircle = '$baseUrl/arrowCircle.png';
+  static const String clockImage = '$baseUrl/clock-01.png';
+  static const String frameImage = '$baseUrl/frame.png';
+  static const String frame21Image = '$baseUrl/Frame 21.png';
   static const String googleLogo = '$baseUrl/google_logo.png';
   static const String comprehensiveStudy = '$baseUrl/comprehensive_study.png';
   static const String interactive = '$baseUrl/interactive_flashcards.png';
@@ -27,4 +34,5 @@ class ImagePath {
   static const String paymentLogoVisa = '$baseUrl/payment_logo_visa.png';
   static const String spiPracticeBank= '$baseUrl/spi_practice_bank.png';
   static const String incorrect= '$baseUrl/incorrect.png';
+  static const String notificationImage= '$baseUrl/notification_image.png';
 }

@@ -7,6 +7,7 @@ import 'package:shomoshotime/app/data/app_text_styles.dart';
 import 'package:shomoshotime/app/data/image_path.dart';
 import 'package:shomoshotime/app/modules/common_widgets/custom_app_bar.dart';
 import 'package:shomoshotime/app/modules/common_widgets/custom_button.dart';
+import 'package:shomoshotime/app/routes/app_pages.dart';
 
 import '../controllers/edit_profile_controller.dart';
 import '../widget/custom_edit_profile_textfield.dart';
@@ -45,12 +46,14 @@ class EditProfileView extends GetView<EditProfileController> {
                   childText: "Manage Subscription",
                   buttonChildColor: AppColors.profileYellow,
                   buttonColor: AppColors.blackColor,
+                  onTap: () => Get.toNamed(Routes.SUBSCRIPTION_PLAN),
                 ),
                 SizedBox(height: 158.h,),
                 CustomButton(
                   childText: "Save",
                   buttonChildColor: AppColors.blackColor,
                   buttonColor: AppColors.profileYellow,
+                  onTap: () => Get.toNamed(Routes.PROFILE),
                 ),
               ],
             ),

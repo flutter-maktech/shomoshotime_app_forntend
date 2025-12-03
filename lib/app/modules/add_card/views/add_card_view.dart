@@ -4,6 +4,7 @@ import 'package:get/get.dart';
 import 'package:shomoshotime/app/data/app_colors.dart';
 import 'package:shomoshotime/app/modules/common_widgets/custom_app_bar.dart';
 import 'package:shomoshotime/app/modules/common_widgets/custom_button.dart';
+import 'package:shomoshotime/app/routes/app_pages.dart';
 import '../../../data/app_text_styles.dart';
 import '../../../data/image_path.dart';
 import '../controllers/add_card_controller.dart';
@@ -38,7 +39,8 @@ class AddCardView extends GetView<AddCardController> {
                       children: [
                         Row(
                           children: [
-                            Flexible(flex: 1,
+                            Flexible(
+                              flex: 1,
                               child: Image.asset(
                                 ImagePath.paymentCreditCard,
                                 height: 32.h,
@@ -46,7 +48,8 @@ class AddCardView extends GetView<AddCardController> {
                               ),
                             ),
                             SizedBox(width: 10.w),
-                            Flexible(flex: 2,
+                            Flexible(
+                              flex: 2,
                               child: Text(
                                 "Credit/Debit Card",
                                 style: AppTextStyles.regular20,
@@ -69,7 +72,8 @@ class AddCardView extends GetView<AddCardController> {
                         ),
                         CustomAddCard(text: "Credit/Debit Card"),
                         SizedBox(height: 24.h),
-                        Row(crossAxisAlignment: CrossAxisAlignment.start,
+                        Row(
+                          crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Expanded(
                               child: Column(
@@ -101,7 +105,8 @@ class AddCardView extends GetView<AddCardController> {
                         SizedBox(height: 24.h),
                         Row(
                           children: [
-                            Flexible(flex: 1,
+                            Flexible(
+                              flex: 1,
                               child: Container(
                                 height: 24.h,
                                 width: 24.w,
@@ -116,11 +121,12 @@ class AddCardView extends GetView<AddCardController> {
                               ),
                             ),
                             SizedBox(width: 8.w),
-                            Flexible(flex: 1,
+                            Flexible(
+                              flex: 1,
                               child: Text(
                                 "Save this card for faster payment",
                                 style: AppTextStyles.regular16,
-                                overflow:TextOverflow.ellipsis,
+                                overflow: TextOverflow.ellipsis,
                               ),
                             ),
                           ],
@@ -129,10 +135,11 @@ class AddCardView extends GetView<AddCardController> {
                     ),
                   ),
                 ),
-                SizedBox(height: 170.h),
+                SizedBox(height: 50.h,),
                 CustomButton(
                   childText: "Pay Now",
                   buttonColor: AppColors.profileYellow,
+                  onTap: () => Get.toNamed(Routes.CUSTOM_BOTTOM_NAVIGATION_BAR),
                 ),
               ],
             ),
