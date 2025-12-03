@@ -9,8 +9,6 @@ import '../modules/edit_profile/bindings/edit_profile_binding.dart';
 import '../modules/edit_profile/views/edit_profile_view.dart';
 import '../modules/custom_bottom_navigation_bar/bindings/custom_bottom_navigation_bar_binding.dart';
 import '../modules/custom_bottom_navigation_bar/views/custom_bottom_navigation_bar_view.dart';
-import '../modules/comprehensive/bindings/comprehensive_binding.dart';
-import '../modules/comprehensive/views/comprehensive_view.dart';
 import '../modules/enter_code/bindings/enter_code_binding.dart';
 import '../modules/enter_code/views/enter_code_view.dart';
 import '../modules/forgot_password/bindings/forgot_password_binding.dart';
@@ -21,10 +19,6 @@ import '../modules/home/bindings/home_binding.dart';
 import '../modules/home/views/home_view.dart';
 import '../modules/payment_methods/bindings/payment_methods_binding.dart';
 import '../modules/payment_methods/views/payment_methods_view.dart';
-import '../modules/interactive_flashcards/bindings/interactive_flashcards_binding.dart';
-import '../modules/interactive_flashcards/views/interactive_flashcards_view.dart';
-import '../modules/practice/bindings/practice_binding.dart';
-import '../modules/practice/views/practice_view.dart';
 import '../modules/profile/bindings/profile_binding.dart';
 import '../modules/profile/views/profile_view.dart';
 import '../modules/spi_practice_bank_ans/bindings/spi_practice_bank_ans_binding.dart';
@@ -33,8 +27,6 @@ import '../modules/spi_practice_bank_qus/bindings/spi_practice_bank_qus_binding.
 import '../modules/spi_practice_bank_qus/views/spi_practice_bank_qus_view.dart';
 import '../modules/subscription_plan/bindings/subscription_plan_binding.dart';
 import '../modules/subscription_plan/views/subscription_plan_view.dart';
-import '../modules/realistic/bindings/realistic_binding.dart';
-import '../modules/realistic/views/realistic_view.dart';
 import '../modules/sign_in/bindings/sign_in_binding.dart';
 import '../modules/sign_in/views/sign_in_view.dart';
 import '../modules/sign_up/bindings/sign_up_binding.dart';
@@ -47,7 +39,7 @@ part 'app_routes.dart';
 class AppPages {
   AppPages._();
 
-  static const INITIAL = Routes.COMPREHENSIVE;
+  static const INITIAL = Routes.SIGN_IN;
 
   static final routes = [
     GetPage(
@@ -134,26 +126,6 @@ class AppPages {
       name: _Paths.SIGN_UP_OTP,
       page: () => const SignUpOtpView(),
       binding: SignUpOtpBinding(),
-    ),
-    GetPage(
-      name: _Paths.COMPREHENSIVE,
-      page: () => const ComprehensiveView(),
-      binding: ComprehensiveBinding(),
-    ),
-    GetPage(
-      name: _Paths.INTERACTIVE_FLASHCARDS,
-      page: () => const InteractiveFlashcardsView(),
-      binding: InteractiveFlashcardsBinding(),
-    ),
-    GetPage(
-      name: _Paths.PRACTICE,
-      page: () => const PracticeView(),
-      binding: PracticeBinding(),
-    ),
-    GetPage(
-      name: _Paths.REALISTIC,
-      page: () => const RealisticView(),
-      binding: RealisticBinding(),
     ),
   ];
 }
