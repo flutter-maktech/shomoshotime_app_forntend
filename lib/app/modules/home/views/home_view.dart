@@ -32,7 +32,10 @@ class HomeView extends GetView<HomeController> {
             child: Column(
               mainAxisSize: MainAxisSize.min,
               children: [
-                PrimaryAppBar(notificationOnTap: () {}, profileOnTap: () {}),
+                PrimaryAppBar(
+                  notificationOnTap: () => Get.toNamed(Routes.NOTIFICATION),
+                  profileOnTap: () => Get.toNamed(Routes.PROFILE),
+                ),
                 SizedBox(height: 10.h),
                 Expanded(
                   child: SingleChildScrollView(

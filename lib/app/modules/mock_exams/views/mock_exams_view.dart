@@ -2,18 +2,18 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import 'package:get/get.dart';
-import 'package:shomoshotime/app/data/app_colors.dart';
-import 'package:shomoshotime/app/data/app_text_styles.dart';
-import 'package:shomoshotime/app/data/image_path.dart';
-import 'package:shomoshotime/app/modules/common_widgets/custom_button.dart';
-import 'package:shomoshotime/app/modules/common_widgets/primary_app_bar.dart';
+import 'package:get/get_connect/http/src/utils/utils.dart';
 
+import '../../../data/app_colors.dart';
+import '../../../data/app_text_styles.dart';
+import '../../../data/image_path.dart';
 import '../../../routes/app_pages.dart';
-import '../controllers/practice_controller.dart';
+import '../../common_widgets/custom_button.dart';
+import '../../common_widgets/primary_app_bar.dart';
+import '../controllers/mock_exams_controller.dart';
 
-class PracticeView extends GetView<PracticeController> {
-  const PracticeView({super.key});
-
+class MockExamsView extends GetView<MockExamsController> {
+  const MockExamsView({super.key});
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -34,174 +34,23 @@ class PracticeView extends GetView<PracticeController> {
                   children: [
                     const SizedBox(height: 16),
                     Text(
-                      'Practice Questions',
+                      'Mock Exams',
                       style: AppTextStyles.medium20.copyWith(
                         color: AppColors.blackColor,
                       ),
                     ),
                     Text(
-                      'Test your knowledge with thousands of practice questions',
+                      'Simulate the real exam',
                       style: AppTextStyles.regular14.copyWith(
                         color: AppColors.appBarSub,
                       ),
                     ),
                     const SizedBox(height: 16),
-                    searchButtonWidget(),
+
                   ],
                 ),
               ),
             ),
-            SliverToBoxAdapter(
-              child: Padding(
-                padding: EdgeInsets.symmetric(horizontal: 16, vertical: 16.h),
-                child: Container(
-                  color: AppColors.appBarBack,
-                  width: double.infinity,
-                  height: 50.h,
-                  child: Padding(
-                    padding: EdgeInsets.symmetric(
-                      horizontal: 12.w,
-                      vertical: 8.h,
-                    ),
-                    child: Obx(
-                      () => Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceAround,
-                        children: [
-                          buildContainer('All', 0),
-                          buildContainer('SPI', 1),
-                          buildContainer('Vascular', 2),
-                          buildContainer('OB/GYN', 3),
-                          buildContainer('Abdomen', 4),
-                        ],
-                      ),
-                    ),
-                  ),
-                ),
-              ),
-            ),
-
-            /*  SliverToBoxAdapter(
-              child:Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 16,),
-                child: DecoratedBox(
-                    decoration: BoxDecoration(
-                      color: AppColors.homeStack,
-                      borderRadius: BorderRadius.circular(8),
-                    ),
-                  child:SizedBox(
-                    width: double.infinity,
-                    height: 340,
-                    child: Column(
-                      children: [
-                        SizedBox(height: 14.h,),
-                        Expanded(
-                            child: Padding(
-                              padding: const EdgeInsets.symmetric(horizontal:16,),
-                              child: Row(
-                                                        children: [
-                              Expanded(
-                                child: DecoratedBox(
-                                  decoration: BoxDecoration(
-                                  color: AppColors.whiteColor,
-                                    borderRadius: BorderRadius.circular(8),
-                                ),child: SizedBox.expand(
-                                  child: Padding(
-                                    padding: const EdgeInsets.symmetric(horizontal:16,vertical: 16,),
-                                    child: Column(
-                                      crossAxisAlignment: CrossAxisAlignment.start,
-
-                                      children: [
-                                        Row(
-                                          children: [
-                                            Text("Questions\nAttempted",style: AppTextStyles.regular12.copyWith(color: AppColors.blackColor),),
-                                            Spacer(),
-                                            Image.asset(ImagePath.frameImage,scale: 5,)
-                                          ],
-                                        ),
-                                       Spacer(),
-                                        Text('12 days',style: AppTextStyles.bold24.copyWith(color: AppColors.greyBlack),),
-                                        Spacer(),
-                                        Row(
-                                          children: [
-                                           Image.asset(ImagePath.frame21Image,scale: 6,),
-                                            SizedBox(width: 4.w,),
-                                            Text('+52 this week',style: AppTextStyles.regular12.copyWith(color: AppColors.blackColor)),
-                                          ],
-                                        )
-                                      ],
-                                    ),
-                                  ),
-                                ),),
-                              ),
-                              SizedBox(width: 14,),
-                              Expanded(
-                                child: DecoratedBox(decoration: BoxDecoration(
-                                  color: AppColors.whiteColor,
-                                  borderRadius: BorderRadius.circular(8),
-                                ),child: SizedBox.expand(
-                                  child: Padding(
-                                    padding: const EdgeInsets.symmetric(horizontal:16,vertical: 16),
-                                    child: Column(
-                                      crossAxisAlignment: CrossAxisAlignment.start,
-                                      children: [
-                                      Row(
-                                        children: [
-                                          Text("Overall\nAccuracy",style: AppTextStyles.regular12.copyWith(color: AppColors.blackColor),),
-                                          Spacer(),
-                                          Image.asset(ImagePath.frameImage,scale: 5,)
-                                        ],
-                                      ),
-                                      Spacer(),
-                                      Text('810%',style: AppTextStyles.bold24.copyWith(color: AppColors.greyBlack),),
-                                        Spacer(),
-                                        Text("Above average performance",style: AppTextStyles.regular12.copyWith(color: AppColors.blackColor),),
-                                    ],),
-                                  ),
-                                ),),
-                              )
-                                                        ],
-                                                      ),
-                            )),
-                        Expanded(child:Padding(
-                          padding: const EdgeInsets.symmetric(horizontal:16,vertical: 14),
-                          child: DecoratedBox(decoration: BoxDecoration(
-                            color: AppColors.whiteColor,
-                            borderRadius: BorderRadius.circular(8),
-                          ),
-                            child: SizedBox(
-                              width: double.infinity,
-                              child: Padding(
-                                padding: const EdgeInsets.all(18.0),
-                                child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Row(
-                                      children: [
-                                        Text('Overall\nAccuracy'),
-                                        Spacer(),
-                                        Image.asset(
-                                          ImagePath.frame21Image, scale: 4,
-                                          fit: BoxFit.cover,)
-                                      ],
-                                    ),
-                                    Spacer(),
-                                    Text('12 days',style: AppTextStyles.bold24.copyWith(color: AppColors.greyBlack),),
-                                    Spacer(),
-                                    Text('Above average performance')
-                                  ],
-                                ),
-                              ),
-                            ),
-                          ),
-                        ))
-
-
-                      ],
-                    ),
-                  ) ,
-                ),
-              ) ,
-            ),*/
             SliverToBoxAdapter(
               child: Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 16),
@@ -228,7 +77,7 @@ class PracticeView extends GetView<PracticeController> {
                                   ),
                                   child: Column(
                                     crossAxisAlignment:
-                                        CrossAxisAlignment.start,
+                                    CrossAxisAlignment.start,
                                     children: [
                                       Row(
                                         children: [
@@ -236,8 +85,8 @@ class PracticeView extends GetView<PracticeController> {
                                             "Questions\nAttempted",
                                             style: AppTextStyles.regular12
                                                 .copyWith(
-                                                  color: AppColors.blackColor,
-                                                ),
+                                              color: AppColors.blackColor,
+                                            ),
                                           ),
                                           Spacer(),
                                           Image.asset(
@@ -270,8 +119,8 @@ class PracticeView extends GetView<PracticeController> {
                                               overflow: TextOverflow.ellipsis,
                                               style: AppTextStyles.regular12
                                                   .copyWith(
-                                                    color: AppColors.blackColor,
-                                                  ),
+                                                color: AppColors.blackColor,
+                                              ),
                                             ),
                                           ),
                                         ],
@@ -292,7 +141,7 @@ class PracticeView extends GetView<PracticeController> {
                                   ),
                                   child: Column(
                                     crossAxisAlignment:
-                                        CrossAxisAlignment.start,
+                                    CrossAxisAlignment.start,
                                     children: [
                                       Row(
                                         children: [
@@ -300,8 +149,8 @@ class PracticeView extends GetView<PracticeController> {
                                             "Overall\nAccuracy",
                                             style: AppTextStyles.regular12
                                                 .copyWith(
-                                                  color: AppColors.blackColor,
-                                                ),
+                                              color: AppColors.blackColor,
+                                            ),
                                           ),
                                           Spacer(),
                                           Image.asset(
@@ -392,7 +241,6 @@ class PracticeView extends GetView<PracticeController> {
       ),
     );
   }
-
   Widget spiFundamentalsCardWidget() {
     return Container(
       width: double.infinity,
@@ -436,9 +284,9 @@ class PracticeView extends GetView<PracticeController> {
               ),
             ],
           ),
-          Text('SPI Fundamentals', style: AppTextStyles.bold18),
+          Text('SPI Full Mock Exam', style: AppTextStyles.bold18),
           Text(
-            'Comprehensive physics and instrumentation questions',
+            'Complete practice exam covering all SPI topics',
             style: AppTextStyles.regular14.copyWith(color: AppColors.appBarSub),
           ),
           SizedBox(height: 15.h),
@@ -458,7 +306,11 @@ class PracticeView extends GetView<PracticeController> {
                       color: AppColors.blackColor,
                     ),
                   ),
-                  SizedBox(height: 12.h),
+                ],
+              ),
+              Spacer(),
+              Column(
+                children: [
                   Text(
                     'attempt',
                     style: AppTextStyles.regular14.copyWith(
@@ -477,7 +329,7 @@ class PracticeView extends GetView<PracticeController> {
               Column(
                 children: [
                   Text(
-                    'Accuracy',
+                    'Pass Score',
                     style: AppTextStyles.regular14.copyWith(
                       color: AppColors.appBarSub,
                     ),
@@ -488,26 +340,30 @@ class PracticeView extends GetView<PracticeController> {
                       color: AppColors.blackColor,
                     ),
                   ),
-                  SizedBox(height: 12.h),
-                  Text(
-                    'Difficulty',
-                    style: AppTextStyles.regular14.copyWith(
-                      color: AppColors.appBarSub,
-                    ),
-                  ),
-                  Text(
-                    'mixed',
-                    style: AppTextStyles.regular14.copyWith(color: Colors.blue),
-                  ),
                 ],
               ),
             ],
           ),
           SizedBox(height: 8.h),
-          CustomButton(
-            childText: 'Continue Reading',
-            onTap: () => Get.toNamed(Routes.SPI_PRACTICE_BANK_QUS),
+          DecoratedBox(
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(6),
+              color: AppColors.whiteColor,
+            ),
+            child: SizedBox(width: double.infinity,
+              height: 50,
+              child: Row(children: [
+                SizedBox(width: 10.w,),
+                Text('attempt',style: AppTextStyles.regular14.copyWith(color:Colors.grey),),
+                Spacer(),
+                Text('82%',style: AppTextStyles.regular24.copyWith(color:Colors.black),),
+                SizedBox(width: 10.w,),
+              ],),),
           ),
+          SizedBox(height: 14.h),
+          CustomButton(childText: 'Retake Exam'),
+          SizedBox(height: 18.h),
+          Center(child: Text('Attempted 3 times',style: AppTextStyles.regular14.copyWith(color: Colors.grey),))
         ],
       ),
     );
@@ -536,20 +392,6 @@ class PracticeView extends GetView<PracticeController> {
             ),
           ),
         ),
-      ),
-    );
-  }
-
-  Widget searchButtonWidget() {
-    return TextFormField(
-      decoration: InputDecoration(
-        hintText: 'Search',
-        prefixIcon: Icon(Icons.search, size: 16),
-        filled: true,
-        fillColor: AppColors.appBarBack,
-        contentPadding: EdgeInsets.symmetric(horizontal: 16, vertical: 12),
-        border: OutlineInputBorder(borderSide: BorderSide.none),
-        focusedBorder: OutlineInputBorder(borderSide: BorderSide.none),
       ),
     );
   }

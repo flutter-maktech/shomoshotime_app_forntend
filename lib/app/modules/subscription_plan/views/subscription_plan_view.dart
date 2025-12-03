@@ -4,6 +4,7 @@ import 'package:get/get.dart';
 import 'package:shomoshotime/app/data/app_colors.dart';
 import 'package:shomoshotime/app/data/app_text_styles.dart';
 import 'package:shomoshotime/app/modules/common_widgets/custom_app_bar.dart';
+import 'package:shomoshotime/app/routes/app_pages.dart';
 import '../../common_widgets/custom_button.dart';
 import '../controllers/subscription_plan_controller.dart';
 import '../widget/custom_dolar_plan.dart';
@@ -110,6 +111,7 @@ class SubscriptionPlanView extends GetView<SubscriptionPlanController> {
                           childText: "Get Started",
                           buttonChildColor: AppColors.whiteColor,
                           buttonColor: AppColors.blackColor,
+                          onTap: () => Get.toNamed(Routes.PAYMENT_METHODS),
                         ),
                       ],
                     ),
@@ -192,6 +194,7 @@ class SubscriptionPlanView extends GetView<SubscriptionPlanController> {
                           childText: "Get Started",
                           buttonChildColor: AppColors.whiteColor,
                           buttonColor: AppColors.blackColor,
+                          onTap: () => Get.toNamed(Routes.PAYMENT_METHODS),
                         ),
                       ],
                     ),
@@ -259,6 +262,7 @@ class SubscriptionPlanView extends GetView<SubscriptionPlanController> {
                           childText: "Get Started",
                           buttonChildColor: AppColors.whiteColor,
                           buttonColor: AppColors.blackColor,
+                          onTap: () => Get.toNamed(Routes.PAYMENT_METHODS),
                         ),
                       ],
                     ),

@@ -34,4 +34,5 @@ class ImagePath {
   static const String paymentLogoVisa = '$baseUrl/payment_logo_visa.png';
   static const String spiPracticeBank= '$baseUrl/spi_practice_bank.png';
   static const String incorrect= '$baseUrl/incorrect.png';
+  static const String notificationImage= '$baseUrl/notification_image.png';
 }

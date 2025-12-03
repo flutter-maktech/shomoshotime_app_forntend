@@ -1,18 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-
 import 'package:get/get.dart';
-import 'package:shomoshotime/app/modules/common_widgets/custom_button.dart';
-import 'package:shomoshotime/app/modules/common_widgets/custom_text_field.dart';
-import 'package:shomoshotime/app/routes/app_pages.dart';
-
 import '../../../data/app_colors.dart';
 import '../../../data/app_text_styles.dart';
 import '../../../data/image_path.dart';
-import '../controllers/forgot_password_controller.dart';
+import '../../../routes/app_pages.dart';
+import '../../common_widgets/custom_button.dart';
+import '../../common_widgets/custom_text_field.dart';
+import '../controllers/forgot_password_3_controller.dart';
 
-class ForgotPasswordView extends GetView<ForgotPasswordController> {
-  const ForgotPasswordView({super.key});
+class ForgotPassword3View extends GetView<ForgotPassword3Controller> {
+  const ForgotPassword3View({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -23,14 +21,13 @@ class ForgotPasswordView extends GetView<ForgotPasswordController> {
             child: Padding(
               padding: EdgeInsets.symmetric(horizontal: 16.h),
               child: Container(
-                padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 16.h),
+                padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 40.h),
                 width: double.infinity,
                 decoration: BoxDecoration(
                   color: AppColors.containerColor,
                   borderRadius: BorderRadius.circular(8.r),
                 ),
                 child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
                     Image.asset(ImagePath.signIn, height: 84.h),
@@ -42,23 +39,20 @@ class ForgotPasswordView extends GetView<ForgotPasswordController> {
                       textAlign: TextAlign.center,
                     ),
                     CustomTextField(
-                      hintText: 'youremail@here',
-                      topHintText: 'Email',
+                      hintText: '************',
+                      topHintText: 'Add new password',
                     ),
-                    Padding(
-                      padding: EdgeInsets.only(top: 30.h, bottom: 40.h),
-                      child: InkWell(
-                        onTap: () {
-                          Get.toNamed(Routes.FORGOT_PASSWORD_2);
-                        },
-
-                        child: CustomButton(
-                          childText: 'Send code',
-                          onTap: () {
-                            Get.toNamed(Routes.FORGOT_PASSWORD_2);
-                          },
-                        ),
-                      ),
+                    CustomTextField(
+                      hintText: '**********',
+                      topHintText: 'Confirm Password',
+                      suffixIcon: Icon(Icons.visibility_off_outlined),
+                    ),
+                    SizedBox(height: 16.h),
+                    InkWell(
+                      onTap: () {
+                        Get.toNamed(Routes.SIGN_IN);
+                      },
+                      child: CustomButton(childText: 'Save new password'),
                     ),
                   ],
                 ),

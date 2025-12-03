@@ -21,7 +21,12 @@ class StudyGuidesView extends GetView<StudyGuidesController> {
       body: SafeArea(
         child: CustomScrollView(
           slivers: [
-            SliverToBoxAdapter(child: PrimaryAppBar()),
+            SliverToBoxAdapter(
+              child: PrimaryAppBar(
+                notificationOnTap: () => Get.toNamed(Routes.NOTIFICATION),
+                profileOnTap: () => Get.toNamed(Routes.PROFILE),
+              ),
+            ),
             SliverToBoxAdapter(
               child: Padding(
                 padding: EdgeInsets.symmetric(horizontal: 16.w),
@@ -176,27 +181,41 @@ class StudyGuidesView extends GetView<StudyGuidesController> {
                                 children: [
                                   Slider(
                                     min: 0,
-                                    max: controller.duration.value.inSeconds.toDouble(),
+                                    max: controller.duration.value.inSeconds
+                                        .toDouble(),
                                     value: controller.position.value.inSeconds
-                                        .clamp(0, controller.duration.value.inSeconds)
+                                        .clamp(
+                                          0,
+                                          controller.duration.value.inSeconds,
+                                        )
                                         .toDouble(),
                                     activeColor: Colors.orange,
                                     inactiveColor: Colors.grey.shade300,
                                     onChanged: (value) async {
-                                      final newPos = Duration(seconds: value.toInt());
+                                      final newPos = Duration(
+                                        seconds: value.toInt(),
+                                      );
                                       await controller.seekTo(newPos);
                                     },
                                   ),
 
                                   Row(
-                                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceBetween,
                                     children: [
-                                      Text(controller.formatTime(controller.position.value)),
                                       Text(
                                         controller.formatTime(
-                                          (controller.duration.value - controller.position.value).isNegative
+                                          controller.position.value,
+                                        ),
+                                      ),
+                                      Text(
+                                        controller.formatTime(
+                                          (controller.duration.value -
+                                                      controller.position.value)
+                                                  .isNegative
                                               ? Duration.zero
-                                              : controller.duration.value - controller.position.value,
+                                              : controller.duration.value -
+                                                    controller.position.value,
                                         ),
                                       ),
                                     ],
@@ -210,9 +229,13 @@ class StudyGuidesView extends GetView<StudyGuidesController> {
                                       IconButton(
                                         icon: Icon(Icons.replay_10, size: 30),
                                         onPressed: () async {
-                                          final newPos = controller.position.value - Duration(seconds: 2);
+                                          final newPos =
+                                              controller.position.value -
+                                              Duration(seconds: 2);
                                           await controller.seekTo(
-                                            newPos.isNegative ? Duration.zero : newPos,
+                                            newPos.isNegative
+                                                ? Duration.zero
+                                                : newPos,
                                           );
                                         },
                                       ),
@@ -222,7 +245,9 @@ class StudyGuidesView extends GetView<StudyGuidesController> {
                                         backgroundColor: Colors.black,
                                         child: IconButton(
                                           icon: Icon(
-                                            controller.isPlaying.value ? Icons.pause : Icons.play_arrow,
+                                            controller.isPlaying.value
+                                                ? Icons.pause
+                                                : Icons.play_arrow,
                                             color: Colors.white,
                                             size: 45,
                                           ),
@@ -244,9 +269,11 @@ class StudyGuidesView extends GetView<StudyGuidesController> {
                                         icon: Icon(Icons.forward_10, size: 30),
                                         onPressed: () async {
                                           final newPos =
-                                              controller.position.value + Duration(seconds: 2);
+                                              controller.position.value +
+                                              Duration(seconds: 2);
 
-                                          if (newPos < controller.duration.value) {
+                                          if (newPos <
+                                              controller.duration.value) {
                                             await controller.seekTo(newPos);
                                           }
                                         },
@@ -258,10 +285,11 @@ class StudyGuidesView extends GetView<StudyGuidesController> {
                             }),
                             SizedBox(height: 20.h),
                             CustomButton(
-                              onTap: (){
+                              onTap: () {
                                 Get.toNamed(Routes.AUDIO_PLAY_CARD);
                               },
-                                childText: 'Continue to listen'),
+                              childText: 'Continue to listen',
+                            ),
                           ],
                         ),
                       ),
@@ -368,6 +396,3 @@ class StudyGuidesView extends GetView<StudyGuidesController> {
     );
   }
 }
-
-
-

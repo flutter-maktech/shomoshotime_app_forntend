@@ -22,24 +22,22 @@ class SignInView extends GetView<SignInController> {
         child: SingleChildScrollView(
           child: Container(
             width: double.infinity,
-            padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 40.h),
-            margin: EdgeInsets.symmetric(horizontal: 16.w,vertical: 30.h),
+            padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 16.h),
+            margin: EdgeInsets.symmetric(horizontal: 16.w, vertical: 16.h),
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(8.r),
               color: AppColors.containerColor,
             ),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.center,
-          
               children: [
                 Image.asset(ImagePath.signIn, height: 84.h),
-                SizedBox(height: 32.h),
+                SizedBox(height: 16.h),
                 Text('Sign In', style: AppTextStyles.bold32),
                 Text(
                   'Access your account to continue.',
                   style: AppTextStyles.regular16,
                 ),
-                SizedBox(height: 32.h),
                 CustomTextField(
                   hintText: 'youremail@here',
                   topHintText: 'Email',
@@ -49,10 +47,11 @@ class SignInView extends GetView<SignInController> {
                   topHintText: 'Password',
                   suffixIcon: Icon(Icons.visibility_off_outlined),
                 ),
+                SizedBox(height: 8.h),
                 Align(
                   alignment: AlignmentDirectional.centerEnd,
                   child: InkWell(
-                    onTap: (){
+                    onTap: () {
                       Get.toNamed(Routes.FORGOT_PASSWORD);
                     },
                     child: Text(
@@ -65,8 +64,24 @@ class SignInView extends GetView<SignInController> {
                     ),
                   ),
                 ),
+                SizedBox(height: 16.h,),
+                Row(
+                  children: [
+                    Expanded(child: Divider(color: AppColors.blackColor)),
+                    Padding(
+                      padding: EdgeInsets.symmetric(horizontal: 7.h),
+                      child: Text(
+                        'Or',
+                        style: AppTextStyles.regular16.copyWith(
+                          color: AppColors.hintTextColor,
+                        ),
+                      ),
+                    ),
+                    Expanded(child: Divider(color: AppColors.blackColor)),
+                  ],
+                ),
                 Padding(
-                  padding: EdgeInsets.symmetric(vertical: 31.h),
+                  padding: EdgeInsets.symmetric(vertical: 16.h),
                   child: OutlinedButton(
                     onPressed: () {},
                     child: Row(
@@ -89,28 +104,19 @@ class SignInView extends GetView<SignInController> {
                     ),
                   ),
                 ),
-                Row(
-                  children: [
-                    Expanded(child: Divider(color: AppColors.blackColor)),
-                    Padding(
-                      padding: EdgeInsets.symmetric(horizontal: 7.h),
-                      child: Text(
-                        'Or',
-                        style: AppTextStyles.regular16.copyWith(
-                          color: AppColors.hintTextColor,
-                        ),
-                      ),
-                    ),
-                    Expanded(child: Divider(color: AppColors.blackColor)),
-                  ],
+                SizedBox(height: 16.h),
+                CustomButton(
+                  childText: 'Sign In',
+                  onTap: () => Get.toNamed(Routes.CUSTOM_BOTTOM_NAVIGATION_BAR),
                 ),
-                SizedBox(height: 31.h),
-          
-                CustomButton(childText: 'Sign In'),
-                SizedBox(height: 30.h,),
-                CustomRichText(firstText: "Don't have ony account?", secondText: 'Sign Up',onTap: (){
-                  Get.toNamed(Routes.SIGN_UP);}),
-
+                SizedBox(height: 16.h),
+                CustomRichText(
+                  firstText: "Don't have ony account?",
+                  secondText: 'Sign Up',
+                  onTap: () {
+                    Get.toNamed(Routes.SIGN_UP);
+                  },
+                ),
               ],
             ),
           ),

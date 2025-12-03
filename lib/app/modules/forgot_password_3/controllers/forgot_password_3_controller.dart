@@ -1,7 +1,7 @@
 import 'package:get/get.dart';
 
-class RealisticController extends GetxController {
-  //TODO: Implement RealisticController
+class ForgotPassword3Controller extends GetxController {
+  //TODO: Implement ForgotPassword3Controller
 
   final count = 0.obs;
   @override

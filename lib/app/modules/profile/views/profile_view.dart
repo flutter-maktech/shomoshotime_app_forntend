@@ -7,6 +7,7 @@ import 'package:shomoshotime/app/data/image_path.dart';
 import 'package:shomoshotime/app/modules/common_widgets/custom_app_bar.dart';
 import 'package:shomoshotime/app/modules/common_widgets/custom_button.dart';
 import 'package:shomoshotime/app/modules/custom_bottom_navigation_bar/views/custom_bottom_navigation_bar_view.dart';
+import 'package:shomoshotime/app/routes/app_pages.dart';
 import '../controllers/profile_controller.dart';
 import '../widget/custom_achievements.dart';
 import '../widget/custom_icons.dart';
@@ -19,7 +20,8 @@ class ProfileView extends GetView<ProfileController> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: CustomAppBar(
-        title: 'Edit Profile',
+        title: 'My Profile',
+        subTitle: "Manage your account and track your progress",
       ),
       body: SingleChildScrollView(
         child: Padding(
@@ -45,16 +47,22 @@ class ProfileView extends GetView<ProfileController> {
                         child: Padding(
                           padding: EdgeInsets.all(8.sp),
                           child: InkWell(
-                            onTap: (){},
+                            onTap: () {},
                             child: ClipRRect(
                               borderRadius: BorderRadiusGeometry.circular(100),
-                              child: Image.asset(ImagePath.profile, fit: BoxFit.cover),
+                              child: Image.asset(
+                                ImagePath.profile,
+                                fit: BoxFit.cover,
+                              ),
                             ),
                           ),
                         ),
                       ),
                       SizedBox(height: 10.h),
-                      Text("Sarah Johnson", style: AppTextStyles.spaceGroteskLarge16),
+                      Text(
+                        "Sarah Johnson",
+                        style: AppTextStyles.spaceGroteskLarge16,
+                      ),
                       SizedBox(height: 4),
                       Text(
                         "sarah.johnson@example.corn",
@@ -96,15 +104,18 @@ class ProfileView extends GetView<ProfileController> {
                       SizedBox(height: 16.h),
                       CustomButton(
                         childText: "Manage Subscription",
-                        onTap: () {},
+                        onTap: () => Get.toNamed(Routes.SUBSCRIPTION_PLAN),
                         buttonColor: AppColors.profileBlack,
                         buttonChildColor: AppColors.profileYellow,
                       ),
                       SizedBox(height: 16.h),
-                      Text(
-                        "Edit Profile",
-                        style: AppTextStyles.regular14.copyWith(
-                          color: AppColors.profileLine,
+                      GestureDetector(
+                        onTap: () => Get.toNamed(Routes.EDIT_PROFILE),
+                        child: Text(
+                          "Edit Profile",
+                          style: AppTextStyles.regular14.copyWith(
+                            color: AppColors.profileLine,
+                          ),
                         ),
                       ),
                     ],
@@ -123,7 +134,10 @@ class ProfileView extends GetView<ProfileController> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text("Achievements", style: AppTextStyles.spaceGroteskLarge16),
+                      Text(
+                        "Achievements",
+                        style: AppTextStyles.spaceGroteskLarge16,
+                      ),
                       SizedBox(height: 16.h),
                       CustomAchievements(text: "7-Day Streak"),
                       SizedBox(height: 16.h),
@@ -138,6 +152,7 @@ class ProfileView extends GetView<ProfileController> {
               _buildContainer(),
               SizedBox(height: 32.h),
               _examHistoryContainer(),
+              SizedBox(height: 32.h),
             ],
           ),
         ),
@@ -214,7 +229,10 @@ class ProfileView extends GetView<ProfileController> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text("Subscription Details", style: AppTextStyles.spaceGroteskMedium20),
+            Text(
+              "Subscription Details",
+              style: AppTextStyles.spaceGroteskMedium20,
+            ),
             SizedBox(height: 4.h),
             Text(
               "Manage your plan and billing",
@@ -240,7 +258,6 @@ class ProfileView extends GetView<ProfileController> {
               StatusColor: AppColors.profileGray,
               TextColor: AppColors.profileBlack,
             ),
-
           ],
         ),
       ),

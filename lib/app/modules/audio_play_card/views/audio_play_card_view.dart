@@ -42,7 +42,17 @@ class AudioPlayCardView extends GetView<AudioPlayCardController> {
                     children: [
                       ClipRRect(
                         borderRadius: BorderRadius.circular(10),
-                        child: SizedBox(height: 280, width: double.infinity,child: Image.network('https://i.pinimg.com/736x/59/78/2e/59782ef2b4973adf395fb28eb3470014.jpg',fit: BoxFit.cover,),),
+                        child: Padding(
+                          padding: const EdgeInsets.symmetric(vertical: 50),
+                          child: SizedBox(
+                            height: 280,
+                            width: double.infinity,
+                            child: Image.network(
+                              'https://i.pinimg.com/736x/59/78/2e/59782ef2b4973adf395fb28eb3470014.jpg',
+                              fit: BoxFit.cover,
+                            ),
+                          ),
+                        ),
                       ),
                       SizedBox(height: 10.h),
                       Obx(() {

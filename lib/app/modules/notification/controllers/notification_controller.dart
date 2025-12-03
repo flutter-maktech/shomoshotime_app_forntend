@@ -1,7 +1,7 @@
 import 'package:get/get.dart';
 
-class InteractiveFlashcardsController extends GetxController {
-  //TODO: Implement InteractiveFlashcardsController
+class NotificationController extends GetxController {
+  //TODO: Implement NotificationController
 
   final count = 0.obs;
   @override

@@ -14,6 +14,7 @@ import '../controllers/sign_up_controller.dart';
 
 class SignUpView extends GetView<SignUpController> {
   const SignUpView({super.key});
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -21,14 +22,15 @@ class SignUpView extends GetView<SignUpController> {
         child: SingleChildScrollView(
           child: Container(
             width: double.infinity,
-            padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 40.h),
-            margin: EdgeInsets.symmetric(horizontal: 16.w, vertical: 30.h),
+            padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 16.h),
+            margin: EdgeInsets.symmetric(horizontal: 16.w, vertical: 16.h),
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(8.r),
               color: AppColors.containerColor,
             ),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.center,
+              mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 Image.asset(ImagePath.signIn, height: 84.h),
                 SizedBox(height: 32.h),
@@ -52,17 +54,21 @@ class SignUpView extends GetView<SignUpController> {
                   topHintText: 'Confirm Password',
                   suffixIcon: Icon(Icons.visibility_off_outlined),
                 ),
+                SizedBox(height: 24.h,),
                 InkWell(
-                    onTap: (){
-                      Get.offAllNamed(Routes.ENTER_CODE);
-                    },
-                    child: CustomButton(childText: "Sign Up")),
-                CustomRichText(firstText: 'Already Have an account ?', secondText: 'Sign In',
-                  onTap: (){
-                  Get.toNamed(Routes.SIGN_IN);
+                  onTap: () {
+                    Get.offAllNamed(Routes.ENTER_CODE);
+                  },
+                  child: CustomButton(childText: "Sign Up"),
+                ),
+                SizedBox(height: 8.h,),
+                CustomRichText(
+                  firstText: 'Already Have an account ?',
+                  secondText: 'Sign In',
+                  onTap: () {
+                    Get.toNamed(Routes.SIGN_IN);
                   },
                 ),
-
               ],
             ),
           ),

@@ -19,12 +19,12 @@ class PrimaryAppBar extends StatelessWidget {
           Image.asset(ImagePath.appLogo, height: 38.h),
           Row(
             children: [
-              CircleAvatar(
-                backgroundColor: AppColors.appBarCircleAvatarColor,
-                child: Padding(
-                  padding: EdgeInsets.all(10.sp),
-                  child: InkWell(
-                    onTap: notificationOnTap,
+              InkWell(
+                onTap: notificationOnTap,
+                child: CircleAvatar(
+                  backgroundColor: AppColors.appBarCircleAvatarColor,
+                  child: Padding(
+                    padding: EdgeInsets.all(10.sp),
                     child: Image.asset(ImagePath.notification),
                   ),
                 ),

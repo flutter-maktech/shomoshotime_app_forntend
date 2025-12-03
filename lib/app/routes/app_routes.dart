@@ -3,6 +3,7 @@ part of 'app_pages.dart';
 
 abstract class Routes {
   Routes._();
+
   static const HOME = _Paths.HOME;
   static const PROFILE = _Paths.PROFILE;
   static const CUSTOM_BOTTOM_NAVIGATION_BAR =
@@ -27,13 +28,15 @@ abstract class Routes {
   static const FORGOT_PASSWORD_2 = _Paths.FORGOT_PASSWORD_2;
   static const SIGN_UP = _Paths.SIGN_UP;
   static const SIGN_UP_OTP = _Paths.SIGN_UP_OTP;
-  static const COMPREHENSIVE = _Paths.COMPREHENSIVE;
-  static const INTERACTIVE_FLASHCARDS = _Paths.INTERACTIVE_FLASHCARDS;
-  static const REALISTIC = _Paths.REALISTIC;
+  static const FORGOT_PASSWORD_3 = _Paths.FORGOT_PASSWORD_3;
+  static const MOCK_EXAMS = _Paths.MOCK_EXAMS;
+  static const NOTIFICATION = _Paths.NOTIFICATION;
+  static const ONBOARDING = _Paths.ONBOARDING;
 }
 
 abstract class _Paths {
   _Paths._();
+
   static const HOME = '/home';
   static const PROFILE = '/profile';
   static const SIGN_IN = '/sign-in';
@@ -42,10 +45,7 @@ abstract class _Paths {
   static const FORGOT_PASSWORD_2 = '/forgot-password-2';
   static const SIGN_UP = '/sign-up';
   static const SIGN_UP_OTP = '/sign-up-otp';
-  static const COMPREHENSIVE = '/comprehensive';
-  static const INTERACTIVE_FLASHCARDS = '/interactive-flashcards';
   static const PRACTICE = '/practice';
-  static const REALISTIC = '/realistic';
   static const SPI_PRACTICE_BANK_QUS = '/spi-practice-bank-qus';
   static const SPI_PRACTICE_BANK_ANS = '/spi-practice-bank-ans';
   static const CONTINUE_LEARNING = '/continue-learning';
@@ -60,4 +60,8 @@ abstract class _Paths {
   static const SUBSCRIPTION_PLAN = '/subscription-plan';
   static const PAYMENT_METHODS = '/payment-methods';
   static const ADD_CARD = '/add-card';
+  static const FORGOT_PASSWORD_3 = '/forgot-password-3';
+  static const MOCK_EXAMS = '/mock-exams';
+  static const NOTIFICATION = '/notification';
+  static const ONBOARDING = '/onboarding';
 }

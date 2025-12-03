@@ -8,6 +8,7 @@ import 'package:shomoshotime/app/data/image_path.dart';
 import 'package:shomoshotime/app/modules/common_widgets/custom_button.dart';
 import 'package:shomoshotime/app/modules/common_widgets/primary_app_bar.dart';
 
+import '../../../routes/app_pages.dart';
 import '../controllers/flash_cards_controller.dart';
 
 class FlashCardsView extends GetView<FlashCardsController> {
@@ -19,7 +20,12 @@ class FlashCardsView extends GetView<FlashCardsController> {
       body: SafeArea(
         child: CustomScrollView(
           slivers: [
-            SliverToBoxAdapter(child: PrimaryAppBar()),
+            SliverToBoxAdapter(
+              child: PrimaryAppBar(
+                notificationOnTap: () => Get.toNamed(Routes.NOTIFICATION),
+                profileOnTap: () => Get.toNamed(Routes.PROFILE),
+              ),
+            ),
             SliverToBoxAdapter(
               child: Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 16),
@@ -188,7 +194,10 @@ class FlashCardsView extends GetView<FlashCardsController> {
             value: 0.5,
           ),
           SizedBox(height: 20.h),
-          CustomButton(childText: 'Continue Studying'),
+          CustomButton(
+            childText: 'Continue Studying',
+            onTap: () => Get.toNamed(Routes.VASCULAR_FLASHCARDS),
+          ),
         ],
       ),
     );
