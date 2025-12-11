@@ -1,9 +1,9 @@
 import 'package:get/get.dart';
 
 class SpiFundamentalsController extends GetxController {
-  //TODO: Implement SpiFundamentalsController
 
-  final count = 0.obs;
+  final page = 0.obs;
+  final totalPages = 12.obs;
   @override
   void onInit() {
     super.onInit();
@@ -19,5 +19,15 @@ class SpiFundamentalsController extends GetxController {
     super.onClose();
   }
 
-  void increment() => count.value++;
+  void nextPage() {
+    if (page.value < totalPages.value) {
+      page.value++;
+    }
+  }
+
+  void previousPage() {
+    if (page.value > 0) {
+      page.value--;
+    }
+  }
 }

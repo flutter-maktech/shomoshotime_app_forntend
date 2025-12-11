@@ -50,7 +50,7 @@ class ForgotPassword3View extends GetView<ForgotPassword3Controller> {
                     SizedBox(height: 16.h),
                     InkWell(
                       onTap: () {
-                        Get.toNamed(Routes.SIGN_IN);
+                        Get.offAllNamed(Routes.SIGN_IN);
                       },
                       child: CustomButton(childText: 'Save new password'),
                     ),

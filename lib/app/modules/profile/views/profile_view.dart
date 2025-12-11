@@ -22,6 +22,7 @@ class ProfileView extends GetView<ProfileController> {
       appBar: CustomAppBar(
         title: 'My Profile',
         subTitle: "Manage your account and track your progress",
+        onTap: () => Get.toNamed(Routes.CUSTOM_BOTTOM_NAVIGATION_BAR),
       ),
       body: SingleChildScrollView(
         child: Padding(
@@ -109,14 +110,16 @@ class ProfileView extends GetView<ProfileController> {
                         buttonChildColor: AppColors.profileYellow,
                       ),
                       SizedBox(height: 16.h),
-                      GestureDetector(
-                        onTap: () => Get.toNamed(Routes.EDIT_PROFILE),
-                        child: Text(
-                          "Edit Profile",
-                          style: AppTextStyles.regular14.copyWith(
-                            color: AppColors.profileLine,
-                          ),
-                        ),
+                      _buillOutlineButton(
+                        "Edit Profile",
+                        Icons.mode_edit_outline_outlined,
+                        () => Get.toNamed(Routes.EDIT_PROFILE),
+                      ),
+                      SizedBox(height: 16.h),
+                      _buillOutlineButton(
+                        "Log Out",
+                        Icons.logout_outlined,
+                        () => Get.toNamed(Routes.SIGN_IN),
                       ),
                     ],
                   ),
@@ -156,6 +159,25 @@ class ProfileView extends GetView<ProfileController> {
             ],
           ),
         ),
+      ),
+    );
+  }
+
+  SizedBox _buillOutlineButton(
+    String buttonText,
+    IconData buttonIcon,
+    VoidCallback onPressed,
+  ) {
+    return SizedBox(
+      width: double.infinity,
+      child: OutlinedButton.icon(
+        onPressed: onPressed,
+        label: Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: Text(buttonText),
+        ),
+        icon: Icon(buttonIcon, size: 30),
+        iconAlignment: IconAlignment.end,
       ),
     );
   }

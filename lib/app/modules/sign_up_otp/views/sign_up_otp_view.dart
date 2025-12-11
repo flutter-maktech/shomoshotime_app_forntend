@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import 'package:get/get.dart';
+import 'package:pinput/pinput.dart';
 import 'package:shomoshotime/app/modules/common_widgets/custom_button.dart';
 import 'package:shomoshotime/app/modules/common_widgets/custom_text_field.dart';
 import 'package:shomoshotime/app/routes/app_pages.dart';
@@ -53,25 +54,34 @@ class SignUpOtpView extends GetView<SignUpOtpController> {
                         padding: EdgeInsets.symmetric(horizontal: 105.w),
                         child: Divider(color: AppColors.primaryColor,thickness: 2,),
                       ),
-                     CustomTextField(hintText: '**********',),
-
                       Padding(
-                        padding:  EdgeInsets.only(top: 30.h,bottom: 40.h),
+                        padding:  EdgeInsets.symmetric(vertical: 32.h),
+                        child: Pinput(
+                          length: 4,
+                          keyboardType: TextInputType.number,
+                          defaultPinTheme: PinTheme(
+                            height: 50.h,
+                            width: 55.w,
+                            textStyle: AppTextStyles.bold16.copyWith(
+                              color: AppColors.blackColor,
+                            ),
+                            decoration: BoxDecoration(
+                              color: AppColors.whiteColor,
+                              borderRadius: BorderRadius.circular(4),
+                            ),
+                          ),
+                        ),
+                      ),
+                      Padding(
+                        padding: EdgeInsets.only(top: 30.h, bottom: 40.h),
                         child: InkWell(
-                          onTap: (){
-
-                            Get.toNamed(Routes.FORGOT_PASSWORD);
-                          },
-
-                            child: CustomButton(childText: 'Confirm')),
-                      )
-
-
+                            onTap: (){
+                              Get.offAllNamed(Routes.ONBOARDING);
+                            },
+                            child: CustomButton(childText: 'Next')),
+                      ),
                     ],
                   ),
-
-
-
                 ),
               ),
             ),

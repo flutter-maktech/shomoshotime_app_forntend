@@ -361,7 +361,7 @@ class MockExamsView extends GetView<MockExamsController> {
               ],),),
           ),
           SizedBox(height: 14.h),
-          CustomButton(childText: 'Retake Exam'),
+          CustomButton(childText: 'Retake Exam',onTap: () => Get.toNamed(Routes.SPI_PRACTICE_BANK_QUS),),
           SizedBox(height: 18.h),
           Center(child: Text('Attempted 3 times',style: AppTextStyles.regular14.copyWith(color: Colors.grey),))
         ],

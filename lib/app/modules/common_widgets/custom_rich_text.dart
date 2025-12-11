@@ -21,19 +21,17 @@ class CustomRichText extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding:  EdgeInsets.only(top: 30.h,bottom: 40.h),
+      padding:  EdgeInsets.all(16.h),
       child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          Expanded(
-            child: Text(
-              firstText,
-              style: AppTextStyles.regular16.copyWith(
-                color: firstTextColor ?? AppColors.blackColor,
-              ),
-              overflow: TextOverflow.ellipsis,
-              maxLines: 1,
+          Text(
+            firstText,
+            style: AppTextStyles.regular12.copyWith(
+              color: firstTextColor ?? AppColors.blackColor,
             ),
+            overflow: TextOverflow.ellipsis,
+            maxLines: 1,
           ),
           InkWell(
             onTap: onTap,
@@ -41,7 +39,7 @@ class CustomRichText extends StatelessWidget {
               padding: EdgeInsets.symmetric(horizontal: 4.h),
               child: Text(
                 secondText,
-                style: AppTextStyles.bold16.copyWith(
+                style: AppTextStyles.bold12.copyWith(
                   color: secondTextColor ?? AppColors.blueColor,
                 ),
                 overflow: TextOverflow.ellipsis,
