@@ -57,7 +57,7 @@ class SignUpView extends GetView<SignUpController> {
                 SizedBox(height: 24.h,),
                 InkWell(
                   onTap: () {
-                    Get.offAllNamed(Routes.ENTER_CODE);
+                    Get.offAllNamed(Routes.SIGN_UP_OTP);
                   },
                   child: CustomButton(childText: "Sign Up"),
                 ),

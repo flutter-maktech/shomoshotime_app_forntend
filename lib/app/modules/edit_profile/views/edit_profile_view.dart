@@ -53,7 +53,7 @@ class EditProfileView extends GetView<EditProfileController> {
                   childText: "Save",
                   buttonChildColor: AppColors.blackColor,
                   buttonColor: AppColors.profileYellow,
-                  onTap: () => Get.toNamed(Routes.PROFILE),
+                  onTap: () => Get.offAllNamed(Routes.PROFILE)
                 ),
               ],
             ),

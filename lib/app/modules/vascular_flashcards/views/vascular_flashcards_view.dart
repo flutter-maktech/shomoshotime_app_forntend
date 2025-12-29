@@ -1,6 +1,7 @@
 
 
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:shomoshotime/app/data/app_colors.dart';
 import 'package:shomoshotime/app/data/app_text_styles.dart';
@@ -8,115 +9,6 @@ import 'package:shomoshotime/app/modules/common_widgets/custom_app_bar.dart';
 import 'package:shomoshotime/app/modules/common_widgets/custom_button.dart';
 
 import '../controllers/vascular_flashcards_controller.dart';
-
-// class VascularFlashcardsView extends GetView<VascularFlashcardsController> {
-//   const VascularFlashcardsView({super.key});
-//
-//   @override
-//   Widget build(BuildContext context) {
-//     return Scaffold(
-//       appBar:  CustomAppBar(title: 'Vascular Flashcards'),
-//       body: SafeArea(
-//         child: Padding(
-//           padding: const EdgeInsets.symmetric(horizontal:16),
-//           child: Column(
-//             crossAxisAlignment: CrossAxisAlignment.start,
-//             children: [
-//
-//               Obx(
-//                     () => Text(
-//                   'Question ${controller.currentIndex.value + 1} of ${controller.totalDots}',
-//                   style: AppTextStyles.medium16.copyWith(
-//                     color: AppColors.greyLight,
-//                   ),
-//                 ),
-//               ),
-//               Expanded(
-//                 child: PageView.builder(
-//                   controller: controller.pageController,
-//                   itemCount: controller.totalDots,
-//                   onPageChanged: controller.onPageChanged,
-//                   itemBuilder: (context, index) {
-//                     return Column(
-//                       crossAxisAlignment: CrossAxisAlignment.start,
-//                       children: [
-//                         const SizedBox(height: 8),
-//                         Text(
-//                           controller.questionText,
-//                           style: AppTextStyles.bold24,
-//                         ),
-//                         const Spacer(),
-//                         SizedBox(
-//                           width: double.infinity,
-//                           child: OutlinedButton(
-//                             onPressed: () {
-//                             },
-//                             child: const Text('Show Answer'),
-//                             style: OutlinedButton.styleFrom(
-//                               padding: EdgeInsets.symmetric(vertical: 16)
-//                             ),
-//                           ),
-//                         ),
-//                         const SizedBox(height: 24),
-//                       ],
-//                     );
-//                   },
-//                 ),
-//               ),
-//               Padding(
-//                 padding: const EdgeInsets.only(bottom: 24),
-//                 child: Obx(
-//                       () => Row(
-//                     mainAxisAlignment: MainAxisAlignment.center,
-//                     children: List.generate(
-//                       controller.totalDots,
-//                           (index) {
-//                         final isActive =
-//                             controller.currentIndex.value == index;
-//
-//                         return GestureDetector(
-//                           onTap: () => controller.setIndex(index),
-//                           child: Container(
-//                             margin:
-//                             const EdgeInsets.symmetric(horizontal: 4),
-//                             width: isActive ? 12 : 8,
-//                             height: isActive ? 12 : 8,
-//                             decoration: BoxDecoration(
-//                               shape: BoxShape.circle,
-//                               color: isActive
-//                                   ? Colors.yellow
-//                                   : AppColors.appBarBack,
-//                             ),
-//                           ),
-//                         );
-//                       },
-//                     ),
-//                   ),
-//                 ),
-//               ),
-//               Obx(() =>  Row(
-//                 children: [
-//                   Expanded(child: CustomButton(onTap: (){
-//                     controller.changeButton(0);
-//                   },
-//                     buttonColor: controller.select.value ==0 ? AppColors.primaryColor:AppColors.lightYellow,
-//                     childText: 'Back',)),
-//                   const SizedBox(width: 6,),
-//                   Expanded(child: CustomButton(onTap: (){
-//                     controller.changeButton(1);
-//                   }, buttonColor: controller.select.value ==1 ? AppColors.primaryColor:AppColors.lightYellow,
-//                       childText: 'Next')),
-//                 ],
-//               ) )
-//
-//             ],
-//           ),
-//         ),
-//       ),
-//     );
-//   }
-// }
-
 class VascularFlashcardsView extends GetView<VascularFlashcardsController> {
   const VascularFlashcardsView({super.key});
 
@@ -126,7 +18,7 @@ class VascularFlashcardsView extends GetView<VascularFlashcardsController> {
       appBar: CustomAppBar(title: 'Vascular Flashcards'),
       body: SafeArea(
         child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 16),
+          padding:  EdgeInsets.all(16.sp),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
@@ -156,10 +48,7 @@ class VascularFlashcardsView extends GetView<VascularFlashcardsController> {
                             controller.questionText,
                             style: AppTextStyles.bold24,
                           ),
-
                           const SizedBox(height: 16),
-
-                          // ✅ Show Answer চাপার পর question-এর নিচে answer দেখাবে
                           if (controller.showAnswer.value)
                             Text(
                               controller.answerText,
@@ -169,18 +58,19 @@ class VascularFlashcardsView extends GetView<VascularFlashcardsController> {
                             ),
 
                           const Spacer(),
-
-                          // ✅ Answer দেখানো হলে button লুকাবে
                           if (!controller.showAnswer.value)
-                            SizedBox(
-                              width: double.infinity,
-                              child: OutlinedButton(
-                                onPressed: controller.showAnswerText,
-                                style: OutlinedButton.styleFrom(
-                                  padding: const EdgeInsets.symmetric(
-                                      vertical: 16),
+                            Padding(
+                              padding: EdgeInsets.all(8.h),
+                              child: SizedBox(
+                                width: double.infinity,
+                                child: OutlinedButton(
+                                  onPressed: controller.showAnswerText,
+                                  style: OutlinedButton.styleFrom(
+                                    padding: const EdgeInsets.symmetric(
+                                        vertical: 16),
+                                  ),
+                                  child: const Text('Show Answer'),
                                 ),
-                                child: const Text('Show Answer'),
                               ),
                             ),
 

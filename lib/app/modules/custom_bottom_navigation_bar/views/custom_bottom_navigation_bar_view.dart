@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:shomoshotime/app/data/app_colors.dart';
+import 'package:shomoshotime/app/data/app_text_styles.dart';
 import 'package:shomoshotime/app/data/image_path.dart';
-
 import '../controllers/custom_bottom_navigation_bar_controller.dart';
 
 class CustomBottomNavigationBarView
@@ -12,44 +12,60 @@ class CustomBottomNavigationBarView
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      bottomNavigationBar: Obx(
-        () => BottomNavigationBar(
-          type: BottomNavigationBarType.fixed,
-          backgroundColor: AppColors.whiteColor,
-          onTap: controller.changeIndex,
-          currentIndex: controller.currentIndex.value,
-          elevation: 6,
-          items: [
-            _buildBottomNavigationBarItem(
-              iconImage: ImagePath.dashBoardIcon,
-              index: 0,
-              labelText: 'Home',
-            ),
-            _buildBottomNavigationBarItem(
-              iconImage: ImagePath.studyGuidesIcon,
-              index: 1,
-              labelText: 'Study Guides',
-            ),
-            _buildBottomNavigationBarItem(
-              iconImage: ImagePath.flashCardIcon,
-              index: 2,
-              labelText: 'FlashCards',
-            ),
-            _buildBottomNavigationBarItem(
-              iconImage: ImagePath.practiceIcon,
-              index: 3,
-              labelText: "Practice",
-            ),
-            _buildBottomNavigationBarItem(
-              iconImage: ImagePath.mockExamIcon,
-              index: 4,
-              labelText: "Mock Exams",
-            ),
-          ],
+    return Obx(
+      () => Scaffold(
+        // ---------- BODY ----------
+        body: IndexedStack(
+          index: controller.currentIndex.value,
+          children: controller.pages,
+        ),
+
+        // ---------- BOTTOM NAV ----------
+        bottomNavigationBar: Theme(
+          data: Theme.of(context).copyWith(
+            splashFactory: NoSplash.splashFactory,
+            highlightColor: Colors.transparent,
+          ),
+          child: BottomNavigationBar(
+            type: BottomNavigationBarType.fixed,
+            backgroundColor: AppColors.whiteColor,
+            onTap: controller.changeIndex,
+            currentIndex: controller.currentIndex.value,
+            elevation: 6,
+            unselectedLabelStyle: AppTextStyles.regular10,
+            selectedLabelStyle: AppTextStyles.regular10,
+            selectedItemColor: AppColors.blackColor,
+            showUnselectedLabels: true,
+            items: [
+              _buildBottomNavigationBarItem(
+                iconImage: ImagePath.dashBoardIcon,
+                index: 0,
+                labelText: 'Home',
+              ),
+              _buildBottomNavigationBarItem(
+                iconImage: ImagePath.studyGuidesIcon,
+                index: 1,
+                labelText: 'Study Guides',
+              ),
+              _buildBottomNavigationBarItem(
+                iconImage: ImagePath.flashCardIcon,
+                index: 2,
+                labelText: 'FlashCards',
+              ),
+              _buildBottomNavigationBarItem(
+                iconImage: ImagePath.practiceIcon,
+                index: 3,
+                labelText: "Practice",
+              ),
+              _buildBottomNavigationBarItem(
+                iconImage: ImagePath.mockExamIcon,
+                index: 4,
+                labelText: "Mock Exams",
+              ),
+            ],
+          ),
         ),
       ),
-      body: Obx(() => controller.pages[controller.currentIndex.value]),
     );
   }
 
@@ -62,6 +78,7 @@ class CustomBottomNavigationBarView
       icon: Obx(() {
         bool isSelected = controller.currentIndex.value == index;
         return CircleAvatar(
+          radius: 16.r, // control size
           backgroundColor: isSelected
               ? AppColors.primaryColor
               : AppColors.disableBottomNavColor,
@@ -70,7 +87,7 @@ class CustomBottomNavigationBarView
               isSelected ? Colors.white : AppColors.bottomNavIconColor,
               BlendMode.srcIn,
             ),
-            child: Image.asset(iconImage, height: 26),
+            child: Image.asset(iconImage, height: 26, width: 26),
           ),
         );
       }),

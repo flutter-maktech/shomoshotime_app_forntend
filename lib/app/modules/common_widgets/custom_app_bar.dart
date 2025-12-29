@@ -8,8 +8,14 @@ import '../../data/app_text_styles.dart';
 class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
   final String? title;
   final String? subTitle;
+  final VoidCallback? onTap;
 
-  const CustomAppBar({super.key, this.title, this.subTitle});
+  const CustomAppBar({
+    super.key,
+    this.title,
+    this.subTitle,
+    this.onTap,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -22,7 +28,7 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
         surfaceTintColor: Colors.transparent,
         leadingWidth: 40.w,
         leading: GestureDetector(
-          onTap: () => Get.back(),
+          onTap: onTap ?? () => Get.back(), // Default back action
           child: Container(
             margin: EdgeInsets.symmetric(vertical: 6.h),
             decoration: BoxDecoration(
@@ -41,7 +47,7 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
             Text(title ?? '', style: AppTextStyles.spaceGroteskMedium20),
             if (subTitle != null)
               Text(
-                subTitle ?? '',
+                subTitle!,
                 style: AppTextStyles.regular14.copyWith(
                   color: AppColors.appBarSub,
                 ),

@@ -15,9 +15,11 @@ import '../controllers/custom_bottom_navigation_bar_controller.dart';
 class CustomBottomNavigationBarBinding extends Bindings {
   @override
   void dependencies() {
-    Get.lazyPut<CustomBottomNavigationBarController>(
-      () => CustomBottomNavigationBarController(),
+    Get.put<CustomBottomNavigationBarController>(
+      CustomBottomNavigationBarController(),
+      permanent: true,
     );
+
     Get.lazyPut<HomeController>(() => HomeController());
     Get.lazyPut(() => StudyGuidesController());
     Get.lazyPut(() => FlashCardsController());
@@ -27,3 +29,4 @@ class CustomBottomNavigationBarBinding extends Bindings {
     Get.lazyPut(() => SpiPracticeBankAnsController());
   }
 }
+

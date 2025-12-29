@@ -64,6 +64,11 @@ class SignInView extends GetView<SignInController> {
                     ),
                   ),
                 ),
+                SizedBox(height: 16.h),
+                CustomButton(
+                  childText: 'Sign In',
+                  onTap: () => Get.offAllNamed(Routes.CUSTOM_BOTTOM_NAVIGATION_BAR),
+                ),
                 SizedBox(height: 16.h,),
                 Row(
                   children: [
@@ -104,12 +109,6 @@ class SignInView extends GetView<SignInController> {
                     ),
                   ),
                 ),
-                SizedBox(height: 16.h),
-                CustomButton(
-                  childText: 'Sign In',
-                  onTap: () => Get.toNamed(Routes.CUSTOM_BOTTOM_NAVIGATION_BAR),
-                ),
-                SizedBox(height: 16.h),
                 CustomRichText(
                   firstText: "Don't have ony account?",
                   secondText: 'Sign Up',

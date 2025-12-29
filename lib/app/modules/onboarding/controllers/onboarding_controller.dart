@@ -31,7 +31,7 @@ class OnboardingController extends GetxController {
       currentIndex++;
     } else {
       // Last slide → Move to next screen
-      Get.toNamed(Routes.SIGN_IN);
+      Get.offAllNamed(Routes.CUSTOM_BOTTOM_NAVIGATION_BAR);
     }
   }
 }
