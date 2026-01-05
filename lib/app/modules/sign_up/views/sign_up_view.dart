@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-
 import 'package:get/get.dart';
-
+import 'package:shomoshotime/app/utils/validators.dart';
 import '../../../data/app_colors.dart';
 import '../../../data/app_text_styles.dart';
 import '../../../data/image_path.dart';
@@ -29,6 +28,7 @@ class SignUpView extends GetView<SignUpController> {
               color: AppColors.containerColor,
             ),
             child: Form(
+              key: controller.formKey,
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.center,
                 mainAxisAlignment: MainAxisAlignment.center,
@@ -46,18 +46,18 @@ class SignUpView extends GetView<SignUpController> {
                     hintText: 'Enter your full name',
                     topHintText: 'Name',
                     keyboardType: TextInputType.text,
-                    validator: (val) => val == null || val.isEmpty
-                        ? "Enter First name"
-                        : null,
+                    validator: (val) =>
+                    val == null || val.isEmpty ? "Name is required" : null,
                   ),
                   CustomTextField(
                     controller: controller.emailController,
                     hintText: 'youremail@here',
                     topHintText: 'Email',
                     keyboardType: TextInputType.emailAddress,
+                    validator: AppValidators.email,
                   ),
                   Obx(
-                    () => CustomTextField(
+                        () => CustomTextField(
                       hintText: '**********',
                       topHintText: 'Password',
                       controller: controller.passwordController,
@@ -73,10 +73,11 @@ class SignUpView extends GetView<SignUpController> {
                               : Icons.visibility_outlined,
                         ),
                       ),
+                      validator: AppValidators.password,
                     ),
                   ),
                   Obx(
-                    () => CustomTextField(
+                        () => CustomTextField(
                       hintText: '**********',
                       topHintText: 'Confirm Password',
                       controller: controller.confirmPasswordController,
@@ -92,14 +93,29 @@ class SignUpView extends GetView<SignUpController> {
                               : Icons.visibility_outlined,
                         ),
                       ),
+                      validator: (value) => AppValidators.confirmPassword(
+                        value,
+                        controller.passwordController.text,
+                      ),
                     ),
                   ),
                   SizedBox(height: 24.h),
-                  InkWell(
-                    onTap: () {
-                      Get.offAllNamed(Routes.SIGN_UP_OTP);
-                    },
-                    child: CustomButton(childText: "Sign Up"),
+                  Obx(
+                        () => controller.isLoading.value
+                        ? SizedBox(
+                      width: 50.w,
+                      height: 50.w,
+                      child: CircularProgressIndicator(
+                        color: AppColors.primaryColor,
+                        strokeWidth: 3.w,
+                      ),
+                    )
+                        : InkWell(
+                      onTap: () {
+                        controller.signUp();
+                      },
+                      child: CustomButton(childText: "Sign Up"),
+                    ),
                   ),
                   SizedBox(height: 8.h),
                   CustomRichText(

@@ -24,9 +24,9 @@ class AppValidators {
       return 'Password must be at least 8 characters long';
     }
 
-    if (!RegExp(r'[A-Z]').hasMatch(value)) {
-      return 'Password must contain at least one capital letter';
-    }
+    // if (!RegExp(r'[A-Z]').hasMatch(value)) {
+    //   return 'Password must contain at least one capital letter';
+    // }
 
     if (!RegExp(r'[0-9]').hasMatch(value)) {
       return 'Password must contain at least one number';
@@ -41,7 +41,6 @@ class AppValidators {
 
   // Confirm Password Validator
   static String? confirmPassword(String? value, String password) {
-
     if (value == null || value.isEmpty) {
       return 'Confirm password is required';
     }
@@ -53,61 +52,21 @@ class AppValidators {
     return null;
   }
 
-  // Phone Validator (Bangladesh)
-  // static String? phone(String? value) {
-  //   if (value == null || value.trim().isEmpty) {
-  //     return 'Phone number is required';
-  //   }
-  //
-  //   if (value.length != 11) {
-  //     return 'Phone number must be 11 digits';
-  //   }
-  //
-  //   if (!value.startsWith('01')) {
-  //     return 'Enter a valid Bangladeshi phone number';
-  //   }
-  //
-  //   return null;
-  // }
+  // Phone Validator(Bangladesh)
+
+  static String? phone(String? value) {
+    if (value == null || value.trim().isEmpty) {
+      return 'Phone number is required';
+    }
+
+    if (value.length != 11) {
+      return 'Phone number must be 11 digits';
+    }
+
+    if (!value.startsWith('01')) {
+      return 'Enter a valid Bangladeshi phone number';
+    }
+
+    return null;
+  }
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-  // final passwordController = TextEditingController();
-  //
-  // CustomTextField(
-  // hintText: 'Password',
-  // obscureText: true,
-  // validator: AppValidators.password,
-  // ),
-  //
-  // CustomTextField(
-  // hintText: 'Confirm Password',
-  // obscureText: true,
-  // validator: (value) =>
-  // AppValidators.confirmPassword(
-  // value,
-  // passwordController.text,
-  // ),
-  // ),
-  //

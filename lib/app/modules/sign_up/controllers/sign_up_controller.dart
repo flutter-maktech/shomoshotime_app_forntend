@@ -1,31 +1,109 @@
+import 'dart:convert';
 import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
+import 'package:shomoshotime/app/core/api_services/network_caller.dart';
+import '../../../core/auth_model/sign_up_model.dart';
+import '../../../core/urls/urls.dart';
+import '../../../routes/app_pages.dart';
 
 class SignUpController extends GetxController {
 
-  // visibility
+  // ===== Password Visibility =====
   RxBool isVisiblePass = true.obs;
   RxBool isVisibleConfirmPass = true.obs;
 
   void isVisiblePassOnTap() {
-    isVisiblePass.value = !isVisiblePass.value;
+    isVisiblePass.toggle();
   }
-  RxBool isVisible = true.obs;
 
   void isVisibleConfirmPassOnTap() {
-    isVisibleConfirmPass.value = !isVisibleConfirmPass.value;
+    isVisibleConfirmPass.toggle();
   }
 
-
-  // validation controller
+  // ===== Form Validation =====
   final formKey = GlobalKey<FormState>();
 
-  // Text controllers
   final nameController = TextEditingController();
   final emailController = TextEditingController();
   final passwordController = TextEditingController();
   final confirmPasswordController = TextEditingController();
 
+  // ===== API =====
+  final NetworkCaller networkCaller = NetworkCaller();
 
+  RxBool isLoading = false.obs;
+  RxString message = ''.obs;
 
+  // ===== SIGN UP BUTTON ACTION =====
+  Future<void> signUp() async {
+    if (!formKey.currentState!.validate()) return;
+
+    final model = SignupModel(
+      name: nameController.text.trim(),
+      email: emailController.text.trim(),
+      password: passwordController.text.trim(),
+      passwordConfirmation: confirmPasswordController.text.trim(),
+      fcmToken: "Test Token1",
+    );
+
+    final success = await registerUser(model);
+
+    if (success) {
+      Get.offAllNamed(Routes.SIGN_UP_OTP);
+    } else {
+      Get.snackbar(
+        'Signup Failed',
+        message.value,
+        snackPosition: SnackPosition.BOTTOM,
+      );
+    }
+  }
+
+  // ===== REGISTER USER API CALL =====
+  Future<bool> registerUser(SignupModel model) async {
+    try {
+      isLoading.value = true;
+
+      final response = await networkCaller.postRequest(
+        Urls.signUpUrl,
+        model.toJson(),
+      );
+
+      print("API Response: $response");
+
+      Map<String, dynamic> data;
+
+      if (response is String) {
+        data = jsonDecode(response);
+      } else if (response is Map) {
+        data = Map<String, dynamic>.from(response);
+      } else {
+        message.value = 'Invalid server response';
+        return false;
+      }
+
+      if (data['success'] == true) {
+        message.value = data['message'] ?? 'Registration successful';
+        return true;
+      } else {
+        message.value = data['message'] ?? 'Registration failed';
+        return false;
+      }
+
+    } catch (e) {
+      message.value = 'Something went wrong';
+      return false;
+    } finally {
+      isLoading.value = false;
+    }
+  }
+
+  @override
+  void onClose() {
+    nameController.dispose();
+    emailController.dispose();
+    passwordController.dispose();
+    confirmPasswordController.dispose();
+    super.onClose();
+  }
 }

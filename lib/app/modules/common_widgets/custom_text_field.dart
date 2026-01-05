@@ -44,7 +44,7 @@ class CustomTextField extends StatelessWidget {
             obscureText: obscureText ?? false,
             decoration: InputDecoration(
               hintText: hintText,
-              // contentPadding: EdgeInsets.symmetric(horizontal: 10),
+              contentPadding: EdgeInsets.symmetric(horizontal: 10.w),
               hintStyle: AppTextStyles.regular16.copyWith(
                 color: AppColors.hintTextColor,
               ),

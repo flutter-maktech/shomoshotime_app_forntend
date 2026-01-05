@@ -11,6 +11,7 @@ import '../controllers/forgot_password_2_controller.dart';
 
 class ForgotPassword2View extends GetView<ForgotPassword2Controller> {
   const ForgotPassword2View({super.key});
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -20,10 +21,7 @@ class ForgotPassword2View extends GetView<ForgotPassword2Controller> {
             child: Padding(
               padding: EdgeInsets.symmetric(horizontal: 16.h),
               child: Container(
-                padding: EdgeInsets.symmetric(
-                  horizontal: 16.w,
-                  vertical: 40.h,
-                ),
+                padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 40.h),
                 width: double.infinity,
                 decoration: BoxDecoration(
                   color: AppColors.containerColor,
@@ -34,7 +32,7 @@ class ForgotPassword2View extends GetView<ForgotPassword2Controller> {
                   children: [
                     Image.asset(ImagePath.signIn, height: 84.h),
                     SizedBox(height: 32.h),
-                    Text('Enter code ', style: AppTextStyles.bold32),
+                    Text('Enter code', style: AppTextStyles.bold32),
                     Text(
                       "Didn't received OTP?",
                       style: AppTextStyles.regular16,
@@ -47,10 +45,13 @@ class ForgotPassword2View extends GetView<ForgotPassword2Controller> {
                     ),
                     Padding(
                       padding: EdgeInsets.symmetric(horizontal: 105.w),
-                      child: Divider(color: AppColors.primaryColor,thickness: 2,),
+                      child: Divider(
+                        color: AppColors.primaryColor,
+                        thickness: 2,
+                      ),
                     ),
                     Padding(
-                      padding:  EdgeInsets.symmetric(vertical: 32.h),
+                      padding: EdgeInsets.symmetric(vertical: 32.h),
                       child: Pinput(
                         length: 4,
                         keyboardType: TextInputType.number,
@@ -68,12 +69,13 @@ class ForgotPassword2View extends GetView<ForgotPassword2Controller> {
                       ),
                     ),
                     Padding(
-                      padding: EdgeInsets.only(top: 16.h, bottom: 16.h),
+                      padding: EdgeInsets.symmetric(vertical: 16.w),
                       child: InkWell(
-                          onTap: (){
-                            Get.offAllNamed(Routes.FORGOT_PASSWORD_3);
-                          },
-                          child: CustomButton(childText: 'Next')),
+                        onTap: () {
+                          Get.offAllNamed(Routes.FORGOT_PASSWORD_3);
+                        },
+                        child: CustomButton(childText: 'Next'),
+                      ),
                     ),
                   ],
                 ),

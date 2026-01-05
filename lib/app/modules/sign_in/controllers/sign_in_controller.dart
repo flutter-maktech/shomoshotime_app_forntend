@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
+import '../../../routes/app_pages.dart';
 
 class SignInController extends GetxController {
   // visible controller
@@ -9,8 +10,6 @@ class SignInController extends GetxController {
     isVisible.value = !isVisible.value;
   }
 
-
-
   // validation controller
   final formKey = GlobalKey<FormState>();
 
@@ -18,13 +17,11 @@ class SignInController extends GetxController {
   final emailController = TextEditingController();
   final passwordController = TextEditingController();
 
-  // Submit logic
-  void submit() {
-    if (formKey.currentState!.validate()) {
-      // all validation completed
-      Get.snackbar('Success', 'Form validation successful');
-    } else {
-      Get.snackbar('Error', 'Please fix the errors');
+  // signIn logic
+  void signIn() {
+    final isValid = formKey.currentState!.validate();
+    if (isValid) {
+      Get.offAllNamed(Routes.CUSTOM_BOTTOM_NAVIGATION_BAR);
     }
   }
 
@@ -34,6 +31,4 @@ class SignInController extends GetxController {
     passwordController.dispose();
     super.onClose();
   }
-
-
 }

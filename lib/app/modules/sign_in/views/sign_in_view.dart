@@ -45,8 +45,10 @@ class SignInView extends GetView<SignInController> {
                     controller: controller.emailController,
                     hintText: 'youremail@here',
                     topHintText: 'Email',
-                    validator: (val) =>
-                    (val == null || val.isEmpty) ? "Enter your email" : null,
+                    // validator: (val) => (val == null || val.isEmpty)
+                    //     ? "Enter your email"
+                    //     : null,
+                    validator: AppValidators.email,
                   ),
                   Obx(
                     () => CustomTextField(
@@ -64,8 +66,7 @@ class SignInView extends GetView<SignInController> {
                               : Icons.visibility_outlined,
                         ),
                       ),
-                      validator: (val) =>
-                      val == null || val.isEmpty ? "Enter Password" : null,
+                      validator: AppValidators.password,
                     ),
                   ),
                   SizedBox(height: 8.h),
@@ -79,7 +80,7 @@ class SignInView extends GetView<SignInController> {
                         'Forgot password?',
                         maxLines: 1,
                         overflow: TextOverflow.ellipsis,
-                        style: AppTextStyles.bold16.copyWith(
+                        style: AppTextStyles.bold14.copyWith(
                           color: AppColors.blueColor,
                         ),
                       ),
@@ -89,8 +90,7 @@ class SignInView extends GetView<SignInController> {
                   CustomButton(
                     childText: 'Sign In',
                     onTap: () {
-                      controller.submit();
-                      Get.offAllNamed(Routes.CUSTOM_BOTTOM_NAVIGATION_BAR);
+                      controller.signIn();
                     },
                   ),
                   SizedBox(height: 16.h),

@@ -5,6 +5,7 @@ import '../../../data/app_colors.dart';
 import '../../../data/app_text_styles.dart';
 import '../../../data/image_path.dart';
 import '../../../routes/app_pages.dart';
+import '../../../utils/validators.dart';
 import '../../common_widgets/custom_button.dart';
 import '../../common_widgets/custom_text_field.dart';
 import '../controllers/forgot_password_3_controller.dart';
@@ -27,59 +28,69 @@ class ForgotPassword3View extends GetView<ForgotPassword3Controller> {
                   color: AppColors.containerColor,
                   borderRadius: BorderRadius.circular(8.r),
                 ),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    Image.asset(ImagePath.signIn, height: 84.h),
-                    SizedBox(height: 32.h),
-                    Text('Forgot Password ', style: AppTextStyles.bold32),
-                    Text(
-                      "Enter your email to reset your password.",
-                      style: AppTextStyles.regular16,
-                      textAlign: TextAlign.center,
-                    ),
-                    Obx(
-                      () => CustomTextField(
-                        hintText: '************',
-                        topHintText: 'Add new password',
-                        obscureText: controller.isVisibleAddPass.value,
-                        suffixIcon: IconButton(
-                          onPressed: () {
-                            controller.isVisibleAddPassOnTap();
-                          },
-                          icon: Icon(
-                            controller.isVisibleAddPass.value
-                                ? Icons.visibility_off_outlined
-                                : Icons.visibility_outlined,
+                child: Form(
+                  key: controller.formKey,
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      Image.asset(ImagePath.signIn, height: 84.h),
+                      SizedBox(height: 32.h),
+                      Text('Forgot Password ', style: AppTextStyles.bold32),
+                      Text(
+                        "Enter your email to reset your password.",
+                        style: AppTextStyles.regular16,
+                        textAlign: TextAlign.center,
+                      ),
+                      Obx(
+                        () => CustomTextField(
+                          hintText: '************',
+                          topHintText: 'Add new password',
+                          controller: controller.addNewPassController,
+                          obscureText: controller.isVisibleAddPass.value,
+                          suffixIcon: IconButton(
+                            onPressed: () {
+                              controller.isVisibleAddPassOnTap();
+                            },
+                            icon: Icon(
+                              controller.isVisibleAddPass.value
+                                  ? Icons.visibility_off_outlined
+                                  : Icons.visibility_outlined,
+                            ),
+                          ),
+                          validator: AppValidators.password,
+                        ),
+                      ),
+                      Obx(
+                        () => CustomTextField(
+                          hintText: '**********',
+                          topHintText: 'Confirm Password',
+                          controller: controller.confirmPassController,
+                          obscureText: controller.isVisibleConfirmPass.value,
+                          suffixIcon: IconButton(
+                            onPressed: () {
+                              controller.isVisibleConfirmPassOnTap();
+                            },
+                            icon: Icon(
+                              controller.isVisibleConfirmPass.value
+                                  ? Icons.visibility_off_outlined
+                                  : Icons.visibility_outlined,
+                            ),
+                          ),
+                          validator: (value) => AppValidators.confirmPassword(
+                            value,
+                            controller.addNewPassController.text,
                           ),
                         ),
                       ),
-                    ),
-                    Obx(
-                      () => CustomTextField(
-                        hintText: '**********',
-                        topHintText: 'Confirm Password',
-                        obscureText: controller.isVisibleConfirmPass.value,
-                        suffixIcon: IconButton(
-                          onPressed: () {
-                            controller.isVisibleConfirmPassOnTap();
-                          },
-                          icon: Icon(
-                            controller.isVisibleConfirmPass.value
-                                ? Icons.visibility_off_outlined
-                                : Icons.visibility_outlined,
-                          ),
-                        ),
+                      SizedBox(height: 16.h),
+                      InkWell(
+                        onTap: () {
+                          controller.saveNewPass();
+                        },
+                        child: CustomButton(childText: 'Save new password'),
                       ),
-                    ),
-                    SizedBox(height: 16.h),
-                    InkWell(
-                      onTap: () {
-                        Get.offAllNamed(Routes.SIGN_IN);
-                      },
-                      child: CustomButton(childText: 'Save new password'),
-                    ),
-                  ],
+                    ],
+                  ),
                 ),
               ),
             ),
