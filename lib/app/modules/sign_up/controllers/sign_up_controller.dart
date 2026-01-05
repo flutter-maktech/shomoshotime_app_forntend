@@ -1,23 +1,31 @@
+import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
 
 class SignUpController extends GetxController {
-  //TODO: Implement SignUpController
 
-  final count = 0.obs;
-  @override
-  void onInit() {
-    super.onInit();
+  // visibility
+  RxBool isVisiblePass = true.obs;
+  RxBool isVisibleConfirmPass = true.obs;
+
+  void isVisiblePassOnTap() {
+    isVisiblePass.value = !isVisiblePass.value;
+  }
+  RxBool isVisible = true.obs;
+
+  void isVisibleConfirmPassOnTap() {
+    isVisibleConfirmPass.value = !isVisibleConfirmPass.value;
   }
 
-  @override
-  void onReady() {
-    super.onReady();
-  }
 
-  @override
-  void onClose() {
-    super.onClose();
-  }
+  // validation controller
+  final formKey = GlobalKey<FormState>();
 
-  void increment() => count.value++;
+  // Text controllers
+  final nameController = TextEditingController();
+  final emailController = TextEditingController();
+  final passwordController = TextEditingController();
+  final confirmPasswordController = TextEditingController();
+
+
+
 }

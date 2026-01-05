@@ -1,23 +1,14 @@
 import 'package:get/get.dart';
 
 class ForgotPassword3Controller extends GetxController {
-  //TODO: Implement ForgotPassword3Controller
+  RxBool isVisibleAddPass = true.obs;
+  RxBool isVisibleConfirmPass = true.obs;
 
-  final count = 0.obs;
-  @override
-  void onInit() {
-    super.onInit();
+  void isVisibleAddPassOnTap() {
+    isVisibleAddPass.value = !isVisibleAddPass.value;
   }
 
-  @override
-  void onReady() {
-    super.onReady();
+  void isVisibleConfirmPassOnTap() {
+    isVisibleConfirmPass.value = !isVisibleConfirmPass.value;
   }
-
-  @override
-  void onClose() {
-    super.onClose();
-  }
-
-  void increment() => count.value++;
 }

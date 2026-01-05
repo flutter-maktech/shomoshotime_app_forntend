@@ -28,48 +28,89 @@ class SignUpView extends GetView<SignUpController> {
               borderRadius: BorderRadius.circular(8.r),
               color: AppColors.containerColor,
             ),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.center,
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Image.asset(ImagePath.signIn, height: 84.h),
-                SizedBox(height: 32.h),
-                Text('Sign Up', style: AppTextStyles.bold32),
-                Text(
-                  'Access your account to continue.',
-                  style: AppTextStyles.regular16,
-                ),
-                SizedBox(height: 31.h),
-                CustomTextField(
-                  hintText: 'youremail@here',
-                  topHintText: 'Email',
-                ),
-                CustomTextField(
-                  hintText: '**********',
-                  topHintText: 'Password',
-                  suffixIcon: Icon(Icons.visibility_off_outlined),
-                ),
-                CustomTextField(
-                  hintText: '**********',
-                  topHintText: 'Confirm Password',
-                  suffixIcon: Icon(Icons.visibility_off_outlined),
-                ),
-                SizedBox(height: 24.h,),
-                InkWell(
-                  onTap: () {
-                    Get.offAllNamed(Routes.SIGN_UP_OTP);
-                  },
-                  child: CustomButton(childText: "Sign Up"),
-                ),
-                SizedBox(height: 8.h,),
-                CustomRichText(
-                  firstText: 'Already Have an account ?',
-                  secondText: 'Sign In',
-                  onTap: () {
-                    Get.toNamed(Routes.SIGN_IN);
-                  },
-                ),
-              ],
+            child: Form(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Image.asset(ImagePath.signIn, height: 84.h),
+                  SizedBox(height: 32.h),
+                  Text('Sign Up', style: AppTextStyles.bold32),
+                  Text(
+                    'Access your account to continue.',
+                    style: AppTextStyles.regular16,
+                  ),
+                  SizedBox(height: 31.h),
+                  CustomTextField(
+                    controller: controller.nameController,
+                    hintText: 'Enter your full name',
+                    topHintText: 'Name',
+                    keyboardType: TextInputType.text,
+                    validator: (val) => val == null || val.isEmpty
+                        ? "Enter First name"
+                        : null,
+                  ),
+                  CustomTextField(
+                    controller: controller.emailController,
+                    hintText: 'youremail@here',
+                    topHintText: 'Email',
+                    keyboardType: TextInputType.emailAddress,
+                  ),
+                  Obx(
+                    () => CustomTextField(
+                      hintText: '**********',
+                      topHintText: 'Password',
+                      controller: controller.passwordController,
+                      keyboardType: TextInputType.visiblePassword,
+                      obscureText: controller.isVisiblePass.value,
+                      suffixIcon: IconButton(
+                        onPressed: () {
+                          controller.isVisiblePassOnTap();
+                        },
+                        icon: Icon(
+                          controller.isVisiblePass.value
+                              ? Icons.visibility_off_outlined
+                              : Icons.visibility_outlined,
+                        ),
+                      ),
+                    ),
+                  ),
+                  Obx(
+                    () => CustomTextField(
+                      hintText: '**********',
+                      topHintText: 'Confirm Password',
+                      controller: controller.confirmPasswordController,
+                      keyboardType: TextInputType.visiblePassword,
+                      obscureText: controller.isVisibleConfirmPass.value,
+                      suffixIcon: IconButton(
+                        onPressed: () {
+                          controller.isVisibleConfirmPassOnTap();
+                        },
+                        icon: Icon(
+                          controller.isVisibleConfirmPass.value
+                              ? Icons.visibility_off_outlined
+                              : Icons.visibility_outlined,
+                        ),
+                      ),
+                    ),
+                  ),
+                  SizedBox(height: 24.h),
+                  InkWell(
+                    onTap: () {
+                      Get.offAllNamed(Routes.SIGN_UP_OTP);
+                    },
+                    child: CustomButton(childText: "Sign Up"),
+                  ),
+                  SizedBox(height: 8.h),
+                  CustomRichText(
+                    firstText: 'Already have an account ?',
+                    secondText: 'Sign In',
+                    onTap: () {
+                      Get.toNamed(Routes.SIGN_IN);
+                    },
+                  ),
+                ],
+              ),
             ),
           ),
         ),

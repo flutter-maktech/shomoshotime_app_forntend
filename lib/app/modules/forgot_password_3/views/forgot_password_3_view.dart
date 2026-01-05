@@ -38,14 +38,39 @@ class ForgotPassword3View extends GetView<ForgotPassword3Controller> {
                       style: AppTextStyles.regular16,
                       textAlign: TextAlign.center,
                     ),
-                    CustomTextField(
-                      hintText: '************',
-                      topHintText: 'Add new password',
+                    Obx(
+                      () => CustomTextField(
+                        hintText: '************',
+                        topHintText: 'Add new password',
+                        obscureText: controller.isVisibleAddPass.value,
+                        suffixIcon: IconButton(
+                          onPressed: () {
+                            controller.isVisibleAddPassOnTap();
+                          },
+                          icon: Icon(
+                            controller.isVisibleAddPass.value
+                                ? Icons.visibility_off_outlined
+                                : Icons.visibility_outlined,
+                          ),
+                        ),
+                      ),
                     ),
-                    CustomTextField(
-                      hintText: '**********',
-                      topHintText: 'Confirm Password',
-                      suffixIcon: Icon(Icons.visibility_off_outlined),
+                    Obx(
+                      () => CustomTextField(
+                        hintText: '**********',
+                        topHintText: 'Confirm Password',
+                        obscureText: controller.isVisibleConfirmPass.value,
+                        suffixIcon: IconButton(
+                          onPressed: () {
+                            controller.isVisibleConfirmPassOnTap();
+                          },
+                          icon: Icon(
+                            controller.isVisibleConfirmPass.value
+                                ? Icons.visibility_off_outlined
+                                : Icons.visibility_outlined,
+                          ),
+                        ),
+                      ),
                     ),
                     SizedBox(height: 16.h),
                     InkWell(
