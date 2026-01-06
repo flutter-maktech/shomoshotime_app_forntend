@@ -24,9 +24,9 @@ class AppValidators {
       return 'Password must be at least 8 characters long';
     }
 
-    // if (!RegExp(r'[A-Z]').hasMatch(value)) {
-    //   return 'Password must contain at least one capital letter';
-    // }
+    if (!RegExp(r'[A-Z]').hasMatch(value)) {
+      return 'Password must contain at least one capital letter';
+    }
 
     if (!RegExp(r'[0-9]').hasMatch(value)) {
       return 'Password must contain at least one number';

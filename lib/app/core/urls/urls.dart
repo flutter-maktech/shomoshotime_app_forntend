@@ -1,6 +1,7 @@
 class Urls {
 
- static String baseUrs = "http://127.0.0.1:8000/api/v1";
+ // static String baseUrs = "http://127.0.0.1:8000/api/v1";
+ static String baseUrs = "https://shomoshotime.mtscorporate.com/api/v1";
  static String signUpUrl = "$baseUrs/auth/register";
  static String logInUrl = "$baseUrs/auth/login";
  static String verifyOtp = "$baseUrs/auth/verify-otp";

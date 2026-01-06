@@ -101,20 +101,11 @@ class SignUpView extends GetView<SignUpController> {
                   ),
                   SizedBox(height: 24.h),
                   Obx(
-                        () => controller.isLoading.value
-                        ? SizedBox(
-                      width: 50.w,
-                      height: 50.w,
-                      child: CircularProgressIndicator(
-                        color: AppColors.primaryColor,
-                        strokeWidth: 3.w,
-                      ),
-                    )
-                        : InkWell(
+                        () => InkWell(
                       onTap: () {
                         controller.signUp();
                       },
-                      child: CustomButton(childText: "Sign Up"),
+                      child: CustomButton(childText: controller.isLoading.value ? 'Please wait...' :"Sign Up"),
                     ),
                   ),
                   SizedBox(height: 8.h),

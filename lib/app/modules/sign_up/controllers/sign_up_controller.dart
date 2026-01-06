@@ -2,12 +2,13 @@ import 'dart:convert';
 import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
 import 'package:shomoshotime/app/core/api_services/network_caller.dart';
+import 'package:shomoshotime/app/data/app_colors.dart';
 import '../../../core/auth_model/sign_up_model.dart';
 import '../../../core/urls/urls.dart';
 import '../../../routes/app_pages.dart';
+import '../../../utils/show_app_snack_bar.dart';
 
 class SignUpController extends GetxController {
-
   // ===== Password Visibility =====
   RxBool isVisiblePass = true.obs;
   RxBool isVisibleConfirmPass = true.obs;
@@ -51,10 +52,10 @@ class SignUpController extends GetxController {
     if (success) {
       Get.offAllNamed(Routes.SIGN_UP_OTP);
     } else {
-      Get.snackbar(
-        'Signup Failed',
-        message.value,
-        snackPosition: SnackPosition.BOTTOM,
+      showAppSnackBar(
+        context: Get.context!,
+        message: message.value,
+        backgroundColor: AppColors.profileFailed,
       );
     }
   }
@@ -89,7 +90,6 @@ class SignUpController extends GetxController {
         message.value = data['message'] ?? 'Registration failed';
         return false;
       }
-
     } catch (e) {
       message.value = 'Something went wrong';
       return false;
