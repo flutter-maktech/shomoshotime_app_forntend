@@ -1,10 +1,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
-
 import '../../../routes/app_pages.dart';
 
-class ForgotPassword3Controller extends GetxController {
-
+class ForgotEnterPasswordController extends GetxController {
   // visibility
   RxBool isVisibleAddPass = true.obs;
   RxBool isVisibleConfirmPass = true.obs;
@@ -17,8 +15,6 @@ class ForgotPassword3Controller extends GetxController {
     isVisibleConfirmPass.value = !isVisibleConfirmPass.value;
   }
 
-
-
   // validation
 
   final TextEditingController addNewPassController = TextEditingController();
@@ -26,20 +22,16 @@ class ForgotPassword3Controller extends GetxController {
 
   final formKey = GlobalKey<FormState>();
 
-
-  void saveNewPass (){
+  void saveNewPass() {
     final isValid = formKey.currentState!.validate();
-    if(isValid){
+    if (isValid) {
       Get.offAllNamed(Routes.SIGN_IN);
     }
   }
 
   @override
-
-  void onClose (){
+  void onClose() {
     addNewPassController.dispose();
     confirmPassController.dispose();
   }
-
-
 }

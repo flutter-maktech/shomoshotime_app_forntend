@@ -1,7 +1,7 @@
 import 'package:get/get.dart';
 
-class ForgotPassword2Controller extends GetxController {
-  //TODO: Implement ForgotPassword2Controller
+class ForgotEnterCodeController extends GetxController {
+  //TODO: Implement ForgotEnterCodeController
 
   final count = 0.obs;
   @override

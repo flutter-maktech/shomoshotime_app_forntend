@@ -1,19 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-
 import 'package:get/get.dart';
 import 'package:shomoshotime/app/modules/common_widgets/custom_button.dart';
 import 'package:shomoshotime/app/modules/common_widgets/custom_text_field.dart';
-import 'package:shomoshotime/app/routes/app_pages.dart';
 import 'package:shomoshotime/app/utils/validators.dart';
-
 import '../../../data/app_colors.dart';
 import '../../../data/app_text_styles.dart';
 import '../../../data/image_path.dart';
-import '../controllers/forgot_password_controller.dart';
+import '../controllers/forgot_enter_email_controller.dart';
 
-class ForgotPasswordView extends GetView<ForgotPasswordController> {
-  const ForgotPasswordView({super.key});
+class ForgotEnterEmailView extends GetView<ForgotEnterEmailController> {
+  const ForgotEnterEmailView({super.key});
 
   @override
   Widget build(BuildContext context) {

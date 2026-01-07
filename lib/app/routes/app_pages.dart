@@ -11,16 +11,14 @@ import '../modules/custom_bottom_navigation_bar/bindings/custom_bottom_navigatio
 import '../modules/custom_bottom_navigation_bar/views/custom_bottom_navigation_bar_view.dart';
 import '../modules/edit_profile/bindings/edit_profile_binding.dart';
 import '../modules/edit_profile/views/edit_profile_view.dart';
-import '../modules/enter_code/bindings/enter_code_binding.dart';
-import '../modules/enter_code/views/enter_code_view.dart';
 import '../modules/flash_cards/bindings/flash_cards_binding.dart';
 import '../modules/flash_cards/views/flash_cards_view.dart';
-import '../modules/forgot_password/bindings/forgot_password_binding.dart';
-import '../modules/forgot_password/views/forgot_password_view.dart';
-import '../modules/forgot_password_2/bindings/forgot_password_2_binding.dart';
-import '../modules/forgot_password_2/views/forgot_password_2_view.dart';
-import '../modules/forgot_password_3/bindings/forgot_password_3_binding.dart';
-import '../modules/forgot_password_3/views/forgot_password_3_view.dart';
+import '../modules/forgot_enter_code/bindings/forgot_enter_code_binding.dart';
+import '../modules/forgot_enter_code/views/forgot_enter_code_view.dart';
+import '../modules/forgot_enter_email/bindings/forgot_enter_email_binding.dart';
+import '../modules/forgot_enter_email/views/forgot_enter_email_view.dart';
+import '../modules/forgot_enter_password/bindings/forgot_enter_password_binding.dart';
+import '../modules/forgot_enter_password/views/forgot_enter_password_view.dart';
 import '../modules/home/bindings/home_binding.dart';
 import '../modules/home/views/home_view.dart';
 import '../modules/mock_exams/bindings/mock_exams_binding.dart';
@@ -53,8 +51,9 @@ import '../modules/subscription_plan/bindings/subscription_plan_binding.dart';
 import '../modules/subscription_plan/views/subscription_plan_view.dart';
 import '../modules/vascular_flashcards/bindings/vascular_flashcards_binding.dart';
 import '../modules/vascular_flashcards/views/vascular_flashcards_view.dart';
-
 part 'app_routes.dart';
+
+
 
 class AppPages {
   AppPages._();
@@ -153,21 +152,6 @@ class AppPages {
       binding: SignInBinding(),
     ),
     GetPage(
-      name: _Paths.FORGOT_PASSWORD,
-      page: () => const ForgotPasswordView(),
-      binding: ForgotPasswordBinding(),
-    ),
-    GetPage(
-      name: _Paths.ENTER_CODE,
-      page: () => const EnterCodeView(),
-      binding: EnterCodeBinding(),
-    ),
-    GetPage(
-      name: _Paths.FORGOT_PASSWORD_2,
-      page: () => const ForgotPassword2View(),
-      binding: ForgotPassword2Binding(),
-    ),
-    GetPage(
       name: _Paths.SIGN_UP,
       page: () => const SignUpView(),
       binding: SignUpBinding(),
@@ -176,11 +160,6 @@ class AppPages {
       name: _Paths.SIGN_UP_OTP,
       page: () => const SignUpOtpView(),
       binding: SignUpOtpBinding(),
-    ),
-    GetPage(
-      name: _Paths.FORGOT_PASSWORD_3,
-      page: () => const ForgotPassword3View(),
-      binding: ForgotPassword3Binding(),
     ),
     GetPage(
       name: _Paths.MOCK_EXAMS,
@@ -196,6 +175,21 @@ class AppPages {
       name: _Paths.ONBOARDING,
       page: () => const OnboardingView(),
       binding: OnboardingBinding(),
+    ),
+    GetPage(
+      name: _Paths.FORGOT_ENTER_CODE,
+      page: () => const ForgotEnterCodeView(),
+      binding: ForgotEnterCodeBinding(),
+    ),
+    GetPage(
+      name: _Paths.FORGOT_ENTER_EMAIL,
+      page: () => const ForgotEnterEmailView(),
+      binding: ForgotEnterEmailBinding(),
+    ),
+    GetPage(
+      name: _Paths.FORGOT_ENTER_PASSWORD,
+      page: () => const ForgotEnterPasswordView(),
+      binding: ForgotEnterPasswordBinding(),
     ),
   ];
 }

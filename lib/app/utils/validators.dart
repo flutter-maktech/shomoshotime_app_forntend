@@ -52,6 +52,21 @@ class AppValidators {
     return null;
   }
 
+  // OTP Validator
+
+  static String? otp (String? value){
+
+    if (value == null || value.isEmpty) {
+      return "OTP field is required";
+    }
+    if (value.length != 4) {
+      return "Enter 4 digit OTP";
+    }
+    return null;
+
+  }
+
+
   // Phone Validator(Bangladesh)
 
   static String? phone(String? value) {

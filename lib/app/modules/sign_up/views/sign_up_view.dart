@@ -47,7 +47,7 @@ class SignUpView extends GetView<SignUpController> {
                     topHintText: 'Name',
                     keyboardType: TextInputType.text,
                     validator: (val) =>
-                    val == null || val.isEmpty ? "Name is required" : null,
+                        val == null || val.isEmpty ? "Name is required" : null,
                   ),
                   CustomTextField(
                     controller: controller.emailController,
@@ -57,7 +57,7 @@ class SignUpView extends GetView<SignUpController> {
                     validator: AppValidators.email,
                   ),
                   Obx(
-                        () => CustomTextField(
+                    () => CustomTextField(
                       hintText: '**********',
                       topHintText: 'Password',
                       controller: controller.passwordController,
@@ -77,7 +77,7 @@ class SignUpView extends GetView<SignUpController> {
                     ),
                   ),
                   Obx(
-                        () => CustomTextField(
+                    () => CustomTextField(
                       hintText: '**********',
                       topHintText: 'Confirm Password',
                       controller: controller.confirmPasswordController,
@@ -101,11 +101,15 @@ class SignUpView extends GetView<SignUpController> {
                   ),
                   SizedBox(height: 24.h),
                   Obx(
-                        () => InkWell(
+                    () => InkWell(
                       onTap: () {
                         controller.signUp();
                       },
-                      child: CustomButton(childText: controller.isLoading.value ? 'Please wait...' :"Sign Up"),
+                      child: CustomButton(
+                        childText: controller.isLoading.value
+                            ? 'Please wait...'
+                            : "Sign Up",
+                      ),
                     ),
                   ),
                   SizedBox(height: 8.h),
