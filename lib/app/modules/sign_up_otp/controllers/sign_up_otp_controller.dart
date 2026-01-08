@@ -1,8 +1,8 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:shomoshotime/app/utils/show_app_snack_bar.dart';
-
+import '../../../all_utils/app_preference.dart';
+import '../../../all_utils/show_app_snack_bar.dart';
 import '../../../core/api_services/network_caller.dart';
 import '../../../core/auth_model/otp_verify_model.dart';
 import '../../../core/auth_model/resent_otp.dart';
@@ -56,6 +56,17 @@ class SignUpOtpController extends GetxController {
 
     isLoading.value = true;
 
+    final token = await AppPreference.getToken();
+
+    if (token == null || token.isEmpty) {
+      isLoading.value = false;
+      showAppSnackBar(
+        context: Get.context!,
+        message: "Token not found. Please signup again.",
+      );
+      return;
+    }
+
     final model = OtpVerifyModel(
       otp: int.parse(otpController.text),
     );
@@ -63,16 +74,22 @@ class SignUpOtpController extends GetxController {
     final response = await _networkCaller.postRequest(
       Urls.verifyOtp,
       model.toJson(),
+      token: token,
     );
 
     isLoading.value = false;
 
-    if (response.isSuccess) {
+    /// 🔥 FIX HERE
+    if (response is Map && response['success'] == true) {
       Get.offAllNamed(Routes.ONBOARDING);
     } else {
-      showAppSnackBar(context: Get.context!, message: "OTP verification failed");
+      showAppSnackBar(
+        context: Get.context!,
+        message: response['message'] ?? "OTP verification failed",
+      );
     }
   }
+
 
   // ================= RESEND OTP =================
   Future<void> resendOtp() async {

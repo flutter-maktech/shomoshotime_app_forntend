@@ -3,7 +3,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
 import 'package:shomoshotime/app/core/api_services/network_caller.dart';
 import 'package:shomoshotime/app/data/app_colors.dart';
-import 'package:shomoshotime/app/utils/show_app_snack_bar.dart';
+import '../../../all_utils/show_app_snack_bar.dart';
 import '../../../core/auth_model/sign_in_model.dart';
 import '../../../core/urls/urls.dart';
 import '../../../routes/app_pages.dart';

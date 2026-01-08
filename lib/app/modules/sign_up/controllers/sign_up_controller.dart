@@ -3,10 +3,11 @@ import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
 import 'package:shomoshotime/app/core/api_services/network_caller.dart';
 import 'package:shomoshotime/app/data/app_colors.dart';
+import '../../../all_utils/app_preference.dart';
+import '../../../all_utils/show_app_snack_bar.dart';
 import '../../../core/auth_model/sign_up_model.dart';
 import '../../../core/urls/urls.dart';
 import '../../../routes/app_pages.dart';
-import '../../../utils/show_app_snack_bar.dart';
 
 class SignUpController extends GetxController {
   // ===== Password Visibility =====
@@ -84,6 +85,15 @@ class SignUpController extends GetxController {
       }
 
       if (data['success'] == true) {
+        /// ✅ TOKEN EXTRACT
+        final String token = data['data']?['token'] ?? '';
+
+        /// ✅ TOKEN SAVE
+        if (token.isNotEmpty) {
+          await AppPreference.saveToken(token);
+          print('Token saved: $token');
+        }
+
         message.value = data['message'] ?? 'Registration successful';
         return true;
       } else {
@@ -97,6 +107,7 @@ class SignUpController extends GetxController {
       isLoading.value = false;
     }
   }
+
 
   @override
   void onClose() {

@@ -7,7 +7,7 @@ import 'package:shomoshotime/app/routes/app_pages.dart';
 import '../../../data/app_colors.dart';
 import '../../../data/app_text_styles.dart';
 import '../../../data/image_path.dart';
-import '../../../utils/validators.dart';
+import '../../../all_utils/validators.dart';
 import '../controllers/sign_up_otp_controller.dart';
 
 class SignUpOtpView extends GetView<SignUpOtpController> {

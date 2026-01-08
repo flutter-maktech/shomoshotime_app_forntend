@@ -7,7 +7,7 @@ import 'package:shomoshotime/app/data/image_path.dart';
 import 'package:shomoshotime/app/modules/common_widgets/custom_button.dart';
 import 'package:shomoshotime/app/modules/common_widgets/custom_rich_text.dart';
 import 'package:shomoshotime/app/routes/app_pages.dart';
-import 'package:shomoshotime/app/utils/validators.dart';
+import '../../../all_utils/validators.dart';
 import '../../common_widgets/custom_text_field.dart';
 import '../controllers/sign_in_controller.dart';
 
