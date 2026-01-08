@@ -83,6 +83,7 @@ class SignUpOtpView extends GetView<SignUpOtpController> {
                                 borderRadius: BorderRadius.circular(4),
                               ),
                             ),
+                            // onCompleted: ,
                           ),
                         ),
 

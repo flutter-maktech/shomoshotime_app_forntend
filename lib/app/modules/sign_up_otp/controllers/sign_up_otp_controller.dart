@@ -24,7 +24,7 @@ class SignUpOtpController extends GetxController {
   RxString errorMessage = ''.obs;
 
   // resend timer
-  RxInt secondsRemaining = 30.obs;
+  RxInt secondsRemaining = 10.obs;
   RxBool enableResend = false.obs;
   Timer? _timer;
 
@@ -36,7 +36,7 @@ class SignUpOtpController extends GetxController {
 
   // ================= TIMER =================
   void _startTimer() {
-    secondsRemaining.value = 30;
+    secondsRemaining.value = 10; // reset to 10 seconds
     enableResend.value = false;
 
     _timer?.cancel();
@@ -52,14 +52,56 @@ class SignUpOtpController extends GetxController {
 
   // ================= VERIFY OTP =================
   Future<void> verifyOtp() async {
+    // validate form first
     if (!formKey.currentState!.validate()) return;
 
     isLoading.value = true;
+    errorMessage.value = '';
+
+    try {
+      final token = await AppPreference.getToken();
+      if (token == null || token.isEmpty) {
+        throw Exception("Token not found. Please signup again.");
+      }
+
+      final model = OtpVerifyModel(otp: int.parse(otpController.text));
+
+      final response = await _networkCaller.postRequest(
+        Urls.verifyOtp,
+        model.toJson(),
+        token: token,
+      );
+
+      isLoading.value = false;
+
+      if (response is Map && response['success'] == true) {
+        // OTP correct, go to next page
+        Get.offAllNamed(Routes.ONBOARDING);
+      } else {
+        // OTP wrong
+        errorMessage.value = response['message'] ?? "OTP is wrong";
+        otpController.clear();
+        showAppSnackBar(
+          context: Get.context!,
+          message: errorMessage.value,
+        );
+      }
+    } catch (e) {
+      isLoading.value = false;
+      errorMessage.value = e.toString();
+      showAppSnackBar(
+        context: Get.context!,
+        message: errorMessage.value,
+      );
+    }
+  }
+
+  // ================= RESEND OTP =================
+  Future<void> resendOtp() async {
+    if (!enableResend.value) return; // check first
 
     final token = await AppPreference.getToken();
-
     if (token == null || token.isEmpty) {
-      isLoading.value = false;
       showAppSnackBar(
         context: Get.context!,
         message: "Token not found. Please signup again.",
@@ -67,53 +109,36 @@ class SignUpOtpController extends GetxController {
       return;
     }
 
-    final model = OtpVerifyModel(
-      otp: int.parse(otpController.text),
-    );
-
-    final response = await _networkCaller.postRequest(
-      Urls.verifyOtp,
-      model.toJson(),
-      token: token,
-    );
-
-    isLoading.value = false;
-
-    /// 🔥 FIX HERE
-    if (response is Map && response['success'] == true) {
-      Get.offAllNamed(Routes.ONBOARDING);
-    } else {
-      showAppSnackBar(
-        context: Get.context!,
-        message: response['message'] ?? "OTP verification failed",
-      );
-    }
-  }
-
-
-  // ================= RESEND OTP =================
-  Future<void> resendOtp() async {
-    if (!enableResend.value) return;
-
     isLoading.value = true;
 
-    final model = ResentOtpModel(
-      otp: int.parse(otpController.text),
-    );
+    try {
+      final model = ResentOtpModel(otp: 100);
+      final response = await _networkCaller.postRequest(
+        Urls.resendOtp,
+        model.toJson(),
+        token: token,
+      );
 
-    final response = await _networkCaller.postRequest(
-      Urls.resendOtp,
-      model.toJson(),
-    );
+      isLoading.value = false;
 
-    isLoading.value = false;
-
-    if (response.isSuccess) {
-      _startTimer();
-      showAppSnackBar(context: Get.context!, message: "OTP resent successfully");
-    } else {
-      showAppSnackBar(context: Get.context!, message: "Resend OTP failed");
-
+      if (response['success'] == true) {
+        showAppSnackBar(
+          context: Get.context!,
+          message: response['message'] ?? "OTP resent successfully",
+        );
+        _startTimer(); // restart countdown
+      } else {
+        showAppSnackBar(
+          context: Get.context!,
+          message: response['message'] ?? "Resend OTP failed",
+        );
+      }
+    } catch (e) {
+      isLoading.value = false;
+      showAppSnackBar(
+        context: Get.context!,
+        message: "Something went wrong. Try again.",
+      );
     }
   }
 
