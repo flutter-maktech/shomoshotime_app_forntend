@@ -41,12 +41,17 @@ class SignInController extends GetxController {
     final success = await loginUser(model);
 
     if (success) {
+      showAppSnackBar(
+        context: Get.context!,
+        message: message.value,
+        backgroundColor: AppColors.greenColor,
+      );
       Get.offAllNamed(Routes.CUSTOM_BOTTOM_NAVIGATION_BAR);
     } else {
       showAppSnackBar(
         context: Get.context!,
         message: message.value,
-        backgroundColor: AppColors.profileFailed,
+        backgroundColor: AppColors.readColor,
       );
     }
   }
@@ -80,7 +85,7 @@ class SignInController extends GetxController {
         return false;
       }
     } catch (e) {
-      message.value = 'Something went wrong';
+      message.value = 'Login failed';
       return false;
     } finally {
       isLoading.value = false;

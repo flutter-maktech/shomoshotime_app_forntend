@@ -25,8 +25,8 @@ class AppColors{
   static const Color progressContainerBg = Color(0xffF9F9FA);
   static const Color primaryGray = Color(0xffAAAAAA);
   static const Color profileActive = Color(0xff5bbeff);
-  static const Color profilePassed = Color(0xff00ff51);
-  static const Color profileFailed = Color(0xffff2200);
+  static const Color readColor = Color(0xffe41111);
+  static const Color greenColor = Color(0xff00c800);
   static const Color editProfileTextField = Color(0xfff4f4f4);
   static const Color subscriptionPlanSelectedPlan = Color(0xffffdd8d);
   static const Color subscriptionPlanWeekly = Color(0xfffcefd1);

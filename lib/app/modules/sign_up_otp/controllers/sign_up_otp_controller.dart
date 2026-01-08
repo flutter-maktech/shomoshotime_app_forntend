@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:shomoshotime/app/data/app_colors.dart';
 import '../../../all_utils/app_preference.dart';
 import '../../../all_utils/show_app_snack_bar.dart';
 import '../../../core/api_services/network_caller.dart';
@@ -77,13 +78,18 @@ class SignUpOtpController extends GetxController {
       if (response is Map && response['success'] == true) {
         // OTP correct, go to next page
         Get.offAllNamed(Routes.ONBOARDING);
+        showAppSnackBar(
+          context: Get.context!,
+          message: "Sign up successfully",
+          backgroundColor: AppColors.greenColor,
+        );
       } else {
         // OTP wrong
         errorMessage.value = response['message'] ?? "OTP is wrong";
-        otpController.clear();
         showAppSnackBar(
           context: Get.context!,
           message: errorMessage.value,
+          backgroundColor: AppColors.readColor,
         );
       }
     } catch (e) {
@@ -91,7 +97,9 @@ class SignUpOtpController extends GetxController {
       errorMessage.value = e.toString();
       showAppSnackBar(
         context: Get.context!,
-        message: errorMessage.value,
+        // message: "OTP is wrong \n ${errorMessage.value}" ,
+        message: "OTP is wrong",
+        backgroundColor: AppColors.readColor,
       );
     }
   }
@@ -124,13 +132,17 @@ class SignUpOtpController extends GetxController {
       if (response['success'] == true) {
         showAppSnackBar(
           context: Get.context!,
-          message: response['message'] ?? "OTP resent successfully",
+          // message: response['message'] ?? "OTP resent successfully",
+          message: "OTP resent successfully",
+          backgroundColor: AppColors.greenColor,
         );
         _startTimer(); // restart countdown
       } else {
         showAppSnackBar(
           context: Get.context!,
-          message: response['message'] ?? "Resend OTP failed",
+          // message: response['message'] ?? "Resend OTP failed",
+          message: "Resend OTP failed",
+            backgroundColor: AppColors.readColor,
         );
       }
     } catch (e) {
@@ -138,6 +150,7 @@ class SignUpOtpController extends GetxController {
       showAppSnackBar(
         context: Get.context!,
         message: "Something went wrong. Try again.",
+        backgroundColor: AppColors.readColor,
       );
     }
   }

@@ -52,11 +52,16 @@ class SignUpController extends GetxController {
 
     if (success) {
       Get.offAllNamed(Routes.SIGN_UP_OTP);
+      showAppSnackBar(
+        context: Get.context!,
+        message: "OTP sent",
+        backgroundColor: AppColors.greenColor,
+      );
     } else {
       showAppSnackBar(
         context: Get.context!,
         message: message.value,
-        backgroundColor: AppColors.profileFailed,
+        backgroundColor: AppColors.readColor,
       );
     }
   }
@@ -85,10 +90,10 @@ class SignUpController extends GetxController {
       }
 
       if (data['success'] == true) {
-        /// ✅ TOKEN EXTRACT
+        //TOKEN EXTRACT
         final String token = data['data']?['token'] ?? '';
 
-        /// ✅ TOKEN SAVE
+        // TOKEN SAVE
         if (token.isNotEmpty) {
           await AppPreference.saveToken(token);
           print('Token saved: $token');

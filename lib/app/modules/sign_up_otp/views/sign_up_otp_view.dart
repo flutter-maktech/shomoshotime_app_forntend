@@ -71,7 +71,6 @@ class SignUpOtpView extends GetView<SignUpOtpController> {
                             controller: controller.otpController,
                             length: 4,
                             keyboardType: TextInputType.number,
-                            validator: AppValidators.otp,
                             defaultPinTheme: PinTheme(
                               height: 50.h,
                               width: 55.w,
@@ -83,7 +82,7 @@ class SignUpOtpView extends GetView<SignUpOtpController> {
                                 borderRadius: BorderRadius.circular(4),
                               ),
                             ),
-                            // onCompleted: ,
+                            validator: AppValidators.otp,
                           ),
                         ),
 
