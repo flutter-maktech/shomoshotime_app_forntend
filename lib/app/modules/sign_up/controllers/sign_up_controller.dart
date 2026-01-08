@@ -10,7 +10,7 @@ import '../../../core/urls/urls.dart';
 import '../../../routes/app_pages.dart';
 
 class SignUpController extends GetxController {
-  // ===== Password Visibility =====
+  // Password Visibility
   RxBool isVisiblePass = true.obs;
   RxBool isVisibleConfirmPass = true.obs;
 
@@ -22,7 +22,7 @@ class SignUpController extends GetxController {
     isVisibleConfirmPass.toggle();
   }
 
-  // ===== Form Validation =====
+  //Form Validation
   final formKey = GlobalKey<FormState>();
 
   final nameController = TextEditingController();
@@ -30,13 +30,13 @@ class SignUpController extends GetxController {
   final passwordController = TextEditingController();
   final confirmPasswordController = TextEditingController();
 
-  // ===== API =====
+  //   API
   final NetworkCaller networkCaller = NetworkCaller();
 
   RxBool isLoading = false.obs;
   RxString message = ''.obs;
 
-  // ===== SIGN UP BUTTON ACTION =====
+  // SIGN UP BUTTON ACTION
   Future<void> signUp() async {
     if (!formKey.currentState!.validate()) return;
 
@@ -66,7 +66,7 @@ class SignUpController extends GetxController {
     }
   }
 
-  // ===== REGISTER USER API CALL =====
+  //  REGISTER USER API CALL
   Future<bool> registerUser(SignupModel model) async {
     try {
       isLoading.value = true;

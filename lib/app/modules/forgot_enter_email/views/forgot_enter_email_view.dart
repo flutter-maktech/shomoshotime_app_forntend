@@ -54,6 +54,7 @@ class ForgotEnterEmailView extends GetView<ForgotEnterEmailController> {
                           childText: 'Send code',
                           onTap: () {
                             controller.forgotSendCode();
+                            print("on Tap");
                           },
                         ),
                       ),

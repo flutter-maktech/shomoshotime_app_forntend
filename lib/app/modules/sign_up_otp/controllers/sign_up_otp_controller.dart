@@ -25,7 +25,7 @@ class SignUpOtpController extends GetxController {
   RxString errorMessage = ''.obs;
 
   // resend timer
-  RxInt secondsRemaining = 10.obs;
+  RxInt secondsRemaining = 29.obs;
   RxBool enableResend = false.obs;
   Timer? _timer;
 
@@ -35,9 +35,9 @@ class SignUpOtpController extends GetxController {
     super.onInit();
   }
 
-  // ================= TIMER =================
+  // TIMER
   void _startTimer() {
-    secondsRemaining.value = 10; // reset to 10 seconds
+    secondsRemaining.value = 29; // reset to 10 seconds
     enableResend.value = false;
 
     _timer?.cancel();
@@ -51,7 +51,7 @@ class SignUpOtpController extends GetxController {
     });
   }
 
-  // ================= VERIFY OTP =================
+  // VERIFY OTP
   Future<void> verifyOtp() async {
     // validate form first
     if (!formKey.currentState!.validate()) return;
@@ -104,7 +104,7 @@ class SignUpOtpController extends GetxController {
     }
   }
 
-  // ================= RESEND OTP =================
+  // RESEND OTP
   Future<void> resendOtp() async {
     if (!enableResend.value) return; // check first
 
@@ -142,7 +142,7 @@ class SignUpOtpController extends GetxController {
           context: Get.context!,
           // message: response['message'] ?? "Resend OTP failed",
           message: "Resend OTP failed",
-            backgroundColor: AppColors.readColor,
+          backgroundColor: AppColors.readColor,
         );
       }
     } catch (e) {
