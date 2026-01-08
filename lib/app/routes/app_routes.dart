@@ -23,15 +23,14 @@ abstract class Routes {
   static const PAYMENT_METHODS = _Paths.PAYMENT_METHODS;
   static const ADD_CARD = _Paths.ADD_CARD;
   static const SIGN_IN = _Paths.SIGN_IN;
-  static const FORGOT_PASSWORD = _Paths.FORGOT_PASSWORD;
-  static const ENTER_CODE = _Paths.ENTER_CODE;
-  static const FORGOT_PASSWORD_2 = _Paths.FORGOT_PASSWORD_2;
   static const SIGN_UP = _Paths.SIGN_UP;
   static const SIGN_UP_OTP = _Paths.SIGN_UP_OTP;
-  static const FORGOT_PASSWORD_3 = _Paths.FORGOT_PASSWORD_3;
   static const MOCK_EXAMS = _Paths.MOCK_EXAMS;
   static const NOTIFICATION = _Paths.NOTIFICATION;
   static const ONBOARDING = _Paths.ONBOARDING;
+  static const FORGOT_ENTER_CODE = _Paths.FORGOT_ENTER_CODE;
+  static const FORGOT_ENTER_EMAIL = _Paths.FORGOT_ENTER_EMAIL;
+  static const FORGOT_ENTER_PASSWORD = _Paths.FORGOT_ENTER_PASSWORD;
 }
 
 abstract class _Paths {
@@ -40,9 +39,6 @@ abstract class _Paths {
   static const HOME = '/home';
   static const PROFILE = '/profile';
   static const SIGN_IN = '/sign-in';
-  static const FORGOT_PASSWORD = '/forgot-password';
-  static const ENTER_CODE = '/enter-code';
-  static const FORGOT_PASSWORD_2 = '/forgot-password-2';
   static const SIGN_UP = '/sign-up';
   static const SIGN_UP_OTP = '/sign-up-otp';
   static const PRACTICE = '/practice';
@@ -60,8 +56,10 @@ abstract class _Paths {
   static const SUBSCRIPTION_PLAN = '/subscription-plan';
   static const PAYMENT_METHODS = '/payment-methods';
   static const ADD_CARD = '/add-card';
-  static const FORGOT_PASSWORD_3 = '/forgot-password-3';
   static const MOCK_EXAMS = '/mock-exams';
   static const NOTIFICATION = '/notification';
   static const ONBOARDING = '/onboarding';
+  static const FORGOT_ENTER_CODE = '/forgot-enter-code';
+  static const FORGOT_ENTER_EMAIL = '/forgot-enter-email';
+  static const FORGOT_ENTER_PASSWORD = '/forgot-enter-password';
 }
