@@ -47,7 +47,6 @@ class SignUpController extends GetxController {
       passwordConfirmation: confirmPasswordController.text.trim(),
       fcmToken: "Test Token1",
     );
-
     final success = await registerUser(model);
 
     if (success) {
@@ -92,7 +91,6 @@ class SignUpController extends GetxController {
       if (data['success'] == true) {
         //TOKEN EXTRACT
         final String token = data['data']?['token'] ?? '';
-
         // TOKEN SAVE
         if (token.isNotEmpty) {
           await AppPreference.saveToken(token);

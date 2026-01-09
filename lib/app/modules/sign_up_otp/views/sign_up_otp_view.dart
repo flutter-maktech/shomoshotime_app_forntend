@@ -46,7 +46,7 @@ class SignUpOtpView extends GetView<SignUpOtpController> {
                         ),
                         // Resend
                         Obx(
-                              () => InkWell(
+                          () => InkWell(
                             onTap: controller.enableResend.value
                                 ? controller.resendOtp
                                 : null,
@@ -59,7 +59,9 @@ class SignUpOtpView extends GetView<SignUpOtpController> {
                                     ? AppColors.primaryColor
                                     : Colors.grey,
                                 decoration: TextDecoration.underline,
-                                decorationColor: controller.enableResend.value ?  AppColors.primaryColor : AppColors.containerColor ,
+                                decorationColor: controller.enableResend.value
+                                    ? AppColors.primaryColor
+                                    : AppColors.containerColor,
                               ),
                             ),
                           ),
@@ -96,7 +98,7 @@ class SignUpOtpView extends GetView<SignUpOtpController> {
                               }
                             },
                             child: Obx(
-                                  () => CustomButton(
+                              () => CustomButton(
                                 childText: controller.isLoading.value
                                     ? 'Please wait...'
                                     : 'Next',

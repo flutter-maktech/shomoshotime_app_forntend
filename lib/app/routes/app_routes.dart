@@ -6,8 +6,7 @@ abstract class Routes {
 
   static const HOME = _Paths.HOME;
   static const PROFILE = _Paths.PROFILE;
-  static const CUSTOM_BOTTOM_NAVIGATION_BAR =
-      _Paths.CUSTOM_BOTTOM_NAVIGATION_BAR;
+  static const CUSTOM_BOTTOM_NAVIGATION_BAR = _Paths.CUSTOM_BOTTOM_NAVIGATION_BAR;
   static const STUDY_GUIDES = _Paths.STUDY_GUIDES;
   static const SPI_FUNDAMENTALS = _Paths.SPI_FUNDAMENTALS;
   static const FLASH_CARDS = _Paths.FLASH_CARDS;

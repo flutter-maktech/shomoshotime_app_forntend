@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
 import 'package:shomoshotime/app/data/app_colors.dart';
+import '../../../all_utils/app_preference.dart';
 import '../../../routes/app_pages.dart';
 import '../../../core/api_services/network_caller.dart';
 import '../../../core/urls/urls.dart';
@@ -23,10 +24,8 @@ class ForgotEnterEmailController extends GetxController {
     _isLoading.value = true;
 
     final model = ForgotEmailModel(email: emailController.text.trim());
-
     final NetworkCaller networkCaller = NetworkCaller();
 
-    // API call
     final response = await networkCaller.postRequest(
       Urls.forgotPassword,
       model.toJson(),
@@ -34,20 +33,31 @@ class ForgotEnterEmailController extends GetxController {
 
     _isLoading.value = false;
 
-    // Response handle
     final bool isSuccess = response['success'] == true;
     final String message = response['message'] ?? 'Something went wrong';
 
     if (isSuccess) {
+      final String? token = response['data']?['token'];
+
+      if (token == null || token.isEmpty) {
+        showAppSnackBar(
+          context: Get.context!,
+          message: 'Token not found from server',
+          backgroundColor: AppColors.readColor,
+        );
+        return;
+      }
+
+      await AppPreference.saveEmail(emailController.text.trim());
+      await AppPreference.saveToken(token);
+
       showAppSnackBar(
         context: Get.context!,
         message: message,
         backgroundColor: AppColors.greenColor,
       );
 
-      // Small delay to ensure snackbar is shown
-      await Future.delayed(Duration(milliseconds: 300));
-
+      await Future.delayed(const Duration(milliseconds: 300));
       Get.toNamed(Routes.FORGOT_ENTER_CODE);
     } else {
       showAppSnackBar(
@@ -57,6 +67,7 @@ class ForgotEnterEmailController extends GetxController {
       );
     }
   }
+
 
   @override
   void onClose() {
