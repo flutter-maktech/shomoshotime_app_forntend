@@ -1,30 +1,23 @@
+import 'package:get/get.dart';
 import 'dart:async';
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
 import 'package:shomoshotime/app/data/app_colors.dart';
 import '../../../all_utils/app_preference.dart';
 import '../../../all_utils/show_app_snack_bar.dart';
 import '../../../core/api_services/network_caller.dart';
-import '../../../core/auth_model/otp_verify_model.dart';
-import '../../../core/auth_model/resent_otp.dart';
+import '../../../core/auth_model/forgot_verify_otp_model.dart';
 import '../../../core/urls/urls.dart';
 import '../../../routes/app_pages.dart';
 
-class SignUpOtpController extends GetxController {
-  // form key
+class ForgotEnterCodeController extends GetxController {
   final GlobalKey<FormState> formKey = GlobalKey<FormState>();
-
-  // otp controller
   final TextEditingController otpController = TextEditingController();
 
-  // api
-  final NetworkCaller _networkCaller = NetworkCaller();
+  final NetworkCaller networkCaller = NetworkCaller();
 
-  // state
   RxBool isLoading = false.obs;
   RxString errorMessage = ''.obs;
 
-  // resend timer
   RxInt secondsRemaining = 29.obs;
   RxBool enableResend = false.obs;
   Timer? _timer;
@@ -35,9 +28,8 @@ class SignUpOtpController extends GetxController {
     super.onInit();
   }
 
-  // TIMER
   void _startTimer() {
-    secondsRemaining.value = 29; // reset to 10 seconds
+    secondsRemaining.value = 29;
     enableResend.value = false;
 
     _timer?.cancel();
@@ -51,9 +43,8 @@ class SignUpOtpController extends GetxController {
     });
   }
 
-  // VERIFY OTP
-  Future<void> verifyOtp() async {
-    // validate form first
+  // Verify OTP API call
+  Future<void> verifyOtp(String email) async {
     if (!formKey.currentState!.validate()) return;
 
     isLoading.value = true;
@@ -61,31 +52,33 @@ class SignUpOtpController extends GetxController {
 
     try {
       final token = await AppPreference.getToken();
-      if (token == null || token.isEmpty) {
-        throw Exception("Token not found. Please signup again.");
+
+      if (token == null) {
+        throw Exception('Token or Email not found. Please resend OTP.');
       }
 
-      final model = OtpVerifyModel(otp: int.parse(otpController.text));
-
-      final response = await _networkCaller.postRequest(
-        Urls.verifyOtp,
-        model.toJson(),
+      final model = ForgotVerifyOtpModel(
+        email: email,
         token: token,
+        otp: otpController.text.trim(),
+      );
+
+      final response = await networkCaller.postRequest(
+        Urls.forgotVerifyOtp,
+        model.toJson(),
       );
 
       isLoading.value = false;
 
-      if (response is Map && response['success'] == true) {
-        // OTP correct, go to next page
-        Get.offAllNamed(Routes.ONBOARDING);
+      if (response['success'] == true) {
+        Get.offAllNamed(Routes.FORGOT_ENTER_PASSWORD, arguments: {'email' : email});
         showAppSnackBar(
           context: Get.context!,
-          message: "Sign up successfully",
+          message: response['message'] ?? 'OTP verified successfully',
           backgroundColor: AppColors.greenColor,
         );
       } else {
-        // OTP wrong
-        errorMessage.value = response['message'] ?? "OTP is wrong";
+        errorMessage.value = response['message'] ?? 'Invalid OTP';
         showAppSnackBar(
           context: Get.context!,
           message: errorMessage.value,
@@ -97,22 +90,23 @@ class SignUpOtpController extends GetxController {
       errorMessage.value = e.toString();
       showAppSnackBar(
         context: Get.context!,
-        // message: "OTP is wrong \n ${errorMessage.value}" ,
-        message: "OTP is wrong",
+        message: "Error verifying OTP:\n${errorMessage.value}",
         backgroundColor: AppColors.readColor,
       );
     }
   }
 
-  // RESEND OTP
-  Future<void> resendOtp() async {
-    if (!enableResend.value) return; // check first
+  //Resend OTP API call
+  Future<void> resendOtp(String email) async {
+    if (!enableResend.value) return;
 
     final token = await AppPreference.getToken();
-    if (token == null || token.isEmpty) {
+
+    if (token == null) {
       showAppSnackBar(
         context: Get.context!,
-        message: "Token not found. Please signup again.",
+        message: 'Token or Email not found. Please resend OTP.',
+        backgroundColor: AppColors.readColor,
       );
       return;
     }
@@ -120,11 +114,12 @@ class SignUpOtpController extends GetxController {
     isLoading.value = true;
 
     try {
-      final model = ResentOtpModel(otp: 100);
-      final response = await _networkCaller.postRequest(
-        Urls.resendOtp,
-        model.toJson(),
-        token: token,
+      final response = await networkCaller.postRequest(
+        Urls.forgotResendOtp,
+        {
+          'email': email,
+          'token': token,
+        },
       );
 
       isLoading.value = false;
@@ -132,16 +127,14 @@ class SignUpOtpController extends GetxController {
       if (response['success'] == true) {
         showAppSnackBar(
           context: Get.context!,
-          // message: response['message'] ?? "OTP resent successfully",
-          message: "OTP resent successfully",
+          message: response['message'] ?? 'OTP resent successfully',
           backgroundColor: AppColors.greenColor,
         );
         _startTimer(); // restart countdown
       } else {
         showAppSnackBar(
           context: Get.context!,
-          // message: response['message'] ?? "Resend OTP failed",
-          message: "Resend OTP failed",
+          message: response['message'] ?? 'Resend OTP failed',
           backgroundColor: AppColors.readColor,
         );
       }
@@ -149,7 +142,7 @@ class SignUpOtpController extends GetxController {
       isLoading.value = false;
       showAppSnackBar(
         context: Get.context!,
-        message: "Something went wrong. Try again.",
+        message: 'Error resending OTP:\n${e.toString()}',
         backgroundColor: AppColors.readColor,
       );
     }
