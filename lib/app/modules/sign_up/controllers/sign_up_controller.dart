@@ -10,7 +10,7 @@ import '../../../core/urls/urls.dart';
 import '../../../routes/app_pages.dart';
 
 class SignUpController extends GetxController {
-  // ===== Password Visibility =====
+  // Password Visibility
   RxBool isVisiblePass = true.obs;
   RxBool isVisibleConfirmPass = true.obs;
 
@@ -22,7 +22,7 @@ class SignUpController extends GetxController {
     isVisibleConfirmPass.toggle();
   }
 
-  // ===== Form Validation =====
+  //Form Validation
   final formKey = GlobalKey<FormState>();
 
   final nameController = TextEditingController();
@@ -30,13 +30,13 @@ class SignUpController extends GetxController {
   final passwordController = TextEditingController();
   final confirmPasswordController = TextEditingController();
 
-  // ===== API =====
+  //   API
   final NetworkCaller networkCaller = NetworkCaller();
 
   RxBool isLoading = false.obs;
   RxString message = ''.obs;
 
-  // ===== SIGN UP BUTTON ACTION =====
+  // SIGN UP BUTTON ACTION
   Future<void> signUp() async {
     if (!formKey.currentState!.validate()) return;
 
@@ -47,21 +47,25 @@ class SignUpController extends GetxController {
       passwordConfirmation: confirmPasswordController.text.trim(),
       fcmToken: "Test Token1",
     );
-
     final success = await registerUser(model);
 
     if (success) {
       Get.offAllNamed(Routes.SIGN_UP_OTP);
+      showAppSnackBar(
+        context: Get.context!,
+        message: "OTP sent",
+        backgroundColor: AppColors.greenColor,
+      );
     } else {
       showAppSnackBar(
         context: Get.context!,
         message: message.value,
-        backgroundColor: AppColors.profileFailed,
+        backgroundColor: AppColors.readColor,
       );
     }
   }
 
-  // ===== REGISTER USER API CALL =====
+  //  REGISTER USER API CALL
   Future<bool> registerUser(SignupModel model) async {
     try {
       isLoading.value = true;
@@ -85,10 +89,9 @@ class SignUpController extends GetxController {
       }
 
       if (data['success'] == true) {
-        /// ✅ TOKEN EXTRACT
+        //TOKEN EXTRACT
         final String token = data['data']?['token'] ?? '';
-
-        /// ✅ TOKEN SAVE
+        // TOKEN SAVE
         if (token.isNotEmpty) {
           await AppPreference.saveToken(token);
           print('Token saved: $token');

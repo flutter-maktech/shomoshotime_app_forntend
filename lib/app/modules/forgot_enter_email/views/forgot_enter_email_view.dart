@@ -50,11 +50,15 @@ class ForgotEnterEmailView extends GetView<ForgotEnterEmailController> {
                       ),
                       Padding(
                         padding: EdgeInsets.only(top: 30.h, bottom: 40.h),
-                        child: CustomButton(
-                          childText: 'Send code',
-                          onTap: () {
-                            controller.forgotSendCode();
-                          },
+                        child: Obx(
+                          () => CustomButton(
+                            childText: controller.isLoading
+                                ? 'Please wait...'
+                                : 'Send code',
+                            onTap: controller.isLoading
+                                ? null
+                                : controller.forgotSendCode,
+                          ),
                         ),
                       ),
                     ],

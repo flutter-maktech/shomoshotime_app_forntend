@@ -112,9 +112,9 @@ class SpiPracticeBankAnsView extends GetView<SpiPracticeBankQusController> {
                       width: double.infinity,
                       decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(4.sp),
-                        color: AppColors.profileFailed.withAlpha(20),
+                        color: AppColors.readColor.withAlpha(20),
                         border: Border.all(
-                          color: AppColors.profileFailed.withAlpha(35),
+                          color: AppColors.readColor.withAlpha(35),
                         ),
                       ),
                       child: Column(
@@ -126,7 +126,7 @@ class SpiPracticeBankAnsView extends GetView<SpiPracticeBankQusController> {
                               Text(
                                 "Incorrect",
                                 style: AppTextStyles.regular14.copyWith(
-                                  color: AppColors.profileFailed,
+                                  color: AppColors.readColor,
                                 ),
                               ),
                             ],

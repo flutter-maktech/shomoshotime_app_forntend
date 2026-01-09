@@ -46,7 +46,7 @@ class SignUpOtpView extends GetView<SignUpOtpController> {
                         ),
                         // Resend
                         Obx(
-                              () => InkWell(
+                          () => InkWell(
                             onTap: controller.enableResend.value
                                 ? controller.resendOtp
                                 : null,
@@ -59,7 +59,9 @@ class SignUpOtpView extends GetView<SignUpOtpController> {
                                     ? AppColors.primaryColor
                                     : Colors.grey,
                                 decoration: TextDecoration.underline,
-                                decorationColor: controller.enableResend.value ?  AppColors.primaryColor : AppColors.containerColor ,
+                                decorationColor: controller.enableResend.value
+                                    ? AppColors.primaryColor
+                                    : AppColors.containerColor,
                               ),
                             ),
                           ),
@@ -71,7 +73,6 @@ class SignUpOtpView extends GetView<SignUpOtpController> {
                             controller: controller.otpController,
                             length: 4,
                             keyboardType: TextInputType.number,
-                            validator: AppValidators.otp,
                             defaultPinTheme: PinTheme(
                               height: 50.h,
                               width: 55.w,
@@ -83,7 +84,7 @@ class SignUpOtpView extends GetView<SignUpOtpController> {
                                 borderRadius: BorderRadius.circular(4),
                               ),
                             ),
-                            // onCompleted: ,
+                            validator: AppValidators.otp,
                           ),
                         ),
 
@@ -97,7 +98,7 @@ class SignUpOtpView extends GetView<SignUpOtpController> {
                               }
                             },
                             child: Obx(
-                                  () => CustomButton(
+                              () => CustomButton(
                                 childText: controller.isLoading.value
                                     ? 'Please wait...'
                                     : 'Next',
