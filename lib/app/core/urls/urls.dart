@@ -7,5 +7,6 @@ class Urls {
  static String verifyOtp = "$baseUrs/auth/verify-otp";
  static String resendOtp = "$baseUrs/auth/resend-otp";
  static String changePassword = "$baseUrs/auth/change-password";
+ static String studyGuideList = "$baseUrs/user/content/study-guides";
 
 }

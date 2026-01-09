@@ -1,4 +1,3 @@
-import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
 import 'package:shomoshotime/app/modules/flash_cards/views/flash_cards_view.dart';
 import 'package:shomoshotime/app/modules/home/views/home_view.dart';

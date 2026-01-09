@@ -53,12 +53,10 @@ import '../modules/vascular_flashcards/bindings/vascular_flashcards_binding.dart
 import '../modules/vascular_flashcards/views/vascular_flashcards_view.dart';
 part 'app_routes.dart';
 
-
-
 class AppPages {
   AppPages._();
 
-  static const INITIAL = Routes.SIGN_IN;
+  static const INITIAL = Routes.CUSTOM_BOTTOM_NAVIGATION_BAR;
 
   static final routes = [
     GetPage(
