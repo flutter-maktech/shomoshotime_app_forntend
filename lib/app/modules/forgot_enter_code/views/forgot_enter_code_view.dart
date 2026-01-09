@@ -6,7 +6,6 @@ import '../../../all_utils/validators.dart';
 import '../../../data/app_colors.dart';
 import '../../../data/app_text_styles.dart';
 import '../../../data/image_path.dart';
-import '../../../routes/app_pages.dart';
 import '../../common_widgets/custom_button.dart';
 import '../controllers/forgot_enter_code_controller.dart';
 
@@ -15,6 +14,7 @@ class ForgotEnterCodeView extends GetView<ForgotEnterCodeController> {
 
   @override
   Widget build(BuildContext context) {
+    final String email = Get.arguments['email'] ?? '';
     return Scaffold(
       body: Center(
         child: SafeArea(
@@ -22,10 +22,7 @@ class ForgotEnterCodeView extends GetView<ForgotEnterCodeController> {
             child: Padding(
               padding: EdgeInsets.symmetric(horizontal: 16.w),
               child: Container(
-                padding: EdgeInsets.symmetric(
-                  horizontal: 16.w,
-                  vertical: 40.h,
-                ),
+                padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 40.h),
                 width: double.infinity,
                 decoration: BoxDecoration(
                   color: AppColors.containerColor,
@@ -47,9 +44,9 @@ class ForgotEnterCodeView extends GetView<ForgotEnterCodeController> {
 
                       // Resend OTP
                       Obx(
-                            () => InkWell(
+                        () => InkWell(
                           onTap: controller.enableResend.value
-                              ? controller.resendOtp
+                              ? () => controller.resendOtp(email)
                               : null,
                           child: Text(
                             controller.enableResend.value
@@ -92,17 +89,18 @@ class ForgotEnterCodeView extends GetView<ForgotEnterCodeController> {
 
                       // Verify Button
                       Obx(
-                            () => CustomButton(
+                        () => CustomButton(
                           childText: controller.isLoading.value
                               ? 'Please wait...'
                               : 'Next',
                           onTap: controller.isLoading.value
                               ? null
                               : () {
-                            if (controller.formKey.currentState!.validate()) {
-                              controller.verifyOtp();
-                            }
-                          },
+                                  if (controller.formKey.currentState!
+                                      .validate()) {
+                                    controller.verifyOtp(email);
+                                  }
+                                },
                         ),
                       ),
                     ],

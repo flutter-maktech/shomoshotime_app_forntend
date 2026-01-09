@@ -24,8 +24,10 @@ class ForgotEnterEmailController extends GetxController {
     _isLoading.value = true;
 
     final model = ForgotEmailModel(email: emailController.text.trim());
+
     final NetworkCaller networkCaller = NetworkCaller();
 
+    // API call
     final response = await networkCaller.postRequest(
       Urls.forgotPassword,
       model.toJson(),
@@ -33,32 +35,24 @@ class ForgotEnterEmailController extends GetxController {
 
     _isLoading.value = false;
 
+    // Response handle
     final bool isSuccess = response['success'] == true;
     final String message = response['message'] ?? 'Something went wrong';
+    final token = response['data']['token'];
+
+    AppPreference.saveToken(token);
 
     if (isSuccess) {
-      final String? token = response['data']?['token'];
-
-      if (token == null || token.isEmpty) {
-        showAppSnackBar(
-          context: Get.context!,
-          message: 'Token not found from server',
-          backgroundColor: AppColors.readColor,
-        );
-        return;
-      }
-
-      await AppPreference.saveEmail(emailController.text.trim());
-      await AppPreference.saveToken(token);
-
       showAppSnackBar(
         context: Get.context!,
         message: message,
         backgroundColor: AppColors.greenColor,
       );
 
-      await Future.delayed(const Duration(milliseconds: 300));
-      Get.toNamed(Routes.FORGOT_ENTER_CODE);
+      // Small delay to ensure snack bar is shown
+      await Future.delayed(Duration(milliseconds: 300));
+
+      Get.toNamed(Routes.FORGOT_ENTER_CODE,arguments: {'email': emailController.text});
     } else {
       showAppSnackBar(
         context: Get.context!,
@@ -67,7 +61,6 @@ class ForgotEnterEmailController extends GetxController {
       );
     }
   }
-
 
   @override
   void onClose() {

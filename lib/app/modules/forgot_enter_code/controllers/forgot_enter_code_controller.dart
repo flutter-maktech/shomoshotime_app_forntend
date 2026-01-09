@@ -44,7 +44,7 @@ class ForgotEnterCodeController extends GetxController {
   }
 
   // Verify OTP API call
-  Future<void> verifyOtp() async {
+  Future<void> verifyOtp(String email) async {
     if (!formKey.currentState!.validate()) return;
 
     isLoading.value = true;
@@ -52,9 +52,8 @@ class ForgotEnterCodeController extends GetxController {
 
     try {
       final token = await AppPreference.getToken();
-      final email = await AppPreference.getEmail();
 
-      if (token == null || email == null) {
+      if (token == null) {
         throw Exception('Token or Email not found. Please resend OTP.');
       }
 
@@ -72,7 +71,7 @@ class ForgotEnterCodeController extends GetxController {
       isLoading.value = false;
 
       if (response['success'] == true) {
-        Get.offAllNamed(Routes.FORGOT_ENTER_PASSWORD);
+        Get.offAllNamed(Routes.FORGOT_ENTER_PASSWORD, arguments: {'email' : email});
         showAppSnackBar(
           context: Get.context!,
           message: response['message'] ?? 'OTP verified successfully',
@@ -98,13 +97,12 @@ class ForgotEnterCodeController extends GetxController {
   }
 
   //Resend OTP API call
-  Future<void> resendOtp() async {
+  Future<void> resendOtp(String email) async {
     if (!enableResend.value) return;
 
     final token = await AppPreference.getToken();
-    final email = await AppPreference.getEmail();
 
-    if (token == null || email == null) {
+    if (token == null) {
       showAppSnackBar(
         context: Get.context!,
         message: 'Token or Email not found. Please resend OTP.',
