@@ -9,6 +9,7 @@ import 'package:shomoshotime/app/modules/common_widgets/custom_button.dart';
 import 'package:shomoshotime/app/modules/common_widgets/primary_app_bar.dart';
 
 import '../../../routes/app_pages.dart';
+import '../../common_widgets/custom_text_form_field.dart';
 import '../controllers/flash_cards_controller.dart';
 
 class FlashCardsView extends GetView<FlashCardsController> {
@@ -46,7 +47,7 @@ class FlashCardsView extends GetView<FlashCardsController> {
                       ),
                     ),
                     const SizedBox(height: 16),
-                    searchButtonWidget(),
+                    CustomTextFormField(),
                   ],
                 ),
               ),
@@ -226,20 +227,6 @@ class FlashCardsView extends GetView<FlashCardsController> {
             ),
           ),
         ),
-      ),
-    );
-  }
-
-  Widget searchButtonWidget() {
-    return TextFormField(
-      decoration: InputDecoration(
-        hintText: 'Search',
-        prefixIcon: Icon(Icons.search, size: 16),
-        filled: true,
-        fillColor: AppColors.appBarBack,
-        contentPadding: EdgeInsets.symmetric(horizontal: 16, vertical: 12),
-        border: OutlineInputBorder(borderSide: BorderSide.none),
-        focusedBorder: OutlineInputBorder(borderSide: BorderSide.none),
       ),
     );
   }

@@ -46,14 +46,15 @@ class StudyGuideResponse {
   }
 }
 // Individual study guide model
+// Individual study guide model with nullable fields
 class StudyGuide {
   final int id;
   final int sortOrder;
   final String title;
   final String subtitle;
   final String category;
-  final String file;
-  final String fileType;
+  final String? file; // Nullable
+  final String? fileType; // Nullable
   final int type;
   final String typeLabel;
   final bool isPublish;
@@ -69,8 +70,8 @@ class StudyGuide {
     required this.title,
     required this.subtitle,
     required this.category,
-    required this.file,
-    required this.fileType,
+    this.file, // Nullable
+    this.fileType, // Nullable
     required this.type,
     required this.typeLabel,
     required this.isPublish,
@@ -88,8 +89,8 @@ class StudyGuide {
       title: json['title'] as String,
       subtitle: json['subtitle'] as String,
       category: json['category'] as String,
-      file: json['file'] as String,
-      fileType: json['file_type'] as String,
+      file: json['file'] as String?, // Nullable cast
+      fileType: json['file_type'] as String?, // Nullable cast
       type: json['type'] as int,
       typeLabel: json['type_label'] as String,
       isPublish: json['is_publish'] as bool,
@@ -238,19 +239,22 @@ class MetaLink {
 }
 extension StudyGuideExtensions on StudyGuide {
   // Check if it's a PDF file
-  bool get isPdf => fileType.toLowerCase() == 'pdf';
+  bool get isPdf => fileType?.toLowerCase() == 'pdf';
   
   // Check if it's a flashcard
   bool get isFlashcard => type == 1;
   
   // Get full file URL (assuming you have a base URL)
-  String get fullFileUrl => 'https://shomoshotime.mtscorporate.com/$file';
+  String? get fullFileUrl => file != null 
+      ? 'https://shomoshotime.mtscorporate.com/$file' 
+      : null;
   
   // Get formatted date
   DateTime? get parsedCreatedAt {
     try {
+      if (createdAt == 'N/A') return null;
       // Parse "07 Jan, 2026 11:41 AM"
-      return DateFormat('dd MMM, yyyy hh:mm a').parse(createdAt);
+      return DateFormat('dd MMM, yyyh hh:mm a').parse(createdAt);
     } catch (e) {
       return null;
     }
