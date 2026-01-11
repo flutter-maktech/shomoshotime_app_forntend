@@ -10,19 +10,14 @@ import '../../common_widgets/custom_button.dart';
 import '../widgets/audio_player_widget.dart';
 
 class StudyGuideCard extends StatelessWidget {
-  
-  const StudyGuideCard({
-    super.key,
-  });
+  const StudyGuideCard({super.key, required this.category, required this.cardTitle, required this.cardSubtitle});
+  final String category, cardTitle, cardSubtitle;
 
   @override
   Widget build(BuildContext context) {
     return Container(
       width: double.infinity,
-      padding: EdgeInsets.symmetric(
-        horizontal: 18.w,
-        vertical: 18.h,
-      ),
+      padding: EdgeInsets.symmetric(horizontal: 18.w, vertical: 18.h),
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(12),
         color: AppColors.appBarBack,
@@ -41,10 +36,7 @@ class StudyGuideCard extends StatelessWidget {
                   color: AppColors.primaryColor,
                 ),
                 child: Center(
-                  child: Image.asset(
-                    ImagePath.bookImage,
-                    scale: 4,
-                  ),
+                  child: Image.asset(ImagePath.bookImage, scale: 4),
                 ),
               ),
               Spacer(),
@@ -59,7 +51,7 @@ class StudyGuideCard extends StatelessWidget {
                     vertical: 6.h,
                   ),
                   child: Text(
-                    "SPI",
+                    category,
                     style: AppTextStyles.regular14.copyWith(
                       color: AppColors.appBarSub,
                     ),
@@ -68,29 +60,24 @@ class StudyGuideCard extends StatelessWidget {
               ),
             ],
           ),
-          
+
           SizedBox(height: 10.h),
-          
+
           // Title and description
+          Text(cardTitle, style: AppTextStyles.bold18),
+
           Text(
-            'SPI Fundamentals',
-            style: AppTextStyles.bold18,
+            cardSubtitle,
+            style: AppTextStyles.regular14.copyWith(color: AppColors.appBarSub),
           ),
-          
-          Text(
-            'Master the core principles of ultrasound physics and',
-            style: AppTextStyles.regular14.copyWith(
-              color: AppColors.appBarSub,
-            ),
-          ),
-          
+
           SizedBox(height: 15.h),
-          
+
           // Audio player
           AudioPlayerWidget(),
-          
+
           SizedBox(height: 20.h),
-          
+
           // Continue button
           CustomButton(
             onTap: () {

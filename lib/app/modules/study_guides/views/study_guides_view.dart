@@ -44,7 +44,11 @@ class StudyGuidesView extends GetView<StudyGuidesController> {
             SliverToBoxAdapter(
               child: Padding(
                 padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 16.h),
-                child: CategoryFilterBar(),
+                child: Obx(()=> CategoryFilterBar(
+                    isAudioView:
+                        controller.select.value == 1, // 0 for PDF, 1 for Audio
+                  ),
+                ),
               ),
             ),
 

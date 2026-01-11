@@ -9,10 +9,12 @@ class CustomBuildContainer extends StatelessWidget {
     super.key,
     required this.title,
     required this.index,
+    required this.category,
   });
 
   final String title;
   final int index;
+  final String category;
 
   @override
   Widget build(BuildContext context) {
@@ -21,6 +23,7 @@ class CustomBuildContainer extends StatelessWidget {
       () => GestureDetector(
         onTap: () {
           controller.changeIndex(index);
+          controller.setSelectedCategory(category);
         },
         child: Container(
           decoration: BoxDecoration(

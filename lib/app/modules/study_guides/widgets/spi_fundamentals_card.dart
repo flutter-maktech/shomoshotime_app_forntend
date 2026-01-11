@@ -6,6 +6,7 @@ import 'package:shomoshotime/app/data/app_colors.dart';
 import 'package:shomoshotime/app/data/app_text_styles.dart';
 import 'package:shomoshotime/app/data/image_path.dart';
 import 'package:shomoshotime/app/modules/common_widgets/custom_button.dart';
+import 'package:shomoshotime/app/modules/common_widgets/custom_progress.dart';
 import 'package:shomoshotime/app/routes/app_pages.dart';
 
 class SpiFundamentalsCard extends StatelessWidget {
@@ -13,6 +14,7 @@ class SpiFundamentalsCard extends StatelessWidget {
   final String chapterText; // e.g. "5/13 Chapters"
   final String progressPercentText; // e.g. "75%"
   final double progressValue;
+  final String category, cardTitle, cardSubtitle;
 
   const SpiFundamentalsCard({
     super.key,
@@ -20,6 +22,9 @@ class SpiFundamentalsCard extends StatelessWidget {
     required this.chapterText,
     required this.progressPercentText,
     required this.progressValue,
+    required this.category,
+    required this.cardTitle,
+    required this.cardSubtitle,
   });
 
   @override
@@ -57,7 +62,7 @@ class SpiFundamentalsCard extends StatelessWidget {
                 child: Padding(
                   padding: EdgeInsets.symmetric(horizontal: 10, vertical: 6),
                   child: Text(
-                    "SPI",
+                    category,
                     style: AppTextStyles.regular14.copyWith(
                       color: AppColors.appBarSub,
                     ),
@@ -67,9 +72,9 @@ class SpiFundamentalsCard extends StatelessWidget {
             ],
           ),
           SizedBox(height: 10.h),
-          Text('SPI Fundamentals', style: AppTextStyles.bold18),
+          Text(cardTitle, style: AppTextStyles.bold18),
           Text(
-            'Master the core principles of ultrasound physics and',
+            cardSubtitle,
             style: AppTextStyles.regular14.copyWith(color: AppColors.appBarSub),
           ),
           SizedBox(height: 15.h),
@@ -114,13 +119,7 @@ class SpiFundamentalsCard extends StatelessWidget {
           ),
 
           SizedBox(height: 2.h),
-          LinearProgressIndicator(
-            borderRadius: BorderRadius.circular(6),
-            minHeight: 8,
-            valueColor: AlwaysStoppedAnimation(AppColors.primaryColor),
-            backgroundColor: AppColors.whiteColor,
-            value: progressValue,
-          ),
+          CustomProgress(progress: 0.75),
           SizedBox(height: 20.h),
           CustomButton(
             childText: 'Continue Reading',
