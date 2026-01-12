@@ -6,7 +6,8 @@ abstract class Routes {
 
   static const HOME = _Paths.HOME;
   static const PROFILE = _Paths.PROFILE;
-  static const CUSTOM_BOTTOM_NAVIGATION_BAR = _Paths.CUSTOM_BOTTOM_NAVIGATION_BAR;
+  static const CUSTOM_BOTTOM_NAVIGATION_BAR =
+      _Paths.CUSTOM_BOTTOM_NAVIGATION_BAR;
   static const STUDY_GUIDES = _Paths.STUDY_GUIDES;
   static const SPI_FUNDAMENTALS = _Paths.SPI_FUNDAMENTALS;
   static const FLASH_CARDS = _Paths.FLASH_CARDS;
@@ -30,6 +31,7 @@ abstract class Routes {
   static const FORGOT_ENTER_CODE = _Paths.FORGOT_ENTER_CODE;
   static const FORGOT_ENTER_EMAIL = _Paths.FORGOT_ENTER_EMAIL;
   static const FORGOT_ENTER_PASSWORD = _Paths.FORGOT_ENTER_PASSWORD;
+  static const SPLASH = _Paths.SPLASH;
 }
 
 abstract class _Paths {
@@ -61,4 +63,5 @@ abstract class _Paths {
   static const FORGOT_ENTER_CODE = '/forgot-enter-code';
   static const FORGOT_ENTER_EMAIL = '/forgot-enter-email';
   static const FORGOT_ENTER_PASSWORD = '/forgot-enter-password';
+  static const SPLASH = '/splash';
 }

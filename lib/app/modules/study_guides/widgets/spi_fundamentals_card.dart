@@ -15,6 +15,7 @@ class SpiFundamentalsCard extends StatelessWidget {
   final String progressPercentText; // e.g. "75%"
   final double progressValue;
   final String category, cardTitle, cardSubtitle;
+  final String fileUrl;
 
   const SpiFundamentalsCard({
     super.key,
@@ -25,6 +26,7 @@ class SpiFundamentalsCard extends StatelessWidget {
     required this.category,
     required this.cardTitle,
     required this.cardSubtitle,
+    required this.fileUrl,
   });
 
   @override
@@ -101,6 +103,7 @@ class SpiFundamentalsCard extends StatelessWidget {
           ),
           SizedBox(height: 20.h),
           Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Text(
                 'Progress',
@@ -108,7 +111,6 @@ class SpiFundamentalsCard extends StatelessWidget {
                   color: AppColors.appBarSub,
                 ),
               ),
-              Spacer(),
               Text(
                 progressPercentText,
                 style: AppTextStyles.regular14.copyWith(
@@ -123,7 +125,10 @@ class SpiFundamentalsCard extends StatelessWidget {
           SizedBox(height: 20.h),
           CustomButton(
             childText: 'Continue Reading',
-            onTap: () => Get.toNamed(Routes.SPI_FUNDAMENTALS),
+            onTap: () => Get.toNamed(
+              Routes.SPI_FUNDAMENTALS,
+              arguments: {'pdfUrl': fileUrl, 'title': cardTitle},
+            ),
           ),
         ],
       ),

@@ -1,4 +1,5 @@
 import 'package:get/get.dart';
+
 import '../modules/add_card/bindings/add_card_binding.dart';
 import '../modules/add_card/views/add_card_view.dart';
 import '../modules/audio_play_card/bindings/audio_play_card_binding.dart';
@@ -45,20 +46,21 @@ import '../modules/spi_practice_bank_ans/bindings/spi_practice_bank_ans_binding.
 import '../modules/spi_practice_bank_ans/views/spi_practice_bank_ans_view.dart';
 import '../modules/spi_practice_bank_qus/bindings/spi_practice_bank_qus_binding.dart';
 import '../modules/spi_practice_bank_qus/views/spi_practice_bank_qus_view.dart';
+import '../modules/splash/bindings/splash_binding.dart';
+import '../modules/splash/views/splash_view.dart';
 import '../modules/study_guides/bindings/study_guides_binding.dart';
 import '../modules/study_guides/views/study_guides_view.dart';
 import '../modules/subscription_plan/bindings/subscription_plan_binding.dart';
 import '../modules/subscription_plan/views/subscription_plan_view.dart';
 import '../modules/vascular_flashcards/bindings/vascular_flashcards_binding.dart';
 import '../modules/vascular_flashcards/views/vascular_flashcards_view.dart';
+
 part 'app_routes.dart';
-
-
 
 class AppPages {
   AppPages._();
 
-  static const INITIAL = Routes.CUSTOM_BOTTOM_NAVIGATION_BAR;
+  static const INITIAL = Routes.SPLASH;
 
   static final routes = [
     GetPage(
@@ -190,6 +192,11 @@ class AppPages {
       name: _Paths.FORGOT_ENTER_PASSWORD,
       page: () => const ForgotEnterPasswordView(),
       binding: ForgotEnterPasswordBinding(),
+    ),
+    GetPage(
+      name: _Paths.SPLASH,
+      page: () => const SplashView(),
+      binding: SplashBinding(),
     ),
   ];
 }

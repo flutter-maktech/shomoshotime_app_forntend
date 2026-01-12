@@ -89,6 +89,7 @@ class SpiCardList extends StatelessWidget {
               cardTitle: studyGuide.title,
               cardSubtitle: studyGuide.subtitle,
               category: studyGuide.category,
+              fileUrl: studyGuide.file!,
               timeText: '9 hours',
               chapterText: '5/12 Chapters',
               progressPercentText: '75%',

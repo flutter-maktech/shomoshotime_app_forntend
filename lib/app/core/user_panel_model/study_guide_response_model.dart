@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:intl/intl.dart';
+import '../urls/urls.dart';
 
 // Main API response model
 class StudyGuideResponse {
@@ -246,7 +247,7 @@ extension StudyGuideExtensions on StudyGuide {
   
   // Get full file URL (assuming you have a base URL)
   String? get fullFileUrl => file != null 
-      ? 'https://shomoshotime.mtscorporate.com/$file' 
+      ? '${Urls.baseDomain}/$file' 
       : null;
   
   // Get formatted date
