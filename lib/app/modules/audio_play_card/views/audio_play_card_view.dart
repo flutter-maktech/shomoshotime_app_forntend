@@ -3,12 +3,9 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import 'package:get/get.dart';
 import 'package:shomoshotime/app/data/app_colors.dart';
-import 'package:shomoshotime/app/data/app_text_styles.dart';
-import 'package:shomoshotime/app/data/image_path.dart';
 import 'package:shomoshotime/app/modules/common_widgets/custom_app_bar.dart';
-import 'package:shomoshotime/app/modules/common_widgets/custom_button.dart';
+import 'package:shomoshotime/app/modules/study_guides/widgets/audio_player_widget.dart';
 
-import '../../common_widgets/primary_app_bar.dart';
 import '../controllers/audio_play_card_controller.dart';
 
 class AudioPlayCardView extends GetView<AudioPlayCardController> {
@@ -16,14 +13,18 @@ class AudioPlayCardView extends GetView<AudioPlayCardController> {
 
   @override
   Widget build(BuildContext context) {
+    final args = Get.arguments as Map<String, dynamic>;
+    final String title = args['title'];
+    final String subtitle = args['subtitle'];
+    final String audioUrl = args['audioUrl'];
     return Scaffold(
       body: SafeArea(
         child: CustomScrollView(
           slivers: [
             SliverToBoxAdapter(
               child: CustomAppBar(
-                title: 'Study Guides',
-                subTitle: 'Comprehensive study materials for all specialties',
+                title: title,
+                subTitle: subtitle,
               ),
             ),
             SliverToBoxAdapter(
@@ -55,107 +56,7 @@ class AudioPlayCardView extends GetView<AudioPlayCardController> {
                         ),
                       ),
                       SizedBox(height: 10.h),
-                      Obx(() {
-                        return Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Slider(
-                              min: 0,
-                              max: controller.duration.value.inSeconds
-                                  .toDouble(),
-                              value: controller.position.value.inSeconds
-                                  .clamp(0, controller.duration.value.inSeconds)
-                                  .toDouble(),
-                              activeColor: Colors.orange,
-                              inactiveColor: Colors.grey.shade300,
-                              onChanged: (value) async {
-                                final newPos = Duration(seconds: value.toInt());
-                                await controller.seekTo(newPos);
-                              },
-                            ),
-
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                Text(
-                                  controller.formatTime(
-                                    controller.position.value,
-                                  ),
-                                ),
-                                Text(
-                                  controller.formatTime(
-                                    (controller.duration.value -
-                                                controller.position.value)
-                                            .isNegative
-                                        ? Duration.zero
-                                        : controller.duration.value -
-                                              controller.position.value,
-                                  ),
-                                ),
-                              ],
-                            ),
-
-                            SizedBox(height: 15),
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                // 1 sec BACK button
-                                IconButton(
-                                  icon: Icon(Icons.replay_10, size: 30),
-                                  onPressed: () async {
-                                    final newPos =
-                                        controller.position.value -
-                                        Duration(seconds: 2);
-                                    await controller.seekTo(
-                                      newPos.isNegative
-                                          ? Duration.zero
-                                          : newPos,
-                                    );
-                                  },
-                                ),
-                                SizedBox(width: 20),
-                                CircleAvatar(
-                                  radius: 35,
-                                  backgroundColor: Colors.black,
-                                  child: IconButton(
-                                    icon: Icon(
-                                      controller.isPlaying.value
-                                          ? Icons.pause
-                                          : Icons.play_arrow,
-                                      color: Colors.white,
-                                      size: 45,
-                                    ),
-                                    onPressed: () async {
-                                      if (controller.isPlaying.value) {
-                                        await controller.pauseAudio();
-                                      } else {
-                                        await controller.playAudio(
-                                          "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3",
-                                        );
-                                      }
-                                    },
-                                  ),
-                                ),
-
-                                SizedBox(width: 20),
-
-                                IconButton(
-                                  icon: Icon(Icons.forward_10, size: 30),
-                                  onPressed: () async {
-                                    final newPos =
-                                        controller.position.value +
-                                        Duration(seconds: 2);
-
-                                    if (newPos < controller.duration.value) {
-                                      await controller.seekTo(newPos);
-                                    }
-                                  },
-                                ),
-                              ],
-                            ),
-                          ],
-                        );
-                      }),
+                      AudioPlayerWidget(audioUrl: audioUrl),
                       SizedBox(height: 20.h),
                     ],
                   ),

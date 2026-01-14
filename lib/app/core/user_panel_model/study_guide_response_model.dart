@@ -46,6 +46,7 @@ class StudyGuideResponse {
     return StudyGuideResponse.fromJson(json);
   }
 }
+
 // Individual study guide model
 // Individual study guide model with nullable fields
 class StudyGuide {
@@ -56,6 +57,7 @@ class StudyGuide {
   final String category;
   final String? file; // Nullable
   final String? fileType; // Nullable
+  final int? totalPage;
   final int type;
   final String typeLabel;
   final bool isPublish;
@@ -64,6 +66,8 @@ class StudyGuide {
   final String updatedAt;
   final String createrName;
   final String updaterName;
+  final double studyGuidePercentCompleted;
+  final int studyGuideActivitiesCount;
 
   StudyGuide({
     required this.id,
@@ -81,6 +85,8 @@ class StudyGuide {
     required this.updatedAt,
     required this.createrName,
     required this.updaterName,
+    this.totalPage,
+    required this.studyGuidePercentCompleted, required this.studyGuideActivitiesCount,
   });
 
   factory StudyGuide.fromJson(Map<String, dynamic> json) {
@@ -100,6 +106,10 @@ class StudyGuide {
       updatedAt: json['updated_at'] as String,
       createrName: json['creater_name'] as String,
       updaterName: json['updater_name'] as String,
+      totalPage: json['total_pages'] as int?,
+      studyGuidePercentCompleted:
+          (json['study_guide_percent_completed'] as num?)?.toDouble() ?? 0.0,
+      studyGuideActivitiesCount: json['study_guide_activities_count'] as int? ?? 0,
     );
   }
 
@@ -120,9 +130,11 @@ class StudyGuide {
       'updated_at': updatedAt,
       'creater_name': createrName,
       'updater_name': updaterName,
+      'total_page': totalPage,
     };
   }
 }
+
 // Links model for pagination
 class Links {
   final String first;
@@ -130,12 +142,7 @@ class Links {
   final String? prev;
   final String? next;
 
-  Links({
-    required this.first,
-    required this.last,
-    this.prev,
-    this.next,
-  });
+  Links({required this.first, required this.last, this.prev, this.next});
 
   factory Links.fromJson(Map<String, dynamic> json) {
     return Links(
@@ -147,14 +154,10 @@ class Links {
   }
 
   Map<String, dynamic> toJson() {
-    return {
-      'first': first,
-      'last': last,
-      'prev': prev,
-      'next': next,
-    };
+    return {'first': first, 'last': last, 'prev': prev, 'next': next};
   }
 }
+
 // Meta model for pagination metadata
 class Meta {
   final int currentPage;
@@ -213,12 +216,7 @@ class MetaLink {
   final int? page;
   final bool active;
 
-  MetaLink({
-    this.url,
-    required this.label,
-    this.page,
-    required this.active,
-  });
+  MetaLink({this.url, required this.label, this.page, required this.active});
 
   factory MetaLink.fromJson(Map<String, dynamic> json) {
     return MetaLink(
@@ -230,26 +228,20 @@ class MetaLink {
   }
 
   Map<String, dynamic> toJson() {
-    return {
-      'url': url,
-      'label': label,
-      'page': page,
-      'active': active,
-    };
+    return {'url': url, 'label': label, 'page': page, 'active': active};
   }
 }
+
 extension StudyGuideExtensions on StudyGuide {
   // Check if it's a PDF file
   bool get isPdf => fileType?.toLowerCase() == 'pdf';
-  
+
   // Check if it's a flashcard
   bool get isFlashcard => type == 1;
-  
+
   // Get full file URL (assuming you have a base URL)
-  String? get fullFileUrl => file != null 
-      ? '${Urls.baseDomain}/$file' 
-      : null;
-  
+  String? get fullFileUrl => file != null ? '${Urls.baseDomain}/$file' : null;
+
   // Get formatted date
   DateTime? get parsedCreatedAt {
     try {

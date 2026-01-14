@@ -12,4 +12,5 @@ class Urls {
   static String forgotResendOtp = "$baseUrs/auth/forgot-resend-otp";
   static String resetPassword = "$baseUrs/auth/reset-password";
   static String studyGuideList = "$baseUrs/user/content/study-guides";
+  static String nextPage = "$baseUrs/user/content/next-page";
 }

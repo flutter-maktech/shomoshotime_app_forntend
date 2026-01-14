@@ -10,8 +10,14 @@ import '../../common_widgets/custom_button.dart';
 import '../widgets/audio_player_widget.dart';
 
 class StudyGuideCard extends StatelessWidget {
-  const StudyGuideCard({super.key, required this.category, required this.cardTitle, required this.cardSubtitle});
-  final String category, cardTitle, cardSubtitle;
+  const StudyGuideCard({
+    super.key,
+    required this.category,
+    required this.cardTitle,
+    required this.cardSubtitle,
+    required this.audioUrl,
+  });
+  final String category, cardTitle, cardSubtitle, audioUrl;
 
   @override
   Widget build(BuildContext context) {
@@ -74,14 +80,21 @@ class StudyGuideCard extends StatelessWidget {
           SizedBox(height: 15.h),
 
           // Audio player
-          AudioPlayerWidget(),
+          AudioPlayerWidget(audioUrl: audioUrl),
 
           SizedBox(height: 20.h),
 
           // Continue button
           CustomButton(
             onTap: () {
-              Get.toNamed(Routes.AUDIO_PLAY_CARD);
+              Get.toNamed(
+                Routes.AUDIO_PLAY_CARD,
+                arguments: {
+                  'title': cardTitle,
+                  'subtitle': cardSubtitle,
+                  'audioUrl': audioUrl,
+                },
+              );
             },
             childText: 'Continue to listen',
           ),

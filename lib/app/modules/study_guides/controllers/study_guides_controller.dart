@@ -1,7 +1,11 @@
 // StudyGuidesController.dart
+import 'dart:io';
+
 import 'package:audioplayers/audioplayers.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:http/http.dart' as http;
+import 'package:path_provider/path_provider.dart';
 
 import '../../../core/user_panel_model/study_guide_response_model.dart';
 
@@ -9,25 +13,27 @@ class StudyGuidesController extends GetxController {
   RxInt select = 0.obs;
   TextEditingController searchController = TextEditingController();
   RxString searchQuery = ''.obs;
-  
+
   void changeValue(int index) {
     select.value = index;
-    
+
     // Reset category filter when switching between PDF and Audio tabs
     selectIndex.value = 0;
     selectedCategory.value = 'All';
-    
+
     // Clear search when switching tabs
     clearSearch();
-    
-    print('Switched to ${index == 0 ? "PDF" : "Audio"} view, reset category to All');
+
+    print(
+      'Switched to ${index == 0 ? "PDF" : "Audio"} view, reset category to All',
+    );
   }
-  
+
   void onSearchChanged(String query) {
     searchQuery.value = query.trim();
     print('Search query: $query');
   }
-  
+
   void clearSearch() {
     searchController.clear();
     searchQuery.value = '';
@@ -56,10 +62,10 @@ class StudyGuidesController extends GetxController {
       final fileType = guide.fileType?.toLowerCase() ?? '';
       if (isAudioView) {
         return fileType == 'mp3' ||
-               fileType == 'm4a' ||
-               fileType == 'wav' ||
-               fileType == 'audio' ||
-               fileType == 'aac';
+            fileType == 'm4a' ||
+            fileType == 'wav' ||
+            fileType == 'audio' ||
+            fileType == 'aac';
       } else {
         return fileType == 'pdf';
       }
@@ -80,24 +86,27 @@ class StudyGuidesController extends GetxController {
       final subtitle = guide.subtitle.toLowerCase();
       final category = guide.category.toLowerCase();
       final query = searchQuery.toLowerCase();
-      
-      return title.contains(query) || 
-             subtitle.contains(query) || 
-             category.contains(query);
+
+      return title.contains(query) ||
+          subtitle.contains(query) ||
+          category.contains(query);
     }).toList();
   }
 
   // For category filter bar - get unique categories for current view
-  List<String> getCategoriesForView(List<StudyGuide> studyGuides, bool isAudioView) {
+  List<String> getCategoriesForView(
+    List<StudyGuide> studyGuides,
+    bool isAudioView,
+  ) {
     // Filter by file type
     final filteredGuides = studyGuides.where((guide) {
       final fileType = guide.fileType?.toLowerCase() ?? '';
       if (isAudioView) {
         return fileType == 'mp3' ||
-               fileType == 'm4a' ||
-               fileType == 'wav' ||
-               fileType == 'audio' ||
-               fileType == 'aac';
+            fileType == 'm4a' ||
+            fileType == 'wav' ||
+            fileType == 'audio' ||
+            fileType == 'aac';
       } else {
         return fileType == 'pdf';
       }
@@ -115,13 +124,17 @@ class StudyGuidesController extends GetxController {
 
   final audioPlayer = AudioPlayer();
   var isPlaying = false.obs;
+  var isLoading = false.obs;
   var duration = Duration.zero.obs;
   var position = Duration.zero.obs;
+  RxString currentAudioUrl = ''.obs;
+final Map<String, String> _localAudioPaths = {};
+
 
   @override
   void onInit() {
     super.onInit();
-    
+
     // Clear search when controller is initialized
     searchController.addListener(() {
       searchQuery.value = searchController.text.trim();
@@ -143,8 +156,48 @@ class StudyGuidesController extends GetxController {
   }
 
   Future<void> playAudio(String url) async {
-    await audioPlayer.play(UrlSource(url));
+  try {
+    if (currentAudioUrl.value != url) {
+      await audioPlayer.stop(); // stop previous audio
+      position.value = Duration.zero;
+    }
+
+    currentAudioUrl.value = url;
+
+    // 1️⃣ Check if we already have a local file for this URL
+    String? localPath = _localAudioPaths[url];
+    if (localPath != null && File(localPath).existsSync()) {
+      await audioPlayer.play(DeviceFileSource(localPath));
+      return;
+    }
+
+    // 2️⃣ Download audio
+    isLoading.value = true; // start loading
+
+    final response = await http.get(Uri.parse(url));
+    if (response.statusCode != 200) {
+      throw Exception('Failed to download audio');
+    }
+
+    // 3️⃣ Save to temporary directory
+    final tempDir = await getTemporaryDirectory();
+    final fileName = url.split('/').last;
+    final filePath = '${tempDir.path}/$fileName';
+    final file = File(filePath);
+    await file.writeAsBytes(response.bodyBytes);
+
+    _localAudioPaths[url] = filePath; // save path for this URL
+
+    // 4️⃣ Play from local file
+    await audioPlayer.play(DeviceFileSource(filePath));
+  } catch (e) {
+    debugPrint('Audio play error: $e');
+  } finally {
+    isLoading.value = false; // stop loading
   }
+}
+
+
 
   Future<void> pauseAudio() async {
     await audioPlayer.pause();
@@ -166,9 +219,17 @@ class StudyGuidesController extends GetxController {
   }
 
   @override
-  void onClose() {
-    searchController.dispose();
-    audioPlayer.dispose();
-    super.onClose();
-  }
+void onClose() {
+  searchController.dispose();
+  audioPlayer.dispose();
+
+  // Delete all temp audio files
+  _localAudioPaths.values.forEach((path) {
+    final file = File(path);
+    if (file.existsSync()) file.deleteSync();
+  });
+
+  super.onClose();
+}
+
 }

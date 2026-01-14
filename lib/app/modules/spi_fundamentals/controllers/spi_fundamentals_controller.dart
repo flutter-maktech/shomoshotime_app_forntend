@@ -1,3 +1,6 @@
+import 'dart:io';
+
+import 'package:device_info_plus/device_info_plus.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -5,12 +8,22 @@ import 'package:open_filex/open_filex.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:shomoshotime/app/all_utils/app_preference.dart';
-import 'package:shomoshotime/app/core/urls/urls.dart';
 import 'package:syncfusion_flutter_pdfviewer/pdfviewer.dart';
+
+import '../../../core/api_services/network_caller.dart';
+import '../../../core/urls/urls.dart';
 
 class SpiFundamentalsController extends GetxController {
   // PDF Viewer Controller
   late PdfViewerController pdfViewerController;
+  RxString pageSize = ''.obs;
+  RxDouble aspectRatio = 0.0.obs;
+  RxInt contentId = 0.obs;
+  final NetworkCaller _networkCaller = NetworkCaller();
+  
+  // Track previous page to avoid duplicate API calls
+  int _lastTrackedPage = 0;
+  bool _isInitialLoad = true;
 
   // Page tracking
   RxInt page = 1.obs;
@@ -32,7 +45,6 @@ class SpiFundamentalsController extends GetxController {
   RxString pdfUrl = ''.obs;
   RxString title = ''.obs;
 
-  // In SpiFundamentalsController.dart
   @override
   void onInit() {
     super.onInit();
@@ -43,40 +55,103 @@ class SpiFundamentalsController extends GetxController {
 
     // Listen to page changes
     pdfViewerController.addListener(() {
-      page.value = pdfViewerController.pageNumber;
+      final newPage = pdfViewerController.pageNumber;
+      // Update the page observable
+      page.value = newPage;
+      
+      // Track page change via API (skip initial load and same page)
+      if (!_isInitialLoad && newPage != _lastTrackedPage) {
+        _callPageChangeApi(newPage);
+        _lastTrackedPage = newPage;
+      }
     });
   }
 
   Future<void> _initData() async {
     try {
       isLoadingPdf.value = true;
+      _isInitialLoad = true;
+      _lastTrackedPage = 0;
 
       // 1. Load token
       authToken.value = await AppPreference.getToken() ?? '';
-      print('kl;: ${authToken.value.isNotEmpty ? 'YES' : 'NO'}');
 
       // 2. Handle arguments
       if (Get.arguments != null) {
         final args = Get.arguments as Map<String, dynamic>;
         final filePath = args['pdfUrl'] as String? ?? '';
+        final id = args['contentId'] as int? ?? 0;
 
         print('Original file path: $filePath');
+        print('Content ID: $id');
 
-        if (filePath.startsWith('http://') || filePath.startsWith('https://')) {
-          pdfUrl.value = filePath;
-        } else {
-          pdfUrl.value = _constructFullUrl(filePath);
-        }
-
+        // Assign values
+        pdfUrl.value = filePath;
+        contentId.value = id;
         title.value = args['title'] as String? ?? 'SPI Fundamentals';
+
         print('Final PDF URL: ${pdfUrl.value}');
       } else {
         pdfUrl.value = '';
+        contentId.value = 0;
         title.value = 'SPI Fundamentals';
         isLoadingPdf.value = false;
+        _isInitialLoad = false;
       }
     } catch (e) {
       handlePdfError('Initialization failed: $e');
+      _isInitialLoad = false;
+    }
+  }
+
+  // Method to track page change via API
+  Future<void> _callPageChangeApi(int currentPage) async {
+    try {
+      // Don't call API if contentId is 0 (not set)
+      if (contentId.value == 0) {
+        print('Content ID not set, skipping API call for page $currentPage');
+        return;
+      }
+
+      // Don't track page 0 or invalid pages
+      if (currentPage <= 0 || currentPage > totalPages.value) {
+        print('Invalid page number $currentPage, skipping API call');
+        return;
+      }
+
+      print('Tracking page change to: $currentPage');
+
+      // Prepare request body
+      final Map<String, dynamic> requestBody = {
+        "content_id": contentId.value,
+        "page_number": currentPage,
+      };
+
+      // Call API using your NetworkCaller
+      final response = await _networkCaller.postRequest(
+        Urls.nextPage,
+        requestBody,
+        token: authToken.value,
+      );
+
+      // Handle response
+      if (response['success'] == true) {
+        print('Page $currentPage tracked successfully: ${response['message']}');
+      } else {
+        print('Failed to track page $currentPage: ${response['message']}');
+      }
+    } catch (e) {
+      print('Error tracking page change to $currentPage: $e');
+    }
+  }
+
+  // Track initial page view when PDF loads
+  void trackInitialPageView() {
+    if (contentId.value != 0 && _isInitialLoad) {
+      // Track first page view
+      _callPageChangeApi(1);
+      _lastTrackedPage = 1;
+      _isInitialLoad = false;
     }
   }
 
@@ -85,28 +160,18 @@ class SpiFundamentalsController extends GetxController {
     isLoadingPdf.value = false;
     pdfErrorMessage.value = message;
     print('PDF Loading Error: $message');
+    _isInitialLoad = false;
   }
 
   // Reset PDF loading state
   void retryPdfLoad() {
     isLoadingPdf.value = true;
     pdfErrorMessage.value = '';
+    _isInitialLoad = true;
+    _lastTrackedPage = 0;
   }
 
-  // Helper method to construct full URL
-  String _constructFullUrl(String relativePath) {
-    if (relativePath.isEmpty) return '';
-
-    // Remove leading slash if present
-    final cleanPath = relativePath.startsWith('/')
-        ? relativePath.substring(1)
-        : relativePath;
-
-    // Use the central base domain
-    return '${Urls.baseDomain}/$cleanPath';
-  }
-
-  // Navigation methods
+  // Navigation methods - simplified since tracking is automatic
   void nextPage() {
     pdfViewerController.nextPage();
   }
@@ -124,12 +189,15 @@ class SpiFundamentalsController extends GetxController {
     try {
       // Check storage permission
       if (!await _requestStoragePermission()) {
-        Get.snackbar(
-          'Permission Required',
-          'Storage permission is required to download files',
-          backgroundColor: Colors.red,
-          colorText: Colors.white,
-        );
+        if (Get.context != null) {
+          ScaffoldMessenger.of(Get.context!).showSnackBar(
+            SnackBar(
+              content: Text('Storage permission is required to download files'),
+              backgroundColor: Colors.red,
+              duration: Duration(seconds: 3),
+            ),
+          );
+        }
         return;
       }
 
@@ -144,11 +212,18 @@ class SpiFundamentalsController extends GetxController {
       }
 
       // Create file name from URL
-      final fileName = pdfUrl.split('/').last;
+      final fileName = pdfUrl.value.split('/').last;
       final filePath = '${directory.path}/$fileName';
 
       // Download using Dio
       final dio = Dio();
+
+      // Add authorization header with your token
+      final Map<String, String> headers = {
+        'Authorization': 'Bearer ${authToken.value}',
+        'Content-Type': 'application/pdf',
+        'Accept': 'application/pdf',
+      };
 
       await dio.download(
         pdfUrl.value,
@@ -160,12 +235,7 @@ class SpiFundamentalsController extends GetxController {
                 'Downloading: ${(downloadProgress.value * 100).toStringAsFixed(1)}%';
           }
         },
-        options: Options(
-          headers: {
-            if (authToken.isNotEmpty)
-              'Authorization': 'Bearer ${authToken.value}',
-          },
-        ),
+        options: Options(headers: headers),
       );
 
       // Download complete
@@ -173,13 +243,15 @@ class SpiFundamentalsController extends GetxController {
       downloadStatus.value = 'Download complete!';
 
       // Show success message
-      Get.snackbar(
-        'Success',
-        'PDF downloaded successfully!',
-        backgroundColor: Colors.green,
-        colorText: Colors.white,
-        duration: Duration(seconds: 2),
-      );
+      if (Get.context != null) {
+        ScaffoldMessenger.of(Get.context!).showSnackBar(
+          SnackBar(
+            content: Text('PDF downloaded successfully!'),
+            backgroundColor: Colors.green,
+            duration: Duration(seconds: 2),
+          ),
+        );
+      }
 
       // Open the downloaded file
       final result = await OpenFilex.open(filePath);
@@ -187,33 +259,56 @@ class SpiFundamentalsController extends GetxController {
     } catch (e) {
       isDownloading.value = false;
       downloadStatus.value = 'Download failed: $e';
+      print('Download error details: $e');
 
-      Get.snackbar(
-        'Download Failed',
-        'Failed to download PDF: $e',
-        backgroundColor: Colors.red,
-        colorText: Colors.white,
-        duration: Duration(seconds: 3),
-      );
+      // Show error message
+      if (Get.context != null) {
+        ScaffoldMessenger.of(Get.context!).showSnackBar(
+          SnackBar(
+            content: Text('Failed to download PDF. Please try again.'),
+            backgroundColor: Colors.red,
+            duration: Duration(seconds: 3),
+          ),
+        );
+      }
     }
   }
 
   // Request storage permission
   Future<bool> _requestStoragePermission() async {
-    final status = await Permission.storage.status;
+    try {
+      if (Platform.isAndroid) {
+        final androidInfo = await DeviceInfoPlugin().androidInfo;
+        final sdkInt = androidInfo.version.sdkInt;
 
-    if (status.isGranted) {
-      return true;
-    } else if (status.isDenied) {
-      final result = await Permission.storage.request();
-      return result.isGranted;
-    } else if (status.isPermanentlyDenied) {
-      // Open app settings
-      await openAppSettings();
+        if (sdkInt >= 33) {
+          final status = await Permission.photos.status;
+          if (!status.isGranted) {
+            final result = await Permission.photos.request();
+            return result.isGranted;
+          }
+          return true;
+        } else {
+          final status = await Permission.storage.status;
+          if (!status.isGranted) {
+            final result = await Permission.storage.request();
+            return result.isGranted;
+          }
+          return true;
+        }
+      } else if (Platform.isIOS) {
+        final status = await Permission.photos.status;
+        if (!status.isGranted) {
+          final result = await Permission.photos.request();
+          return result.isGranted;
+        }
+        return true;
+      }
+      return false;
+    } catch (e) {
+      print('Permission error: $e');
       return false;
     }
-
-    return false;
   }
 
   @override

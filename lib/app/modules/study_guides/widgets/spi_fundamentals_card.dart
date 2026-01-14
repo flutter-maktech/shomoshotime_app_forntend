@@ -10,23 +10,25 @@ import 'package:shomoshotime/app/modules/common_widgets/custom_progress.dart';
 import 'package:shomoshotime/app/routes/app_pages.dart';
 
 class SpiFundamentalsCard extends StatelessWidget {
-  final String timeText; // e.g. "9 hours"
-  final String chapterText; // e.g. "5/13 Chapters"
-  final String progressPercentText; // e.g. "75%"
   final double progressValue;
-  final String category, cardTitle, cardSubtitle;
-  final String fileUrl;
+  final String category,
+      cardTitle,
+      cardSubtitle,
+      pageNumber,
+      progressPercentText,
+      fileUrl;
+  final int contentId;
 
   const SpiFundamentalsCard({
     super.key,
-    required this.timeText,
-    required this.chapterText,
+    required this.pageNumber,
     required this.progressPercentText,
     required this.progressValue,
     required this.category,
     required this.cardTitle,
     required this.cardSubtitle,
     required this.fileUrl,
+    required this.contentId,
   });
 
   @override
@@ -82,19 +84,10 @@ class SpiFundamentalsCard extends StatelessWidget {
           SizedBox(height: 15.h),
           Row(
             children: [
-              Image.asset(ImagePath.clockImage, scale: 4),
-              SizedBox(width: 5.w),
-              Text(
-                timeText,
-                style: AppTextStyles.regular14.copyWith(
-                  color: AppColors.appBarSub,
-                ),
-              ),
-              SizedBox(width: 8.w),
               Image.asset(ImagePath.arrowCircle, scale: 4),
               SizedBox(width: 5.w),
               Text(
-                chapterText,
+                pageNumber,
                 style: AppTextStyles.regular14.copyWith(
                   color: AppColors.appBarSub,
                 ),
@@ -121,13 +114,17 @@ class SpiFundamentalsCard extends StatelessWidget {
           ),
 
           SizedBox(height: 2.h),
-          CustomProgress(progress: 0.75),
+          CustomProgress(progress: progressValue),
           SizedBox(height: 20.h),
           CustomButton(
             childText: 'Continue Reading',
             onTap: () => Get.toNamed(
               Routes.SPI_FUNDAMENTALS,
-              arguments: {'pdfUrl': fileUrl, 'title': cardTitle},
+              arguments: {
+                'pdfUrl': fileUrl,
+                'title': cardTitle,
+                'contentId': contentId,
+              },
             ),
           ),
         ],

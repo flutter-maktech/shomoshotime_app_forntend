@@ -12,7 +12,6 @@ class SpiAudioCardList extends StatelessWidget {
   Widget build(BuildContext context) {
     final homeController = Get.find<HomeController>();
     final studyGuidesController = Get.find<StudyGuidesController>();
-
     return Obx(() {
       // Loading state
       if (homeController.isLoading.value) {
@@ -72,6 +71,7 @@ class SpiAudioCardList extends StatelessWidget {
               cardTitle: audioGuide.title,
               cardSubtitle: audioGuide.subtitle,
               category: audioGuide.category,
+              audioUrl: audioGuide.file!,
             ),
           );
         }, childCount: filteredStudyGuides.length),

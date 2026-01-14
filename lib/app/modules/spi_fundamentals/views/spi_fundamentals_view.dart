@@ -41,31 +41,56 @@ class SpiFundamentalsView extends GetView<SpiFundamentalsController> {
               );
             }
 
-            return SliverToBoxAdapter(
-              child: Container(
-                height: 500.h,
-                margin: EdgeInsets.all(16.h),
-                decoration: BoxDecoration(
-                  color: Colors.amber,
-                  borderRadius: BorderRadius.circular(12),
-                ),
-                child: ClipRRect(
-                  borderRadius: BorderRadius.circular(12),
+            return Obx(() {
+              // Use dynamic height based on page size
+              double containerHeight = controller.pageSize.value.isEmpty
+                  ? 500
+                        .h // Default height
+                  : _calculateHeightFromPageSize(
+                      controller.pageSize.value,
+                      context,
+                    );
+
+              return SliverToBoxAdapter(
+                child: Container(
+                  height: containerHeight,
+                  margin: EdgeInsets.all(16.h),
+                  decoration: BoxDecoration(
+                    color: Colors.amber,
+                    borderRadius: BorderRadius.circular(12),
+                  ),
                   child: Stack(
                     children: [
                       SfPdfViewer.network(
                         controller.pdfUrl.value,
                         canShowScrollHead: false,
                         pageSpacing: 0,
-                        // backgroundColor: Colors.white,
+                        canShowPageLoadingIndicator: false,
                         pageLayoutMode: PdfPageLayoutMode.single,
                         controller: controller.pdfViewerController,
-                        scrollDirection: PdfScrollDirection.vertical,
+                        scrollDirection: PdfScrollDirection.horizontal,
+                        // In SpiFundamentalsView.dart - update the onDocumentLoaded callback
                         onDocumentLoaded: (PdfDocumentLoadedDetails details) {
+                          // Get first page size
+                          final firstPage = details.document.pages[0];
+                          final pageWidth = firstPage.size.width;
+                          final pageHeight = firstPage.size.height;
+
+                          // Store page size in controller
+                          controller.pageSize.value =
+                              '${pageWidth}x${pageHeight}';
+
+                          // Calculate aspect ratio
+                          final aspectRatio = pageWidth / pageHeight;
+                          controller.aspectRatio.value = aspectRatio;
+
                           controller.totalPages.value =
                               details.document.pages.count;
                           controller.isLoadingPdf.value = false;
                           controller.pdfErrorMessage.value = '';
+
+                          // Track initial page view
+                          controller.trackInitialPageView();
                         },
                         onDocumentLoadFailed:
                             (PdfDocumentLoadFailedDetails details) {
@@ -130,8 +155,8 @@ class SpiFundamentalsView extends GetView<SpiFundamentalsController> {
                     ],
                   ),
                 ),
-              ),
-            );
+              );
+            });
           }),
 
           // Page indicator
@@ -165,7 +190,9 @@ class SpiFundamentalsView extends GetView<SpiFundamentalsController> {
                     child: CustomButton(
                       childText: 'Next',
                       buttonColor: AppColors.lightYellow,
-                      onTap: controller.nextPage,
+                      onTap: () {
+                        controller.nextPage();
+                      },
                     ),
                   ),
                 ],
@@ -207,7 +234,7 @@ class SpiFundamentalsView extends GetView<SpiFundamentalsController> {
                           ? null
                           : controller.downloadPdf,
                       buttonColor: controller.isDownloading.value
-                          ? Colors.grey
+                          ? AppColors.greenColor
                           : AppColors.lightYellow,
                     ),
                   ],
@@ -218,5 +245,27 @@ class SpiFundamentalsView extends GetView<SpiFundamentalsController> {
         ],
       ),
     );
+  }
+
+  double _calculateHeightFromPageSize(String pageSize, BuildContext context) {
+    try {
+      final dimensions = pageSize.split('x');
+      final width = double.parse(dimensions[0]);
+      final height = double.parse(dimensions[1]);
+
+      // Get screen width minus margins
+      final screenWidth =
+          MediaQuery.of(context).size.width - 32.h; // 16+16 margin
+
+      // Calculate height based on aspect ratio
+      final aspectRatio = height / width;
+      final calculatedHeight = screenWidth * aspectRatio;
+
+      // Add some padding and limit max height
+      final maxHeight = MediaQuery.of(context).size.height * 0.7;
+      return calculatedHeight.clamp(300.h, maxHeight);
+    } catch (e) {
+      return 500.h; // Default if parsing fails
+    }
   }
 }

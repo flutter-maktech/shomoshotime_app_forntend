@@ -38,26 +38,9 @@ class SpiCardList extends StatelessWidget {
         );
       }
 
-      // First filter by file_type = "pdf"
-      // In SpiCardList.dart - add debugging
-      final pdfStudyGuides = homeController.studyGuides.where((guide) {
-        final fileType = guide.fileType?.toLowerCase() ?? '';
-        final isPdf = fileType == 'pdf';
-        if (isPdf) {
-          print('PDF Guide: ${guide.title} - Category: ${guide.category}');
-        }
-        return isPdf;
-      }).toList();
-
-      print('Total PDF guides: ${pdfStudyGuides.length}');
-      print(
-        'PDF Categories: ${pdfStudyGuides.map((g) => g.category).toSet().toList()}',
-      );
-
-      // Then filter by selected category
+      // Filter study guides
       final filteredStudyGuides = studyGuidesController.filterStudyGuides(
-        homeController
-            .studyGuides, // Pass all study guides, not just pdfStudyGuides
+        homeController.studyGuides,
         studyGuidesController.selectedCategory.value,
         studyGuidesController.searchQuery.value,
         false, // isAudioView = false for PDF
@@ -90,10 +73,12 @@ class SpiCardList extends StatelessWidget {
               cardSubtitle: studyGuide.subtitle,
               category: studyGuide.category,
               fileUrl: studyGuide.file!,
-              timeText: '9 hours',
-              chapterText: '5/12 Chapters',
-              progressPercentText: '75%',
-              progressValue: 0.75,
+              contentId: studyGuide.id,
+              pageNumber:
+                  '${studyGuide.studyGuideActivitiesCount}/${studyGuide.totalPage} Pages',
+              progressPercentText:
+                  '${(studyGuide.studyGuidePercentCompleted).round()}%',
+              progressValue: studyGuide.studyGuidePercentCompleted / 100,
             ),
           );
         }, childCount: filteredStudyGuides.length),
