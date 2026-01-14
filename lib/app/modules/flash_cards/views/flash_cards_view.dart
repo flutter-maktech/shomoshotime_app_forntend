@@ -4,13 +4,13 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:shomoshotime/app/data/app_colors.dart';
 import 'package:shomoshotime/app/data/app_text_styles.dart';
-import 'package:shomoshotime/app/data/image_path.dart';
-import 'package:shomoshotime/app/modules/common_widgets/custom_button.dart';
+import 'package:shomoshotime/app/modules/common_widgets/custom_build_container.dart';
 import 'package:shomoshotime/app/modules/common_widgets/primary_app_bar.dart';
 
 import '../../../routes/app_pages.dart';
 import '../../common_widgets/custom_text_form_field.dart';
 import '../controllers/flash_cards_controller.dart';
+import '../widgets/flash_card_container_widget.dart';
 
 class FlashCardsView extends GetView<FlashCardsController> {
   const FlashCardsView({super.key});
@@ -64,168 +64,68 @@ class FlashCardsView extends GetView<FlashCardsController> {
                       horizontal: 12.w,
                       vertical: 8.h,
                     ),
-                    child: Obx(
-                      () => Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceAround,
-                        children: [
-                          buildContainer('All', 0),
-                          buildContainer('SPI', 1),
-                          buildContainer('Vascular', 2),
-                          buildContainer('OB/GYN', 3),
-                          buildContainer('Abdomen', 4),
-                        ],
-                      ),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        CustomBuildContainer(
+                          title: 'All',
+                          index: 0,
+                          category: '',
+                        ),
+                        CustomBuildContainer(
+                          title: 'SPI',
+                          index: 1,
+                          category: 'SPI',
+                        ),
+                        CustomBuildContainer(
+                          title: 'Vascular',
+                          index: 2,
+                          category: 'Vascular',
+                        ),
+                        CustomBuildContainer(
+                          title: 'OB/GYN',
+                          index: 3,
+                          category: 'OB/GYN',
+                        ),
+                        CustomBuildContainer(
+                          title: 'Abdomen',
+                          index: 4,
+                          category: 'Abdomen',
+                        ),
+                      ],
                     ),
                   ),
                 ),
               ),
             ),
-            SliverList(
-              delegate: SliverChildBuilderDelegate((context, index) {
-                return Padding(
-                  padding: const EdgeInsets.symmetric(
-                    horizontal: 16,
-                    vertical: 16,
+            Obx(() {
+              if (controller.flashCards.isEmpty) {
+                return const SliverToBoxAdapter(
+                  child: Center(
+                    child: Padding(
+                      padding: EdgeInsets.only(top: 50),
+                      child: CircularProgressIndicator(),
+                    ),
                   ),
-                  child: spiFundamentalsCardWidget(),
                 );
-              }, childCount: 3),
-            ),
-          ],
-        ),
-      ),
-    );
-  }
+              }
 
-  Widget spiFundamentalsCardWidget() {
-    return Container(
-      width: double.infinity,
-      // height: 400,
-      padding: EdgeInsets.symmetric(horizontal: 18, vertical: 18),
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(12),
-        color: AppColors.appBarBack,
-      ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Row(
-            children: [
-              Container(
-                width: 40,
-                height: 40,
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(5),
-                  color: AppColors.primaryColor,
-                ),
-                child: Center(
-                  child: Image.asset(ImagePath.bookImage, scale: 4),
-                ),
-              ),
-              Spacer(),
-              DecoratedBox(
-                decoration: BoxDecoration(
-                  color: Colors.white,
-                  borderRadius: BorderRadius.circular(6),
-                ),
-                child: Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 10, vertical: 6),
-                  child: Text(
-                    "SPI",
-                    style: AppTextStyles.regular14.copyWith(
-                      color: AppColors.appBarSub,
+              return SliverList(
+                delegate: SliverChildBuilderDelegate((context, index) {
+                  return Padding(
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 16,
+                      vertical: 16,
                     ),
-                  ),
-                ),
-              ),
-            ],
-          ),
-          Text('SPI Fundamentals', style: AppTextStyles.bold18),
-          Text(
-            'Master the core principles of ultrasound physics and',
-            style: AppTextStyles.regular14.copyWith(color: AppColors.appBarSub),
-          ),
-          SizedBox(height: 15.h),
-          Row(
-            children: [
-              Image.asset(ImagePath.layerImage, scale: 4),
-              SizedBox(width: 5.w),
-              Text(
-                '50 cards',
-                style: AppTextStyles.regular14.copyWith(
-                  color: AppColors.appBarSub,
-                ),
-              ),
-              SizedBox(width: 8.w),
-              Image.asset(ImagePath.vectorImage, scale: 4),
-              SizedBox(width: 5.w),
-              Text(
-                '9 saved',
-                style: AppTextStyles.regular14.copyWith(
-                  color: AppColors.appBarSub,
-                ),
-              ),
-            ],
-          ),
-          SizedBox(height: 20.h),
-          Row(
-            children: [
-              Text(
-                'Progress',
-                style: AppTextStyles.regular14.copyWith(
-                  color: AppColors.appBarSub,
-                ),
-              ),
-              Spacer(),
-              Text(
-                '38/50',
-                style: AppTextStyles.regular14.copyWith(
-                  color: AppColors.appBarSub,
-                ),
-              ),
-            ],
-          ),
-
-          SizedBox(height: 2.h),
-          LinearProgressIndicator(
-            borderRadius: BorderRadius.circular(6),
-            minHeight: 8,
-            valueColor: AlwaysStoppedAnimation(AppColors.primaryColor),
-            backgroundColor: AppColors.whiteColor,
-            value: 0.5,
-          ),
-          SizedBox(height: 20.h),
-          CustomButton(
-            childText: 'Continue Studying',
-            onTap: () => Get.toNamed(Routes.VASCULAR_FLASHCARDS),
-          ),
-        ],
-      ),
-    );
-  }
-
-  GestureDetector buildContainer(String title, int index) {
-    return GestureDetector(
-      onTap: () {
-        controller.changeIndex(index);
-      },
-      child: Container(
-        decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(4),
-          color: controller.selectIndex.value == index
-              ? AppColors.primaryColor
-              : AppColors.whiteColor,
-        ),
-        child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 4),
-          child: Text(
-            title,
-            style: AppTextStyles.regular13.copyWith(
-              color: controller.selectIndex.value == index
-                  ? Colors.black
-                  : AppColors.grey,
-            ),
-          ),
+                    child: FlashCardContainerWidget(
+                      index: index,
+                      contentId: controller.flashCards[index].id,
+                    ),
+                  );
+                }, childCount: controller.flashCards.length),
+              );
+            }),
+          ],
         ),
       ),
     );

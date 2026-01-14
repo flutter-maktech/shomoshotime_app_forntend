@@ -45,7 +45,7 @@ class StudyGuideListView extends StatelessWidget {
           ),
         );
       }
-      
+
       //Item number
       final item = homeController.studyGuides.length;
 
@@ -62,9 +62,10 @@ class StudyGuideListView extends StatelessWidget {
           return CustomProgressContainer(
             title: studyGuide.title,
             progress:
-                0.8, // You can replace this with actual progress data if available
+                studyGuide.studyGuidePercentCompleted /
+                100, // You can replace this with actual progress data if available
             progressComplete:
-                '55% Complete', // You can customize this based on your data
+                '${(studyGuide.studyGuidePercentCompleted).round()}% completed', // You can customize this based on your data
             // Add any additional properties your CustomProgressContainer accepts
           );
         },

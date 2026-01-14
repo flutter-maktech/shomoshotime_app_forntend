@@ -9,9 +9,10 @@ class FlashCardInfo extends StatelessWidget {
   const FlashCardInfo({
     super.key,
     required this.flashCardTitle,
-    required this.flashCardSubtitle,
+    required this.flashCardSubtitle, required this.progress,
   });
   final String flashCardTitle, flashCardSubtitle;
+  final double progress;
 
   @override
   Widget build(BuildContext context) {
@@ -32,7 +33,7 @@ class FlashCardInfo extends StatelessWidget {
             flashCardSubtitle,
             style: AppTextStyles.regular12.apply(color: AppColors.appBarSub),
           ),
-          CustomProgress(progress: 0.5),
+          CustomProgress(progress: progress),
         ],
       ),
     );

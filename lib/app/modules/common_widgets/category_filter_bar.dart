@@ -54,46 +54,46 @@ class CategoryFilterBar extends StatelessWidget {
 
   // Get categories for current view type
   // In CategoryFilterBar.dart - inside _getCategoriesForCurrentView method
-List<String> _getCategoriesForCurrentView(
-  List<StudyGuide> studyGuides,
-  bool isForAudio,
-) {
-  // Debug prints
-  print('=== DEBUG: Category Filter ===');
-  print('isAudioView: $isForAudio');
-  print('Total study guides: ${studyGuides.length}');
-  
-  // Use the same filtering logic as SpiCardList and SpiAudioCardList
-  final filteredGuides = studyGuides.where((guide) {
-    final fileType = guide.fileType?.toLowerCase() ?? '';
-    if (isForAudio) {
-      // Same logic as SpiAudioCardList
-      return fileType == 'mp3' ||
-          fileType == 'm4a' ||
-          fileType == 'wav' ||
-          fileType == 'audio' ||
-          fileType == 'aac';
-    } else {
-      // Same logic as SpiCardList
-      return fileType == 'pdf';
-    }
-  }).toList();
+  List<String> _getCategoriesForCurrentView(
+    List<StudyGuide> studyGuides,
+    bool isForAudio,
+  ) {
+    // Debug prints
+    print('=== DEBUG: Category Filter ===');
+    print('isAudioView: $isForAudio');
+    print('Total study guides: ${studyGuides.length}');
 
-  print('Filtered guides: ${filteredGuides.length}');
-  
-  // Extract unique categories
-  final categories = filteredGuides
-      .map((guide) => guide.category)
-      .where((category) => category.isNotEmpty)
-      .toSet() // Remove duplicates
-      .toList();
+    // Use the same filtering logic as SpiCardList and SpiAudioCardList
+    final filteredGuides = studyGuides.where((guide) {
+      final fileType = guide.fileType?.toLowerCase() ?? '';
+      if (isForAudio) {
+        // Same logic as SpiAudioCardList
+        return fileType == 'mp3' ||
+            fileType == 'm4a' ||
+            fileType == 'wav' ||
+            fileType == 'audio' ||
+            fileType == 'aac';
+      } else {
+        // Same logic as SpiCardList
+        return fileType == 'pdf';
+      }
+    }).toList();
 
-  // Sort categories alphabetically
-  categories.sort();
+    print('Filtered guides: ${filteredGuides.length}');
 
-  print('Categories found: $categories');
-  print('======================\n');
-  
-  return categories;
-}
+    // Extract unique categories
+    final categories = filteredGuides
+        .map((guide) => guide.category)
+        .where((category) => category.isNotEmpty)
+        .toSet() // Remove duplicates
+        .toList();
+
+    // Sort categories alphabetically
+    categories.sort();
+
+    print('Categories found: $categories');
+    print('======================\n');
+
+    return categories;
+  }
 }

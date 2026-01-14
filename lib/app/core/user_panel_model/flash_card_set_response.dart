@@ -1,11 +1,11 @@
-class FlashCardResponse {
+class FlashCardSetResponse {
   final bool success;
   final String message;
-  final List<FlashCardItem> data;
+  final List<FlashCardSetItem> data;
   final PaginationLinks? links;
   final PaginationMeta? meta;
 
-  FlashCardResponse({
+  FlashCardSetResponse({
     required this.success,
     required this.message,
     required this.data,
@@ -13,22 +13,63 @@ class FlashCardResponse {
     this.meta,
   });
 
-  factory FlashCardResponse.fromJson(Map<String, dynamic> json) {
-    return FlashCardResponse(
+  factory FlashCardSetResponse.fromJson(Map<String, dynamic> json) {
+    return FlashCardSetResponse(
       success: json['success'] ?? false,
       message: json['message'] ?? '',
       data: (json['data'] as List<dynamic>? ?? [])
-          .map((e) => FlashCardItem.fromJson(e))
+          .map((e) => FlashCardSetItem.fromJson(e))
           .toList(),
-      links: json['links'] != null
-          ? PaginationLinks.fromJson(json['links'])
-          : null,
+      links:
+          json['links'] != null ? PaginationLinks.fromJson(json['links']) : null,
       meta:
           json['meta'] != null ? PaginationMeta.fromJson(json['meta']) : null,
     );
   }
 }
-class FlashCardItem {
+class FlashCardSetItem {
+  final int id;
+  final int sortOrder;
+  final int contentId;
+  final String question;
+  final String answer;
+  final FlashCardContent? content;
+  final String createdAt;
+  final String updatedAt;
+  final String createrName;
+  final String updaterName;
+
+  FlashCardSetItem({
+    required this.id,
+    required this.sortOrder,
+    required this.contentId,
+    required this.question,
+    required this.answer,
+    this.content,
+    required this.createdAt,
+    required this.updatedAt,
+    required this.createrName,
+    required this.updaterName,
+  });
+
+  factory FlashCardSetItem.fromJson(Map<String, dynamic> json) {
+    return FlashCardSetItem(
+      id: json['id'] ?? 0,
+      sortOrder: json['sort_order'] ?? 0,
+      contentId: json['content_id'] ?? 0,
+      question: json['question'] ?? '',
+      answer: json['answer'] ?? '',
+      content: json['content'] != null
+          ? FlashCardContent.fromJson(json['content'])
+          : null,
+      createdAt: json['created_at'] ?? '',
+      updatedAt: json['updated_at'] ?? '',
+      createrName: json['creater_name'] ?? '',
+      updaterName: json['updater_name'] ?? '',
+    );
+  }
+}
+class FlashCardContent {
   final int id;
   final int sortOrder;
   final String title;
@@ -42,16 +83,16 @@ class FlashCardItem {
   final String isPublishLabel;
   final int totalPages;
   final int studyGuideActivitiesCount;
-  final double studyGuidePercentCompleted;
+  final int studyGuidePercentCompleted;
   final int flashCardActivitiesCount;
   final int flashCardsCount;
-  final double flashCardPercentCompleted;
+  final int flashCardPercentCompleted;
   final String createdAt;
   final String updatedAt;
   final String createrName;
   final String updaterName;
 
-  FlashCardItem({
+  FlashCardContent({
     required this.id,
     required this.sortOrder,
     required this.title,
@@ -75,8 +116,8 @@ class FlashCardItem {
     required this.updaterName,
   });
 
-  factory FlashCardItem.fromJson(Map<String, dynamic> json) {
-    return FlashCardItem(
+  factory FlashCardContent.fromJson(Map<String, dynamic> json) {
+    return FlashCardContent(
       id: json['id'] ?? 0,
       sortOrder: json['sort_order'] ?? 0,
       title: json['title'] ?? '',
@@ -92,12 +133,12 @@ class FlashCardItem {
       studyGuideActivitiesCount:
           json['study_guide_activities_count'] ?? 0,
       studyGuidePercentCompleted:
-    (json['study_guide_percent_completed'] ?? 0).toDouble(),
+          json['study_guide_percent_completed'] ?? 0,
       flashCardActivitiesCount:
           json['flash_card_activities_count'] ?? 0,
       flashCardsCount: json['flash_cards_count'] ?? 0,
       flashCardPercentCompleted:
-    (json['flash_card_percent_completed'] ?? 0).toDouble(),
+          json['flash_card_percent_completed'] ?? 0,
       createdAt: json['created_at'] ?? '',
       updatedAt: json['updated_at'] ?? '',
       createrName: json['creater_name'] ?? '',
@@ -111,12 +152,7 @@ class PaginationLinks {
   final String? prev;
   final String? next;
 
-  PaginationLinks({
-    this.first,
-    this.last,
-    this.prev,
-    this.next,
-  });
+  PaginationLinks({this.first, this.last, this.prev, this.next});
 
   factory PaginationLinks.fromJson(Map<String, dynamic> json) {
     return PaginationLinks(
@@ -134,8 +170,8 @@ class PaginationMeta {
   final int perPage;
   final int to;
   final int total;
-  final List<PaginationLinkItem> links;
   final String path;
+  final List<PaginationLinkItem> links;
 
   PaginationMeta({
     required this.currentPage,
@@ -144,8 +180,8 @@ class PaginationMeta {
     required this.perPage,
     required this.to,
     required this.total,
-    required this.links,
     required this.path,
+    required this.links,
   });
 
   factory PaginationMeta.fromJson(Map<String, dynamic> json) {

@@ -13,4 +13,7 @@ class Urls {
   static String resetPassword = "$baseUrs/auth/reset-password";
   static String studyGuideList = "$baseUrs/user/content/study-guides";
   static String nextPage = "$baseUrs/user/content/next-page";
+  static String flashCardList = "$baseUrs/user/content/flash-cards";
+  static String flashCardSetList = "$baseUrs/user/content/flash-cards/sets";
+  static String nextFlashCard = "$baseUrs/user/content/flash-cards/next-question";
 }

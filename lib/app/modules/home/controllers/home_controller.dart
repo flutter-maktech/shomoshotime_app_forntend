@@ -1,5 +1,6 @@
 import 'package:get/get.dart';
 import 'package:shomoshotime/app/all_utils/app_preference.dart';
+import 'package:shomoshotime/app/core/user_panel_model/flash_card_reponse_model.dart';
 import '../../../core/api_services/network_caller.dart';
 import '../../../core/urls/urls.dart';
 import '../../../core/user_panel_model/study_guide_response_model.dart';
@@ -11,6 +12,9 @@ class HomeController extends GetxController {
   final Rx<StudyGuideResponse?> studyGuideResponse = Rx<StudyGuideResponse?>(
     null,
   );
+  final Rx<FlashCardResponse?> flashCardResponse = Rx<FlashCardResponse?>(
+    null,
+  );
   final RxBool isLoading = false.obs;
   final RxString errorMessage = ''.obs;
 
@@ -18,6 +22,7 @@ class HomeController extends GetxController {
   void onInit() {
     super.onInit();
     fetchStudyGuides();
+    fetchFlashCards();
   }
 
   // Fetch study guides using POST request
@@ -52,4 +57,28 @@ class HomeController extends GetxController {
   Future<void> refreshData() async {
     await fetchStudyGuides();
   }
+  Future<void> fetchFlashCards() async {
+    try {
+      isLoading.value = true;
+      errorMessage.value = '';
+
+      final token = await AppPreference.getToken();
+
+      // Use POST request with empty body since API only supports POST
+      final response = await _networkCaller.postRequest(
+        Urls.flashCardList,
+        {}, // Empty body
+        token: token,
+      );
+
+      // Parse the response
+      flashCardResponse.value = FlashCardResponse.fromJson(response);
+    } catch (e) {
+      errorMessage.value = 'Failed to load flash cards: $e';
+      print('Error fetching flash cards: $e');
+    } finally {
+      isLoading.value = false;
+    }
+  }
+  List<FlashCardItem> get flashCards => flashCardResponse.value?.data ?? [];
 }
