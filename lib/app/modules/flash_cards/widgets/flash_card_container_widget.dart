@@ -22,38 +22,14 @@ class FlashCardContainerWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     final controller = Get.find<FlashCardsController>();
     return Obx(() {
-      // Show loading indicator
-      if (controller.isLoading.value) {
-        return Center(
-          child: Padding(
-            padding: EdgeInsets.symmetric(vertical: 20),
-            child: CircularProgressIndicator(),
-          ),
-        );
-      }
+      // Get the filtered cards
+      final filteredCards = controller.filteredFlashCards;
 
-      // Show error message
-      if (controller.errorMessage.value.isNotEmpty) {
-        return Padding(
-          padding: EdgeInsets.symmetric(vertical: 20),
-          child: Text(
-            controller.errorMessage.value,
-            style: TextStyle(color: Colors.red),
-            textAlign: TextAlign.center,
-          ),
-        );
+      // Check if we have cards for the current index
+      if (index >= filteredCards.length) {
+        return SizedBox.shrink(); // Return empty if index out of bounds
       }
-      // Show empty state
-      if (controller.flashCards.isEmpty) {
-        return Padding(
-          padding: EdgeInsets.symmetric(vertical: 20),
-          child: Text(
-            'No flashcards available',
-            textAlign: TextAlign.center,
-            style: TextStyle(color: Colors.grey),
-          ),
-        );
-      }
+      final card = filteredCards[index]; // Use the filtered card
       return Container(
         width: double.infinity,
         // height: 400,
@@ -87,7 +63,7 @@ class FlashCardContainerWidget extends StatelessWidget {
                   child: Padding(
                     padding: EdgeInsets.symmetric(horizontal: 10, vertical: 6),
                     child: Text(
-                      controller.flashCards[index].category,
+                      card.category,
                       style: AppTextStyles.regular14.copyWith(
                         color: AppColors.appBarSub,
                       ),
@@ -96,12 +72,9 @@ class FlashCardContainerWidget extends StatelessWidget {
                 ),
               ],
             ),
+            Text(card.title, style: AppTextStyles.bold18),
             Text(
-              controller.flashCards[index].title,
-              style: AppTextStyles.bold18,
-            ),
-            Text(
-              controller.flashCards[index].subtitle,
+              card.subtitle,
               style: AppTextStyles.regular14.copyWith(
                 color: AppColors.appBarSub,
               ),
@@ -112,7 +85,7 @@ class FlashCardContainerWidget extends StatelessWidget {
                 Image.asset(ImagePath.layerImage, scale: 4),
                 SizedBox(width: 5.w),
                 Text(
-                  '${controller.flashCards[index].flashCardsCount} cards',
+                  '${card.flashCardsCount} cards',
                   style: AppTextStyles.regular14.copyWith(
                     color: AppColors.appBarSub,
                   ),
@@ -131,7 +104,7 @@ class FlashCardContainerWidget extends StatelessWidget {
                 ),
 
                 Text(
-                  '${controller.flashCards[index].flashCardActivitiesCount}/${controller.flashCards[index].flashCardsCount}',
+                  '${card.flashCardActivitiesCount}/${card.flashCardsCount}',
                   style: AppTextStyles.regular14.copyWith(
                     color: AppColors.appBarSub,
                   ),
@@ -140,21 +113,15 @@ class FlashCardContainerWidget extends StatelessWidget {
             ),
 
             SizedBox(height: 2.h),
-            CustomProgress(
-              progress:
-                  controller.flashCards[index].flashCardPercentCompleted / 100,
-            ),
+            CustomProgress(progress: card.flashCardPercentCompleted / 100),
             SizedBox(height: 20.h),
             CustomButton(
               childText: 'Continue Studying',
               onTap: () {
                 Get.toNamed(
-                Routes.VASCULAR_FLASHCARDS,
-                arguments: {
-                  'title': controller.flashCards[index].title,
-                  'contentId': contentId,
-                },
-              );
+                  Routes.VASCULAR_FLASHCARDS,
+                  arguments: {'title': card.title, 'contentId': contentId},
+                );
               },
             ),
           ],

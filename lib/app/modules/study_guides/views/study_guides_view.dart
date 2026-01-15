@@ -35,7 +35,15 @@ class StudyGuidesView extends GetView<StudyGuidesController> {
                   children: [
                     HeaderSection(),
                     SizedBox(height: 12.h),
-                    CustomTextFormField(),
+                    Obx(
+                      () => CustomTextFormField(
+                        onClear: controller.clearSearch,
+                        onChanged: controller.onSearchChanged,
+                        searchController: controller.searchController,
+                        isSearchQueryNotEmpty:
+                            controller.searchQuery.value.isNotEmpty,
+                      ),
+                    ),
                   ],
                 ),
               ),
@@ -44,7 +52,8 @@ class StudyGuidesView extends GetView<StudyGuidesController> {
             SliverToBoxAdapter(
               child: Padding(
                 padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 16.h),
-                child: Obx(()=> CategoryFilterBar(
+                child: Obx(
+                  () => CategoryFilterBar(
                     isAudioView:
                         controller.select.value == 1, // 0 for PDF, 1 for Audio
                   ),

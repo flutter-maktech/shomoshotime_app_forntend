@@ -4,8 +4,8 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:shomoshotime/app/data/app_colors.dart';
 import 'package:shomoshotime/app/data/app_text_styles.dart';
-import 'package:shomoshotime/app/modules/common_widgets/custom_build_container.dart';
 import 'package:shomoshotime/app/modules/common_widgets/primary_app_bar.dart';
+import 'package:shomoshotime/app/modules/flash_cards/widgets/flash_card_filter_bar.dart';
 
 import '../../../routes/app_pages.dart';
 import '../../common_widgets/custom_text_form_field.dart';
@@ -47,7 +47,15 @@ class FlashCardsView extends GetView<FlashCardsController> {
                       ),
                     ),
                     const SizedBox(height: 16),
-                    CustomTextFormField(),
+                    Obx(
+                      () => CustomTextFormField(
+                        searchController: controller.searchController,
+                        onChanged: (value) => controller.onSearchChanged(value),
+                        onClear: () => controller.clearSearch(),
+                        isSearchQueryNotEmpty:
+                            controller.isSearchQueryNotEmpty.value,
+                      ),
+                    ),
                   ],
                 ),
               ),
@@ -64,47 +72,81 @@ class FlashCardsView extends GetView<FlashCardsController> {
                       horizontal: 12.w,
                       vertical: 8.h,
                     ),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        CustomBuildContainer(
-                          title: 'All',
-                          index: 0,
-                          category: '',
-                        ),
-                        CustomBuildContainer(
-                          title: 'SPI',
-                          index: 1,
-                          category: 'SPI',
-                        ),
-                        CustomBuildContainer(
-                          title: 'Vascular',
-                          index: 2,
-                          category: 'Vascular',
-                        ),
-                        CustomBuildContainer(
-                          title: 'OB/GYN',
-                          index: 3,
-                          category: 'OB/GYN',
-                        ),
-                        CustomBuildContainer(
-                          title: 'Abdomen',
-                          index: 4,
-                          category: 'Abdomen',
-                        ),
-                      ],
+                    child: Obx(
+                      () => Row(
+                        // Wrap with Obx
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          FlashCardFilterBar(
+                            title: 'All',
+                            index: 0,
+                            isSelected:
+                                controller.selectIndex.value == 0, // Dynamic
+                            onTap: () => controller.changeIndex(0),
+                          ),
+                          FlashCardFilterBar(
+                            title: 'SPI',
+                            index: 1,
+                            isSelected:
+                                controller.selectIndex.value == 1, // Dynamic
+                            onTap: () => controller.changeIndex(1),
+                          ),
+                          FlashCardFilterBar(
+                            title: 'Vascular',
+                            index: 2,
+                            isSelected:
+                                controller.selectIndex.value == 2, // Dynamic
+                            onTap: () => controller.changeIndex(2),
+                          ),
+                          FlashCardFilterBar(
+                            title: 'OB/GYN',
+                            index: 3,
+                            isSelected:
+                                controller.selectIndex.value == 3, // Dynamic
+                            onTap: () => controller.changeIndex(3),
+                          ),
+                          FlashCardFilterBar(
+                            title: 'Abdomen',
+                            index: 4,
+                            isSelected:
+                                controller.selectIndex.value == 4, // Dynamic
+                            onTap: () => controller.changeIndex(4),
+                          ),
+                        ],
+                      ),
                     ),
                   ),
                 ),
               ),
             ),
             Obx(() {
+              // This will rebuild when selectIndex or searchController changes
+              final filteredCards = controller.filteredFlashCards;
+
               if (controller.flashCards.isEmpty) {
                 return const SliverToBoxAdapter(
                   child: Center(
                     child: Padding(
                       padding: EdgeInsets.only(top: 50),
                       child: CircularProgressIndicator(),
+                    ),
+                  ),
+                );
+              }
+
+              if (filteredCards.isEmpty) {
+                return SliverToBoxAdapter(
+                  child: Center(
+                    child: Padding(
+                      padding: EdgeInsets.only(top: 50),
+                      child: Text(
+                        controller.searchController.text.isEmpty
+                            ? 'No flashcards available for this category'
+                            : 'No results found for "${controller.searchController.text}"',
+                        style: AppTextStyles.regular14.copyWith(
+                          color: AppColors.grey,
+                        ),
+                      ),
                     ),
                   ),
                 );
@@ -119,10 +161,10 @@ class FlashCardsView extends GetView<FlashCardsController> {
                     ),
                     child: FlashCardContainerWidget(
                       index: index,
-                      contentId: controller.flashCards[index].id,
+                      contentId: filteredCards[index].id,
                     ),
                   );
-                }, childCount: controller.flashCards.length),
+                }, childCount: filteredCards.length),
               );
             }),
           ],
