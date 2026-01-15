@@ -50,10 +50,9 @@ class FlashCardsView extends GetView<FlashCardsController> {
                     Obx(
                       () => CustomTextFormField(
                         searchController: controller.searchController,
-                        onChanged: (value) => controller.onSearchChanged(value),
-                        onClear: () => controller.clearSearch(),
+                        onClear: controller.clearSearch,
                         isSearchQueryNotEmpty:
-                            controller.isSearchQueryNotEmpty.value,
+                            controller.searchQuery.value.isNotEmpty,
                       ),
                     ),
                   ],

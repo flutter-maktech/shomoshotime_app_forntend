@@ -6,22 +6,20 @@ import '../../../core/user_panel_model/flash_card_reponse_model.dart';
 
 class FlashCardsController extends GetxController {
   final homeController = Get.find<HomeController>();
-  TextEditingController searchController = TextEditingController();
-  RxBool isSearchQueryNotEmpty = false.obs;
 
-  final RxBool isLoading = false.obs;
-  final RxString errorMessage = ''.obs;
+  final TextEditingController searchController = TextEditingController();
+
+  final RxString searchQuery = ''.obs;
+  final RxInt selectIndex = 0.obs;
 
   List<FlashCardItem> get flashCards => homeController.flashCards;
-  var selectIndex = 0.obs;
 
   @override
   void onInit() {
     super.onInit();
-    // Listen to search changes
+
     searchController.addListener(() {
-      isSearchQueryNotEmpty.value = searchController.text.isNotEmpty;
-      update();
+      searchQuery.value = searchController.text;
     });
   }
 
@@ -31,22 +29,17 @@ class FlashCardsController extends GetxController {
     super.onClose();
   }
 
-  void onSearchChanged(String value) {
-    // Trigger UI update when search text changes
-    update();
-  }
-
   void clearSearch() {
     searchController.clear();
-    isSearchQueryNotEmpty.value = false;
+    searchQuery.value = '';
   }
 
-  // Combined filter for both category and search
-  List<FlashCardItem> get filteredFlashCards {
-    // First filter by category
-    List<FlashCardItem> categoryFiltered = _filterByCategory();
+  void changeIndex(int index) {
+    selectIndex.value = index;
+  }
 
-    // Then filter by search if needed
+  List<FlashCardItem> get filteredFlashCards {
+    final categoryFiltered = _filterByCategory();
     return _filterBySearch(categoryFiltered);
   }
 
@@ -75,19 +68,20 @@ class FlashCardsController extends GetxController {
       final cardCategory = card.category.toLowerCase().trim();
       final filterCategory = selectedCategory.toLowerCase().trim();
 
-      // Flexible matching
       if (cardCategory.contains(filterCategory) ||
           filterCategory.contains(cardCategory)) {
         return true;
       }
 
-      // Handle common variations
       if (selectedCategory == 'SPI' &&
-          (cardCategory.contains('spi') || cardCategory == 'sonography')) {
+          (cardCategory.contains('spi') ||
+              cardCategory.contains('sonography'))) {
         return true;
       }
+
       if (selectedCategory == 'OB/GYN' &&
-          (cardCategory.contains('ob') || cardCategory.contains('gyn'))) {
+          (cardCategory.contains('ob') ||
+              cardCategory.contains('gyn'))) {
         return true;
       }
 
@@ -95,22 +89,16 @@ class FlashCardsController extends GetxController {
     }).toList();
   }
 
-  List<FlashCardItem> _filterBySearch(List<FlashCardItem> categoryFiltered) {
-    final searchText = searchController.text.toLowerCase().trim();
+  List<FlashCardItem> _filterBySearch(List<FlashCardItem> list) {
+    final query = searchQuery.value.toLowerCase().trim();
 
-    if (searchText.isEmpty) {
-      return categoryFiltered;
-    }
+    if (query.isEmpty) return list;
 
-    return categoryFiltered.where((card) {
-      return card.title.toLowerCase().contains(searchText) ||
-          card.subtitle.toLowerCase().contains(searchText) ||
-          card.category.toLowerCase().contains(searchText);
+    return list.where((card) {
+      return card.title.toLowerCase().contains(query) ||
+          card.subtitle.toLowerCase().contains(query) ||
+          card.category.toLowerCase().contains(query);
     }).toList();
   }
-
-  void changeIndex(int index) {
-    selectIndex.value = index;
-    update();
-  }
 }
+

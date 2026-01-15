@@ -27,13 +27,42 @@ class VascularFlashcardsView extends GetView<FlashcardsSetController> {
         child: Padding(
           padding: EdgeInsets.all(16.sp),
           child: Obx(() {
-            final totalQuestion =
-                controller.flashCardSetResponse.value?.data.length ?? 0;
+            // 1️⃣ LOADING STATE
+            if (controller.isLoading.value) {
+              return const Center(child: CircularProgressIndicator());
+            }
 
+            // 2️⃣ ERROR STATE
+            if (controller.errorMessage.value.isNotEmpty) {
+              return Center(
+                child: Text(
+                  controller.errorMessage.value,
+                  style: AppTextStyles.medium16.copyWith(
+                    color: Colors.redAccent,
+                  ),
+                ),
+              );
+            }
+
+            final cards = controller.cards;
+            final totalQuestion = cards.length;
+
+            // 3️⃣ EMPTY STATE (after loading finished)
+            if (totalQuestion == 0) {
+              return Center(
+                child: Text(
+                  'No questions available',
+                  style: AppTextStyles.medium16.copyWith(
+                    color: AppColors.greyLight,
+                  ),
+                ),
+              );
+            }
+
+            // 4️⃣ NORMAL FLOW (DATA EXISTS)
             return Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                // Question counter
                 Text(
                   'Question ${controller.currentIndex.value + 1} of $totalQuestion',
                   style: AppTextStyles.medium16.copyWith(
@@ -42,27 +71,14 @@ class VascularFlashcardsView extends GetView<FlashcardsSetController> {
                 ),
                 SizedBox(height: 8.h),
 
-                // PageView
                 Expanded(
                   child: PageView.builder(
                     controller: controller.pageController,
                     itemCount: totalQuestion,
                     onPageChanged: controller.onPageChanged,
                     itemBuilder: (context, index) {
-                      final question =
-                          controller
-                              .flashCardSetResponse
-                              .value
-                              ?.data[index]
-                              .question ??
-                          'No Question available';
-                      final answer =
-                          controller
-                              .flashCardSetResponse
-                              .value
-                              ?.data[index]
-                              .answer ??
-                          'No Answer available';
+                      final question = cards[index].question;
+                      final answer = cards[index].answer;
 
                       return SingleChildScrollView(
                         child: Column(
@@ -70,6 +86,7 @@ class VascularFlashcardsView extends GetView<FlashcardsSetController> {
                           children: [
                             Text(question, style: AppTextStyles.bold24),
                             SizedBox(height: 16.h),
+
                             Obx(() {
                               if (controller.showAnswer.value &&
                                   controller.currentIndex.value == index) {
@@ -82,36 +99,25 @@ class VascularFlashcardsView extends GetView<FlashcardsSetController> {
                               }
                               return const SizedBox.shrink();
                             }),
-                            if (!controller.showAnswer.value ||
-                                controller.currentIndex.value != index)
-                              const SizedBox.shrink(),
                           ],
                         ),
                       );
                     },
                   ),
                 ),
-                Obx(() {
-                  if (controller.flashCardSetResponse.value?.data.isNotEmpty ==
-                          true &&
-                      !controller.showAnswer.value) {
-                    return Padding(
-                      padding: EdgeInsets.only(bottom: 16.h),
-                      child: SizedBox(
-                        width: double.infinity,
-                        child: OutlinedButton(
-                          onPressed: controller.showAnswerText,
-                          style: OutlinedButton.styleFrom(
-                            padding: const EdgeInsets.symmetric(vertical: 16),
-                          ),
-                          child: const Text('Show Answer'),
-                        ),
-                      ),
-                    );
-                  }
-                  return const SizedBox.shrink();
-                }),
 
+                // Show Answer Button
+                if (!controller.showAnswer.value)
+                  Padding(
+                    padding: EdgeInsets.only(bottom: 16.h),
+                    child: SizedBox(
+                      width: double.infinity,
+                      child: OutlinedButton(
+                        onPressed: controller.showAnswerText,
+                        child: const Text('Show Answer'),
+                      ),
+                    ),
+                  ),
                 // Dots indicator
                 if (totalQuestion > 0)
                   Padding(
