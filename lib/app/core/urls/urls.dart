@@ -1,7 +1,7 @@
 class Urls {
   static String baseUrs = "https://shomoshotime.mtscorporate.com/api/v1";
   static String baseDomain = "https://shomoshotime.mtscorporate.com";
-  
+
   static String signUpUrl = "$baseUrs/auth/register";
   static String logInUrl = "$baseUrs/auth/login";
   static String verifyOtp = "$baseUrs/auth/verify-otp";
@@ -15,5 +15,10 @@ class Urls {
   static String nextPage = "$baseUrs/user/content/next-page";
   static String flashCardList = "$baseUrs/user/content/flash-cards";
   static String flashCardSetList = "$baseUrs/user/content/flash-cards/sets";
-  static String nextFlashCard = "$baseUrs/user/content/flash-cards/next-question";
+  static String nextFlashCard =
+      "$baseUrs/user/content/flash-cards/next-question";
+  static String userAnalytics = "$baseUrs/user/userAnalytics";
+  static String praciceQuesionSet = "$baseUrs/user/question/sets";
+  static String praciceQuesion = "$baseUrs/user/question/sets/questions";
+  static String answerSubmit = "$baseUrs/user/question/submit-answer";
 }

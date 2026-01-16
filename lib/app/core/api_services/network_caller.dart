@@ -63,7 +63,7 @@ class NetworkCaller {
         return jsonDecode(response.body);
       } else {
         throw Exception(
-            "Failed to post data: ${response.statusCode} - ${response.body}");
+            "Failed to post data:$url ${response.statusCode} - ${response.body}");
       }
     } catch (e) {
       print("POST Request Error: $e");

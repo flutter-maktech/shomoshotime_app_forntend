@@ -115,10 +115,10 @@ class FlashcardsSetController extends GetxController {
     showAnswer.value = true;
 
     // Only hit API if user moves forward
-    if (currentIndex.value >= _previousPageIndex) {
-      final cardId = cards[currentIndex.value].id;
-      hitNextFlashCardApi(cardId);
-    }
+    // if (currentIndex.value >= _previousPageIndex) {
+    //   final cardId = cards[currentIndex.value].id;
+    //   hitNextFlashCardApi(cardId);
+    // }
 
     // Update previous page index
     _previousPageIndex = currentIndex.value;

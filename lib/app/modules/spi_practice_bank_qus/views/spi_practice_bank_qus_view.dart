@@ -3,7 +3,6 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:shomoshotime/app/data/app_colors.dart';
 import 'package:shomoshotime/app/data/app_text_styles.dart';
-import 'package:shomoshotime/app/data/image_path.dart';
 import 'package:shomoshotime/app/modules/common_widgets/custom_app_bar.dart';
 import 'package:shomoshotime/app/modules/common_widgets/custom_button.dart';
 import 'package:shomoshotime/app/modules/common_widgets/custom_progress.dart';
@@ -16,119 +15,176 @@ class SpiPracticeBankQusView extends GetView<SpiPracticeBankQusController> {
 
   @override
   Widget build(BuildContext context) {
+    final args = Get.arguments as Map<String, dynamic>?;
+    final String title = args != null && args['title'] != null
+        ? args['title'] as String
+        : 'No title available';
+    final String category = args != null && args['category'] != null
+        ? args['category'] as String
+        : 'N/A';
+    final String statusLabel = args != null && args['staus_label'] != null
+        ? args['staus_label'] as String
+        : 'N/A';
+
     return Scaffold(
-      appBar: CustomAppBar(title: 'Back to Practice'),
+      appBar: const CustomAppBar(title: 'Back to Practice'),
       body: Padding(
         padding: EdgeInsets.symmetric(horizontal: 16.w),
-        child: SingleChildScrollView(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              SizedBox(height: 30.h),
-              spiRow(),
-              SizedBox(height: 14.h),
-
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    'Question 1 of 5',
-                    style: AppTextStyles.regular14.copyWith(
-                      color: AppColors.appBarSub,
-                    ),
-                  ),
-                  SizedBox(height: 6.h),
-                  CustomProgress(
-                    progress: .2,
-                    progressColor: AppColors.appBarCircleAvatarColor,
-                  ),
-                ],
-              ),
-
-              Container(
-                padding: EdgeInsets.all(14.sp),
-                margin: EdgeInsets.symmetric(vertical: 30.h),
-                width: double.infinity,
-                decoration: BoxDecoration(
-                  color: AppColors.homeStack,
-                  borderRadius: BorderRadius.circular(8),
-                ),
-                child: Column(
+        child: Obx(() {
+          // Show loading if question list is empty
+          if (controller.isloading.value) {
+            return const Center(child: CircularProgressIndicator());
+          }
+          if (controller.questionList.isEmpty) {
+            return const Center(child: Text('No questions available.'));
+          }
+          final question =
+              controller.questionList[controller.currentQuestionIndex.value];
+          return SingleChildScrollView(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                SizedBox(height: 30.h),
+                spiRow(title, category, statusLabel),
+                SizedBox(height: 14.h),
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      'What is the typical frequency range for diagnostic ultrasound?',
-                      style: AppTextStyles.regular16,
-                    ),
-
-                    Padding(
-                      padding: EdgeInsets.symmetric(vertical: 15.h),
-                      child: Image.asset(
-                        ImagePath.spiPracticeBank,
-                        height: 200.h,
+                      'Question of ${controller.questionList.length}',
+                      style: AppTextStyles.regular14.copyWith(
+                        color: AppColors.appBarSub,
                       ),
                     ),
-
-                    // RADIO LIST
-                    Obx(
-                      () => Column(
-                        children: [
-                          CustomRadio(
-                            title: '0.5 - 1 MHz',
-                            icon: controller.selectedIndex.value == 0
-                                ? Icons.radio_button_checked
-                                : Icons.radio_button_off,
-                            onTap: () => controller.selectOption(0),
-                          ),
-                          CustomRadio(
-                            title: '2 - 15 MHz',
-                            icon: controller.selectedIndex.value == 1
-                                ? Icons.radio_button_checked
-                                : Icons.radio_button_off,
-                            onTap: () => controller.selectOption(1),
-                          ),
-                          CustomRadio(
-                            title: '20 - 50 MHz',
-                            icon: controller.selectedIndex.value == 2
-                                ? Icons.radio_button_checked
-                                : Icons.radio_button_off,
-                            onTap: () => controller.selectOption(2),
-                          ),
-                          CustomRadio(
-                            title: '100 - 200 MHz',
-                            icon: controller.selectedIndex.value == 3
-                                ? Icons.radio_button_checked
-                                : Icons.radio_button_off,
-                            onTap: () => controller.selectOption(3),
-                          ),
-                        ],
-                      ),
-                    ),
-                    SizedBox(height: 20.h),
-                    CustomButton(
-                      childText: "Submit Answer",
-                      onTap: () {
-                        Get.toNamed(Routes.SPI_PRACTICE_BANK_ANS);
-                      },
+                    SizedBox(height: 6.h),
+                    CustomProgress(
+                      progress:
+                          (controller.currentQuestionIndex.value + 1) /
+                          controller.questionList.length,
                     ),
                   ],
                 ),
-              ),
-            ],
-          ),
-        ),
+                Container(
+                  padding: EdgeInsets.all(14.sp),
+                  margin: EdgeInsets.symmetric(vertical: 30.h),
+                  width: double.infinity,
+                  decoration: BoxDecoration(
+                    color: AppColors.homeStack,
+                    borderRadius: BorderRadius.circular(8),
+                  ),
+                  child: Column(
+                    children: [
+                      // Question Text
+                      Text(question.question, style: AppTextStyles.regular16),
+                      SizedBox(height: 10.h),
+                      // Question Image
+                      if (question.file.isNotEmpty)
+                        Image.network(
+                          question.file,
+                          height: 200.h,
+                          fit: BoxFit.contain,
+                          errorBuilder: (context, error, stackTrace) {
+                            return const Text('Image not available');
+                          },
+                        ),
+                      SizedBox(height: 20.h),
+                      // Options
+                      ...List.generate(4, (index) {
+                        final options = [
+                          question.optionA,
+                          question.optionB,
+                          question.optionC,
+                          question.optionD,
+                        ];
+                        return CustomRadio(
+                          title: options[index],
+                          icon: controller.selectedIndex.value == index
+                              ? Icons.radio_button_checked
+                              : Icons.radio_button_off,
+                          onTap: () => controller.selectOption(index),
+                        );
+                      }),
+                      SizedBox(height: 20.h),
+                      // Correct / Incorrect Box
+                      if (controller.showResult.value)
+                        Container(
+                          padding: EdgeInsets.all(12.sp),
+                          width: double.infinity,
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(4.sp),
+                            color: controller.isCorrectAnswer.value
+                                ? AppColors.greenColor.withAlpha(20)
+                                : AppColors.readColor.withAlpha(20),
+                            border: Border.all(
+                              color: controller.isCorrectAnswer.value
+                                  ? AppColors.greenColor.withAlpha(35)
+                                  : AppColors.readColor.withAlpha(35),
+                            ),
+                          ),
+                          child: Row(
+                            children: [
+                              Icon(
+                                controller.isCorrectAnswer.value
+                                    ? Icons.check_circle
+                                    : Icons.cancel,
+                                color: controller.isCorrectAnswer.value
+                                    ? AppColors.greenColor
+                                    : AppColors.readColor,
+                              ),
+                              SizedBox(width: 8.w),
+                              Text(
+                                controller.isCorrectAnswer.value
+                                    ? "Correct Answer"
+                                    : "Incorrect Answer",
+                                style: AppTextStyles.regular14.copyWith(
+                                  color: controller.isCorrectAnswer.value
+                                      ? AppColors.greenColor
+                                      : AppColors.readColor,
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      SizedBox(height: 20.h),
+                      // Submit / Next / Done Button
+                      CustomButton(
+                        childText: controller.isFinished.value
+                            ? "Done"
+                            : controller.showResult.value
+                            ? "Next"
+                            : "Submit Answer",
+                        onTap: () {
+                          if (controller.isFinished.value) {
+                            Get.toNamed(Routes.CUSTOM_BOTTOM_NAVIGATION_BAR);
+                          } else if (controller.showResult.value) {
+                            controller.goToNextQuestion();
+                          } else {
+                            controller.submitAnswer();
+                          }
+                        },
+                      ),
+                    ],
+                  ),
+                ),
+              ],
+            ),
+          );
+        }),
       ),
     );
   }
 
-  Row spiRow() {
+  Row spiRow(String title, String category, String statusLabel) {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
-        Text(
-          'SPI Practice Bank',
-          style: AppTextStyles.spaceGroteskMedium20,
-          overflow: TextOverflow.ellipsis,
-          maxLines: 1,
+        Expanded(
+          child: Text(
+            title,
+            style: AppTextStyles.spaceGroteskMedium20,
+            // overflow: TextOverflow.ellipsis,
+            // maxLines: 1,
+          ),
         ),
         Row(
           children: [
@@ -141,7 +197,7 @@ class SpiPracticeBankQusView extends GetView<SpiPracticeBankQusController> {
                 padding: EdgeInsets.symmetric(horizontal: 8.w, vertical: 4.h),
                 child: Center(
                   child: Text(
-                    'SPI',
+                    category,
                     style: AppTextStyles.regular14.copyWith(
                       color: AppColors.appBarSub,
                     ),
@@ -151,7 +207,7 @@ class SpiPracticeBankQusView extends GetView<SpiPracticeBankQusController> {
             ),
             SizedBox(width: 10.w),
             Text(
-              'Easy',
+              statusLabel,
               style: AppTextStyles.regular14.copyWith(
                 color: AppColors.appBarSub,
               ),

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:get/get_connect/http/src/utils/utils.dart';
 import 'package:get/get_core/src/get_main.dart';
 import 'package:get/get_navigation/src/extension_navigation.dart';
 import 'package:get/get_state_manager/src/rx_flutter/rx_obx_widget.dart';
@@ -19,6 +20,16 @@ class SpiPracticeBankAnsView extends GetView<SpiPracticeBankQusController> {
 
   @override
   Widget build(BuildContext context) {
+    final args = Get.arguments as Map<String, dynamic>?;
+    final String title = args != null && args['title'] != null
+        ? args['title'] as String
+        : 'No title available';
+    final String category = args != null && args['category'] != null
+        ? args['category'] as String
+        : 'N/A';
+    final String statusLabel = args != null && args['staus_label'] != null
+        ? args['staus_label'] as String
+        : 'N/A';
     return Scaffold(
       appBar: CustomAppBar(title: 'Back to Practice'),
       body: Padding(
@@ -28,14 +39,14 @@ class SpiPracticeBankAnsView extends GetView<SpiPracticeBankQusController> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               SizedBox(height: 30.h),
-              spiRow(),
+              spiRow(title, category, statusLabel),
               SizedBox(height: 14.h),
 
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    'Question 1 of 5',
+                    'Question of ${controller.questionList.isNotEmpty ? controller.questionList.length : 0}',
                     style: AppTextStyles.regular14.copyWith(
                       color: AppColors.appBarSub,
                     ),
@@ -80,28 +91,28 @@ class SpiPracticeBankAnsView extends GetView<SpiPracticeBankQusController> {
                             icon: controller.selectedIndex.value == 0
                                 ? Icons.radio_button_checked
                                 : Icons.radio_button_off,
-                            onTap: () => controller.selectOption(0),
+                            // onTap: () => controller.selectOption(0),
                           ),
                           CustomRadio(
                             title: '2 - 15 MHz',
                             icon: controller.selectedIndex.value == 1
                                 ? Icons.radio_button_checked
                                 : Icons.radio_button_off,
-                            onTap: () => controller.selectOption(1),
+                            // onTap: () => controller.selectOption(1),
                           ),
                           CustomRadio(
                             title: '20 - 50 MHz',
                             icon: controller.selectedIndex.value == 2
                                 ? Icons.radio_button_checked
                                 : Icons.radio_button_off,
-                            onTap: () => controller.selectOption(2),
+                            // onTap: () => controller.selectOption(2),
                           ),
                           CustomRadio(
                             title: '100 - 200 MHz',
                             icon: controller.selectedIndex.value == 3
                                 ? Icons.radio_button_checked
                                 : Icons.radio_button_off,
-                            onTap: () => controller.selectOption(3),
+                            // onTap: () => controller.selectOption(3),
                           ),
                         ],
                       ),
@@ -161,12 +172,12 @@ class SpiPracticeBankAnsView extends GetView<SpiPracticeBankQusController> {
     );
   }
 
-  Row spiRow() {
+  Row spiRow(String title, String category, String statusLabel) {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
         Text(
-          'SPI Practice Bank',
+          title,
           style: AppTextStyles.spaceGroteskMedium20,
           overflow: TextOverflow.ellipsis,
           maxLines: 1,
@@ -182,7 +193,7 @@ class SpiPracticeBankAnsView extends GetView<SpiPracticeBankQusController> {
                 padding: EdgeInsets.symmetric(horizontal: 8.w, vertical: 4.h),
                 child: Center(
                   child: Text(
-                    'SPI',
+                    category,
                     style: AppTextStyles.regular14.copyWith(
                       color: AppColors.appBarSub,
                     ),
@@ -192,7 +203,7 @@ class SpiPracticeBankAnsView extends GetView<SpiPracticeBankQusController> {
             ),
             SizedBox(width: 10.w),
             Text(
-              'Easy',
+              statusLabel,
               style: AppTextStyles.regular14.copyWith(
                 color: AppColors.appBarSub,
               ),

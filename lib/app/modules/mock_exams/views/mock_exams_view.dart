@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import 'package:get/get.dart';
-import 'package:get/get_connect/http/src/utils/utils.dart';
 
 import '../../../data/app_colors.dart';
 import '../../../data/app_text_styles.dart';
@@ -46,7 +45,6 @@ class MockExamsView extends GetView<MockExamsController> {
                       ),
                     ),
                     const SizedBox(height: 16),
-
                   ],
                 ),
               ),
@@ -77,7 +75,7 @@ class MockExamsView extends GetView<MockExamsController> {
                                   ),
                                   child: Column(
                                     crossAxisAlignment:
-                                    CrossAxisAlignment.start,
+                                        CrossAxisAlignment.start,
                                     children: [
                                       Row(
                                         children: [
@@ -85,8 +83,8 @@ class MockExamsView extends GetView<MockExamsController> {
                                             "Questions\nAttempted",
                                             style: AppTextStyles.regular12
                                                 .copyWith(
-                                              color: AppColors.blackColor,
-                                            ),
+                                                  color: AppColors.blackColor,
+                                                ),
                                           ),
                                           Spacer(),
                                           Image.asset(
@@ -107,20 +105,15 @@ class MockExamsView extends GetView<MockExamsController> {
 
                                       Row(
                                         children: [
-                                          Image.asset(
-                                            ImagePath.frame21Image,
-                                            scale: 6,
-                                          ),
-                                          SizedBox(width: 4),
                                           Expanded(
                                             child: Text(
-                                              '+52 this week',
+                                              'Keep it up!',
                                               maxLines: 1,
                                               overflow: TextOverflow.ellipsis,
                                               style: AppTextStyles.regular12
                                                   .copyWith(
-                                                color: AppColors.blackColor,
-                                              ),
+                                                    color: AppColors.blackColor,
+                                                  ),
                                             ),
                                           ),
                                         ],
@@ -141,7 +134,7 @@ class MockExamsView extends GetView<MockExamsController> {
                                   ),
                                   child: Column(
                                     crossAxisAlignment:
-                                    CrossAxisAlignment.start,
+                                        CrossAxisAlignment.start,
                                     children: [
                                       Row(
                                         children: [
@@ -149,8 +142,8 @@ class MockExamsView extends GetView<MockExamsController> {
                                             "Overall\nAccuracy",
                                             style: AppTextStyles.regular12
                                                 .copyWith(
-                                              color: AppColors.blackColor,
-                                            ),
+                                                  color: AppColors.blackColor,
+                                                ),
                                           ),
                                           Spacer(),
                                           Image.asset(
@@ -182,42 +175,6 @@ class MockExamsView extends GetView<MockExamsController> {
                             ],
                           ),
                         ),
-
-                        SizedBox(height: 13),
-                        Padding(
-                          padding: const EdgeInsets.symmetric(horizontal: 16),
-                          child: Container(
-                            padding: const EdgeInsets.all(18),
-                            decoration: BoxDecoration(
-                              color: AppColors.whiteColor,
-                              borderRadius: BorderRadius.circular(8),
-                            ),
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Row(
-                                  children: [
-                                    Text('Overall\nAccuracy'),
-                                    Spacer(),
-                                    Image.asset(
-                                      ImagePath.frame21Image,
-                                      scale: 4,
-                                    ),
-                                  ],
-                                ),
-                                SizedBox(height: 10),
-                                Text(
-                                  '12 days',
-                                  style: AppTextStyles.bold24.copyWith(
-                                    color: AppColors.greyBlack,
-                                  ),
-                                ),
-                                SizedBox(height: 10),
-                                Text('Above average performance'),
-                              ],
-                            ),
-                          ),
-                        ),
                       ],
                     ),
                   ),
@@ -241,6 +198,7 @@ class MockExamsView extends GetView<MockExamsController> {
       ),
     );
   }
+
   Widget spiFundamentalsCardWidget() {
     return Container(
       width: double.infinity,
@@ -350,20 +308,40 @@ class MockExamsView extends GetView<MockExamsController> {
               borderRadius: BorderRadius.circular(6),
               color: AppColors.whiteColor,
             ),
-            child: SizedBox(width: double.infinity,
+            child: SizedBox(
+              width: double.infinity,
               height: 50,
-              child: Row(children: [
-                SizedBox(width: 10.w,),
-                Text('attempt',style: AppTextStyles.regular14.copyWith(color:Colors.grey),),
-                Spacer(),
-                Text('82%',style: AppTextStyles.regular24.copyWith(color:Colors.black),),
-                SizedBox(width: 10.w,),
-              ],),),
+              child: Row(
+                children: [
+                  SizedBox(width: 10.w),
+                  Text(
+                    'attempt',
+                    style: AppTextStyles.regular14.copyWith(color: Colors.grey),
+                  ),
+                  Spacer(),
+                  Text(
+                    '82%',
+                    style: AppTextStyles.regular24.copyWith(
+                      color: Colors.black,
+                    ),
+                  ),
+                  SizedBox(width: 10.w),
+                ],
+              ),
+            ),
           ),
           SizedBox(height: 14.h),
-          CustomButton(childText: 'Retake Exam',onTap: () => Get.toNamed(Routes.SPI_PRACTICE_BANK_QUS),),
+          CustomButton(
+            childText: 'Retake Exam',
+            onTap: () => Get.toNamed(Routes.SPI_PRACTICE_BANK_QUS),
+          ),
           SizedBox(height: 18.h),
-          Center(child: Text('Attempted 3 times',style: AppTextStyles.regular14.copyWith(color: Colors.grey),))
+          Center(
+            child: Text(
+              'Attempted 3 times',
+              style: AppTextStyles.regular14.copyWith(color: Colors.grey),
+            ),
+          ),
         ],
       ),
     );
