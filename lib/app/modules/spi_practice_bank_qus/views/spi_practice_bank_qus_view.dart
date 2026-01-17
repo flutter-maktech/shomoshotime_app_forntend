@@ -6,7 +6,7 @@ import 'package:shomoshotime/app/data/app_text_styles.dart';
 import 'package:shomoshotime/app/modules/common_widgets/custom_app_bar.dart';
 import 'package:shomoshotime/app/modules/common_widgets/custom_button.dart';
 import 'package:shomoshotime/app/modules/common_widgets/custom_progress.dart';
-import '../../../routes/app_pages.dart';
+import 'package:shomoshotime/app/modules/custom_bottom_navigation_bar/views/custom_bottom_navigation_bar_view.dart';
 import '../controllers/spi_practice_bank_qus_controller.dart';
 import '../widget/custom_radio.dart';
 
@@ -96,12 +96,43 @@ class SpiPracticeBankQusView extends GetView<SpiPracticeBankQusController> {
                           question.optionC,
                           question.optionD,
                         ];
+
+                        Color borderColor = AppColors.subscriptionPlanButton;
+                        Color textColor = AppColors.blackColor;
+                        Color iconColor = AppColors.subscriptionPlanButton;
+                        Color boxColor = AppColors.whiteColor;
+
+                        if (controller.showResult.value) {
+                          if (index == controller.correctIndex.value) {
+                            borderColor = AppColors.greenColor;
+                            textColor = AppColors.greenColor;
+                            iconColor = AppColors.greenColor;
+                            boxColor = AppColors.greenColor.withAlpha(20);
+                          } else if (index == controller.selectedIndex.value &&
+                              !controller.isCorrectAnswer.value) {
+                            borderColor = AppColors.readColor;
+                            textColor = AppColors.readColor;
+                            iconColor = AppColors.readColor;
+                            boxColor = AppColors.readColor.withAlpha(20);
+                          }
+                        } else if (controller.selectedIndex.value == index) {
+                          borderColor = AppColors.subscriptionPlanButton;
+                          iconColor = AppColors.subscriptionPlanButton;
+                          boxColor = AppColors.whiteColor;
+                        }
+
                         return CustomRadio(
                           title: options[index],
                           icon: controller.selectedIndex.value == index
                               ? Icons.radio_button_checked
                               : Icons.radio_button_off,
-                          onTap: () => controller.selectOption(index),
+                          borderColor: borderColor,
+                          textColor: textColor,
+                          iconColor: iconColor,
+                          boxColor: boxColor,
+                          onTap: controller.showResult.value
+                              ? null
+                              : () => controller.selectOption(index),
                         );
                       }),
                       SizedBox(height: 20.h),
@@ -155,7 +186,10 @@ class SpiPracticeBankQusView extends GetView<SpiPracticeBankQusController> {
                             : "Submit Answer",
                         onTap: () {
                           if (controller.isFinished.value) {
-                            Get.toNamed(Routes.CUSTOM_BOTTOM_NAVIGATION_BAR);
+                            Get.off(
+                              CustomBottomNavigationBarView(),
+                              arguments: {'refresh': true},
+                            );
                           } else if (controller.showResult.value) {
                             controller.goToNextQuestion();
                           } else {

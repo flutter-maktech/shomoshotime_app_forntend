@@ -112,7 +112,14 @@ class PracticeController extends GetxController {
     isloading.value = true;
     errorText.value = '';
     try {
-      final body = {"practiceAccuracy": "true", "practiceProgress": "true"};
+      final body = {
+        "studyAnalytics": "true",
+        "flashcardAnalytics": "true",
+        "practiceAccuracy": "true",
+        "mockTestAccuracy": "true",
+        "practiceProgress": "true",
+        "mockTestProgress": "true",
+      };
 
       final token = await AppPreference.getToken();
 

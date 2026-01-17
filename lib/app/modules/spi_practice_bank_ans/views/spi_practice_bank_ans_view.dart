@@ -83,40 +83,40 @@ class SpiPracticeBankAnsView extends GetView<SpiPracticeBankQusController> {
                     ),
 
                     // RADIO LIST
-                    Obx(
-                      () => Column(
-                        children: [
-                          CustomRadio(
-                            title: '0.5 - 1 MHz',
-                            icon: controller.selectedIndex.value == 0
-                                ? Icons.radio_button_checked
-                                : Icons.radio_button_off,
-                            // onTap: () => controller.selectOption(0),
-                          ),
-                          CustomRadio(
-                            title: '2 - 15 MHz',
-                            icon: controller.selectedIndex.value == 1
-                                ? Icons.radio_button_checked
-                                : Icons.radio_button_off,
-                            // onTap: () => controller.selectOption(1),
-                          ),
-                          CustomRadio(
-                            title: '20 - 50 MHz',
-                            icon: controller.selectedIndex.value == 2
-                                ? Icons.radio_button_checked
-                                : Icons.radio_button_off,
-                            // onTap: () => controller.selectOption(2),
-                          ),
-                          CustomRadio(
-                            title: '100 - 200 MHz',
-                            icon: controller.selectedIndex.value == 3
-                                ? Icons.radio_button_checked
-                                : Icons.radio_button_off,
-                            // onTap: () => controller.selectOption(3),
-                          ),
-                        ],
-                      ),
-                    ),
+                    // Obx(
+                    //   () => Column(
+                    //     children: [
+                    //       CustomRadio(
+                    //         title: '0.5 - 1 MHz',
+                    //         icon: controller.selectedIndex.value == 0
+                    //             ? Icons.radio_button_checked
+                    //             : Icons.radio_button_off,
+                    //         // onTap: () => controller.selectOption(0),
+                    //       ),
+                    //       CustomRadio(
+                    //         title: '2 - 15 MHz',
+                    //         icon: controller.selectedIndex.value == 1
+                    //             ? Icons.radio_button_checked
+                    //             : Icons.radio_button_off,
+                    //         // onTap: () => controller.selectOption(1),
+                    //       ),
+                    //       CustomRadio(
+                    //         title: '20 - 50 MHz',
+                    //         icon: controller.selectedIndex.value == 2
+                    //             ? Icons.radio_button_checked
+                    //             : Icons.radio_button_off,
+                    //         // onTap: () => controller.selectOption(2),
+                    //       ),
+                    //       CustomRadio(
+                    //         title: '100 - 200 MHz',
+                    //         icon: controller.selectedIndex.value == 3
+                    //             ? Icons.radio_button_checked
+                    //             : Icons.radio_button_off,
+                    //         // onTap: () => controller.selectOption(3),
+                    //       ),
+                    //     ],
+                    //   ),
+                    // ),
                     SizedBox(height: 20.h),
                     Container(
                       padding: EdgeInsets.all(12.sp),

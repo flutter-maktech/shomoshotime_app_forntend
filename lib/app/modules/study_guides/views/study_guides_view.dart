@@ -2,11 +2,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
+import '../../../data/app_colors.dart';
 import '../../../routes/app_pages.dart';
-import '../../common_widgets/category_filter_bar.dart';
 import '../../common_widgets/custom_text_form_field.dart';
 import '../../common_widgets/header_section.dart';
 import '../../common_widgets/primary_app_bar.dart';
+import '../../flash_cards/widgets/flash_card_filter_bar.dart';
 import '../controllers/study_guides_controller.dart';
 import '../widgets/spi_audio_card_list.dart';
 import '../widgets/spi_card_list.dart';
@@ -48,14 +49,76 @@ class StudyGuidesView extends GetView<StudyGuidesController> {
                 ),
               ),
             ),
-
             SliverToBoxAdapter(
               child: Padding(
-                padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 16.h),
-                child: Obx(
-                  () => CategoryFilterBar(
-                    isAudioView:
-                        controller.select.value == 1, // 0 for PDF, 1 for Audio
+                padding: EdgeInsets.symmetric(horizontal: 16, vertical: 16.h),
+                child: Container(
+                  color: AppColors.appBarBack,
+                  width: double.infinity,
+                  height: 50.h,
+                  child: Padding(
+                    padding: EdgeInsets.symmetric(
+                      horizontal: 12.w,
+                      vertical: 8.h,
+                    ),
+                    child: Obx(
+                      () => Row(
+                        // Wrap with Obx
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          FlashCardFilterBar(
+                            title: 'All',
+                            index: 0,
+                            isSelected:
+                                controller.selectIndex.value == 0, // Dynamic
+                            onTap: () {
+                              controller.changeIndex(0);
+                              controller.setSelectedCategory('All');
+                            },
+                          ),
+                          FlashCardFilterBar(
+                            title: 'SPI',
+                            index: 1,
+                            isSelected:
+                                controller.selectIndex.value == 1, // Dynamic
+                            onTap: () {
+                              controller.changeIndex(1);
+                              controller.setSelectedCategory('SPI');
+                            },
+                          ),
+                          FlashCardFilterBar(
+                            title: 'Vascular',
+                            index: 2,
+                            isSelected:
+                                controller.selectIndex.value == 2, // Dynamic
+                            onTap: () {
+                              controller.changeIndex(2);
+                              controller.setSelectedCategory('Vascular');
+                            },
+                          ),
+                          FlashCardFilterBar(
+                            title: 'OB/GYN',
+                            index: 3,
+                            isSelected:
+                                controller.selectIndex.value == 3, // Dynamic
+                            onTap: () {
+                              controller.changeIndex(3);
+                              controller.setSelectedCategory('OB/GYN');
+                            },
+                          ),
+                          FlashCardFilterBar(
+                            title: 'Abdomen',
+                            index: 4,
+                            isSelected:
+                                controller.selectIndex.value == 4, // Dynamic
+                            onTap: () {
+                              controller.changeIndex(4);
+                              controller.setSelectedCategory('Abdomen');
+                            },
+                          ),
+                        ],
+                      ),
+                    ),
                   ),
                 ),
               ),

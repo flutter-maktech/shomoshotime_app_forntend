@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:shomoshotime/app/modules/home/controllers/home_controller.dart';
 
+import '../../../routes/app_pages.dart';
 import '../../common_widgets/custom_progress_container.dart';
 
 class StudyGuideListView extends StatelessWidget {
@@ -12,61 +13,44 @@ class StudyGuideListView extends StatelessWidget {
     final homeController = Get.find<HomeController>();
 
     return Obx(() {
-      // Show loading indicator
       if (homeController.isLoading.value) {
-        return Center(
-          child: Padding(
-            padding: EdgeInsets.symmetric(vertical: 20),
-            child: CircularProgressIndicator(),
-          ),
-        );
+        return const Center(child: CircularProgressIndicator());
       }
 
-      // Show error message
       if (homeController.errorMessage.value.isNotEmpty) {
-        return Padding(
-          padding: EdgeInsets.symmetric(vertical: 20),
-          child: Text(
-            homeController.errorMessage.value,
-            style: TextStyle(color: Colors.red),
-            textAlign: TextAlign.center,
-          ),
-        );
+        return Text(homeController.errorMessage.value);
       }
 
-      // Show empty state
-      if (homeController.studyGuides.isEmpty) {
-        return Padding(
-          padding: EdgeInsets.symmetric(vertical: 20),
-          child: Text(
-            'No study guides available',
-            textAlign: TextAlign.center,
-            style: TextStyle(color: Colors.grey),
-          ),
-        );
+      final pdfStudyGuides = homeController.studyGuides
+          .where((e) => e.file!.toLowerCase().endsWith('.pdf'))
+          .toList();
+
+      if (pdfStudyGuides.isEmpty) {
+        return const Text('No study guides available');
       }
 
-      //Item number
-      final item = homeController.studyGuides.length;
-
-      // Show study guides list
       return ListView.builder(
-        itemCount: item > 4 ? 4 : item,
-        padding: EdgeInsets.zero,
-        physics: NeverScrollableScrollPhysics(),
+        itemCount: pdfStudyGuides.length > 4 ? 4 : pdfStudyGuides.length,
         shrinkWrap: true,
-        primary: false,
+        physics: const NeverScrollableScrollPhysics(),
         itemBuilder: (context, index) {
-          final studyGuide = homeController.studyGuides[index];
+          final studyGuide = pdfStudyGuides[index];
 
           return CustomProgressContainer(
             title: studyGuide.title,
-            progress:
-                studyGuide.studyGuidePercentCompleted /
-                100, // You can replace this with actual progress data if available
+            onTap: () {
+              Get.toNamed(
+                Routes.SPI_FUNDAMENTALS,
+                arguments: {
+                  'pdfUrl': studyGuide.file,
+                  'title': studyGuide.title,
+                  'contentId': studyGuide.id,
+                },
+              );
+            },
+            progress: studyGuide.studyGuidePercentCompleted / 100,
             progressComplete:
-                '${(studyGuide.studyGuidePercentCompleted).round()}% completed', // You can customize this based on your data
-            // Add any additional properties your CustomProgressContainer accepts
+                '${studyGuide.studyGuidePercentCompleted.round()}% completed',
           );
         },
       );

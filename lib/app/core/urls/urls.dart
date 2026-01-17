@@ -21,4 +21,6 @@ class Urls {
   static String praciceQuesionSet = "$baseUrs/user/question/sets";
   static String praciceQuesion = "$baseUrs/user/question/sets/questions";
   static String answerSubmit = "$baseUrs/user/question/submit-answer";
+  static String userProfile = "$baseUrs/user/profile";
+  static String profileUpdate = "$baseUrs/user/profile/update";
 }

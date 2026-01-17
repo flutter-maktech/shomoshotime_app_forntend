@@ -4,10 +4,8 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:shomoshotime/app/data/app_colors.dart';
 import 'package:shomoshotime/app/data/app_text_styles.dart';
-import 'package:shomoshotime/app/data/image_path.dart';
 import 'package:shomoshotime/app/modules/common_widgets/custom_app_bar.dart';
 import 'package:shomoshotime/app/modules/common_widgets/custom_button.dart';
-import 'package:shomoshotime/app/routes/app_pages.dart';
 
 import '../controllers/edit_profile_controller.dart';
 import '../widget/custom_edit_profile_textfield.dart';
@@ -17,6 +15,8 @@ class EditProfileView extends GetView<EditProfileController> {
 
   @override
   Widget build(BuildContext context) {
+    final argu = Get.arguments as Map<String, dynamic>;
+    final userImage = argu['userImage'];
     return Scaffold(
       appBar: CustomAppBar(title: "Edit Profile"),
       body: SingleChildScrollView(
@@ -27,33 +27,46 @@ class EditProfileView extends GetView<EditProfileController> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Center(
-                  child: Image.asset(
-                    ImagePath.profile,
-                    height: 160.h,
-                    width: 160.w,
+                  child: GestureDetector(
+                    onTap: controller.pickImage,
+                    child: Obx(() {
+                      return CircleAvatar(
+                        radius: 80.r,
+                        backgroundImage: controller.selectedImage.value != null
+                            ? FileImage(controller.selectedImage.value!)
+                                  as ImageProvider<Object>
+                            : NetworkImage(userImage) as ImageProvider<Object>,
+                      );
+                    }),
                   ),
                 ),
+
                 SizedBox(height: 46.h),
                 Text("Full name", style: AppTextStyles.regular12),
                 SizedBox(height: 8.h),
-                CustomEditProfileTextField(text: "Katona Beatrix"),
+                CustomEditProfileTextField(
+                  text: "Katona Beatrix",
+                  controller: controller.nameController,
+                ),
                 SizedBox(height: 16.h),
                 Text("Email", style: AppTextStyles.regular12),
                 SizedBox(height: 8.h),
-                CustomEditProfileTextField(text: "deanna.curtis@example.com"),
-                SizedBox(height: 16.h),
-                CustomButton(
-                  childText: "Manage Subscription",
-                  buttonChildColor: AppColors.profileYellow,
-                  buttonColor: AppColors.blackColor,
-                  onTap: () => Get.toNamed(Routes.SUBSCRIPTION_PLAN),
+                CustomEditProfileTextField(
+                  controller: controller.emailController,
+                  text: "deanna.curtis@example.com",
                 ),
-                SizedBox(height: 158.h,),
+                SizedBox(height: 100),
                 CustomButton(
                   childText: "Save",
                   buttonChildColor: AppColors.blackColor,
                   buttonColor: AppColors.profileYellow,
-                  onTap: () => Get.offAllNamed(Routes.PROFILE)
+                  onTap: () async {
+                    final success = await controller.updateProfile();
+                    print('---------$success');
+                    if (success == true) {
+                      Get.back(result: true);
+                    }
+                  },
                 ),
               ],
             ),

@@ -113,28 +113,29 @@ class Grid extends StatelessWidget {
                 ),
               ],
             ),
+            SizedBox(height: 8.h),
             Text(
               value,
               style: AppTextStyles.bold38.copyWith(color: AppColors.whiteColor),
               overflow: TextOverflow.ellipsis,
               maxLines: 2,
             ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.start,
-              children: [
-                Image.asset(ImagePath.chart, height: 16.h, width: 16.w),
-                Expanded(
-                  child: Text(
-                    " +$chartValue this week",
-                    style: AppTextStyles.regular12.copyWith(
-                      color: AppColors.whiteColor,
-                    ),
-                    overflow: TextOverflow.ellipsis,
-                    maxLines: 1,
-                  ),
-                ),
-              ],
-            ),
+            // Row(
+            //   mainAxisAlignment: MainAxisAlignment.start,
+            //   children: [
+            //     Image.asset(ImagePath.chart, height: 16.h, width: 16.w),
+            //     Expanded(
+            //       child: Text(
+            //         " +$chartValue this week",
+            //         style: AppTextStyles.regular12.copyWith(
+            //           color: AppColors.whiteColor,
+            //         ),
+            //         overflow: TextOverflow.ellipsis,
+            //         maxLines: 1,
+            //       ),
+            //     ),
+            //   ],
+            // ),
           ],
         ),
       ),

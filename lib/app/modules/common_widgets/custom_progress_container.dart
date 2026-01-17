@@ -11,6 +11,7 @@ class CustomProgressContainer extends StatelessWidget {
   final String? subTitleText;
   final double? progress;
   final String? progressComplete;
+  final VoidCallback? onTap;
 
   const CustomProgressContainer({
     super.key,
@@ -20,6 +21,7 @@ class CustomProgressContainer extends StatelessWidget {
     this.progress,
     this.suffixTitle,
     this.progressComplete,
+    this.onTap,
   });
 
   @override
@@ -29,81 +31,84 @@ class CustomProgressContainer extends StatelessWidget {
             subTitleContainerText!.trim().isNotEmpty) ||
         (subTitleText != null && subTitleText!.trim().isNotEmpty);
 
-    return Container(
-      padding: EdgeInsets.all(14.sp),
-      margin: EdgeInsets.symmetric(vertical: 4.w),
-      width: double.infinity,
-      decoration: BoxDecoration(
-        color: AppColors.progressContainerBg,
-        borderRadius: BorderRadius.circular(4.r),
-      ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Padding(
-            padding: EdgeInsets.only(bottom: 6.h),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Expanded(
-                  child: Text(
-                    title ?? '',
-                    style: AppTextStyles.regular12,
-                    overflow: TextOverflow.ellipsis,
-                    maxLines: 1,
-                  ),
-                ),
-                Text(suffixTitle ?? '', style: AppTextStyles.regular8),
-              ],
-            ),
-          ),
-          if (hasSubtitle)
+    return GestureDetector(
+      onTap: onTap,
+      child: Container(
+        padding: EdgeInsets.all(14.sp),
+        margin: EdgeInsets.symmetric(vertical: 4.w),
+        width: double.infinity,
+        decoration: BoxDecoration(
+          color: AppColors.progressContainerBg,
+          borderRadius: BorderRadius.circular(4.r),
+        ),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
             Padding(
               padding: EdgeInsets.only(bottom: 6.h),
               child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  if (subTitleContainerText != null &&
-                      subTitleContainerText!.trim().isNotEmpty)
-                    Container(
-                      height: 15.h,
-                      padding: EdgeInsets.symmetric(horizontal: 6.w),
-                      margin: EdgeInsets.only(right: 7.w),
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(4.r),
-                        color: AppColors.primaryColor,
-                      ),
-                      child: Center(
-                        child: Text(
-                          subTitleContainerText!,
-                          style: AppTextStyles.regular8,
-                          overflow: TextOverflow.ellipsis,
-                        ),
-                      ),
+                  Expanded(
+                    child: Text(
+                      title ?? '',
+                      style: AppTextStyles.regular12,
+                      overflow: TextOverflow.ellipsis,
+                      maxLines: 1,
                     ),
-                  if (subTitleText != null && subTitleText!.trim().isNotEmpty)
-                    Expanded(
-                      child: Text(
-                        subTitleText!,
-                        style: AppTextStyles.regular8,
-                        overflow: TextOverflow.ellipsis,
-                        maxLines: 1,
-                      ),
-                    ),
+                  ),
+                  Text(suffixTitle ?? '', style: AppTextStyles.regular8),
                 ],
               ),
             ),
-          CustomProgress(progress: progress ?? 0.0),
-          if (progressComplete != null && progressComplete!.trim().isNotEmpty)
-            Padding(
-              padding: EdgeInsets.only(top: 6.h),
-              child: Text(
-                progressComplete!,
-                style: AppTextStyles.regular12,
-                overflow: TextOverflow.ellipsis,
-                maxLines: 1,
+            if (hasSubtitle)
+              Padding(
+                padding: EdgeInsets.only(bottom: 6.h),
+                child: Row(
+                  children: [
+                    if (subTitleContainerText != null &&
+                        subTitleContainerText!.trim().isNotEmpty)
+                      Container(
+                        height: 15.h,
+                        padding: EdgeInsets.symmetric(horizontal: 6.w),
+                        margin: EdgeInsets.only(right: 7.w),
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(4.r),
+                          color: AppColors.primaryColor,
+                        ),
+                        child: Center(
+                          child: Text(
+                            subTitleContainerText!,
+                            style: AppTextStyles.regular8,
+                            overflow: TextOverflow.ellipsis,
+                          ),
+                        ),
+                      ),
+                    if (subTitleText != null && subTitleText!.trim().isNotEmpty)
+                      Expanded(
+                        child: Text(
+                          subTitleText!,
+                          style: AppTextStyles.regular8,
+                          overflow: TextOverflow.ellipsis,
+                          maxLines: 1,
+                        ),
+                      ),
+                  ],
+                ),
               ),
-            ),
-        ],
+            CustomProgress(progress: progress ?? 0.0),
+            if (progressComplete != null && progressComplete!.trim().isNotEmpty)
+              Padding(
+                padding: EdgeInsets.only(top: 6.h),
+                child: Text(
+                  progressComplete!,
+                  style: AppTextStyles.regular12,
+                  overflow: TextOverflow.ellipsis,
+                  maxLines: 1,
+                ),
+              ),
+          ],
+        ),
       ),
     );
   }

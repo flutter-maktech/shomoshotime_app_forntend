@@ -1,23 +1,57 @@
 import 'package:get/get.dart';
+import 'package:intl/intl.dart';
+import 'package:shomoshotime/app/core/user_panel_model/profile_response.dart';
+
+import '../../../all_utils/app_preference.dart';
+import '../../../core/api_services/network_caller.dart';
+import '../../../core/urls/urls.dart';
 
 class ProfileController extends GetxController {
-  //TODO: Implement ProfileController
+  final RxBool isLoading = false.obs;
+  final RxString errorMessage = ''.obs;
+  final NetworkCaller _networkCaller = NetworkCaller();
+  final Rx<ProfileResponse?> profileResponse = Rx<ProfileResponse?>(
+    null,
+  );
 
-  final count = 0.obs;
   @override
   void onInit() {
     super.onInit();
+    fetchProfileData();
   }
+Future<void> fetchProfileData() async {
+    try {
+      isLoading.value = true;
+      errorMessage.value = '';
 
-  @override
-  void onReady() {
-    super.onReady();
+      final token = await AppPreference.getToken();
+
+      // Use POST request with empty body since API only supports POST
+      final response = await _networkCaller.postRequest(
+        Urls.userProfile,
+        {}, // Empty body
+        token: token,
+      );
+
+      // Parse the response
+      profileResponse.value = ProfileResponse.fromJson(response);
+    } catch (e) {
+      errorMessage.value = 'Failed to load study guides: $e';
+    } finally {
+      isLoading.value = false;
+    }
   }
+  String formatToMonthYear(String? dateString) {
+  try {
+    // Input: 14 Jan, 2026 08:42 AM
+    final DateTime date =
+        DateFormat('dd MMM, yyyy hh:mm a').parse(dateString?? '14 Jan, 2026 08:42 AM');
 
-  @override
-  void onClose() {
-    super.onClose();
+    // Output: January 2026
+    return DateFormat('MMMM yyyy').format(date);
+  } catch (e) {
+    return '';
   }
+}
 
-  void increment() => count.value++;
 }

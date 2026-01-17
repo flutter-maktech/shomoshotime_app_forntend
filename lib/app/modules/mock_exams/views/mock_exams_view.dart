@@ -3,6 +3,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import 'package:get/get.dart';
 
+import '../../../core/user_panel_model/question_set_response.dart';
 import '../../../data/app_colors.dart';
 import '../../../data/app_text_styles.dart';
 import '../../../data/image_path.dart';
@@ -17,189 +18,229 @@ class MockExamsView extends GetView<MockExamsController> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: SafeArea(
-        child: CustomScrollView(
-          slivers: [
-            SliverToBoxAdapter(
-              child: PrimaryAppBar(
-                notificationOnTap: () => Get.toNamed(Routes.NOTIFICATION),
-                profileOnTap: () => Get.toNamed(Routes.PROFILE),
-              ),
-            ),
-            SliverToBoxAdapter(
-              child: Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 16),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    const SizedBox(height: 16),
-                    Text(
-                      'Mock Exams',
-                      style: AppTextStyles.medium20.copyWith(
-                        color: AppColors.blackColor,
-                      ),
-                    ),
-                    Text(
-                      'Simulate the real exam',
-                      style: AppTextStyles.regular14.copyWith(
-                        color: AppColors.appBarSub,
-                      ),
-                    ),
-                    const SizedBox(height: 16),
-                  ],
+        child: Obx(() {
+          if (controller.isloading.value) {
+            return Center(child: CircularProgressIndicator());
+          }
+          if (controller.errorText.value.isNotEmpty) {
+            return Center(child: Text(controller.errorText.value));
+          }
+          return CustomScrollView(
+            slivers: [
+              SliverToBoxAdapter(
+                child: PrimaryAppBar(
+                  notificationOnTap: () => Get.toNamed(Routes.NOTIFICATION),
+                  profileOnTap: () => Get.toNamed(Routes.PROFILE),
                 ),
               ),
-            ),
-            SliverToBoxAdapter(
-              child: Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 16),
-                child: DecoratedBox(
-                  decoration: BoxDecoration(
-                    color: AppColors.homeStack,
-                    borderRadius: BorderRadius.circular(8),
+              SliverToBoxAdapter(
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 16),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      const SizedBox(height: 16),
+                      Text(
+                        'Mock Exams',
+                        style: AppTextStyles.medium20.copyWith(
+                          color: AppColors.blackColor,
+                        ),
+                      ),
+                      Text(
+                        'Simulate the real exam',
+                        style: AppTextStyles.regular14.copyWith(
+                          color: AppColors.appBarSub,
+                        ),
+                      ),
+                      const SizedBox(height: 16),
+                    ],
                   ),
-                  child: Padding(
-                    padding: const EdgeInsets.symmetric(vertical: 14),
-                    child: Column(
-                      mainAxisSize: MainAxisSize.min, // IMPORTANT
-                      children: [
-                        Padding(
-                          padding: const EdgeInsets.symmetric(horizontal: 16),
-                          child: Row(
-                            children: [
-                              Expanded(
-                                child: Container(
-                                  padding: const EdgeInsets.all(12),
-                                  decoration: BoxDecoration(
-                                    color: AppColors.whiteColor,
-                                    borderRadius: BorderRadius.circular(8),
-                                  ),
-                                  child: Column(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    children: [
-                                      Row(
-                                        children: [
-                                          Text(
-                                            "Questions\nAttempted",
-                                            style: AppTextStyles.regular12
-                                                .copyWith(
-                                                  color: AppColors.blackColor,
-                                                ),
-                                          ),
-                                          Spacer(),
-                                          Image.asset(
-                                            ImagePath.frameImage,
-                                            scale: 5,
-                                          ),
-                                        ],
-                                      ),
-
-                                      SizedBox(height: 14),
-                                      Text(
-                                        '430',
-                                        style: AppTextStyles.bold24.copyWith(
-                                          color: AppColors.greyBlack,
-                                        ),
-                                      ),
-                                      SizedBox(height: 14),
-
-                                      Row(
-                                        children: [
-                                          Expanded(
-                                            child: Text(
-                                              'Keep it up!',
-                                              maxLines: 1,
-                                              overflow: TextOverflow.ellipsis,
+                ),
+              ),
+              SliverToBoxAdapter(
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 16),
+                  child: DecoratedBox(
+                    decoration: BoxDecoration(
+                      color: AppColors.homeStack,
+                      borderRadius: BorderRadius.circular(8),
+                    ),
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(vertical: 14),
+                      child: Column(
+                        mainAxisSize: MainAxisSize.min, // IMPORTANT
+                        children: [
+                          Padding(
+                            padding: const EdgeInsets.symmetric(horizontal: 16),
+                            child: Row(
+                              children: [
+                                Expanded(
+                                  child: Container(
+                                    padding: const EdgeInsets.all(12),
+                                    decoration: BoxDecoration(
+                                      color: AppColors.whiteColor,
+                                      borderRadius: BorderRadius.circular(8),
+                                    ),
+                                    child: Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: [
+                                        Row(
+                                          children: [
+                                            Text(
+                                              "Mock Test \nProgress",
                                               style: AppTextStyles.regular12
                                                   .copyWith(
                                                     color: AppColors.blackColor,
                                                   ),
                                             ),
+                                            Spacer(),
+                                            Image.asset(
+                                              ImagePath.frameImage,
+                                              scale: 5,
+                                            ),
+                                          ],
+                                        ),
+
+                                        SizedBox(height: 14),
+                                        Text(
+                                          '${controller.mockTestAnalytics.isNotEmpty ? controller.mockTestAnalytics[0].mocktestProgress : 0}%',
+                                          style: AppTextStyles.bold24.copyWith(
+                                            color: AppColors.greyBlack,
                                           ),
-                                        ],
-                                      ),
-                                    ],
+                                        ),
+                                        SizedBox(height: 14),
+
+                                        Row(
+                                          children: [
+                                            Expanded(
+                                              child: Text(
+                                                'Keep it up!',
+                                                maxLines: 1,
+                                                overflow: TextOverflow.ellipsis,
+                                                style: AppTextStyles.regular12
+                                                    .copyWith(
+                                                      color:
+                                                          AppColors.blackColor,
+                                                    ),
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+                                      ],
+                                    ),
                                   ),
                                 ),
-                              ),
 
-                              SizedBox(width: 14),
+                                SizedBox(width: 14),
 
-                              Expanded(
-                                child: Container(
-                                  padding: const EdgeInsets.all(12),
-                                  decoration: BoxDecoration(
-                                    color: AppColors.whiteColor,
-                                    borderRadius: BorderRadius.circular(8),
-                                  ),
-                                  child: Column(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    children: [
-                                      Row(
-                                        children: [
-                                          Text(
-                                            "Overall\nAccuracy",
-                                            style: AppTextStyles.regular12
-                                                .copyWith(
-                                                  color: AppColors.blackColor,
-                                                ),
-                                          ),
-                                          Spacer(),
-                                          Image.asset(
-                                            ImagePath.frameImage,
-                                            scale: 5,
-                                          ),
-                                        ],
-                                      ),
-                                      SizedBox(height: 6),
-
-                                      Text(
-                                        '810%',
-                                        style: AppTextStyles.bold24.copyWith(
-                                          color: AppColors.greyBlack,
+                                Expanded(
+                                  child: Container(
+                                    padding: const EdgeInsets.all(12),
+                                    decoration: BoxDecoration(
+                                      color: AppColors.whiteColor,
+                                      borderRadius: BorderRadius.circular(8),
+                                    ),
+                                    child: Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: [
+                                        Row(
+                                          children: [
+                                            Text(
+                                              "Overall\nAccuracy",
+                                              style: AppTextStyles.regular12
+                                                  .copyWith(
+                                                    color: AppColors.blackColor,
+                                                  ),
+                                            ),
+                                            Spacer(),
+                                            Image.asset(
+                                              ImagePath.frameImage,
+                                              scale: 5,
+                                            ),
+                                          ],
                                         ),
-                                      ),
-                                      SizedBox(height: 6),
+                                        SizedBox(height: 6),
 
-                                      Text(
-                                        "Above average performance",
-                                        style: AppTextStyles.regular12.copyWith(
-                                          color: AppColors.blackColor,
+                                        Text(
+                                          '${controller.mockTestAnalytics.isNotEmpty ? controller.mockTestAnalytics[0].mocktestAccuracy : 0}%',
+                                          style: AppTextStyles.bold24.copyWith(
+                                            color: AppColors.greyBlack,
+                                          ),
                                         ),
-                                      ),
-                                    ],
+                                        SizedBox(height: 6),
+
+                                        Text(
+                                          "Above average performance",
+                                          style: AppTextStyles.regular12
+                                              .copyWith(
+                                                color: AppColors.blackColor,
+                                              ),
+                                        ),
+                                      ],
+                                    ),
                                   ),
                                 ),
-                              ),
-                            ],
+                              ],
+                            ),
                           ),
-                        ),
-                      ],
+                        ],
+                      ),
                     ),
                   ),
                 ),
               ),
-            ),
 
-            SliverList(
-              delegate: SliverChildBuilderDelegate((context, index) {
-                return Padding(
-                  padding: const EdgeInsets.symmetric(
-                    horizontal: 16,
-                    vertical: 16,
-                  ),
-                  child: spiFundamentalsCardWidget(),
+              Obx(() {
+                final list = controller.questionSets;
+
+                if (list.isEmpty) {
+                  return SliverToBoxAdapter(
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(vertical: 60),
+                      child: Center(
+                        child: Text(
+                          'No Mock Test questions available.',
+                          style: AppTextStyles.regular14.copyWith(
+                            color: AppColors.appBarSub,
+                          ),
+                        ),
+                      ),
+                    ),
+                  );
+                }
+
+                return SliverList(
+                  delegate: SliverChildBuilderDelegate((context, index) {
+                    return Padding(
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 16,
+                        vertical: 16,
+                      ),
+                      child: spiFundamentalsCardWidget(list[index]),
+                    );
+                  }, childCount: list.length),
                 );
-              }, childCount: 3),
-            ),
-          ],
-        ),
+              }),
+            ],
+          );
+        }),
       ),
     );
   }
 
-  Widget spiFundamentalsCardWidget() {
+  Widget spiFundamentalsCardWidget(QuestionSetData questionSet) {
+    final mockTest = questionSet.questionAnswers.isNotEmpty
+        ? questionSet.questionAnswers.first.practice
+        : null;
+
+    final title = questionSet.title;
+    final subtitle = questionSet.subtitle;
+    final totalQuestions = questionSet.totalQuestions;
+    final category = questionSet.category;
+    final accuracy = mockTest?.accuracy ?? 0;
+    final attempt = mockTest?.totalAttempts ?? 0;
     return Container(
       width: double.infinity,
       // height: 400,
@@ -233,7 +274,7 @@ class MockExamsView extends GetView<MockExamsController> {
                 child: Padding(
                   padding: EdgeInsets.symmetric(horizontal: 10, vertical: 6),
                   child: Text(
-                    "SPI",
+                    category,
                     style: AppTextStyles.regular14.copyWith(
                       color: AppColors.appBarSub,
                     ),
@@ -242,9 +283,9 @@ class MockExamsView extends GetView<MockExamsController> {
               ),
             ],
           ),
-          Text('SPI Full Mock Exam', style: AppTextStyles.bold18),
+          Text(title, style: AppTextStyles.bold18),
           Text(
-            'Complete practice exam covering all SPI topics',
+            subtitle,
             style: AppTextStyles.regular14.copyWith(color: AppColors.appBarSub),
           ),
           SizedBox(height: 15.h),
@@ -259,7 +300,7 @@ class MockExamsView extends GetView<MockExamsController> {
                     ),
                   ),
                   Text(
-                    '80',
+                    '$totalQuestions',
                     style: AppTextStyles.regular14.copyWith(
                       color: AppColors.blackColor,
                     ),
@@ -270,13 +311,13 @@ class MockExamsView extends GetView<MockExamsController> {
               Column(
                 children: [
                   Text(
-                    'attempt',
+                    'Attempt',
                     style: AppTextStyles.regular14.copyWith(
                       color: AppColors.appBarSub,
                     ),
                   ),
                   Text(
-                    '95',
+                    '$attempt',
                     style: AppTextStyles.regular14.copyWith(
                       color: AppColors.blackColor,
                     ),
@@ -315,12 +356,12 @@ class MockExamsView extends GetView<MockExamsController> {
                 children: [
                   SizedBox(width: 10.w),
                   Text(
-                    'attempt',
+                    'Attempt Accuracy',
                     style: AppTextStyles.regular14.copyWith(color: Colors.grey),
                   ),
                   Spacer(),
                   Text(
-                    '82%',
+                    '$accuracy %',
                     style: AppTextStyles.regular24.copyWith(
                       color: Colors.black,
                     ),
@@ -333,7 +374,15 @@ class MockExamsView extends GetView<MockExamsController> {
           SizedBox(height: 14.h),
           CustomButton(
             childText: 'Retake Exam',
-            onTap: () => Get.toNamed(Routes.SPI_PRACTICE_BANK_QUS),
+            onTap: () => Get.toNamed(
+              Routes.SPI_PRACTICE_BANK_QUS,
+              arguments: {
+                'id': questionSet.id,
+                'title': questionSet.title,
+                'category': questionSet.category,
+                'staus_label': questionSet.statusLabel,
+              },
+            ),
           ),
           SizedBox(height: 18.h),
           Center(

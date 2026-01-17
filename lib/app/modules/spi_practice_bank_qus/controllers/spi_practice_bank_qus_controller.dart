@@ -9,6 +9,7 @@ class SpiPracticeBankQusController extends GetxController {
   RxBool isloading = false.obs;
   RxString errorText = ''.obs;
   RxString selectedAnswer = ''.obs;
+  RxInt correctIndex = (-1).obs;
   RxInt currentQuestionIndex = 0.obs;
   RxBool showResult = false.obs;
   RxBool isCorrectAnswer = false.obs;
@@ -66,7 +67,7 @@ class SpiPracticeBankQusController extends GetxController {
       final question = questionList[currentQuestionIndex.value];
       final token = await AppPreference.getToken();
 
-      final answerMap = {
+      final Map<int, String> answerMap = {
         0: 'option_a',
         1: 'option_b',
         2: 'option_c',
@@ -85,10 +86,36 @@ class SpiPracticeBankQusController extends GetxController {
         token: token,
       );
 
+      // ------------------------------
+      // HANDLE RESPONSE DATA
+      // ------------------------------
+
+      // Example API response:
+      // {
+      //   "data": {
+      //     "is_correct": false,
+      //     "correct_answer": "option_c"
+      //   }
+      // }
+
       isCorrectAnswer.value = response['data']['is_correct'];
+
+      final String correctAnswer = response['data']['correct_answer'];
+
+      final Map<String, int> reverseAnswerMap = {
+        'option_a': 0,
+        'option_b': 1,
+        'option_c': 2,
+        'option_d': 3,
+      };
+
+      correctIndex.value = reverseAnswerMap[correctAnswer] ?? -1;
+
       showResult.value = true;
 
-      // Check if this is the last question
+      // ------------------------------
+      // CHECK IF LAST QUESTION
+      // ------------------------------
       if (currentQuestionIndex.value == questionList.length - 1) {
         isFinished.value = true;
       }

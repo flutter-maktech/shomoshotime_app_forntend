@@ -44,7 +44,6 @@ class HomeController extends GetxController {
       studyGuideResponse.value = StudyGuideResponse.fromJson(response);
     } catch (e) {
       errorMessage.value = 'Failed to load study guides: $e';
-      print('Error fetching study guides: $e');
     } finally {
       isLoading.value = false;
     }
@@ -75,7 +74,6 @@ class HomeController extends GetxController {
       flashCardResponse.value = FlashCardResponse.fromJson(response);
     } catch (e) {
       errorMessage.value = 'Failed to load flash cards: $e';
-      print('Error fetching flash cards: $e');
     } finally {
       isLoading.value = false;
     }

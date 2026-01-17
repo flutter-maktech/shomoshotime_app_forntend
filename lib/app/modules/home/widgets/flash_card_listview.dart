@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
+import '../../../routes/app_pages.dart';
 import '../controllers/home_controller.dart';
 import 'falsh_card_info.dart';
 
@@ -53,6 +54,15 @@ class FlashCardListView extends StatelessWidget {
         itemBuilder: (context, index) {
           final flashCard = homeController.flashCards[index];
           return FlashCardInfo(
+            onTap: () {
+              Get.toNamed(
+                Routes.VASCULAR_FLASHCARDS,
+                arguments: {
+                  'title': flashCard.title,
+                  'contentId': flashCard.id,
+                },
+              );
+            },
             flashCardTitle: flashCard.title,
             flashCardSubtitle: 'Total Cards: ${flashCard.flashCardsCount}',
             progress: flashCard.flashCardPercentCompleted / 100,
