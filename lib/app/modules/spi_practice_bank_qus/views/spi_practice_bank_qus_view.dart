@@ -187,8 +187,7 @@ class SpiPracticeBankQusView extends GetView<SpiPracticeBankQusController> {
                         onTap: () {
                           if (controller.isFinished.value) {
                             Get.off(
-                              CustomBottomNavigationBarView(),
-                              arguments: {'refresh': true},
+                              () => CustomBottomNavigationBarView(),
                             );
                           } else if (controller.showResult.value) {
                             controller.goToNextQuestion();

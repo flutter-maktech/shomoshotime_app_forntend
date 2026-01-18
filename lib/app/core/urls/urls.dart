@@ -23,4 +23,7 @@ class Urls {
   static String answerSubmit = "$baseUrs/user/question/submit-answer";
   static String userProfile = "$baseUrs/user/profile";
   static String profileUpdate = "$baseUrs/user/profile/update";
+  static String startMockTest = "$baseUrs/user/question/start-mock-test";
+  static String notification = "$baseUrs/user/user-notifications";
+  static String notificationMarkAsRead = "$baseUrs/user/mark-notification-read";
 }

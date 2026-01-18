@@ -194,6 +194,23 @@ class MockExamsView extends GetView<MockExamsController> {
 
               Obx(() {
                 final list = controller.questionSets;
+                // Make a copy of your original list
+                List<QuestionSetData> sortedList = [...list];
+
+                // Sort by whether the user can retake the exam
+                sortedList.sort((a, b) {
+                  final aCanRetake =
+                      a.mockTestAttempts.isEmpty ||
+                      a.mockTestAttempts.last.attemptNumber < 3;
+                  final bCanRetake =
+                      b.mockTestAttempts.isEmpty ||
+                      b.mockTestAttempts.last.attemptNumber < 3;
+
+                  // true comes before false
+                  if (aCanRetake && !bCanRetake) return -1;
+                  if (!aCanRetake && bCanRetake) return 1;
+                  return 0;
+                });
 
                 if (list.isEmpty) {
                   return SliverToBoxAdapter(
@@ -218,9 +235,9 @@ class MockExamsView extends GetView<MockExamsController> {
                         horizontal: 16,
                         vertical: 16,
                       ),
-                      child: spiFundamentalsCardWidget(list[index]),
+                      child: spiFundamentalsCardWidget(sortedList[index]),
                     );
-                  }, childCount: list.length),
+                  }, childCount: sortedList.length),
                 );
               }),
             ],
@@ -231,16 +248,17 @@ class MockExamsView extends GetView<MockExamsController> {
   }
 
   Widget spiFundamentalsCardWidget(QuestionSetData questionSet) {
-    final mockTest = questionSet.questionAnswers.isNotEmpty
-        ? questionSet.questionAnswers.first.practice
-        : null;
-
     final title = questionSet.title;
     final subtitle = questionSet.subtitle;
     final totalQuestions = questionSet.totalQuestions;
     final category = questionSet.category;
-    final accuracy = mockTest?.accuracy ?? 0;
-    final attempt = mockTest?.totalAttempts ?? 0;
+    final scorePercentage = questionSet.mockTestAttempts.isNotEmpty
+        ? questionSet.mockTestAttempts.last.scorePercentage
+        : 0;
+    final attemptNumber = questionSet.mockTestAttempts.isNotEmpty
+        ? questionSet.mockTestAttempts.last.attemptNumber
+        : 0;
+    final bool canRetake = attemptNumber < 3;
     return Container(
       width: double.infinity,
       // height: 400,
@@ -290,6 +308,7 @@ class MockExamsView extends GetView<MockExamsController> {
           ),
           SizedBox(height: 15.h),
           Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Column(
                 children: [
@@ -307,24 +326,24 @@ class MockExamsView extends GetView<MockExamsController> {
                   ),
                 ],
               ),
-              Spacer(),
-              Column(
-                children: [
-                  Text(
-                    'Attempt',
-                    style: AppTextStyles.regular14.copyWith(
-                      color: AppColors.appBarSub,
-                    ),
-                  ),
-                  Text(
-                    '$attempt',
-                    style: AppTextStyles.regular14.copyWith(
-                      color: AppColors.blackColor,
-                    ),
-                  ),
-                ],
-              ),
-              Spacer(),
+              // Spacer(),
+              // Column(
+              //   children: [
+              //     Text(
+              //       'Attempt',
+              //       style: AppTextStyles.regular14.copyWith(
+              //         color: AppColors.appBarSub,
+              //       ),
+              //     ),
+              //     Text(
+              //       '$attempt',
+              //       style: AppTextStyles.regular14.copyWith(
+              //         color: AppColors.blackColor,
+              //       ),
+              //     ),
+              //   ],
+              // ),
+              // Spacer(),
               Column(
                 children: [
                   Text(
@@ -361,7 +380,7 @@ class MockExamsView extends GetView<MockExamsController> {
                   ),
                   Spacer(),
                   Text(
-                    '$accuracy %',
+                    '$scorePercentage %',
                     style: AppTextStyles.regular24.copyWith(
                       color: Colors.black,
                     ),
@@ -373,21 +392,29 @@ class MockExamsView extends GetView<MockExamsController> {
           ),
           SizedBox(height: 14.h),
           CustomButton(
-            childText: 'Retake Exam',
-            onTap: () => Get.toNamed(
-              Routes.SPI_PRACTICE_BANK_QUS,
-              arguments: {
-                'id': questionSet.id,
-                'title': questionSet.title,
-                'category': questionSet.category,
-                'staus_label': questionSet.statusLabel,
-              },
-            ),
+            childText: canRetake ? 'Retake Exam' : 'Max Attempts Reached',
+            buttonColor: canRetake
+                ? AppColors.primaryColor
+                : AppColors.appBarBack,
+            onTap: canRetake
+                ? () {
+                    controller.startMockTest(questionSet.id);
+                    Get.toNamed(
+                      Routes.SPI_PRACTICE_BANK_QUS,
+                      arguments: {
+                        'id': questionSet.id,
+                        'title': questionSet.title,
+                        'category': questionSet.category,
+                        'staus_label': questionSet.statusLabel,
+                      },
+                    );
+                  }
+                : null, // 👈 disables button
           ),
           SizedBox(height: 18.h),
           Center(
             child: Text(
-              'Attempted 3 times',
+              'Attempted $attemptNumber times',
               style: AppTextStyles.regular14.copyWith(color: Colors.grey),
             ),
           ),

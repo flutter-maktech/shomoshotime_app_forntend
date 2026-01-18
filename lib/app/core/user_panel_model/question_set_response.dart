@@ -28,14 +28,6 @@ class QuestionSetResponse {
       meta: json['meta'] != null ? Meta.fromJson(json['meta']) : Meta(),
     );
   }
-
-  // Map<String, dynamic> toJson() => {
-  //   'success': success,
-  //   'message': message,
-  //   'data': data.map((x) => x.toJson()).toList(),
-  //   'links': links.toJson(),
-  //   'meta': meta.toJson(),
-  // };
 }
 
 class QuestionSetData {
@@ -49,11 +41,12 @@ class QuestionSetData {
   final List<String> statusData;
   final String statusColor;
   final int totalQuestions;
-
-  // ✅ NEW (safe additions)
   final List<QuestionAnswer> questionAnswers;
   final List<QuestionAnalytics> analytics;
-
+  
+  // ✅ NEW: Added mockTestAttempts
+  final List<MockTestAttempt> mockTestAttempts;
+  
   final String createdAt;
   final String updatedAt;
   final String createrName;
@@ -72,6 +65,7 @@ class QuestionSetData {
     required this.totalQuestions,
     required this.questionAnswers,
     required this.analytics,
+    required this.mockTestAttempts, // ✅ NEW
     required this.createdAt,
     required this.updatedAt,
     required this.createrName,
@@ -90,8 +84,6 @@ class QuestionSetData {
       statusData: List<String>.from(json['status_data'] ?? []),
       statusColor: json['status_color'] ?? '',
       totalQuestions: json['total_questions'] ?? 0,
-
-      // ✅ NEW (won’t break old UI)
       questionAnswers:
           (json['questionAnswers'] as List?)
               ?.map((e) => QuestionAnswer.fromJson(e))
@@ -102,7 +94,12 @@ class QuestionSetData {
               ?.map((e) => QuestionAnalytics.fromJson(e))
               .toList() ??
           [],
-
+      // ✅ NEW: Parse mockTestAttempts
+      mockTestAttempts:
+          (json['mockTestAttempts'] as List?)
+              ?.map((e) => MockTestAttempt.fromJson(e))
+              .toList() ??
+          [],
       createdAt: json['created_at'] ?? '',
       updatedAt: json['updated_at'] ?? '',
       createrName: json['creater_name'] ?? '',
@@ -111,6 +108,173 @@ class QuestionSetData {
   }
 }
 
+class MockTestAttempt {
+  final int id;
+  final int attemptNumber;
+  final int totalQuestions;
+  final int questionsAnswered;
+  final int remainingQuestions;
+  final int correctAnswers;
+  final int wrongAnswers;
+  final num scorePercentage;
+  final num progressPercentage;
+  final String status;
+  final bool isCompleted;
+  final bool isInProgress;
+  final String grade;
+  final String? startedAt;
+  final String? completedAt;
+  final num? durationMinutes;
+  final String? durationFormatted;
+
+  MockTestAttempt({
+    required this.id,
+    required this.attemptNumber,
+    required this.totalQuestions,
+    required this.questionsAnswered,
+    required this.remainingQuestions,
+    required this.correctAnswers,
+    required this.wrongAnswers,
+    required this.scorePercentage,
+    required this.progressPercentage,
+    required this.status,
+    required this.isCompleted,
+    required this.isInProgress,
+    required this.grade,
+    this.startedAt,
+    this.completedAt,
+    this.durationMinutes,
+    this.durationFormatted,
+  });
+
+  factory MockTestAttempt.fromJson(Map<String, dynamic> json) {
+    return MockTestAttempt(
+      id: json['id'] ?? 0,
+      attemptNumber: json['attempt_number'] ?? 0,
+      totalQuestions: json['total_questions'] ?? 0,
+      questionsAnswered: json['questions_answered'] ?? 0,
+      remainingQuestions: json['remaining_questions'] ?? 0,
+      correctAnswers: json['correct_answers'] ?? 0,
+      wrongAnswers: json['wrong_answers'] ?? 0,
+      scorePercentage: json['score_percentage'] ?? 0,
+      progressPercentage: json['progress_percentage'] ?? 0,
+      status: json['status'] ?? '',
+      isCompleted: json['is_completed'] ?? false,
+      isInProgress: json['is_in_progress'] ?? false,
+      grade: json['grade'] ?? '',
+      startedAt: json['started_at'],
+      completedAt: json['completed_at'],
+      durationMinutes: json['duration_minutes'],
+      durationFormatted: json['duration_formatted'],
+    );
+  }
+}
+
+class QuestionAnalytics {
+  final int id;
+  final int questionSetId;
+  final String currentMode;
+  final bool isPracticeMode;
+  final bool isMockTestMode;
+  final PracticeProgress? practice;
+  final MockTestProgress? mockTest;
+  
+  // ✅ NEW: Added questionSet, createdAt, updatedAt
+  final QuestionSetAnalytics? questionSet;
+  final String createdAt;
+  final String updatedAt;
+
+  QuestionAnalytics({
+    required this.id,
+    required this.questionSetId,
+    required this.currentMode,
+    required this.isPracticeMode,
+    required this.isMockTestMode,
+    this.practice,
+    this.mockTest,
+    this.questionSet, // ✅ NEW
+    required this.createdAt, // ✅ NEW
+    required this.updatedAt, // ✅ NEW
+  });
+
+  factory QuestionAnalytics.fromJson(Map<String, dynamic> json) {
+    return QuestionAnalytics(
+      id: json['id'] ?? 0,
+      questionSetId: json['question_set_id'] ?? 0,
+      currentMode: json['current_mode'] ?? '',
+      isPracticeMode: json['is_practice_mode'] ?? false,
+      isMockTestMode: json['is_mock_test_mode'] ?? false,
+      practice: json['practice'] != null
+          ? PracticeProgress.fromJson(json['practice'])
+          : null,
+      mockTest: json['mock_test'] != null
+          ? MockTestProgress.fromJson(json['mock_test'])
+          : null,
+      // ✅ NEW: Parse question_set, created_at, updated_at
+      questionSet: json['question_set'] != null
+          ? QuestionSetAnalytics.fromJson(json['question_set'])
+          : null,
+      createdAt: json['created_at'] ?? '',
+      updatedAt: json['updated_at'] ?? '',
+    );
+  }
+}
+
+// ✅ NEW: QuestionSetAnalytics class for the nested question_set in analytics
+class QuestionSetAnalytics {
+  final int id;
+  final int sortOrder;
+  final String category;
+  final String title;
+  final String subtitle;
+  final int status;
+  final String statusLabel;
+  final List<String> statusData;
+  final String statusColor;
+  final int totalQuestions;
+  final String createdAt;
+  final String updatedAt;
+  final String createrName;
+  final String updaterName;
+
+  QuestionSetAnalytics({
+    required this.id,
+    required this.sortOrder,
+    required this.category,
+    required this.title,
+    required this.subtitle,
+    required this.status,
+    required this.statusLabel,
+    required this.statusData,
+    required this.statusColor,
+    required this.totalQuestions,
+    required this.createdAt,
+    required this.updatedAt,
+    required this.createrName,
+    required this.updaterName,
+  });
+
+  factory QuestionSetAnalytics.fromJson(Map<String, dynamic> json) {
+    return QuestionSetAnalytics(
+      id: json['id'] ?? 0,
+      sortOrder: json['sort_order'] ?? 0,
+      category: json['category'] ?? '',
+      title: json['title'] ?? '',
+      subtitle: json['subtitle'] ?? '',
+      status: json['status'] ?? 0,
+      statusLabel: json['status_label'] ?? '',
+      statusData: List<String>.from(json['status_data'] ?? []),
+      statusColor: json['status_color'] ?? '',
+      totalQuestions: json['total_questions'] ?? 0,
+      createdAt: json['created_at'] ?? '',
+      updatedAt: json['updated_at'] ?? '',
+      createrName: json['creater_name'] ?? '',
+      updaterName: json['updater_name'] ?? '',
+    );
+  }
+}
+
+// The rest of your existing classes remain the same...
 class QuestionAnswer {
   final int id;
   final int questionId;
@@ -214,41 +378,6 @@ class MockTestStats {
   }
 }
 
-class QuestionAnalytics {
-  final int id;
-  final int questionSetId;
-  final String currentMode;
-  final bool isPracticeMode;
-  final bool isMockTestMode;
-  final PracticeProgress? practice;
-  final MockTestProgress? mockTest;
-
-  QuestionAnalytics({
-    required this.id,
-    required this.questionSetId,
-    required this.currentMode,
-    required this.isPracticeMode,
-    required this.isMockTestMode,
-    this.practice,
-    this.mockTest,
-  });
-
-  factory QuestionAnalytics.fromJson(Map<String, dynamic> json) {
-    return QuestionAnalytics(
-      id: json['id'] ?? 0,
-      questionSetId: json['question_set_id'] ?? 0,
-      currentMode: json['current_mode'] ?? '',
-      isPracticeMode: json['is_practice_mode'] ?? false,
-      isMockTestMode: json['is_mock_test_mode'] ?? false,
-      practice: json['practice'] != null
-          ? PracticeProgress.fromJson(json['practice'])
-          : null,
-      mockTest: json['mock_test'] != null
-          ? MockTestProgress.fromJson(json['mock_test'])
-          : null,
-    );
-  }
-}
 class PracticeProgress {
   final int questionsAnswered;
   final int correctAnswers;
@@ -277,6 +406,7 @@ class PracticeProgress {
     );
   }
 }
+
 class MockTestProgress {
   final int totalAttempts;
   final int remainingAttempts;

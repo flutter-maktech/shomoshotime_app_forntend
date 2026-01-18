@@ -12,12 +12,12 @@ class MockExamsController extends GetxController {
   RxBool isloading = false.obs;
   RxString errorText = ''.obs;
 
-   @override
+  @override
   void onInit() {
     super.onInit();
     fetchMockTestData();
-  
   }
+
   NetworkCaller networkCaller = NetworkCaller();
   final Rx<QuestionSetResponse?> questionSetResponse = Rx<QuestionSetResponse?>(
     null,
@@ -43,8 +43,29 @@ class MockExamsController extends GetxController {
       );
       questionSetResponse.value = QuestionSetResponse.fromJson(response);
     } catch (e) {
-      print('------------------An eeeerror occurred: $e');
+      print('------$e');
       errorText.value = 'An eeeerror occurred: $e';
+    } finally {
+      isloading.value = false;
+    }
+  }
+
+  Future<void> startMockTest(int id) async {
+    isloading.value = true;
+    errorText.value = '';
+    try {
+      final body = {"question_set_id": id};
+
+      final token = await AppPreference.getToken();
+
+       await networkCaller.postRequest(
+        Urls.startMockTest,
+        body,
+        token: token,
+      );
+    } catch (e) {
+      errorText.value = 'An eeeerror occurred: $e';
+      print('----------------$e');
     } finally {
       isloading.value = false;
     }
