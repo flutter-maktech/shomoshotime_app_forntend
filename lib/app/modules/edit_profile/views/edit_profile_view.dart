@@ -29,15 +29,72 @@ class EditProfileView extends GetView<EditProfileController> {
                 Center(
                   child: GestureDetector(
                     onTap: controller.pickImage,
-                    child: Obx(() {
-                      return CircleAvatar(
-                        radius: 80.r,
-                        backgroundImage: controller.selectedImage.value != null
-                            ? FileImage(controller.selectedImage.value!)
-                                  as ImageProvider<Object>
-                            : NetworkImage(userImage) as ImageProvider<Object>,
-                      );
-                    }),
+                    child: Stack(
+                      children: [
+                        Obx(() {
+                          return CircleAvatar(
+                            radius: 80.r,
+                            backgroundColor: Colors.grey[200],
+                            child: CircleAvatar(
+                              radius: 76.r,
+                              backgroundColor:
+                                  Colors.grey[300], // Background for icon
+                              child: controller.selectedImage.value != null
+                                  ? CircleAvatar(
+                                      radius: 74.r,
+                                      backgroundImage: FileImage(
+                                        controller.selectedImage.value!,
+                                      ),
+                                    )
+                                  : userImage != null && userImage.isNotEmpty
+                                  ? ClipOval(
+                                      child: Image.network(
+                                        userImage,
+                                        width: 152.w, // 76 * 2
+                                        height: 152.w,
+                                        fit: BoxFit.cover,
+                                        errorBuilder:
+                                            (context, error, stackTrace) {
+                                              // Show icon if image fails to load
+                                              return Icon(
+                                                Icons.person,
+                                                size: 60.w,
+                                                color: Colors.grey[600],
+                                              );
+                                            },
+                                      ),
+                                    )
+                                  : Icon(
+                                      Icons.person,
+                                      size: 60.w,
+                                      color: Colors.grey[600],
+                                    ),
+                            ),
+                          );
+                        }),
+                        // Edit icon
+                        Positioned(
+                          bottom: 0,
+                          right: 0,
+                          child: Container(
+                            decoration: BoxDecoration(
+                              color: AppColors.profileYellow,
+                              shape: BoxShape.circle,
+                              border: Border.all(
+                                color: Colors.white,
+                                width: 3.w,
+                              ),
+                            ),
+                            padding: EdgeInsets.all(8.w),
+                            child: Icon(
+                              Icons.edit,
+                              size: 20.w,
+                              color: AppColors.blackColor,
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
                   ),
                 ),
 

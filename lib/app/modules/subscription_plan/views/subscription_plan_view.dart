@@ -4,7 +4,6 @@ import 'package:get/get.dart';
 import 'package:shomoshotime/app/data/app_colors.dart';
 import 'package:shomoshotime/app/data/app_text_styles.dart';
 import 'package:shomoshotime/app/modules/common_widgets/custom_app_bar.dart';
-import 'package:shomoshotime/app/routes/app_pages.dart';
 import '../../common_widgets/custom_button.dart';
 import '../controllers/subscription_plan_controller.dart';
 import '../widget/custom_dolar_plan.dart';
@@ -72,7 +71,7 @@ class SubscriptionPlanView extends GetView<SubscriptionPlanController> {
                                   value: 1,
                                   groupValue: controller.selectedValue.value,
                                   onChanged: (value) {
-                                    controller.UpdateSelection(value!);
+                                    controller.updateSelection(value!);
                                   },
                                   child: Text(""),
                                 ),
@@ -111,7 +110,11 @@ class SubscriptionPlanView extends GetView<SubscriptionPlanController> {
                           childText: "Get Started",
                           buttonChildColor: AppColors.whiteColor,
                           buttonColor: AppColors.blackColor,
-                          onTap: () => Get.toNamed(Routes.PAYMENT_METHODS),
+                          onTap: () {
+                            controller.makeSimplePayment(
+                              10,
+                            ); // Use simplified method
+                          },
                         ),
                       ],
                     ),
@@ -141,7 +144,7 @@ class SubscriptionPlanView extends GetView<SubscriptionPlanController> {
                                   value: 2,
                                   groupValue: controller.selectedValue.value,
                                   onChanged: (value) {
-                                    controller.UpdateSelection(value!);
+                                    controller.updateSelection(value!);
                                   },
                                   child: Text(""),
                                 ),
@@ -194,7 +197,11 @@ class SubscriptionPlanView extends GetView<SubscriptionPlanController> {
                           childText: "Get Started",
                           buttonChildColor: AppColors.whiteColor,
                           buttonColor: AppColors.blackColor,
-                          onTap: () => Get.toNamed(Routes.PAYMENT_METHODS),
+                          onTap: () {
+                            controller.makeSimplePayment(
+                              30,
+                            ); // Use simplified method
+                          },
                         ),
                       ],
                     ),
@@ -223,7 +230,7 @@ class SubscriptionPlanView extends GetView<SubscriptionPlanController> {
                                   value: 3,
                                   groupValue: controller.selectedValue.value,
                                   onChanged: (value) {
-                                    controller.UpdateSelection(value!);
+                                    controller.updateSelection(value!);
                                   },
                                   child: Text(""),
                                 ),
@@ -262,7 +269,11 @@ class SubscriptionPlanView extends GetView<SubscriptionPlanController> {
                           childText: "Get Started",
                           buttonChildColor: AppColors.whiteColor,
                           buttonColor: AppColors.blackColor,
-                          onTap: () => Get.toNamed(Routes.PAYMENT_METHODS),
+                          onTap: () {
+                            controller.makeSimplePayment(
+                              249,
+                            ); // Use simplified method
+                          },
                         ),
                       ],
                     ),
