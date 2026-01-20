@@ -80,7 +80,13 @@ class SignInController extends GetxController {
 
       if (data['success'] == true) {
         final token = data['data']['token'];
+        final userId = data['data']['user_id'];
+
+        // Save both token and user ID
         AppPreference.saveToken(token);
+        AppPreference.saveUserId(userId);
+        print('-------------$userId');
+
         message.value = data['message'] ?? 'Login successful';
         return true;
       } else {
@@ -88,7 +94,7 @@ class SignInController extends GetxController {
         return false;
       }
     } catch (e) {
-      message.value = 'Login failed';
+      message.value = 'Login failed: ${e.toString()}';
       return false;
     } finally {
       isLoading.value = false;

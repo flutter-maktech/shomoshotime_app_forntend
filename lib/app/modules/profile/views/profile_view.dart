@@ -163,7 +163,7 @@ class ProfileView extends GetView<ProfileController> {
                             );
 
                             if (result == true) {
-                              controller.fetchProfileData(); // 🔥 re-fetch API
+                              controller.fetchProfileData();
                             }
                           },
                         ),
@@ -174,6 +174,7 @@ class ProfileView extends GetView<ProfileController> {
                           Icons.logout_outlined,
                           () {
                             AppPreference.clearToken();
+                            AppPreference.clearUserId();
                             Get.toNamed(Routes.SIGN_IN);
                           },
                         ),

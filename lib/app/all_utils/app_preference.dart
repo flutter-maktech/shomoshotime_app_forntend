@@ -2,6 +2,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 class AppPreference {
   static const String _tokenKey = 'auth_token';
+  static const String _userIdKey = 'user_id';
   static const String _emailKey = 'user_email';
 
   // TOKEN
@@ -20,6 +21,32 @@ class AppPreference {
     await prefs.remove(_tokenKey);
   }
 
+  // USER ID
+  static Future<void> saveUserId(int userId) async {
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.setInt(_userIdKey, userId);
+  }
+
+  static Future<void> saveUserIdAsString(String userId) async {
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.setString(_userIdKey, userId);
+  }
+
+  static Future<int?> getUserId() async {
+    final prefs = await SharedPreferences.getInstance();
+    return prefs.getInt(_userIdKey);
+  }
+
+  static Future<String?> getUserIdAsString() async {
+    final prefs = await SharedPreferences.getInstance();
+    return prefs.getString(_userIdKey);
+  }
+
+  static Future<void> clearUserId() async {
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.remove(_userIdKey);
+  }
+
   // EMAIL
   static Future<void> saveEmail(String email) async {
     final prefs = await SharedPreferences.getInstance();
@@ -33,6 +60,14 @@ class AppPreference {
 
   static Future<void> clearEmail() async {
     final prefs = await SharedPreferences.getInstance();
+    await prefs.remove(_emailKey);
+  }
+
+  // CLEAR ALL - For logout
+  static Future<void> clearAll() async {
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.remove(_tokenKey);
+    await prefs.remove(_userIdKey);
     await prefs.remove(_emailKey);
   }
 }

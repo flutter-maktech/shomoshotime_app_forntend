@@ -113,6 +113,7 @@ class SubscriptionPlanView extends GetView<SubscriptionPlanController> {
                           onTap: () {
                             controller.makeSimplePayment(
                               10,
+                              context,
                             ); // Use simplified method
                           },
                         ),
@@ -200,6 +201,7 @@ class SubscriptionPlanView extends GetView<SubscriptionPlanController> {
                           onTap: () {
                             controller.makeSimplePayment(
                               30,
+                              context,
                             ); // Use simplified method
                           },
                         ),
@@ -272,6 +274,7 @@ class SubscriptionPlanView extends GetView<SubscriptionPlanController> {
                           onTap: () {
                             controller.makeSimplePayment(
                               249,
+                              context,
                             ); // Use simplified method
                           },
                         ),

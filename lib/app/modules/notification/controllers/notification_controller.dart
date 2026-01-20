@@ -23,7 +23,6 @@ class NotificationController extends GetxController {
 
     // ✅ 2. Listen for real-time updates
     _pusherService.initPusher(
-      userId: '4',
       onNotificationReceived: (data) {
         print('🔔 PUSHER EVENT RECEIVED: $data');
         // Refresh notifications when admin sends one
