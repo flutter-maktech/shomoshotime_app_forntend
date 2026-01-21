@@ -11,63 +11,61 @@ class CustomBottomNavigationBarView
   const CustomBottomNavigationBarView({super.key});
 
   @override
-  Widget build(BuildContext context) {
-    return Obx(
-      () => Scaffold(
-        // ---------- BODY ----------
-        body: IndexedStack(
-          index: controller.currentIndex.value,
-          children: controller.pages,
-        ),
+Widget build(BuildContext context) {
+  return Obx(
+    () => Scaffold(
+      // ---------- BODY ----------
+      body: controller.getCurrentPage(),
 
-        // ---------- BOTTOM NAV ----------
-        bottomNavigationBar: Theme(
-          data: Theme.of(context).copyWith(
-            splashFactory: NoSplash.splashFactory,
-            highlightColor: Colors.transparent,
-          ),
-          child: BottomNavigationBar(
-            type: BottomNavigationBarType.fixed,
-            backgroundColor: AppColors.whiteColor,
-            onTap: controller.changeIndex,
-            currentIndex: controller.currentIndex.value,
-            elevation: 6,
-            unselectedLabelStyle: AppTextStyles.regular10,
-            selectedLabelStyle: AppTextStyles.regular10,
-            selectedItemColor: AppColors.blackColor,
-            showUnselectedLabels: true,
-            items: [
-              _buildBottomNavigationBarItem(
-                iconImage: ImagePath.dashBoardIcon,
-                index: 0,
-                labelText: 'Home',
-              ),
-              _buildBottomNavigationBarItem(
-                iconImage: ImagePath.studyGuidesIcon,
-                index: 1,
-                labelText: 'Study Guides',
-              ),
-              _buildBottomNavigationBarItem(
-                iconImage: ImagePath.flashCardIcon,
-                index: 2,
-                labelText: 'FlashCards',
-              ),
-              _buildBottomNavigationBarItem(
-                iconImage: ImagePath.practiceIcon,
-                index: 3,
-                labelText: "Practice",
-              ),
-              _buildBottomNavigationBarItem(
-                iconImage: ImagePath.mockExamIcon,
-                index: 4,
-                labelText: "Mock Exams",
-              ),
-            ],
-          ),
+      // ---------- BOTTOM NAV ----------
+      bottomNavigationBar: Theme(
+        data: Theme.of(context).copyWith(
+          splashFactory: NoSplash.splashFactory,
+          highlightColor: Colors.transparent,
+        ),
+        child: BottomNavigationBar(
+          type: BottomNavigationBarType.fixed,
+          backgroundColor: AppColors.whiteColor,
+          onTap: controller.changeIndex,
+          currentIndex: controller.currentIndex.value,
+          elevation: 6,
+          unselectedLabelStyle: AppTextStyles.regular10,
+          selectedLabelStyle: AppTextStyles.regular10,
+          selectedItemColor: AppColors.blackColor,
+          showUnselectedLabels: true,
+          items: [
+            _buildBottomNavigationBarItem(
+              iconImage: ImagePath.dashBoardIcon,
+              index: 0,
+              labelText: 'Home',
+            ),
+            _buildBottomNavigationBarItem(
+              iconImage: ImagePath.studyGuidesIcon,
+              index: 1,
+              labelText: 'Study Guides',
+            ),
+            _buildBottomNavigationBarItem(
+              iconImage: ImagePath.flashCardIcon,
+              index: 2,
+              labelText: 'FlashCards',
+            ),
+            _buildBottomNavigationBarItem(
+              iconImage: ImagePath.practiceIcon,
+              index: 3,
+              labelText: "Practice",
+            ),
+            _buildBottomNavigationBarItem(
+              iconImage: ImagePath.mockExamIcon,
+              index: 4,
+              labelText: "Mock Exams",
+            ),
+          ],
         ),
       ),
-    );
-  }
+    ),
+  );
+}
+
 
   BottomNavigationBarItem _buildBottomNavigationBarItem({
     required int index,

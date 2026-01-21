@@ -21,272 +21,223 @@ class SubscriptionPlanView extends GetView<SubscriptionPlanController> {
       ),
       body: SingleChildScrollView(
         child: SafeArea(
-          child: Padding(
-            padding: EdgeInsets.all(16.sp),
-            child: Column(
-              children: [
-                Container(
-                  width: double.infinity,
-                  decoration: BoxDecoration(
-                    color: AppColors.subscriptionPlanSelectedPlan,
-                    borderRadius: BorderRadius.only(
-                      topLeft: Radius.circular(8),
-                      topRight: Radius.circular(8),
-                    ),
-                  ),
-                  child: Padding(
-                    padding: EdgeInsets.symmetric(
-                      vertical: 16.h,
-                      horizontal: 24.w,
-                    ),
-                    child: Text(
-                      "Your Selected plan",
-                      style: AppTextStyles.regular16,
-                    ),
-                  ),
+          child: Obx(() {
+            // 🔄 Loading
+            if (controller.isLoading.value) {
+              return const Center(child: CircularProgressIndicator());
+            }
+
+            // ❌ Error
+            if (controller.errorMessage.isNotEmpty) {
+              return Center(
+                child: Text(
+                  controller.errorMessage.value,
+                  style: AppTextStyles.regular16,
                 ),
-                Container(
-                  width: double.infinity,
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.only(
-                      bottomRight: Radius.circular(8),
-                      bottomLeft: Radius.circular(8),
-                    ),
-                    color: AppColors.subscriptionPlanWeekly,
-                  ),
-                  child: Padding(
-                    padding: EdgeInsets.all(16.sp),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Text("Weekly", style: AppTextStyles.medium20),
-                            Obx(
-                              () => Transform.scale(
-                                scale: 1.6,
-                                child: RadioMenuButton(
-                                  style: ButtonStyle(),
-                                  value: 1,
-                                  groupValue: controller.selectedValue.value,
-                                  onChanged: (value) {
-                                    controller.updateSelection(value!);
-                                  },
-                                  child: Text(""),
-                                ),
-                              ),
-                            ),
-                          ],
-                        ),
-                        SizedBox(height: 7.h),
-                        CustomDolarPlan(
-                          Dolartext: "\$10",
-                          Daytext: '/ Every week',
-                        ),
-                        SizedBox(height: 7.h),
-                        Text(
-                          "Perfect for short-term preparation",
-                          style: AppTextStyles.light16,
-                        ),
-                        SizedBox(height: 24.h),
-                        SelectedPlanActivity(
-                          text: "Full access to all study guides",
-                        ),
-                        SizedBox(height: 9.h),
-                        SelectedPlanActivity(text: "Unlimited flashcardS"),
-                        SizedBox(height: 9.h),
-                        SelectedPlanActivity(
-                          text: "Practice questions for all specialties",
-                        ),
-                        SizedBox(height: 9.h),
-                        SelectedPlanActivity(text: "Cancel anytime"),
-                        SizedBox(height: 9.h),
-                        SelectedPlanActivity(
-                          text: "All future updates included",
-                        ),
-                        SizedBox(height: 24.h),
-                        CustomButton(
-                          childText: "Get Started",
-                          buttonChildColor: AppColors.whiteColor,
-                          buttonColor: AppColors.blackColor,
-                          onTap: () {
-                            controller.makeSimplePayment(
-                              10,
-                              context,
-                            ); // Use simplified method
-                          },
-                        ),
-                      ],
-                    ),
-                  ),
-                ),
-                SizedBox(height: 24.h),
-                Container(
-                  width: double.infinity,
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(8),
-                    color: AppColors.subscriptionPlanMonthly,
-                  ),
-                  child: Padding(
-                    padding: EdgeInsets.all(16.sp),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Text("Monthly", style: AppTextStyles.medium20),
-                            Obx(
-                              () => Transform.scale(
-                                scale: 1.6,
-                                child: RadioMenuButton(
-                                  style: ButtonStyle(),
-                                  value: 2,
-                                  groupValue: controller.selectedValue.value,
-                                  onChanged: (value) {
-                                    controller.updateSelection(value!);
-                                  },
-                                  child: Text(""),
-                                ),
-                              ),
-                            ),
-                          ],
-                        ),
-                        SizedBox(height: 7.h),
-                        CustomDolarPlan(
-                          Dolartext: "\$30",
-                          Daytext: '/ Every week',
-                        ),
-                        SizedBox(height: 7.h),
-                        Text("Every Month", style: AppTextStyles.light16),
-                        SizedBox(height: 24.h),
-                        SelectedPlanActivity(
-                          text: "Full access to all study guides",
-                        ),
-                        SizedBox(height: 9.h),
-                        SelectedPlanActivity(text: "Unlimited flashcardS"),
-                        SizedBox(height: 9.h),
-                        SelectedPlanActivity(
-                          text: "Practice questions for all specialties",
-                        ),
-                        SizedBox(height: 9.h),
-                        SelectedPlanActivity(text: "Cancel anytime"),
-                        SizedBox(height: 9.h),
-                        SelectedPlanActivity(
-                          text: "All future updates included",
-                        ),
-                        SizedBox(height: 24.h),
+              );
+            }
+
+            // ❗ No data
+            if (controller.subscriptions.isEmpty) {
+              return const Center(child: Text("No plans available"));
+            }
+
+            // Sort subscriptions by sortOrder
+            final sortedSubscriptions = controller.subscriptions.toList()
+              ..sort((a, b) => a.sortOrder.compareTo(b.sortOrder));
+
+            return Padding(
+              padding: EdgeInsets.all(16.sp),
+              child: Column(
+                children: List.generate(sortedSubscriptions.length, (index) {
+                  final subscription = sortedSubscriptions[index];
+                  final bool isSelected =
+                      controller.selectedValue.value == subscription.id;
+
+                  return Column(
+                    children: [
+                      if (index == 0) // First item (presumably Weekly)
                         Container(
-                          height: 35.h,
-                          width: 124.w,
+                          width: double.infinity,
                           decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(4),
-                            color: AppColors.subscriptionPlanMostPapular,
+                            color: AppColors.subscriptionPlanSelectedPlan,
+                            borderRadius: BorderRadius.only(
+                              topLeft: Radius.circular(8),
+                              topRight: Radius.circular(8),
+                            ),
                           ),
-                          child: Center(
+                          child: Padding(
+                            padding: EdgeInsets.symmetric(
+                              vertical: 16.h,
+                              horizontal: 24.w,
+                            ),
                             child: Text(
-                              "Most Popular",
-                              style: AppTextStyles.regular14.copyWith(
-                                color: AppColors.whiteColor,
-                              ),
+                              "Your Selected plan",
+                              style: AppTextStyles.regular16,
                             ),
                           ),
                         ),
-                        SizedBox(height: 24.h),
-                        CustomButton(
-                          childText: "Get Started",
-                          buttonChildColor: AppColors.whiteColor,
-                          buttonColor: AppColors.blackColor,
-                          onTap: () {
-                            controller.makeSimplePayment(
-                              30,
-                              context,
-                            ); // Use simplified method
-                          },
+
+                      Container(
+                        width: double.infinity,
+                        decoration: BoxDecoration(
+                          borderRadius: _getBorderRadius(
+                            index,
+                            sortedSubscriptions.length,
+                          ),
+                          color: _getPlanColor(index),
                         ),
-                      ],
-                    ),
-                  ),
-                ),
-                SizedBox(height: 24.h),
-                Container(
-                  width: double.infinity,
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(8),
-                    color: AppColors.subscriptionPlanAnnually,
-                  ),
-                  child: Padding(
-                    padding: EdgeInsets.all(16.sp),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Text("Annually", style: AppTextStyles.medium20),
-                            Obx(
-                              () => Transform.scale(
-                                scale: 1.6,
-                                child: RadioMenuButton(
-                                  value: 3,
-                                  groupValue: controller.selectedValue.value,
-                                  onChanged: (value) {
-                                    controller.updateSelection(value!);
-                                  },
-                                  child: Text(""),
-                                ),
+                        child: Padding(
+                          padding: EdgeInsets.all(16.sp),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                children: [
+                                  Text(
+                                    subscription.duration,
+                                    style: AppTextStyles.medium20,
+                                  ),
+                                  Obx(
+                                    () => Transform.scale(
+                                      scale: 1.6,
+                                      child: RadioMenuButton(
+                                        style: ButtonStyle(),
+                                        value: subscription.id,
+                                        groupValue:
+                                            controller.selectedValue.value,
+                                        onChanged: (value) {
+                                          controller.updateSelection(value!);
+                                        },
+                                        child: Text(""),
+                                      ),
+                                    ),
+                                  ),
+                                ],
                               ),
-                            ),
-                          ],
+                              SizedBox(height: 7.h),
+                              CustomDolarPlan(
+                                Dolartext: "\$${subscription.price}",
+                                Daytext:
+                                    '/ ${_getDurationText(subscription.duration)}',
+                              ),
+                              SizedBox(height: 7.h),
+                              if (index == 0)
+                                Text(
+                                  "Perfect for short-term preparation",
+                                  style: AppTextStyles.light16,
+                                ),
+                              if (index == 1)
+                                Text(
+                                  "Every Month",
+                                  style: AppTextStyles.light16,
+                                ),
+                              if (index == 2)
+                                Text(
+                                  "Save 17% compared to monthly",
+                                  style: AppTextStyles.light16,
+                                ),
+                              SizedBox(height: 24.h),
+                              // Display features from API
+                              ...subscription.features.map((feature) {
+                                return Column(
+                                  children: [
+                                    SelectedPlanActivity(text: feature),
+                                    SizedBox(height: 9.h),
+                                  ],
+                                );
+                              }).toList(),
+                              if (index == 1) // Monthly plan (Most Popular)
+                                Column(
+                                  children: [
+                                    SizedBox(height: 24.h),
+                                    Container(
+                                      height: 35.h,
+                                      width: 124.w,
+                                      decoration: BoxDecoration(
+                                        borderRadius: BorderRadius.circular(4),
+                                        color: AppColors
+                                            .subscriptionPlanMostPapular,
+                                      ),
+                                      child: Center(
+                                        child: Text(
+                                          "Most Popular",
+                                          style: AppTextStyles.regular14
+                                              .copyWith(
+                                                color: AppColors.whiteColor,
+                                              ),
+                                        ),
+                                      ),
+                                    ),
+                                    SizedBox(height: 24.h),
+                                  ],
+                                ),
+                              CustomButton(
+                                childText: "Get Started",
+                                buttonChildColor: AppColors.whiteColor,
+                                buttonColor: AppColors.blackColor,
+                                onTap: () {
+                                  controller.makeSimplePayment(
+                                    subscription.price.toDouble(),
+                                    context,
+                                  );
+                                },
+                              ),
+                            ],
+                          ),
                         ),
-                        SizedBox(height: 7.h),
-                        CustomDolarPlan(
-                          Dolartext: "\$249",
-                          Daytext: '/ Every week',
-                        ),
-                        SizedBox(height: 7.h),
-                        Text(
-                          "Save 17% compared to monthly",
-                          style: AppTextStyles.light16,
-                        ),
+                      ),
+                      if (index < sortedSubscriptions.length - 1)
                         SizedBox(height: 24.h),
-                        SelectedPlanActivity(
-                          text: "Full access to all study guides",
-                        ),
-                        SizedBox(height: 9.h),
-                        SelectedPlanActivity(text: "Unlimited flashcardS"),
-                        SizedBox(height: 9.h),
-                        SelectedPlanActivity(
-                          text: "Practice questions for all specialties",
-                        ),
-                        SizedBox(height: 9.h),
-                        SelectedPlanActivity(text: "Cancel anytime"),
-                        SizedBox(height: 9.h),
-                        SelectedPlanActivity(
-                          text: "All future updates included",
-                        ),
-                        SizedBox(height: 24.h),
-                        CustomButton(
-                          childText: "Get Started",
-                          buttonChildColor: AppColors.whiteColor,
-                          buttonColor: AppColors.blackColor,
-                          onTap: () {
-                            controller.makeSimplePayment(
-                              249,
-                              context,
-                            ); // Use simplified method
-                          },
-                        ),
-                      ],
-                    ),
-                  ),
-                ),
-              ],
-            ),
-          ),
+                    ],
+                  );
+                }),
+              ),
+            );
+          }),
         ),
       ),
     );
+  }
+
+  // Helper method to get border radius based on index
+  BorderRadius _getBorderRadius(int index, int totalItems) {
+    if (index == 0) {
+      return BorderRadius.only(
+        bottomLeft: Radius.circular(8),
+        bottomRight: Radius.circular(8),
+      );
+    }
+    return BorderRadius.circular(8);
+  }
+
+  // Helper method to get plan color based on index
+  Color _getPlanColor(int index) {
+    switch (index) {
+      case 0:
+        return AppColors.subscriptionPlanWeekly;
+      case 1:
+        return AppColors.subscriptionPlanMonthly;
+      case 2:
+        return AppColors.subscriptionPlanAnnually;
+      default:
+        return AppColors.subscriptionPlanWeekly;
+    }
+  }
+
+  // Helper method to format duration text
+  String _getDurationText(String duration) {
+    switch (duration.toLowerCase()) {
+      case 'weekly':
+        return 'Every week';
+      case 'monthly':
+        return 'Every month';
+      case 'annually':
+        return 'Every year';
+      default:
+        return 'Every ${duration.toLowerCase()}';
+    }
   }
 }

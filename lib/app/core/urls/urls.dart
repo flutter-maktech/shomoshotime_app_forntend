@@ -26,4 +26,5 @@ class Urls {
   static String startMockTest = "$baseUrs/user/question/start-mock-test";
   static String notification = "$baseUrs/user/user-notifications";
   static String notificationMarkAsRead = "$baseUrs/user/mark-notification-read";
+  static String subscriptionList = "$baseUrs/user/subscription/list";
 }

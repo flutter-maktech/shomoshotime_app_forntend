@@ -1,12 +1,12 @@
-import 'package:audioplayers/audioplayers.dart';
 import 'package:get/get.dart';
+import 'package:audioplayers/audioplayers.dart';
 
 class AudioPlayCardController extends GetxController {
-  final audioPlayer = AudioPlayer();
+  final AudioPlayer audioPlayer = AudioPlayer();
 
-  var isPlaying = false.obs;
-  var duration = Duration.zero.obs;
-  var position = Duration.zero.obs;
+  RxBool isPlaying = false.obs;
+  Rx<Duration> duration = Duration.zero.obs;
+  Rx<Duration> position = Duration.zero.obs;
 
   @override
   void onInit() {
@@ -31,23 +31,15 @@ class AudioPlayCardController extends GetxController {
     await audioPlayer.play(UrlSource(url));
   }
 
-  Future<void> pauseAudio() async {
-    await audioPlayer.pause();
-  }
+  Future<void> pauseAudio() async => audioPlayer.pause();
 
-  Future<void> resumeAudio() async {
-    await audioPlayer.resume();
-  }
+  Future<void> resumeAudio() async => audioPlayer.resume();
 
-  Future<void> seekTo(Duration pos) async {
-    await audioPlayer.seek(pos);
-  }
+  Future<void> seekTo(Duration pos) async => audioPlayer.seek(pos);
 
   String formatTime(Duration duration) {
     String twoDigits(int n) => n.toString().padLeft(2, '0');
-    final minutes = twoDigits(duration.inMinutes.remainder(60));
-    final seconds = twoDigits(duration.inSeconds.remainder(60));
-    return "$minutes:$seconds";
+    return '${twoDigits(duration.inMinutes % 60)}:${twoDigits(duration.inSeconds % 60)}';
   }
 
   @override

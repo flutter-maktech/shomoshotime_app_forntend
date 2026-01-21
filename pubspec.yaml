@@ -2,7 +2,7 @@ name: shomoshotime
 description: "A new Flutter project."
 # The following line prevents the package from being accidentally published to
 # pub.dev using `flutter pub publish`. This is preferred for private packages.
-publish_to: 'none' # Remove this line if you wish to publish to pub.dev
+publish_to: "none" # Remove this line if you wish to publish to pub.dev
 
 # The following defines the version and build number for your application.
 # A version number is three numbers separated by dots, like 1.2.43
@@ -50,6 +50,8 @@ dependencies:
   image_picker: ^1.2.1
   pusher_channels_flutter: ^2.6.0
   flutter_stripe: ^12.1.1
+  shimmer: ^3.0.0
+  # just_audio: ^0.10.5
 
 dev_dependencies:
   flutter_test:
@@ -67,7 +69,6 @@ dev_dependencies:
 
 # The following section is specific to Flutter packages.
 flutter:
-
   # The following line ensures that the Material Icons fonts is
   # included with your application, so that you can use the icons in
   # the material Icons class.
@@ -121,7 +122,6 @@ flutter:
         - asset: assets/fonts/ariel/ARIALNBI.TTF
         - asset: assets/fonts/ariel/ARIALNI.TTF
         - asset: assets/fonts/ariel/ARIBLK.TTF
-
 
   #
   # For details regarding fonts from package dependencies,

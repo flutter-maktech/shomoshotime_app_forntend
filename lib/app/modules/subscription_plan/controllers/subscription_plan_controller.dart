@@ -4,14 +4,52 @@ import 'package:flutter/material.dart';
 import 'package:flutter_stripe/flutter_stripe.dart';
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
+import 'package:shomoshotime/app/core/urls/urls.dart';
 import 'package:shomoshotime/key.dart';
+import '../../../all_utils/app_preference.dart';
 import '../../../all_utils/show_app_snack_bar.dart';
+import '../../../core/api_services/network_caller.dart';
+import '../../../core/user_panel_model/subscription_model.dart';
 import '../../../routes/app_pages.dart';
 
 class SubscriptionPlanController extends GetxController {
   RxInt selectedValue = 1.obs;
   Map<String, dynamic>? paymentIntentData;
   RxBool isLoading = false.obs;
+  final errorMessage = ''.obs;
+  final NetworkCaller networkCaller = NetworkCaller();
+  final subscriptions = <Subscription>[].obs;
+  @override
+  void onInit() {
+    super.onInit();
+    fetchSubscriptionPlans();
+  }
+
+  Future<void> fetchSubscriptionPlans() async {
+    try {
+      isLoading.value = true;
+      errorMessage.value = '';
+      final token = await AppPreference.getToken();
+
+      final response = await networkCaller.postRequest(
+        Urls.subscriptionList,
+        {},
+        token: token,
+      );
+      if (response['success'] == true) {
+        final subscriptionResponse = SubscriptionResponse.fromJson(response);
+
+        subscriptions.assignAll(subscriptionResponse.data);
+      } else {
+        errorMessage.value =
+            response['message'] ?? 'Failed to load subscriptions';
+      }
+    } catch (e) {
+      errorMessage.value = 'Something went wrong';
+    } finally {
+      isLoading.value = false;
+    }
+  }
 
   // Store the BuildContext from the view
   BuildContext? _context;
@@ -26,20 +64,23 @@ class SubscriptionPlanController extends GetxController {
   }
 
   // Main payment handler
-  Future<void> handlePayment(double amount, String currency, BuildContext context) async {
+  Future<void> handlePayment(
+    double amount,
+    String currency,
+    BuildContext context,
+  ) async {
     setContext(context); // Store the context
     try {
       isLoading.value = true;
-      
+
       // Create payment intent
       await createPaymentIntent(amount.toString(), currency);
-      
+
       // Initialize payment sheet
       await initializePaymentSheet();
-      
+
       // Display payment sheet
-      await displayPaymentSheet(context);
-      
+      await displayPaymentSheet(_context!);
     } catch (error) {
       if (kDebugMode) {
         print('Payment Error: $error');
@@ -80,7 +121,9 @@ class SubscriptionPlanController extends GetxController {
           print('Payment Intent Created: $paymentIntentData');
         }
       } else {
-        throw Exception('Failed to create payment intent: ${response.statusCode}');
+        throw Exception(
+          'Failed to create payment intent: ${response.statusCode}',
+        );
       }
     } catch (error) {
       rethrow;
@@ -90,7 +133,8 @@ class SubscriptionPlanController extends GetxController {
   // Initialize the payment sheet - SIMPLIFIED VERSION
   Future<void> initializePaymentSheet() async {
     try {
-      if (paymentIntentData == null || paymentIntentData!['client_secret'] == null) {
+      if (paymentIntentData == null ||
+          paymentIntentData!['client_secret'] == null) {
         throw Exception('Payment intent not created properly');
       }
 
@@ -102,7 +146,7 @@ class SubscriptionPlanController extends GetxController {
           customFlow: false,
         ),
       );
-      
+
       if (kDebugMode) {
         print('Payment sheet initialized successfully');
       }
@@ -115,12 +159,12 @@ class SubscriptionPlanController extends GetxController {
   Future<void> displayPaymentSheet(BuildContext context) async {
     try {
       await Stripe.instance.presentPaymentSheet();
-      
+
       // Payment successful
       if (kDebugMode) {
         print('Payment successful!');
       }
-      
+
       // Show success snackbar
       if (_context != null) {
         showAppSnackBar(
@@ -129,18 +173,17 @@ class SubscriptionPlanController extends GetxController {
           backgroundColor: Colors.green,
         );
       }
-      
+
       // Navigate to success page or next screen
-      Get.offNamed(Routes.PAYMENT_METHODS);
-      
+      Get.back();
     } on StripeException catch (e) {
       if (kDebugMode) {
         print('Stripe Exception: ${e.error.localizedMessage}');
       }
-      
+
       // Show error dialog
       showDialog(
-        context: context,
+        context: _context!,
         builder: (context) => AlertDialog(
           title: Text('Payment Error'),
           content: Text(e.error.localizedMessage ?? 'Payment cancelled'),
@@ -152,14 +195,13 @@ class SubscriptionPlanController extends GetxController {
           ],
         ),
       );
-      
     } catch (error) {
       if (kDebugMode) {
         print('General Error: $error');
       }
-      
+
       showDialog(
-        context: context,
+        context: _context!,
         builder: (context) => AlertDialog(
           title: Text('Error'),
           content: Text(error.toString()),
@@ -177,13 +219,13 @@ class SubscriptionPlanController extends GetxController {
   // Alternative simplified payment method
   Future<void> makeSimplePayment(double amount, BuildContext context) async {
     setContext(context); // Store the context
-    
+
     try {
       isLoading.value = true;
-      
+
       // Create payment intent
       await createPaymentIntent(amount.toString(), 'usd');
-      
+
       // Initialize payment sheet - ULTRA SIMPLE
       await Stripe.instance.initPaymentSheet(
         paymentSheetParameters: SetupPaymentSheetParameters(
@@ -191,10 +233,10 @@ class SubscriptionPlanController extends GetxController {
           merchantDisplayName: 'Shomoshotime',
         ),
       );
-      
+
       // Present payment sheet
       await Stripe.instance.presentPaymentSheet();
-      
+
       // Success
       if (_context != null) {
         showAppSnackBar(
@@ -203,10 +245,9 @@ class SubscriptionPlanController extends GetxController {
           backgroundColor: Colors.green,
         );
       }
-      
+
       // Navigate to next screen
-      Get.offNamed(Routes.PAYMENT_METHODS);
-      
+      Get.offNamed(Routes.CUSTOM_BOTTOM_NAVIGATION_BAR);
     } on StripeException catch (e) {
       if (kDebugMode) {
         print('Error: ${e.error.localizedMessage}');
@@ -214,7 +255,8 @@ class SubscriptionPlanController extends GetxController {
       if (_context != null) {
         showAppSnackBar(
           context: _context!,
-          message: 'Payment Failed: ${e.error.localizedMessage ?? "Payment cancelled"}',
+          message:
+              'Payment Failed: ${e.error.localizedMessage ?? "Payment cancelled"}',
           backgroundColor: Colors.red,
         );
       }
@@ -229,69 +271,6 @@ class SubscriptionPlanController extends GetxController {
           backgroundColor: Colors.red,
         );
       }
-    } finally {
-      isLoading.value = false;
-    }
-  }
-
-  // Ultra simple test method for debugging
-  Future<void> makeTestPayment(double amount, BuildContext context) async {
-    try {
-      isLoading.value = true;
-      
-      // 1. Create payment intent with minimal data
-      final response = await http.post(
-        Uri.parse('https://api.stripe.com/v1/payment_intents'),
-        headers: {
-          'Authorization': 'Bearer $secretKey',
-          'Content-Type': 'application/x-www-form-urlencoded',
-        },
-        body: {
-          'amount': '1000', // $10.00 in cents for testing
-          'currency': 'usd',
-          'payment_method_types[]': 'card',
-        },
-      );
-
-      if (response.statusCode != 200) {
-        throw Exception('Failed to create payment intent');
-      }
-
-      final paymentIntent = json.decode(response.body);
-      
-      // 2. Initialize with absolute minimum configuration
-      await Stripe.instance.initPaymentSheet(
-        paymentSheetParameters: SetupPaymentSheetParameters(
-          paymentIntentClientSecret: paymentIntent['client_secret'],
-          merchantDisplayName: 'Shomoshotime',
-        ),
-      );
-      
-      // 3. Present payment sheet
-      await Stripe.instance.presentPaymentSheet();
-      
-      // 4. Show success
-      showAppSnackBar(
-        context: context,
-        message: 'Payment successful!',
-        backgroundColor: Colors.green,
-      );
-      
-      // 5. Navigate
-      Get.offNamed(Routes.PAYMENT_METHODS);
-      
-    } on StripeException catch (e) {
-      showAppSnackBar(
-        context: context,
-        message: 'Payment failed: ${e.error.localizedMessage ?? "Unknown error"}',
-        backgroundColor: Colors.red,
-      );
-    } catch (e) {
-      showAppSnackBar(
-        context: context,
-        message: 'Error: $e',
-        backgroundColor: Colors.red,
-      );
     } finally {
       isLoading.value = false;
     }
