@@ -175,7 +175,7 @@ class ProfileView extends GetView<ProfileController> {
                           () {
                             AppPreference.clearToken();
                             AppPreference.clearUserId();
-                            Get.toNamed(Routes.SIGN_IN);
+                            Get.offAllNamed(Routes.SIGN_IN);
                           },
                         ),
                       ],

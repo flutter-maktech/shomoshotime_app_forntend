@@ -27,4 +27,5 @@ class Urls {
   static String notification = "$baseUrs/user/user-notifications";
   static String notificationMarkAsRead = "$baseUrs/user/mark-notification-read";
   static String subscriptionList = "$baseUrs/user/subscription/list";
+  static String paymentInfo = "$baseUrs/user/payment/store";
 }

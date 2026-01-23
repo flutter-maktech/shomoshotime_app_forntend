@@ -181,6 +181,7 @@ class SubscriptionPlanView extends GetView<SubscriptionPlanController> {
                                 onTap: () {
                                   controller.makeSimplePayment(
                                     subscription.price.toDouble(),
+                                    subscription.id,
                                     context,
                                   );
                                 },

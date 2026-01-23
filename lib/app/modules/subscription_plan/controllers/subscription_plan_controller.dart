@@ -217,7 +217,11 @@ class SubscriptionPlanController extends GetxController {
   }
 
   // Alternative simplified payment method
-  Future<void> makeSimplePayment(double amount, BuildContext context) async {
+  Future<void> makeSimplePayment(
+    double amount,
+    int subscriptionId,
+    BuildContext context,
+  ) async {
     setContext(context); // Store the context
 
     try {
@@ -236,6 +240,9 @@ class SubscriptionPlanController extends GetxController {
 
       // Present payment sheet
       await Stripe.instance.presentPaymentSheet();
+
+      // Store Payment Info
+      await storePaymentInfo(subscriptionId, amount);
 
       // Success
       if (_context != null) {
@@ -273,6 +280,40 @@ class SubscriptionPlanController extends GetxController {
       }
     } finally {
       isLoading.value = false;
+    }
+  }
+
+  Future<void> storePaymentInfo(int subscriptionId, double amount) async {
+    try {
+      final userId = await AppPreference.getUserId();
+      final token = await AppPreference.getToken();
+
+      Map<String, dynamic> body = {
+        "user_id": userId,
+        "subscription_id": subscriptionId,
+        "payment_intent_data": jsonEncode(paymentIntentData),
+        "amount": amount,
+      };
+
+      final response = await networkCaller.postRequest(
+        Urls.paymentInfo,
+        body,
+        token: token,
+      );
+
+      if (response['status'] == 'success' || response['success'] == true) {
+        if (kDebugMode) {
+          print('Payment info stored successfully');
+        }
+      } else {
+        if (kDebugMode) {
+          print('Failed to store payment info: ${response['message']}');
+        }
+      }
+    } catch (e) {
+      if (kDebugMode) {
+        print('Error storing payment info: $e');
+      }
     }
   }
 }
