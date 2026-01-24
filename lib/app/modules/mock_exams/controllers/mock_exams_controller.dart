@@ -1,3 +1,4 @@
+import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:shomoshotime/app/core/urls/urls.dart' show Urls;
 import 'package:shomoshotime/app/core/user_panel_model/user_analytics_response.dart';
@@ -12,27 +13,58 @@ class MockExamsController extends GetxController {
   RxBool isloading = false.obs;
   RxString errorText = ''.obs;
 
+  // Pagination variables
+  final allMockTests = <QuestionSetData>[].obs;
+  final ScrollController scrollController = ScrollController();
+  int currentPage = 1;
+  int lastPage = 1;
+  var isLoadingMore = false.obs;
+  var isRefreshing = false.obs;
+
   @override
   void onInit() {
     super.onInit();
     fetchMockTestData();
+    // Scroll listener
+    scrollController.addListener(_scrollListener);
+  }
+
+  void _scrollListener() {
+    if (scrollController.position.pixels ==
+        scrollController.position.maxScrollExtent) {
+      if (currentPage < lastPage && !isLoadingMore.value) {
+        fetchMockTestData(page: currentPage + 1);
+      }
+    }
+  }
+
+  Future<void> refreshMockTestData() async {
+    isRefreshing.value = true;
+    currentPage = 1;
+    lastPage = 1;
+    allMockTests.clear();
+    await fetchMockTestData(page: 1);
+    isRefreshing.value = false;
   }
 
   NetworkCaller networkCaller = NetworkCaller();
   final Rx<QuestionSetResponse?> questionSetResponse = Rx<QuestionSetResponse?>(
     null,
   );
-  List<QuestionSetData> get questionSets =>
-      questionSetResponse.value?.data ?? [];
+  List<QuestionSetData> get questionSets => allMockTests; // Use paginated list
 
   List<UserAnalyticsData> get mockTestAnalytics =>
       practiceController.userAnalyticsData;
 
-  Future<void> fetchMockTestData() async {
-    isloading.value = true;
+  Future<void> fetchMockTestData({int page = 1}) async {
+    if (page == 1) {
+      isloading.value = true;
+    } else {
+      isLoadingMore.value = true;
+    }
     errorText.value = '';
     try {
-      final body = {"current_mode": "mock_test"};
+      final body = {"current_mode": "mock_test", "page": page.toString()};
 
       final token = await AppPreference.getToken();
 
@@ -41,12 +73,26 @@ class MockExamsController extends GetxController {
         body,
         token: token,
       );
-      questionSetResponse.value = QuestionSetResponse.fromJson(response);
+
+      final responseData = QuestionSetResponse.fromJson(response);
+      questionSetResponse.value = responseData;
+
+      if (responseData.success) {
+        if (page == 1) {
+          allMockTests.assignAll(responseData.data);
+        } else {
+          allMockTests.addAll(responseData.data);
+        }
+
+        currentPage = responseData.meta.currentPage;
+        lastPage = responseData.meta.lastPage;
+      }
     } catch (e) {
       print('------$e');
       errorText.value = 'An eeeerror occurred: $e';
     } finally {
       isloading.value = false;
+      isLoadingMore.value = false;
     }
   }
 
@@ -58,11 +104,7 @@ class MockExamsController extends GetxController {
 
       final token = await AppPreference.getToken();
 
-       await networkCaller.postRequest(
-        Urls.startMockTest,
-        body,
-        token: token,
-      );
+      await networkCaller.postRequest(Urls.startMockTest, body, token: token);
     } catch (e) {
       errorText.value = 'An eeeerror occurred: $e';
       print('----------------$e');
@@ -74,5 +116,11 @@ class MockExamsController extends GetxController {
   var selectIndex = 0.obs;
   void changeIndex(int index) {
     selectIndex.value = index;
+  }
+
+  @override
+  void onClose() {
+    scrollController.dispose();
+    super.onClose();
   }
 }

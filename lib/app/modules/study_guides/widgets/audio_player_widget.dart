@@ -79,33 +79,15 @@ class AudioPlayerWidget extends StatelessWidget {
                 child: Obx(() {
                   // Check if this specific audio is downloading
                   if (controller.downloadProgress.containsKey(audioUrl)) {
-                    final progress =
-                        controller.downloadProgress[audioUrl] ?? 0.0;
-                    final isIndeterminate = progress < 0;
-
-                    return Stack(
-                      alignment: Alignment.center,
-                      children: [
-                        SizedBox(
-                          width: 45,
-                          height: 45,
-                          child: CircularProgressIndicator(
-                            value: isIndeterminate ? null : progress,
-                            color: Colors.white,
-                            strokeWidth: 4,
-                            backgroundColor: Colors.white.withOpacity(0.3),
-                          ),
-                        ),
-                        if (!isIndeterminate)
-                          Text(
-                            '${(progress * 100).toInt()}%',
-                            style: const TextStyle(
-                              color: Colors.white,
-                              fontSize: 12,
-                              fontWeight: FontWeight.bold,
-                            ),
-                          ),
-                      ],
+                    return SizedBox(
+                      width: 45,
+                      height: 45,
+                      child: CircularProgressIndicator(
+                        value: null, // Indeterminate loader
+                        color: Colors.white,
+                        strokeWidth: 4,
+                        backgroundColor: Colors.white.withOpacity(0.3),
+                      ),
                     );
                   } else if (controller.isLoading.value &&
                       controller.currentAudioUrl.value == audioUrl) {

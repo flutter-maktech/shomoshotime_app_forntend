@@ -28,103 +28,258 @@ class PracticeView extends GetView<PracticeController> {
           final accuracy = controller.userAnalyticsData.isNotEmpty
               ? controller.userAnalyticsData[0].practiceAccuracy
               : 0;
-          if (controller.isloading.value) {
+          if (controller.isloading.value &&
+              controller.allQuestionSets.isEmpty) {
             return Center(child: CircularProgressIndicator());
           }
-          if (controller.errorText.value.isNotEmpty) {
+          if (controller.errorText.value.isNotEmpty &&
+              controller.allQuestionSets.isEmpty) {
             return Center(child: Text(controller.errorText.value));
           }
-          return CustomScrollView(
-            slivers: [
-              SliverToBoxAdapter(
-                child: PrimaryAppBar(
-                  notificationOnTap: () => Get.toNamed(Routes.NOTIFICATION),
-                  profileOnTap: () => Get.toNamed(Routes.PROFILE),
-                ),
-              ),
-              SliverToBoxAdapter(
-                child: Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 16),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      const SizedBox(height: 16),
-                      Text(
-                        'Practice Questions',
-                        style: AppTextStyles.medium20.copyWith(
-                          color: AppColors.blackColor,
-                        ),
-                      ),
-                      Text(
-                        'Test your knowledge with thousands of practice questions',
-                        style: AppTextStyles.regular14.copyWith(
-                          color: AppColors.appBarSub,
-                        ),
-                      ),
-                      const SizedBox(height: 16),
-                      Obx(
-                        () => CustomTextFormField(
-                          searchController: controller.searchController,
-                          onClear: controller.clearSearch,
-                          isSearchQueryNotEmpty:
-                              controller.searchQuery.value.isNotEmpty,
-                        ),
-                      ),
-                    ],
+          return RefreshIndicator(
+            onRefresh: controller.refreshPracticeData,
+            child: CustomScrollView(
+              controller: controller.scrollController,
+              slivers: [
+                SliverToBoxAdapter(
+                  child: PrimaryAppBar(
+                    notificationOnTap: () => Get.toNamed(Routes.NOTIFICATION),
+                    profileOnTap: () => Get.toNamed(Routes.PROFILE),
                   ),
                 ),
-              ),
-              SliverToBoxAdapter(
-                child: Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 16, vertical: 16.h),
-                  child: Container(
-                    color: AppColors.appBarBack,
-                    width: double.infinity,
-                    height: 50.h,
-                    child: Padding(
-                      padding: EdgeInsets.symmetric(
-                        horizontal: 12.w,
-                        vertical: 8.h,
+                SliverToBoxAdapter(
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 16),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        const SizedBox(height: 16),
+                        Text(
+                          'Practice Questions',
+                          style: AppTextStyles.medium20.copyWith(
+                            color: AppColors.blackColor,
+                          ),
+                        ),
+                        Text(
+                          'Test your knowledge with thousands of practice questions',
+                          style: AppTextStyles.regular14.copyWith(
+                            color: AppColors.appBarSub,
+                          ),
+                        ),
+                        const SizedBox(height: 16),
+                        Obx(
+                          () => CustomTextFormField(
+                            searchController: controller.searchController,
+                            onClear: controller.clearSearch,
+                            isSearchQueryNotEmpty:
+                                controller.searchQuery.value.isNotEmpty,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+                SliverToBoxAdapter(
+                  child: Padding(
+                    padding: EdgeInsets.symmetric(
+                      horizontal: 16,
+                      vertical: 16.h,
+                    ),
+                    child: Container(
+                      color: AppColors.appBarBack,
+                      width: double.infinity,
+                      height: 50.h,
+                      child: Padding(
+                        padding: EdgeInsets.symmetric(
+                          horizontal: 12.w,
+                          vertical: 8.h,
+                        ),
+                        child: Obx(
+                          () => Row(
+                            // Wrap with Obx
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              FlashCardFilterBar(
+                                title: 'All',
+                                index: 0,
+                                isSelected:
+                                    controller.selectIndex.value ==
+                                    0, // Dynamic
+                                onTap: () => controller.changeIndex(0),
+                              ),
+                              FlashCardFilterBar(
+                                title: 'SPI',
+                                index: 1,
+                                isSelected:
+                                    controller.selectIndex.value ==
+                                    1, // Dynamic
+                                onTap: () => controller.changeIndex(1),
+                              ),
+                              FlashCardFilterBar(
+                                title: 'Vascular',
+                                index: 2,
+                                isSelected:
+                                    controller.selectIndex.value ==
+                                    2, // Dynamic
+                                onTap: () => controller.changeIndex(2),
+                              ),
+                              FlashCardFilterBar(
+                                title: 'OB/GYN',
+                                index: 3,
+                                isSelected:
+                                    controller.selectIndex.value ==
+                                    3, // Dynamic
+                                onTap: () => controller.changeIndex(3),
+                              ),
+                              FlashCardFilterBar(
+                                title: 'Abdomen',
+                                index: 4,
+                                isSelected:
+                                    controller.selectIndex.value ==
+                                    4, // Dynamic
+                                onTap: () => controller.changeIndex(4),
+                              ),
+                            ],
+                          ),
+                        ),
                       ),
-                      child: Obx(
-                        () => Row(
-                          // Wrap with Obx
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    ),
+                  ),
+                ),
+                SliverToBoxAdapter(
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 16),
+                    child: DecoratedBox(
+                      decoration: BoxDecoration(
+                        color: AppColors.homeStack,
+                        borderRadius: BorderRadius.circular(8),
+                      ),
+                      child: Padding(
+                        padding: const EdgeInsets.symmetric(vertical: 14),
+                        child: Column(
+                          mainAxisSize: MainAxisSize.min, // IMPORTANT
                           children: [
-                            FlashCardFilterBar(
-                              title: 'All',
-                              index: 0,
-                              isSelected:
-                                  controller.selectIndex.value == 0, // Dynamic
-                              onTap: () => controller.changeIndex(0),
-                            ),
-                            FlashCardFilterBar(
-                              title: 'SPI',
-                              index: 1,
-                              isSelected:
-                                  controller.selectIndex.value == 1, // Dynamic
-                              onTap: () => controller.changeIndex(1),
-                            ),
-                            FlashCardFilterBar(
-                              title: 'Vascular',
-                              index: 2,
-                              isSelected:
-                                  controller.selectIndex.value == 2, // Dynamic
-                              onTap: () => controller.changeIndex(2),
-                            ),
-                            FlashCardFilterBar(
-                              title: 'OB/GYN',
-                              index: 3,
-                              isSelected:
-                                  controller.selectIndex.value == 3, // Dynamic
-                              onTap: () => controller.changeIndex(3),
-                            ),
-                            FlashCardFilterBar(
-                              title: 'Abdomen',
-                              index: 4,
-                              isSelected:
-                                  controller.selectIndex.value == 4, // Dynamic
-                              onTap: () => controller.changeIndex(4),
+                            Padding(
+                              padding: const EdgeInsets.symmetric(
+                                horizontal: 16,
+                              ),
+                              child: Row(
+                                children: [
+                                  Expanded(
+                                    child: Container(
+                                      padding: const EdgeInsets.all(12),
+                                      decoration: BoxDecoration(
+                                        color: AppColors.whiteColor,
+                                        borderRadius: BorderRadius.circular(8),
+                                      ),
+                                      child: Column(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                        children: [
+                                          Row(
+                                            children: [
+                                              Text(
+                                                "Practice \nProgress",
+                                                style: AppTextStyles.regular12
+                                                    .copyWith(
+                                                      color:
+                                                          AppColors.blackColor,
+                                                    ),
+                                              ),
+                                              Spacer(),
+                                              Image.asset(
+                                                ImagePath.frameImage,
+                                                scale: 5,
+                                              ),
+                                            ],
+                                          ),
+
+                                          SizedBox(height: 14),
+                                          Text(
+                                            '$progress',
+                                            style: AppTextStyles.bold24
+                                                .copyWith(
+                                                  color: AppColors.greyBlack,
+                                                ),
+                                          ),
+                                          SizedBox(height: 14),
+
+                                          Row(
+                                            children: [
+                                              Expanded(
+                                                child: Text(
+                                                  'Keep it up!',
+                                                  maxLines: 1,
+                                                  overflow:
+                                                      TextOverflow.ellipsis,
+                                                  style: AppTextStyles.regular12
+                                                      .copyWith(
+                                                        color: AppColors
+                                                            .blackColor,
+                                                      ),
+                                                ),
+                                              ),
+                                            ],
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                  ),
+
+                                  SizedBox(width: 14),
+
+                                  Expanded(
+                                    child: Container(
+                                      padding: const EdgeInsets.all(12),
+                                      decoration: BoxDecoration(
+                                        color: AppColors.whiteColor,
+                                        borderRadius: BorderRadius.circular(8),
+                                      ),
+                                      child: Column(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                        children: [
+                                          Row(
+                                            children: [
+                                              Text(
+                                                "Overall\nAccuracy",
+                                                style: AppTextStyles.regular12
+                                                    .copyWith(
+                                                      color:
+                                                          AppColors.blackColor,
+                                                    ),
+                                              ),
+                                              Spacer(),
+                                              Image.asset(
+                                                ImagePath.frameImage,
+                                                scale: 5,
+                                              ),
+                                            ],
+                                          ),
+                                          SizedBox(height: 6),
+
+                                          Text(
+                                            '$accuracy%',
+                                            style: AppTextStyles.bold24
+                                                .copyWith(
+                                                  color: AppColors.greyBlack,
+                                                ),
+                                          ),
+                                          SizedBox(height: 6),
+
+                                          Text(
+                                            "Above average performance",
+                                            style: AppTextStyles.regular12
+                                                .copyWith(
+                                                  color: AppColors.blackColor,
+                                                ),
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                  ),
+                                ],
+                              ),
                             ),
                           ],
                         ),
@@ -132,174 +287,53 @@ class PracticeView extends GetView<PracticeController> {
                     ),
                   ),
                 ),
-              ),
-              SliverToBoxAdapter(
-                child: Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 16),
-                  child: DecoratedBox(
-                    decoration: BoxDecoration(
-                      color: AppColors.homeStack,
-                      borderRadius: BorderRadius.circular(8),
-                    ),
-                    child: Padding(
-                      padding: const EdgeInsets.symmetric(vertical: 14),
-                      child: Column(
-                        mainAxisSize: MainAxisSize.min, // IMPORTANT
-                        children: [
-                          Padding(
-                            padding: const EdgeInsets.symmetric(horizontal: 16),
-                            child: Row(
-                              children: [
-                                Expanded(
-                                  child: Container(
-                                    padding: const EdgeInsets.all(12),
-                                    decoration: BoxDecoration(
-                                      color: AppColors.whiteColor,
-                                      borderRadius: BorderRadius.circular(8),
-                                    ),
-                                    child: Column(
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
-                                      children: [
-                                        Row(
-                                          children: [
-                                            Text(
-                                              "Practice \nProgress",
-                                              style: AppTextStyles.regular12
-                                                  .copyWith(
-                                                    color: AppColors.blackColor,
-                                                  ),
-                                            ),
-                                            Spacer(),
-                                            Image.asset(
-                                              ImagePath.frameImage,
-                                              scale: 5,
-                                            ),
-                                          ],
-                                        ),
 
-                                        SizedBox(height: 14),
-                                        Text(
-                                          '$progress',
-                                          style: AppTextStyles.bold24.copyWith(
-                                            color: AppColors.greyBlack,
-                                          ),
-                                        ),
-                                        SizedBox(height: 14),
+                Obx(() {
+                  final list = controller.filteredQuestionSets;
 
-                                        Row(
-                                          children: [
-                                            Expanded(
-                                              child: Text(
-                                                'Keep it up!',
-                                                maxLines: 1,
-                                                overflow: TextOverflow.ellipsis,
-                                                style: AppTextStyles.regular12
-                                                    .copyWith(
-                                                      color:
-                                                          AppColors.blackColor,
-                                                    ),
-                                              ),
-                                            ),
-                                          ],
-                                        ),
-                                      ],
-                                    ),
-                                  ),
-                                ),
-
-                                SizedBox(width: 14),
-
-                                Expanded(
-                                  child: Container(
-                                    padding: const EdgeInsets.all(12),
-                                    decoration: BoxDecoration(
-                                      color: AppColors.whiteColor,
-                                      borderRadius: BorderRadius.circular(8),
-                                    ),
-                                    child: Column(
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
-                                      children: [
-                                        Row(
-                                          children: [
-                                            Text(
-                                              "Overall\nAccuracy",
-                                              style: AppTextStyles.regular12
-                                                  .copyWith(
-                                                    color: AppColors.blackColor,
-                                                  ),
-                                            ),
-                                            Spacer(),
-                                            Image.asset(
-                                              ImagePath.frameImage,
-                                              scale: 5,
-                                            ),
-                                          ],
-                                        ),
-                                        SizedBox(height: 6),
-
-                                        Text(
-                                          '$accuracy%',
-                                          style: AppTextStyles.bold24.copyWith(
-                                            color: AppColors.greyBlack,
-                                          ),
-                                        ),
-                                        SizedBox(height: 6),
-
-                                        Text(
-                                          "Above average performance",
-                                          style: AppTextStyles.regular12
-                                              .copyWith(
-                                                color: AppColors.blackColor,
-                                              ),
-                                        ),
-                                      ],
-                                    ),
-                                  ),
-                                ),
-                              ],
+                  if (list.isEmpty && !controller.isloading.value) {
+                    return SliverToBoxAdapter(
+                      child: Padding(
+                        padding: const EdgeInsets.symmetric(vertical: 60),
+                        child: Center(
+                          child: Text(
+                            'No practice questions available for this category',
+                            style: AppTextStyles.regular14.copyWith(
+                              color: AppColors.appBarSub,
                             ),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ),
-                ),
-              ),
-
-              Obx(() {
-                final list = controller.filteredQuestionSets;
-
-                if (list.isEmpty) {
-                  return SliverToBoxAdapter(
-                    child: Padding(
-                      padding: const EdgeInsets.symmetric(vertical: 60),
-                      child: Center(
-                        child: Text(
-                          'No practice questions available for this category',
-                          style: AppTextStyles.regular14.copyWith(
-                            color: AppColors.appBarSub,
                           ),
                         ),
                       ),
-                    ),
-                  );
-                }
-
-                return SliverList(
-                  delegate: SliverChildBuilderDelegate((context, index) {
-                    return Padding(
-                      padding: const EdgeInsets.symmetric(
-                        horizontal: 16,
-                        vertical: 16,
-                      ),
-                      child: spiFundamentalsCardWidget(list[index]),
                     );
-                  }, childCount: list.length),
-                );
-              }),
-            ],
+                  }
+
+                  return SliverList(
+                    delegate: SliverChildBuilderDelegate((context, index) {
+                      return Padding(
+                        padding: const EdgeInsets.symmetric(
+                          horizontal: 16,
+                          vertical: 16,
+                        ),
+                        child: spiFundamentalsCardWidget(list[index]),
+                      );
+                    }, childCount: list.length),
+                  );
+                }),
+
+                // Bottom loader for pagination
+                Obx(() {
+                  if (controller.isLoadingMore.value) {
+                    return const SliverToBoxAdapter(
+                      child: Padding(
+                        padding: EdgeInsets.all(16.0),
+                        child: Center(child: CircularProgressIndicator()),
+                      ),
+                    );
+                  }
+                  return const SliverToBoxAdapter(child: SizedBox.shrink());
+                }),
+              ],
+            ),
           );
         }),
       ),
