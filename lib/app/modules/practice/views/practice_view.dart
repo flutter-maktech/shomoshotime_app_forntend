@@ -39,6 +39,7 @@ class PracticeView extends GetView<PracticeController> {
           return RefreshIndicator(
             onRefresh: controller.refreshPracticeData,
             child: CustomScrollView(
+              physics: const AlwaysScrollableScrollPhysics(),
               controller: controller.scrollController,
               slivers: [
                 SliverToBoxAdapter(

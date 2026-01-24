@@ -46,7 +46,7 @@ class SignInView extends GetView<SignInController> {
                     validator: AppValidators.email,
                   ),
                   Obx(
-                        () => CustomTextField(
+                    () => CustomTextField(
                       controller: controller.passwordController,
                       hintText: '**********',
                       topHintText: 'Password',
@@ -81,7 +81,7 @@ class SignInView extends GetView<SignInController> {
                   ),
                   SizedBox(height: 16.h),
                   Obx(
-                        () => CustomButton(
+                    () => CustomButton(
                       childText: controller.isLoading.value
                           ? 'Please wait...'
                           : 'Sign In',
@@ -109,7 +109,7 @@ class SignInView extends GetView<SignInController> {
                   Padding(
                     padding: EdgeInsets.symmetric(vertical: 16.h),
                     child: OutlinedButton(
-                      onPressed: () {},
+                      onPressed: controller.signInWithGoogle,
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [

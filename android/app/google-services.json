@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "823677183565",
+    "project_id": "shtime-57731",
+    "storage_bucket": "shtime-57731.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:823677183565:android:1dd916ffd0fa929b2a5e04",
+        "android_client_info": {
+          "package_name": "com.shomoshotime.shomoshotime"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "823677183565-264p65da2qq6l4dvqe61s6tbb9r7n0ok.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.shomoshotime.shomoshotime",
+            "certificate_hash": "76fefedc42b8da47cfcdf26f7454eb9227f94843"
+          }
+        },
+        {
+          "client_id": "823677183565-cicrk6okc1fjramadss8i5rf28louvrg.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAiEdp36FoKxKRHzNtqZ1Y8CjUnj8CR5cE"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "823677183565-cicrk6okc1fjramadss8i5rf28louvrg.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

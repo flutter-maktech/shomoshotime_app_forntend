@@ -51,6 +51,9 @@ dependencies:
   pusher_channels_flutter: ^2.6.0
   flutter_stripe: ^12.1.1
   shimmer: ^3.0.0
+  firebase_auth: ^6.1.4
+  firebase_core: ^4.4.0
+  google_sign_in: ^7.2.0
   # just_audio: ^0.10.5
 
 dev_dependencies:

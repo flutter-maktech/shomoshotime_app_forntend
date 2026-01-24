@@ -29,6 +29,7 @@ class MockExamsView extends GetView<MockExamsController> {
           return RefreshIndicator(
             onRefresh: controller.refreshMockTestData,
             child: CustomScrollView(
+              physics: const AlwaysScrollableScrollPhysics(),
               controller: controller.scrollController,
               slivers: [
                 SliverToBoxAdapter(

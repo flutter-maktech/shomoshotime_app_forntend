@@ -44,10 +44,14 @@ class PracticeController extends GetxController {
   }
 
   void _scrollListener() {
-    if (scrollController.position.pixels ==
-        scrollController.position.maxScrollExtent) {
-      if (currentPage < lastPage && !isLoadingMore.value) {
-        fetchPracticeData(page: currentPage + 1);
+    if (!scrollController.hasClients) return;
+
+    for (final position in scrollController.positions) {
+      if (position.pixels >= position.maxScrollExtent) {
+        if (currentPage < lastPage && !isLoadingMore.value) {
+          fetchPracticeData(page: currentPage + 1);
+          break; // Trigger once
+        }
       }
     }
   }
