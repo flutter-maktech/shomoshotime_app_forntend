@@ -1,18 +1,28 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:shomoshotime/app/modules/home/controllers/home_controller.dart';
-
 import '../../../core/user_panel_model/flash_card_reponse_model.dart';
+import '../../../core/api_services/network_caller.dart';
+import '../../../core/urls/urls.dart';
+import '../../../all_utils/app_preference.dart';
 
 class FlashCardsController extends GetxController {
-  final homeController = Get.find<HomeController>();
-
   final TextEditingController searchController = TextEditingController();
 
   final RxString searchQuery = ''.obs;
   final RxInt selectIndex = 0.obs;
 
-  List<FlashCardItem> get flashCards => homeController.flashCards;
+  // Pagination variables
+  final allFlashCards = <FlashCardItem>[].obs;
+  final ScrollController scrollController = ScrollController();
+  int currentPage = 1;
+  int lastPage = 1;
+  var isLoading = false.obs;
+  var isLoadingMore = false.obs;
+  var isRefreshing = false.obs;
+
+  List<FlashCardItem> get flashCards => allFlashCards;
+
+  final NetworkCaller _networkCaller = NetworkCaller();
 
   @override
   void onInit() {
@@ -21,11 +31,76 @@ class FlashCardsController extends GetxController {
     searchController.addListener(() {
       searchQuery.value = searchController.text;
     });
+
+    // Initial fetch
+    fetchFlashCards();
+
+    // Scroll listener
+    scrollController.addListener(_scrollListener);
+  }
+
+  void _scrollListener() {
+    if (scrollController.position.pixels ==
+        scrollController.position.maxScrollExtent) {
+      if (currentPage < lastPage && !isLoadingMore.value) {
+        fetchFlashCards(page: currentPage + 1);
+      }
+    }
+  }
+
+  Future<void> refreshFlashCards() async {
+    isRefreshing.value = true;
+    currentPage = 1;
+    lastPage = 1;
+    allFlashCards.clear();
+    await fetchFlashCards(page: 1);
+    isRefreshing.value = false;
+  }
+
+  Future<void> fetchFlashCards({int page = 1}) async {
+    try {
+      if (page == 1) {
+        isLoading.value = true;
+      } else {
+        isLoadingMore.value = true;
+      }
+
+      final token = await AppPreference.getToken();
+
+      final body = {'page': page.toString()};
+
+      final response = await _networkCaller.postRequest(
+        Urls.flashCardList,
+        body,
+        token: token,
+      );
+
+      final flashCardResponse = FlashCardResponse.fromJson(response);
+
+      if (flashCardResponse.success) {
+        if (page == 1) {
+          allFlashCards.assignAll(flashCardResponse.data);
+        } else {
+          allFlashCards.addAll(flashCardResponse.data);
+        }
+
+        if (flashCardResponse.meta != null) {
+          currentPage = flashCardResponse.meta!.currentPage;
+          lastPage = flashCardResponse.meta!.lastPage;
+        }
+      }
+    } catch (e) {
+      debugPrint('Error fetching flash cards: $e');
+    } finally {
+      isLoading.value = false;
+      isLoadingMore.value = false;
+    }
   }
 
   @override
   void onClose() {
     searchController.dispose();
+    scrollController.dispose();
     super.onClose();
   }
 
@@ -80,8 +155,7 @@ class FlashCardsController extends GetxController {
       }
 
       if (selectedCategory == 'OB/GYN' &&
-          (cardCategory.contains('ob') ||
-              cardCategory.contains('gyn'))) {
+          (cardCategory.contains('ob') || cardCategory.contains('gyn'))) {
         return true;
       }
 
@@ -101,4 +175,3 @@ class FlashCardsController extends GetxController {
     }).toList();
   }
 }
-

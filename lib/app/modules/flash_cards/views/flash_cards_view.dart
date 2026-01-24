@@ -18,155 +18,175 @@ class FlashCardsView extends GetView<FlashCardsController> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: SafeArea(
-        child: CustomScrollView(
-          slivers: [
-            SliverToBoxAdapter(
-              child: PrimaryAppBar(
-                notificationOnTap: () => Get.toNamed(Routes.NOTIFICATION),
-                profileOnTap: () => Get.toNamed(Routes.PROFILE),
-              ),
-            ),
-            SliverToBoxAdapter(
-              child: Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 16),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    const SizedBox(height: 16),
-                    Text(
-                      'Flashcards',
-                      style: AppTextStyles.medium20.copyWith(
-                        color: AppColors.blackColor,
-                      ),
-                    ),
-                    Text(
-                      'Master key concepts with interactive flashcards',
-                      style: AppTextStyles.regular14.copyWith(
-                        color: AppColors.appBarSub,
-                      ),
-                    ),
-                    const SizedBox(height: 16),
-                    Obx(
-                      () => CustomTextFormField(
-                        searchController: controller.searchController,
-                        onClear: controller.clearSearch,
-                        isSearchQueryNotEmpty:
-                            controller.searchQuery.value.isNotEmpty,
-                      ),
-                    ),
-                  ],
+      body: RefreshIndicator(
+        onRefresh: controller.refreshFlashCards,
+        child: SafeArea(
+          child: CustomScrollView(
+            controller: controller.scrollController,
+            physics: const AlwaysScrollableScrollPhysics(),
+            slivers: [
+              SliverToBoxAdapter(
+                child: PrimaryAppBar(
+                  notificationOnTap: () => Get.toNamed(Routes.NOTIFICATION),
+                  profileOnTap: () => Get.toNamed(Routes.PROFILE),
                 ),
               ),
-            ),
-            SliverToBoxAdapter(
-              child: Padding(
-                padding: EdgeInsets.symmetric(horizontal: 16, vertical: 16.h),
-                child: Container(
-                  color: AppColors.appBarBack,
-                  width: double.infinity,
-                  height: 50.h,
-                  child: Padding(
-                    padding: EdgeInsets.symmetric(
-                      horizontal: 12.w,
-                      vertical: 8.h,
-                    ),
-                    child: Obx(
-                      () => Row(
-                        // Wrap with Obx
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          FlashCardFilterBar(
-                            title: 'All',
-                            index: 0,
-                            isSelected:
-                                controller.selectIndex.value == 0, // Dynamic
-                            onTap: () => controller.changeIndex(0),
-                          ),
-                          FlashCardFilterBar(
-                            title: 'SPI',
-                            index: 1,
-                            isSelected:
-                                controller.selectIndex.value == 1, // Dynamic
-                            onTap: () => controller.changeIndex(1),
-                          ),
-                          FlashCardFilterBar(
-                            title: 'Vascular',
-                            index: 2,
-                            isSelected:
-                                controller.selectIndex.value == 2, // Dynamic
-                            onTap: () => controller.changeIndex(2),
-                          ),
-                          FlashCardFilterBar(
-                            title: 'OB/GYN',
-                            index: 3,
-                            isSelected:
-                                controller.selectIndex.value == 3, // Dynamic
-                            onTap: () => controller.changeIndex(3),
-                          ),
-                          FlashCardFilterBar(
-                            title: 'Abdomen',
-                            index: 4,
-                            isSelected:
-                                controller.selectIndex.value == 4, // Dynamic
-                            onTap: () => controller.changeIndex(4),
-                          ),
-                        ],
+              SliverToBoxAdapter(
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 16),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      const SizedBox(height: 16),
+                      Text(
+                        'Flashcards',
+                        style: AppTextStyles.medium20.copyWith(
+                          color: AppColors.blackColor,
+                        ),
                       ),
-                    ),
-                  ),
-                ),
-              ),
-            ),
-            Obx(() {
-              // This will rebuild when selectIndex or searchController changes
-              final filteredCards = controller.filteredFlashCards;
-
-              if (controller.flashCards.isEmpty) {
-                return const SliverToBoxAdapter(
-                  child: Center(
-                    child: Padding(
-                      padding: EdgeInsets.only(top: 50),
-                      child: CircularProgressIndicator(),
-                    ),
-                  ),
-                );
-              }
-
-              if (filteredCards.isEmpty) {
-                return SliverToBoxAdapter(
-                  child: Center(
-                    child: Padding(
-                      padding: EdgeInsets.only(top: 50),
-                      child: Text(
-                        controller.searchController.text.isEmpty
-                            ? 'No flashcards available for this category'
-                            : 'No results found for "${controller.searchController.text}"',
+                      Text(
+                        'Master key concepts with interactive flashcards',
                         style: AppTextStyles.regular14.copyWith(
-                          color: AppColors.grey,
+                          color: AppColors.appBarSub,
+                        ),
+                      ),
+                      const SizedBox(height: 16),
+                      Obx(
+                        () => CustomTextFormField(
+                          searchController: controller.searchController,
+                          onClear: controller.clearSearch,
+                          isSearchQueryNotEmpty:
+                              controller.searchQuery.value.isNotEmpty,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+              SliverToBoxAdapter(
+                child: Padding(
+                  padding: EdgeInsets.symmetric(horizontal: 16, vertical: 16.h),
+                  child: Container(
+                    color: AppColors.appBarBack,
+                    width: double.infinity,
+                    height: 50.h,
+                    child: Padding(
+                      padding: EdgeInsets.symmetric(
+                        horizontal: 12.w,
+                        vertical: 8.h,
+                      ),
+                      child: Obx(
+                        () => Row(
+                          // Wrap with Obx
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            FlashCardFilterBar(
+                              title: 'All',
+                              index: 0,
+                              isSelected:
+                                  controller.selectIndex.value == 0, // Dynamic
+                              onTap: () => controller.changeIndex(0),
+                            ),
+                            FlashCardFilterBar(
+                              title: 'SPI',
+                              index: 1,
+                              isSelected:
+                                  controller.selectIndex.value == 1, // Dynamic
+                              onTap: () => controller.changeIndex(1),
+                            ),
+                            FlashCardFilterBar(
+                              title: 'Vascular',
+                              index: 2,
+                              isSelected:
+                                  controller.selectIndex.value == 2, // Dynamic
+                              onTap: () => controller.changeIndex(2),
+                            ),
+                            FlashCardFilterBar(
+                              title: 'OB/GYN',
+                              index: 3,
+                              isSelected:
+                                  controller.selectIndex.value == 3, // Dynamic
+                              onTap: () => controller.changeIndex(3),
+                            ),
+                            FlashCardFilterBar(
+                              title: 'Abdomen',
+                              index: 4,
+                              isSelected:
+                                  controller.selectIndex.value == 4, // Dynamic
+                              onTap: () => controller.changeIndex(4),
+                            ),
+                          ],
                         ),
                       ),
                     ),
                   ),
-                );
-              }
+                ),
+              ),
+              Obx(() {
+                // This will rebuild when selectIndex or searchController changes
+                final filteredCards = controller.filteredFlashCards;
 
-              return SliverList(
-                delegate: SliverChildBuilderDelegate((context, index) {
-                  return Padding(
-                    padding: const EdgeInsets.symmetric(
-                      horizontal: 16,
-                      vertical: 16,
-                    ),
-                    child: FlashCardContainerWidget(
-                      index: index,
-                      contentId: filteredCards[index].id,
+                // Only show full loading if it's the first load and we have no cards
+                if (controller.isLoading.value &&
+                    controller.allFlashCards.isEmpty) {
+                  return const SliverToBoxAdapter(
+                    child: Center(
+                      child: Padding(
+                        padding: EdgeInsets.only(top: 50),
+                        child: CircularProgressIndicator(),
+                      ),
                     ),
                   );
-                }, childCount: filteredCards.length),
-              );
-            }),
-          ],
+                }
+
+                if (filteredCards.isEmpty) {
+                  return SliverToBoxAdapter(
+                    child: Center(
+                      child: Padding(
+                        padding: EdgeInsets.only(top: 50),
+                        child: Text(
+                          controller.searchController.text.isEmpty
+                              ? 'No flashcards available for this category'
+                              : 'No results found for "${controller.searchController.text}"',
+                          style: AppTextStyles.regular14.copyWith(
+                            color: AppColors.grey,
+                          ),
+                        ),
+                      ),
+                    ),
+                  );
+                }
+
+                return SliverList(
+                  delegate: SliverChildBuilderDelegate((context, index) {
+                    return Padding(
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 16,
+                        vertical: 16,
+                      ),
+                      child: FlashCardContainerWidget(
+                        index: index,
+                        contentId: filteredCards[index].id,
+                      ),
+                    );
+                  }, childCount: filteredCards.length),
+                );
+              }),
+              // Bottom Loading Indicator
+              SliverToBoxAdapter(
+                child: Obx(() {
+                  if (controller.isLoadingMore.value) {
+                    return const Padding(
+                      padding: EdgeInsets.all(16.0),
+                      child: Center(child: CircularProgressIndicator()),
+                    );
+                  } else {
+                    return const SizedBox.shrink();
+                  }
+                }),
+              ),
+            ],
+          ),
         ),
       ),
     );

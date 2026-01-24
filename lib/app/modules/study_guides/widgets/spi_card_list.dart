@@ -1,7 +1,6 @@
 // SpiCardList.dart
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import '../../home/controllers/home_controller.dart';
 import '../controllers/study_guides_controller.dart';
 import 'spi_fundamentals_card.dart';
 
@@ -10,12 +9,12 @@ class SpiCardList extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final homeController = Get.find<HomeController>();
     final studyGuidesController = Get.find<StudyGuidesController>();
 
     return Obx(() {
-      // Loading state
-      if (homeController.isLoading.value) {
+      // Loading state (Initial)
+      if (studyGuidesController.isLoading.value &&
+          studyGuidesController.allStudyGuides.isEmpty) {
         return const SliverToBoxAdapter(
           child: Padding(
             padding: EdgeInsets.symmetric(vertical: 20),
@@ -24,23 +23,9 @@ class SpiCardList extends StatelessWidget {
         );
       }
 
-      // Error state
-      if (homeController.errorMessage.value.isNotEmpty) {
-        return SliverToBoxAdapter(
-          child: Padding(
-            padding: const EdgeInsets.symmetric(vertical: 20),
-            child: Text(
-              homeController.errorMessage.value,
-              style: const TextStyle(color: Colors.red),
-              textAlign: TextAlign.center,
-            ),
-          ),
-        );
-      }
-
       // Filter study guides
       final filteredStudyGuides = studyGuidesController.filterStudyGuides(
-        homeController.studyGuides,
+        studyGuidesController.allStudyGuides,
         studyGuidesController.selectedCategory.value,
         studyGuidesController.searchQuery.value,
         false, // isAudioView = false for PDF

@@ -18,121 +18,138 @@ class StudyGuidesView extends GetView<StudyGuidesController> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: SafeArea(
-        child: CustomScrollView(
-          slivers: [
-            SliverToBoxAdapter(
-              child: PrimaryAppBar(
-                notificationOnTap: () => Get.toNamed(Routes.NOTIFICATION),
-                profileOnTap: () => Get.toNamed(Routes.PROFILE),
-              ),
-            ),
-
-            SliverToBoxAdapter(
-              child: Padding(
-                padding: EdgeInsets.symmetric(horizontal: 16.w),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    HeaderSection(),
-                    SizedBox(height: 12.h),
-                    Obx(
-                      () => CustomTextFormField(
-                        onClear: controller.clearSearch,
-                        onChanged: controller.onSearchChanged,
-                        searchController: controller.searchController,
-                        isSearchQueryNotEmpty:
-                            controller.searchQuery.value.isNotEmpty,
-                      ),
-                    ),
-                  ],
+      body: RefreshIndicator(
+        onRefresh: controller.refreshStudyGuides,
+        child: SafeArea(
+          child: CustomScrollView(
+            controller: controller.scrollController,
+            physics: const AlwaysScrollableScrollPhysics(),
+            slivers: [
+              SliverToBoxAdapter(
+                child: PrimaryAppBar(
+                  notificationOnTap: () => Get.toNamed(Routes.NOTIFICATION),
+                  profileOnTap: () => Get.toNamed(Routes.PROFILE),
                 ),
               ),
-            ),
-            SliverToBoxAdapter(
-              child: Padding(
-                padding: EdgeInsets.symmetric(horizontal: 16, vertical: 16.h),
-                child: Container(
-                  color: AppColors.appBarBack,
-                  width: double.infinity,
-                  height: 50.h,
-                  child: Padding(
-                    padding: EdgeInsets.symmetric(
-                      horizontal: 12.w,
-                      vertical: 8.h,
-                    ),
-                    child: Obx(
-                      () => Row(
-                        // Wrap with Obx
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          FlashCardFilterBar(
-                            title: 'All',
-                            index: 0,
-                            isSelected:
-                                controller.selectIndex.value == 0, // Dynamic
-                            onTap: () {
-                              controller.changeIndex(0);
-                              controller.setSelectedCategory('All');
-                            },
-                          ),
-                          FlashCardFilterBar(
-                            title: 'SPI',
-                            index: 1,
-                            isSelected:
-                                controller.selectIndex.value == 1, // Dynamic
-                            onTap: () {
-                              controller.changeIndex(1);
-                              controller.setSelectedCategory('SPI');
-                            },
-                          ),
-                          FlashCardFilterBar(
-                            title: 'Vascular',
-                            index: 2,
-                            isSelected:
-                                controller.selectIndex.value == 2, // Dynamic
-                            onTap: () {
-                              controller.changeIndex(2);
-                              controller.setSelectedCategory('Vascular');
-                            },
-                          ),
-                          FlashCardFilterBar(
-                            title: 'OB/GYN',
-                            index: 3,
-                            isSelected:
-                                controller.selectIndex.value == 3, // Dynamic
-                            onTap: () {
-                              controller.changeIndex(3);
-                              controller.setSelectedCategory('OB/GYN');
-                            },
-                          ),
-                          FlashCardFilterBar(
-                            title: 'Abdomen',
-                            index: 4,
-                            isSelected:
-                                controller.selectIndex.value == 4, // Dynamic
-                            onTap: () {
-                              controller.changeIndex(4);
-                              controller.setSelectedCategory('Abdomen');
-                            },
-                          ),
-                        ],
+
+              SliverToBoxAdapter(
+                child: Padding(
+                  padding: EdgeInsets.symmetric(horizontal: 16.w),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      HeaderSection(),
+                      SizedBox(height: 12.h),
+                      Obx(
+                        () => CustomTextFormField(
+                          onClear: controller.clearSearch,
+                          onChanged: controller.onSearchChanged,
+                          searchController: controller.searchController,
+                          isSearchQueryNotEmpty:
+                              controller.searchQuery.value.isNotEmpty,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+              SliverToBoxAdapter(
+                child: Padding(
+                  padding: EdgeInsets.symmetric(horizontal: 16, vertical: 16.h),
+                  child: Container(
+                    color: AppColors.appBarBack,
+                    width: double.infinity,
+                    height: 50.h,
+                    child: Padding(
+                      padding: EdgeInsets.symmetric(
+                        horizontal: 12.w,
+                        vertical: 8.h,
+                      ),
+                      child: Obx(
+                        () => Row(
+                          // Wrap with Obx
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            FlashCardFilterBar(
+                              title: 'All',
+                              index: 0,
+                              isSelected:
+                                  controller.selectIndex.value == 0, // Dynamic
+                              onTap: () {
+                                controller.changeIndex(0);
+                                controller.setSelectedCategory('All');
+                              },
+                            ),
+                            FlashCardFilterBar(
+                              title: 'SPI',
+                              index: 1,
+                              isSelected:
+                                  controller.selectIndex.value == 1, // Dynamic
+                              onTap: () {
+                                controller.changeIndex(1);
+                                controller.setSelectedCategory('SPI');
+                              },
+                            ),
+                            FlashCardFilterBar(
+                              title: 'Vascular',
+                              index: 2,
+                              isSelected:
+                                  controller.selectIndex.value == 2, // Dynamic
+                              onTap: () {
+                                controller.changeIndex(2);
+                                controller.setSelectedCategory('Vascular');
+                              },
+                            ),
+                            FlashCardFilterBar(
+                              title: 'OB/GYN',
+                              index: 3,
+                              isSelected:
+                                  controller.selectIndex.value == 3, // Dynamic
+                              onTap: () {
+                                controller.changeIndex(3);
+                                controller.setSelectedCategory('OB/GYN');
+                              },
+                            ),
+                            FlashCardFilterBar(
+                              title: 'Abdomen',
+                              index: 4,
+                              isSelected:
+                                  controller.selectIndex.value == 4, // Dynamic
+                              onTap: () {
+                                controller.changeIndex(4);
+                                controller.setSelectedCategory('Abdomen');
+                              },
+                            ),
+                          ],
+                        ),
                       ),
                     ),
                   ),
                 ),
               ),
-            ),
 
-            // Content section
-            Obx(() {
-              if (controller.select.value == 0) {
-                return SpiCardList();
-              } else {
-                return SpiAudioCardList();
-              }
-            }),
-          ],
+              // Content section
+              Obx(() {
+                if (controller.select.value == 0) {
+                  return SpiCardList();
+                } else {
+                  return SpiAudioCardList();
+                }
+              }),
+              SliverToBoxAdapter(
+                child: Obx(() {
+                  if (controller.isLoadingMore.value) {
+                    return const Padding(
+                      padding: EdgeInsets.all(16.0),
+                      child: Center(child: CircularProgressIndicator()),
+                    );
+                  } else {
+                    return const SizedBox.shrink();
+                  }
+                }),
+              ),
+            ],
+          ),
         ),
       ),
     );
