@@ -43,6 +43,7 @@ class ProfileView extends GetView<ProfileController> {
             final memberSince = controller.formatToMonthYear(
               profileData?.createdAt,
             );
+            print('---------✅user image: $userImage');
 
             return Column(
               children: [

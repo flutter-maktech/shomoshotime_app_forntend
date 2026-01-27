@@ -50,13 +50,14 @@ class SpiAudioCardList extends StatelessWidget {
       return SliverList(
         delegate: SliverChildBuilderDelegate((context, index) {
           final audioGuide = filteredStudyGuides[index];
+          studyGuidesController.confirmFileUsage(audioGuide);
           return Padding(
             padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
             child: StudyGuideCard(
               cardTitle: audioGuide.title,
               cardSubtitle: audioGuide.subtitle,
               category: audioGuide.category,
-              audioUrl: audioGuide.file!,
+              audioUrl: audioGuide.fileUrl ?? '',
             ),
           );
         }, childCount: filteredStudyGuides.length),

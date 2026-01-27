@@ -44,6 +44,7 @@ class FirebaseAuthService {
           'google_id': user.uid,
           'email': user.email ?? '',
           'name': user.displayName ?? '',
+          "avatar": user.photoURL ?? '',
         };
       }
 

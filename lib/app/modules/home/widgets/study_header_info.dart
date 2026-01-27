@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:shomoshotime/app/modules/home/widgets/grid.dart';
+import 'package:get/get.dart';
+import 'package:shomoshotime/app/modules/home/controllers/home_controller.dart';
 
 import '../../../data/app_colors.dart';
 import '../../../data/app_text_styles.dart';
+import 'home_grid_details.dart';
 
 class StudyHeaderInfo extends StatelessWidget {
   const StudyHeaderInfo({super.key});
@@ -34,16 +36,21 @@ class StudyHeaderInfo extends StatelessWidget {
             style: AppTextStyles.spaceGroteskMedium20,
           ),
           SizedBox(height: 22.h),
-          Grid(
-            firstCardValue: "24.5",
-            firstCardChartValue: "5.2",
-            secondCardValue: "24.5",
-            secondCardChartValue: "5.2",
-            thirdCardValue: "24.5",
-            thirdCardChartValue: "5.2",
-            fourthCardValue: "24.5",
-            fourthCardChartValue: "5.2",
-          ),
+          Obx(() {
+            final controller = Get.find<HomeController>();
+            final analytics = controller.userAnalyticsData.isNotEmpty
+                ? controller.userAnalyticsData[0]
+                : null;
+
+            return HomeGridDetails(
+              studyGuideProgress:
+                  "${analytics?.studyAnalytics.progressPercent.toInt() ?? 0}%",
+              flashCardProgress:
+                  "${analytics?.flashcardAnalytics.progressPercent.toInt() ?? 0}%",
+              practiceAccuracy: "${analytics?.practiceAccuracy.toInt() ?? 0}%",
+              mockAccuracy: "${analytics?.mocktestAccuracy.toInt() ?? 0}%",
+            );
+          }),
         ],
       ),
     );

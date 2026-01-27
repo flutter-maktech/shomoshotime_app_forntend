@@ -32,6 +32,8 @@ abstract class Routes {
   static const FORGOT_ENTER_EMAIL = _Paths.FORGOT_ENTER_EMAIL;
   static const FORGOT_ENTER_PASSWORD = _Paths.FORGOT_ENTER_PASSWORD;
   static const SPLASH = _Paths.SPLASH;
+  static const EXPLORE_PLAN = _Paths.EXPLORE_PLAN;
+  static const APP_GATE = _Paths.APP_GATE;
 }
 
 abstract class _Paths {
@@ -64,4 +66,6 @@ abstract class _Paths {
   static const FORGOT_ENTER_EMAIL = '/forgot-enter-email';
   static const FORGOT_ENTER_PASSWORD = '/forgot-enter-password';
   static const SPLASH = '/splash';
+  static const EXPLORE_PLAN = '/explore-plan';
+  static const APP_GATE = '/app-gate';
 }

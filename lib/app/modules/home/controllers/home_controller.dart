@@ -4,6 +4,7 @@ import 'package:shomoshotime/app/core/user_panel_model/flash_card_reponse_model.
 import '../../../core/api_services/network_caller.dart';
 import '../../../core/urls/urls.dart';
 import '../../../core/user_panel_model/study_guide_response_model.dart';
+import '../../../core/user_panel_model/user_analytics_response.dart';
 
 class HomeController extends GetxController {
   final NetworkCaller _networkCaller = NetworkCaller();
@@ -12,9 +13,9 @@ class HomeController extends GetxController {
   final Rx<StudyGuideResponse?> studyGuideResponse = Rx<StudyGuideResponse?>(
     null,
   );
-  final Rx<FlashCardResponse?> flashCardResponse = Rx<FlashCardResponse?>(
-    null,
-  );
+  final Rx<FlashCardResponse?> flashCardResponse = Rx<FlashCardResponse?>(null);
+  final Rx<UserAnalyticsResponse?> userAnalyticsResponse =
+      Rx<UserAnalyticsResponse?>(null);
   final RxBool isLoading = false.obs;
   final RxString errorMessage = ''.obs;
 
@@ -23,6 +24,7 @@ class HomeController extends GetxController {
     super.onInit();
     fetchStudyGuides();
     fetchFlashCards();
+    fetchUserAnalytics();
   }
 
   // Fetch study guides using POST request
@@ -54,8 +56,13 @@ class HomeController extends GetxController {
 
   // Refresh data
   Future<void> refreshData() async {
-    await fetchStudyGuides();
+    await Future.wait([
+      fetchStudyGuides(),
+      fetchFlashCards(),
+      fetchUserAnalytics(),
+    ]);
   }
+
   Future<void> fetchFlashCards() async {
     try {
       isLoading.value = true;
@@ -78,5 +85,39 @@ class HomeController extends GetxController {
       isLoading.value = false;
     }
   }
+
   List<FlashCardItem> get flashCards => flashCardResponse.value?.data ?? [];
+
+  Future<void> fetchUserAnalytics() async {
+    try {
+      isLoading.value = true;
+      errorMessage.value = '';
+      final body = {
+        "studyAnalytics": "true",
+        "flashcardAnalytics": "true",
+        "practiceAccuracy": "true",
+        "mockTestAccuracy": "true",
+        "practiceProgress": "true",
+        "mockTestProgress": "true",
+      };
+
+      final token = await AppPreference.getToken();
+
+      final response = await _networkCaller.postRequest(
+        Urls.userAnalytics,
+        body,
+        token: token,
+      );
+      userAnalyticsResponse.value = UserAnalyticsResponse.fromJson(response);
+    } catch (e) {
+      errorMessage.value = 'Failed to load user analytics: $e';
+    } finally {
+      isLoading.value = false;
+    }
+  }
+
+  List<UserAnalyticsData> get userAnalyticsData =>
+      userAnalyticsResponse.value != null
+      ? [userAnalyticsResponse.value!.data]
+      : [];
 }

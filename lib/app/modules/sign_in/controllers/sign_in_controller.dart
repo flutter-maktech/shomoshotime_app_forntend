@@ -48,7 +48,7 @@ class SignInController extends GetxController {
         message: message.value,
         backgroundColor: AppColors.greenColor,
       );
-      Get.offAllNamed(Routes.CUSTOM_BOTTOM_NAVIGATION_BAR);
+      Get.offAllNamed(Routes.APP_GATE);
     } else {
       showAppSnackBar(
         context: Get.context!,
@@ -132,7 +132,7 @@ class SignInController extends GetxController {
           message: message.value,
           backgroundColor: AppColors.greenColor,
         );
-        Get.offAllNamed(Routes.CUSTOM_BOTTOM_NAVIGATION_BAR);
+        Get.offAllNamed(Routes.APP_GATE);
       } else {
         showAppSnackBar(
           context: Get.context!,

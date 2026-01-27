@@ -22,10 +22,7 @@ class AudioPlayCardView extends GetView<AudioPlayCardController> {
         child: CustomScrollView(
           slivers: [
             SliverToBoxAdapter(
-              child: CustomAppBar(
-                title: title,
-                subTitle: subtitle,
-              ),
+              child: CustomAppBar(title: title, subTitle: subtitle),
             ),
             SliverToBoxAdapter(
               child: Padding(
@@ -46,11 +43,20 @@ class AudioPlayCardView extends GetView<AudioPlayCardController> {
                         child: Padding(
                           padding: const EdgeInsets.symmetric(vertical: 50),
                           child: SizedBox(
-                            height: 280,
+                            height: 350,
                             width: double.infinity,
-                            child: Image.network(
-                              'https://i.pinimg.com/736x/59/78/2e/59782ef2b4973adf395fb28eb3470014.jpg',
-                              fit: BoxFit.cover,
+                            child: Container(
+                              decoration: BoxDecoration(
+                                color: AppColors.progressBg,
+                                borderRadius: BorderRadius.circular(10),
+                              ),
+                              child: Center(
+                                child: Icon(
+                                  Icons.music_note_rounded,
+                                  size: 100.sp,
+                                  color: AppColors.primaryGray,
+                                ),
+                              ),
                             ),
                           ),
                         ),

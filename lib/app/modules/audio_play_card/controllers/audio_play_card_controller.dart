@@ -28,6 +28,7 @@ class AudioPlayCardController extends GetxController {
   }
 
   Future<void> playAudio(String url) async {
+    print('AudioPlayCard: Streaming from fileUrl = $url');
     await audioPlayer.play(UrlSource(url));
   }
 

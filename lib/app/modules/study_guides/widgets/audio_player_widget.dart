@@ -77,21 +77,11 @@ class AudioPlayerWidget extends StatelessWidget {
                 radius: 35,
                 backgroundColor: Colors.black,
                 child: Obx(() {
-                  // Check if this specific audio is downloading
-                  if (controller.downloadProgress.containsKey(audioUrl)) {
-                    return SizedBox(
-                      width: 45,
-                      height: 45,
-                      child: CircularProgressIndicator(
-                        value: null, // Indeterminate loader
-                        color: Colors.white,
-                        strokeWidth: 4,
-                        backgroundColor: Colors.white.withOpacity(0.3),
-                      ),
-                    );
-                  } else if (controller.isLoading.value &&
-                      controller.currentAudioUrl.value == audioUrl) {
-                    // Fallback loading if not in progress map but loading
+                  // Check if this specific audio is loading or playing
+                  final isThisAudioCurrent =
+                      controller.currentAudioUrl.value == audioUrl;
+
+                  if (isThisAudioCurrent && controller.isLoading.value) {
                     return const SizedBox(
                       width: 45,
                       height: 45,
@@ -104,8 +94,7 @@ class AudioPlayerWidget extends StatelessWidget {
 
                   // Otherwise show play/pause icon
                   final isThisAudioPlaying =
-                      controller.currentAudioUrl.value == audioUrl &&
-                      controller.isPlaying.value;
+                      isThisAudioCurrent && controller.isPlaying.value;
 
                   return IconButton(
                     icon: Icon(

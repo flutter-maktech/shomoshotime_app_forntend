@@ -465,15 +465,20 @@ class PracticeView extends GetView<PracticeController> {
           SizedBox(height: 8.h),
           CustomButton(
             childText: 'Continue Reading',
-            onTap: () => Get.toNamed(
-              Routes.SPI_PRACTICE_BANK_QUS,
-              arguments: {
-                'id': questionSet.id,
-                'title': questionSet.title,
-                'category': questionSet.category,
-                'staus_label': questionSet.statusLabel,
-              },
-            ),
+            onTap: () async {
+              final result = await Get.toNamed(
+                Routes.SPI_PRACTICE_BANK_QUS,
+                arguments: {
+                  'id': questionSet.id,
+                  'title': questionSet.title,
+                  'category': questionSet.category,
+                  'staus_label': questionSet.statusLabel,
+                },
+              );
+              if (result == true) {
+                controller.refreshPracticeData();
+              }
+            },
           ),
         ],
       ),

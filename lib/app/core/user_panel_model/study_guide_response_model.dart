@@ -57,6 +57,7 @@ class StudyGuide {
   final String category;
   final String? file; // Nullable
   final String? fileType; // Nullable
+  final String? fileUrl;
   final int? totalPage;
   final int type;
   final String typeLabel;
@@ -77,6 +78,7 @@ class StudyGuide {
     required this.category,
     this.file, // Nullable
     this.fileType, // Nullable
+    this.fileUrl, // Nullable
     required this.type,
     required this.typeLabel,
     required this.isPublish,
@@ -98,6 +100,7 @@ class StudyGuide {
       category: json['category'] as String,
       file: json['file'] as String?, // Nullable cast
       fileType: json['file_type'] as String?, // Nullable cast
+      fileUrl: json['file_url'] as String?, // Nullable cast
       type: json['type'] as int,
       typeLabel: json['type_label'] as String,
       isPublish: json['is_publish'] as bool,

@@ -2,6 +2,8 @@ import 'package:get/get.dart';
 
 import '../modules/add_card/bindings/add_card_binding.dart';
 import '../modules/add_card/views/add_card_view.dart';
+import '../modules/app_gate/bindings/app_gate_binding.dart';
+import '../modules/app_gate/views/app_gate_view.dart';
 import '../modules/audio_play_card/bindings/audio_play_card_binding.dart';
 import '../modules/audio_play_card/views/audio_play_card_view.dart';
 import '../modules/category_progress/bindings/category_progress_binding.dart';
@@ -12,6 +14,8 @@ import '../modules/custom_bottom_navigation_bar/bindings/custom_bottom_navigatio
 import '../modules/custom_bottom_navigation_bar/views/custom_bottom_navigation_bar_view.dart';
 import '../modules/edit_profile/bindings/edit_profile_binding.dart';
 import '../modules/edit_profile/views/edit_profile_view.dart';
+import '../modules/explore_plan/bindings/explore_plan_binding.dart';
+import '../modules/explore_plan/views/explore_plan_view.dart';
 import '../modules/flash_cards/bindings/flash_cards_binding.dart';
 import '../modules/flash_cards/views/flash_cards_view.dart';
 import '../modules/forgot_enter_code/bindings/forgot_enter_code_binding.dart';
@@ -197,6 +201,16 @@ class AppPages {
       name: _Paths.SPLASH,
       page: () => const SplashView(),
       binding: SplashBinding(),
+    ),
+    GetPage(
+      name: _Paths.EXPLORE_PLAN,
+      page: () => const ExplorePlanView(),
+      binding: ExplorePlanBinding(),
+    ),
+    GetPage(
+      name: _Paths.APP_GATE,
+      page: () => const AppGateView(),
+      binding: AppGateBinding(),
     ),
   ];
 }

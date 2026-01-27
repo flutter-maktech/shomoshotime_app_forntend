@@ -9,29 +9,29 @@ class OnboardingController extends GetxController {
     ImagePath.comprehensiveStudy,
     ImagePath.interactive,
     ImagePath.practice,
-    ImagePath.realistic
+    ImagePath.realistic,
   ];
 
   final titles = [
     'Comprehensive Study Guides',
     'Interactive Flashcards',
     'Practice Questions',
-    'Realistic Mock Exams'
+    'Realistic Mock Exams',
   ];
 
   final subtitles = [
     'Access detailed study materials for SPI, Vascular, OB/GYN, and Abdomen specialties',
     'Master key concepts with our smart flashcard system and track your progress.',
     'Test your knowledge With thousands of practic Questions',
-    'Simulate the real exam experience and build your confidence'
+    'Simulate the real exam experience and build your confidence',
   ];
 
   void nextSlide() {
     if (currentIndex < 3) {
       currentIndex++;
     } else {
-      // Last slide → Move to next screen
-      Get.offAllNamed(Routes.CUSTOM_BOTTOM_NAVIGATION_BAR);
+      // Last slide → Move to check premium status
+      Get.offAllNamed(Routes.APP_GATE);
     }
   }
 }

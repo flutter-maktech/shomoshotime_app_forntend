@@ -5,6 +5,7 @@ import 'package:shomoshotime/app/core/api_services/network_caller.dart';
 import 'package:shomoshotime/app/core/urls/urls.dart';
 import 'package:shomoshotime/app/core/user_panel_model/question_set_response.dart';
 import 'package:shomoshotime/app/core/user_panel_model/user_analytics_response.dart';
+import 'package:shomoshotime/app/modules/home/controllers/home_controller.dart';
 
 class PracticeController extends GetxController {
   RxBool isloading = false.obs;
@@ -14,12 +15,11 @@ class PracticeController extends GetxController {
   final RxString searchQuery = ''.obs;
   final RxInt selectIndex = 0.obs;
 
-  NetworkCaller networkCaller = NetworkCaller();
   final Rx<QuestionSetResponse?> questionSetResponse = Rx<QuestionSetResponse?>(
     null,
   );
-  final Rx<UserAnalyticsResponse?> userAnalyticsResponse =
-      Rx<UserAnalyticsResponse?>(null);
+  final NetworkCaller networkCaller = NetworkCaller();
+  late HomeController _homeController;
 
   // Pagination variables
   final allQuestionSets = <QuestionSetData>[].obs;
@@ -32,9 +32,10 @@ class PracticeController extends GetxController {
   @override
   void onInit() {
     super.onInit();
+    _homeController = Get.find<HomeController>();
     // Initial fetch
     fetchPracticeData();
-    fetchPracticeProgress();
+    _homeController.fetchUserAnalytics();
     searchController.addListener(() {
       searchQuery.value = searchController.text;
     });
@@ -63,7 +64,7 @@ class PracticeController extends GetxController {
     allQuestionSets.clear();
     await fetchPracticeData(page: 1);
     // Also refresh analytics/progress if needed, though typically separate
-    await fetchPracticeProgress();
+    await _homeController.fetchUserAnalytics();
     isRefreshing.value = false;
   }
 
@@ -145,37 +146,6 @@ class PracticeController extends GetxController {
     }).toList();
   }
 
-  Future<void> fetchPracticeProgress() async {
-    // Keep loading separate or shared? usually separate for progress
-    // isloading.value = true; // Maybe don't block UI for this if refreshing
-    if (allQuestionSets.isEmpty) isloading.value = true;
-
-    errorText.value = '';
-    try {
-      final body = {
-        "studyAnalytics": "true",
-        "flashcardAnalytics": "true",
-        "practiceAccuracy": "true",
-        "mockTestAccuracy": "true",
-        "practiceProgress": "true",
-        "mockTestProgress": "true",
-      };
-
-      final token = await AppPreference.getToken();
-
-      final response = await networkCaller.postRequest(
-        Urls.userAnalytics,
-        body,
-        token: token,
-      );
-      userAnalyticsResponse.value = UserAnalyticsResponse.fromJson(response);
-    } catch (e) {
-      errorText.value = 'An errorrrr occurred: $e';
-    } finally {
-      if (allQuestionSets.isEmpty) isloading.value = false;
-    }
-  }
-
   Future<void> fetchPracticeData({int page = 1}) async {
     if (page == 1) {
       isloading.value = true;
@@ -221,7 +191,5 @@ class PracticeController extends GetxController {
   //     questionSetResponse.value?.data ?? []; // Use allQuestionSets instead
 
   List<UserAnalyticsData> get userAnalyticsData =>
-      userAnalyticsResponse.value != null
-      ? [userAnalyticsResponse.value!.data]
-      : [];
+      _homeController.userAnalyticsData;
 }

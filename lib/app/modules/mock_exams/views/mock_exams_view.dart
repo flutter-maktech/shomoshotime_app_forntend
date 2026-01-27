@@ -423,9 +423,9 @@ class MockExamsView extends GetView<MockExamsController> {
                 ? AppColors.primaryColor
                 : AppColors.appBarBack,
             onTap: canRetake
-                ? () {
+                ? () async {
                     controller.startMockTest(questionSet.id);
-                    Get.toNamed(
+                    final result = await Get.toNamed(
                       Routes.SPI_PRACTICE_BANK_QUS,
                       arguments: {
                         'id': questionSet.id,
@@ -434,6 +434,9 @@ class MockExamsView extends GetView<MockExamsController> {
                         'staus_label': questionSet.statusLabel,
                       },
                     );
+                    if (result == true) {
+                      controller.refreshMockTestData();
+                    }
                   }
                 : null, // 👈 disables button
           ),

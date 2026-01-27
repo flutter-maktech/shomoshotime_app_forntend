@@ -4,26 +4,18 @@ import 'package:shomoshotime/app/data/app_colors.dart';
 import 'package:shomoshotime/app/data/app_text_styles.dart';
 import 'package:shomoshotime/app/data/image_path.dart';
 
-class Grid extends StatelessWidget {
-  final String firstCardValue;
-  final String firstCardChartValue;
-  final String secondCardValue;
-  final String secondCardChartValue;
-  final String thirdCardValue;
-  final String thirdCardChartValue;
-  final String fourthCardValue;
-  final String fourthCardChartValue;
+class HomeGridDetails extends StatelessWidget {
+  final String studyGuideProgress;
+  final String flashCardProgress;
+  final String practiceAccuracy;
+  final String mockAccuracy;
 
-  const Grid({
+  const HomeGridDetails({
     super.key,
-    required this.firstCardValue,
-    required this.firstCardChartValue,
-    required this.secondCardValue,
-    required this.secondCardChartValue,
-    required this.thirdCardValue,
-    required this.thirdCardChartValue,
-    required this.fourthCardValue,
-    required this.fourthCardChartValue,
+    required this.studyGuideProgress,
+    required this.flashCardProgress,
+    required this.practiceAccuracy,
+    required this.mockAccuracy,
   });
 
   @override
@@ -35,16 +27,14 @@ class Grid extends StatelessWidget {
           spacing: 10.w,
           children: [
             _buildCard(
-              title: "Study\nHours",
-              value: firstCardValue,
+              title: "Study Guide\nProgress",
+              value: studyGuideProgress,
               color: AppColors.homeGridColorOne,
-              chartValue: firstCardChartValue,
             ),
             _buildCard(
-              title: "Practice\nQuestion",
-              value: secondCardValue,
+              title: "Flash Card\nProgress",
+              value: flashCardProgress,
               color: AppColors.homeGridColorTwo,
-              chartValue: secondCardChartValue,
             ),
           ],
         ),
@@ -52,16 +42,14 @@ class Grid extends StatelessWidget {
           spacing: 10.w,
           children: [
             _buildCard(
-              title: "Flashcards\nMastered",
-              value: thirdCardValue,
+              title: "Practice\nAccuracy",
+              value: practiceAccuracy,
               color: AppColors.homeGridColorThree,
-              chartValue: thirdCardChartValue,
             ),
             _buildCard(
-              title: "Mock Exams\nCompleted",
-              value: fourthCardValue,
+              title: "Mock \nAccuracy",
+              value: mockAccuracy,
               color: AppColors.homeGridColorFour,
-              chartValue: fourthCardChartValue,
             ),
           ],
         ),
@@ -73,7 +61,6 @@ class Grid extends StatelessWidget {
     required String title,
     required String value,
     required Color color,
-    required String chartValue,
   }) {
     return Expanded(
       child: Container(
@@ -120,22 +107,6 @@ class Grid extends StatelessWidget {
               overflow: TextOverflow.ellipsis,
               maxLines: 2,
             ),
-            // Row(
-            //   mainAxisAlignment: MainAxisAlignment.start,
-            //   children: [
-            //     Image.asset(ImagePath.chart, height: 16.h, width: 16.w),
-            //     Expanded(
-            //       child: Text(
-            //         " +$chartValue this week",
-            //         style: AppTextStyles.regular12.copyWith(
-            //           color: AppColors.whiteColor,
-            //         ),
-            //         overflow: TextOverflow.ellipsis,
-            //         maxLines: 1,
-            //       ),
-            //     ),
-            //   ],
-            // ),
           ],
         ),
       ),

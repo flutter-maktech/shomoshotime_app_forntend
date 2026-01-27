@@ -119,7 +119,6 @@ class EditProfileView extends GetView<EditProfileController> {
                   buttonColor: AppColors.profileYellow,
                   onTap: () async {
                     final success = await controller.updateProfile();
-                    print('---------$success');
                     if (success == true) {
                       Get.back(result: true);
                     }

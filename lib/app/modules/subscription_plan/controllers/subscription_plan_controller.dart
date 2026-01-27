@@ -3,9 +3,9 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_stripe/flutter_stripe.dart';
 import 'package:get/get.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:http/http.dart' as http;
 import 'package:shomoshotime/app/core/urls/urls.dart';
-import 'package:shomoshotime/key.dart';
 import '../../../all_utils/app_preference.dart';
 import '../../../all_utils/show_app_snack_bar.dart';
 import '../../../core/api_services/network_caller.dart';
@@ -109,7 +109,7 @@ class SubscriptionPlanController extends GetxController {
       var response = await http.post(
         Uri.parse('https://api.stripe.com/v1/payment_intents'),
         headers: {
-          'Authorization': 'Bearer $secretKey',
+          'Authorization': 'Bearer ${dotenv.env['STRIPE_SECRET_KEY']}',
           'Content-Type': 'application/x-www-form-urlencoded',
         },
         body: body,

@@ -6,7 +6,6 @@ import 'package:shomoshotime/app/data/app_text_styles.dart';
 import 'package:shomoshotime/app/modules/common_widgets/custom_app_bar.dart';
 import 'package:shomoshotime/app/modules/common_widgets/custom_button.dart';
 import 'package:shomoshotime/app/modules/common_widgets/custom_progress.dart';
-import 'package:shomoshotime/app/modules/custom_bottom_navigation_bar/views/custom_bottom_navigation_bar_view.dart';
 import '../controllers/spi_practice_bank_qus_controller.dart';
 import '../widget/custom_radio.dart';
 
@@ -186,9 +185,7 @@ class SpiPracticeBankQusView extends GetView<SpiPracticeBankQusController> {
                             : "Submit Answer",
                         onTap: () {
                           if (controller.isFinished.value) {
-                            Get.off(
-                              () => CustomBottomNavigationBarView(),
-                            );
+                            Get.back(result: true);
                           } else if (controller.showResult.value) {
                             controller.goToNextQuestion();
                           } else {

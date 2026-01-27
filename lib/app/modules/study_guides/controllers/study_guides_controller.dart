@@ -1,10 +1,6 @@
-import 'dart:io';
-
 import 'package:audioplayers/audioplayers.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:http/http.dart' as http;
-import 'package:path_provider/path_provider.dart';
 
 import '../../../core/user_panel_model/study_guide_response_model.dart';
 import '../../../core/api_services/network_caller.dart';
@@ -15,6 +11,18 @@ class StudyGuidesController extends GetxController {
   RxInt select = 0.obs;
   TextEditingController searchController = TextEditingController();
   RxString searchQuery = ''.obs;
+
+  void confirmFileUsage(StudyGuide guide) {
+    if (guide.fileType?.toLowerCase() == 'pdf') {
+      print(
+        'PDF Usage Confirmed: Title = ${guide.title}, File = ${guide.file}',
+      );
+    } else {
+      print(
+        'Audio Usage Confirmed: Title = ${guide.title}, FileUrl = ${guide.fileUrl}',
+      );
+    }
+  }
 
   void changeValue(int index) {
     select.value = index;
@@ -130,78 +138,27 @@ class StudyGuidesController extends GetxController {
   var duration = Duration.zero.obs;
   var position = Duration.zero.obs;
   RxString currentAudioUrl = ''.obs;
-  final Map<String, String> _localAudioPaths = {};
-
-  // Audio download progress
-  RxMap<String, double> downloadProgress = <String, double>{}.obs;
 
   Future<void> playAudio(String url) async {
+    print('Confirming Audio usage: Source URL = $url (Using fileUrl field)');
     try {
       if (currentAudioUrl.value != url) {
         await audioPlayer.stop(); // stop previous audio
         position.value = Duration.zero;
+        currentAudioUrl.value = url;
       }
 
-      currentAudioUrl.value = url;
-
-      // 1️⃣ Check if we already have a local file for this URL
-      String? localPath = _localAudioPaths[url];
-      if (localPath != null && File(localPath).existsSync()) {
-        await audioPlayer.play(DeviceFileSource(localPath));
+      if (isPlaying.value && currentAudioUrl.value == url) {
+        await pauseAudio();
         return;
       }
 
-      // 2️⃣ Download audio with progress
-      isLoading.value = true; // start loading
-      downloadProgress[url] = 0.0; // Init progress
-
-      final request = http.Request('GET', Uri.parse(url));
-      final response = await http.Client().send(request);
-
-      if (response.statusCode != 200) {
-        throw Exception('Failed to download audio');
-      }
-
-      int contentLength = response.contentLength ?? 0;
-      if (contentLength == 0 &&
-          response.headers.containsKey('content-length')) {
-        contentLength = int.tryParse(response.headers['content-length']!) ?? 0;
-      }
-
-      int receivedBytes = 0;
-      List<int> bytes = [];
-
-      final stream = response.stream.asBroadcastStream();
-
-      await for (final chunk in stream) {
-        bytes.addAll(chunk);
-        receivedBytes += chunk.length;
-
-        if (contentLength > 0) {
-          downloadProgress[url] = receivedBytes / contentLength;
-        } else {
-          downloadProgress[url] = -1.0;
-        }
-      }
-
-      downloadProgress.remove(url); // Download complete
-
-      // 3️⃣ Save to temporary directory
-      final tempDir = await getTemporaryDirectory();
-      final fileName = url.split('/').last;
-      final filePath = '${tempDir.path}/$fileName';
-      final file = File(filePath);
-      await file.writeAsBytes(bytes);
-
-      _localAudioPaths[url] = filePath; // save path for this URL
-
-      // 4️⃣ Play from local file
-      await audioPlayer.play(DeviceFileSource(filePath));
+      isLoading.value = true;
+      await audioPlayer.play(UrlSource(url));
     } catch (e) {
       debugPrint('Audio play error: $e');
-      downloadProgress.remove(url); // Remove progress on error
     } finally {
-      isLoading.value = false; // stop loading
+      isLoading.value = false;
     }
   }
 
@@ -327,13 +284,6 @@ class StudyGuidesController extends GetxController {
     searchController.dispose();
     audioPlayer.dispose();
     scrollController.dispose();
-
-    // Delete all temp audio files
-    _localAudioPaths.values.forEach((path) {
-      final file = File(path);
-      if (file.existsSync()) file.deleteSync();
-    });
-
     super.onClose();
   }
 }

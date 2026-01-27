@@ -51,13 +51,14 @@ class SpiCardList extends StatelessWidget {
       return SliverList(
         delegate: SliverChildBuilderDelegate((context, index) {
           final studyGuide = filteredStudyGuides[index];
+          studyGuidesController.confirmFileUsage(studyGuide);
           return Padding(
             padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
             child: SpiFundamentalsCard(
               cardTitle: studyGuide.title,
               cardSubtitle: studyGuide.subtitle,
               category: studyGuide.category,
-              fileUrl: studyGuide.file!,
+              fileUrl: studyGuide.file ?? '',
               contentId: studyGuide.id,
               pageNumber:
                   '${studyGuide.studyGuideActivitiesCount}/${studyGuide.totalPage} Pages',

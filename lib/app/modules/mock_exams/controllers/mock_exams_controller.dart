@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:shomoshotime/app/core/urls/urls.dart' show Urls;
 import 'package:shomoshotime/app/core/user_panel_model/user_analytics_response.dart';
+import 'package:shomoshotime/app/modules/home/controllers/home_controller.dart';
 import 'package:shomoshotime/app/modules/practice/controllers/practice_controller.dart';
 
 import '../../../all_utils/app_preference.dart';
@@ -10,6 +11,7 @@ import '../../../core/user_panel_model/question_set_response.dart';
 
 class MockExamsController extends GetxController {
   final practiceController = Get.find<PracticeController>();
+  final _homeController = Get.find<HomeController>();
   RxBool isloading = false.obs;
   RxString errorText = ''.obs;
 
@@ -58,7 +60,7 @@ class MockExamsController extends GetxController {
   List<QuestionSetData> get questionSets => allMockTests; // Use paginated list
 
   List<UserAnalyticsData> get mockTestAnalytics =>
-      practiceController.userAnalyticsData;
+      _homeController.userAnalyticsData;
 
   Future<void> fetchMockTestData({int page = 1}) async {
     if (page == 1) {

@@ -29,4 +29,5 @@ class Urls {
   static String subscriptionList = "$baseUrs/user/subscription/list";
   static String paymentInfo = "$baseUrs/user/payment/store";
   static String googleLogin = "$baseUrs/auth/google-login";
+  static String subscriptionCheck = "$baseUrs/user/subscription-check";
 }
