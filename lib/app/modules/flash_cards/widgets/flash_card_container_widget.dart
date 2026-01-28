@@ -117,11 +117,14 @@ class FlashCardContainerWidget extends StatelessWidget {
             SizedBox(height: 20.h),
             CustomButton(
               childText: 'Continue Studying',
-              onTap: () {
-                Get.toNamed(
+              onTap: () async {
+                final result = await Get.toNamed(
                   Routes.VASCULAR_FLASHCARDS,
                   arguments: {'title': card.title, 'contentId': contentId},
                 );
+                if (result == true) {
+                  controller.refreshFlashCards();
+                }
               },
             ),
           ],

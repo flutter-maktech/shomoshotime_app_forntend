@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:shomoshotime/app/modules/home/controllers/home_controller.dart';
+import 'package:shomoshotime/app/modules/common_widgets/shimmer_effect.dart';
 
 import '../../../routes/app_pages.dart';
 import '../../common_widgets/custom_progress_container.dart';
@@ -13,8 +15,21 @@ class StudyGuideListView extends StatelessWidget {
     final homeController = Get.find<HomeController>();
 
     return Obx(() {
-      if (homeController.isLoading.value) {
-        return const Center(child: CircularProgressIndicator());
+      if (homeController.isLoading.value &&
+          homeController.studyGuides.isEmpty) {
+        return Column(
+          children: List.generate(
+            4,
+            (index) => Padding(
+              padding: EdgeInsets.symmetric(vertical: 4.w),
+              child: ShimmerWrapper(
+                isLoading: true,
+                height: 80.h,
+                child: const SizedBox.shrink(),
+              ),
+            ),
+          ),
+        );
       }
 
       if (homeController.errorMessage.value.isNotEmpty) {

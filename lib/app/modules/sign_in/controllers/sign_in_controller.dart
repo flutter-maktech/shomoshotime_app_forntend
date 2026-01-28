@@ -9,6 +9,7 @@ import '../../../all_utils/show_app_snack_bar.dart';
 import '../../../core/auth_model/sign_in_model.dart';
 import '../../../core/urls/urls.dart';
 import '../../../routes/app_pages.dart';
+import '../../custom_bottom_navigation_bar/controllers/custom_bottom_navigation_bar_controller.dart';
 
 class SignInController extends GetxController {
   // Password visibility
@@ -82,10 +83,19 @@ class SignInController extends GetxController {
       if (data['success'] == true) {
         final token = data['data']['token'];
         final userId = data['data']['user_id'];
+        final image = data['data']['image'];
 
-        // Save both token and user ID
+        // Save token, user ID, and image
         AppPreference.saveToken(token);
         AppPreference.saveUserId(userId);
+        if (image != null) {
+          AppPreference.saveProfileImage(image);
+          if (Get.isRegistered<CustomBottomNavigationBarController>()) {
+            Get.find<CustomBottomNavigationBarController>().updateProfileImage(
+              image,
+            );
+          }
+        }
 
         message.value = data['message'] ?? 'Login successful';
         return true;
@@ -174,10 +184,19 @@ class SignInController extends GetxController {
       if (data['success'] == true) {
         final token = data['data']['token'];
         final userId = data['data']['user_id'];
+        final image = data['data']['image'];
 
-        // Save both token and user ID
+        // Save token, user ID, and image
         AppPreference.saveToken(token);
         AppPreference.saveUserId(userId);
+        if (image != null) {
+          AppPreference.saveProfileImage(image);
+          if (Get.isRegistered<CustomBottomNavigationBarController>()) {
+            Get.find<CustomBottomNavigationBarController>().updateProfileImage(
+              image,
+            );
+          }
+        }
 
         message.value = data['message'] ?? 'Login successful';
         return true;

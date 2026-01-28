@@ -10,6 +10,7 @@ import '../../../data/image_path.dart';
 import '../../../routes/app_pages.dart';
 import '../../common_widgets/custom_button.dart';
 import '../../common_widgets/primary_app_bar.dart';
+import 'package:shomoshotime/app/modules/common_widgets/shimmer_effect.dart';
 import '../controllers/mock_exams_controller.dart';
 
 class MockExamsView extends GetView<MockExamsController> {
@@ -19,11 +20,9 @@ class MockExamsView extends GetView<MockExamsController> {
     return Scaffold(
       body: SafeArea(
         child: Obx(() {
-          if (controller.isloading.value && controller.allMockTests.isEmpty) {
-            return Center(child: CircularProgressIndicator());
-          }
           if (controller.errorText.value.isNotEmpty &&
-              controller.allMockTests.isEmpty) {
+              controller.allMockTests.isEmpty &&
+              !controller.isloading.value) {
             return Center(child: Text(controller.errorText.value));
           }
           return RefreshIndicator(
@@ -65,139 +64,144 @@ class MockExamsView extends GetView<MockExamsController> {
                 SliverToBoxAdapter(
                   child: Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 16),
-                    child: DecoratedBox(
-                      decoration: BoxDecoration(
-                        color: AppColors.homeStack,
-                        borderRadius: BorderRadius.circular(8),
-                      ),
-                      child: Padding(
-                        padding: const EdgeInsets.symmetric(vertical: 14),
-                        child: Column(
-                          mainAxisSize: MainAxisSize.min, // IMPORTANT
-                          children: [
-                            Padding(
-                              padding: const EdgeInsets.symmetric(
-                                horizontal: 16,
-                              ),
-                              child: Row(
-                                children: [
-                                  Expanded(
-                                    child: Container(
-                                      padding: const EdgeInsets.all(12),
-                                      decoration: BoxDecoration(
-                                        color: AppColors.whiteColor,
-                                        borderRadius: BorderRadius.circular(8),
-                                      ),
-                                      child: Column(
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.start,
-                                        children: [
-                                          Row(
-                                            children: [
-                                              Text(
-                                                "Mock Test \nProgress",
-                                                style: AppTextStyles.regular12
-                                                    .copyWith(
-                                                      color:
-                                                          AppColors.blackColor,
-                                                    ),
-                                              ),
-                                              Spacer(),
-                                              Image.asset(
-                                                ImagePath.frameImage,
-                                                scale: 5,
-                                              ),
-                                            ],
+                    child: ShimmerWrapper(
+                      isLoading:
+                          controller.isloading.value &&
+                          controller.mockTestAnalytics.isEmpty,
+                      height: 120.h,
+                      child: DecoratedBox(
+                        decoration: BoxDecoration(
+                          color: AppColors.homeStack,
+                          borderRadius: BorderRadius.circular(8),
+                        ),
+                        child: Padding(
+                          padding: const EdgeInsets.symmetric(vertical: 14),
+                          child: Column(
+                            mainAxisSize: MainAxisSize.min, // IMPORTANT
+                            children: [
+                              Padding(
+                                padding: const EdgeInsets.symmetric(
+                                  horizontal: 16,
+                                ),
+                                child: Row(
+                                  children: [
+                                    Expanded(
+                                      child: Container(
+                                        padding: const EdgeInsets.all(12),
+                                        decoration: BoxDecoration(
+                                          color: AppColors.whiteColor,
+                                          borderRadius: BorderRadius.circular(
+                                            8,
                                           ),
-
-                                          SizedBox(height: 14),
-                                          Text(
-                                            '${controller.mockTestAnalytics.isNotEmpty ? controller.mockTestAnalytics[0].mocktestProgress : 0}%',
-                                            style: AppTextStyles.bold24
-                                                .copyWith(
-                                                  color: AppColors.greyBlack,
-                                                ),
-                                          ),
-                                          SizedBox(height: 14),
-
-                                          Row(
-                                            children: [
-                                              Expanded(
-                                                child: Text(
-                                                  'Keep it up!',
-                                                  maxLines: 1,
-                                                  overflow:
-                                                      TextOverflow.ellipsis,
+                                        ),
+                                        child: Column(
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
+                                          children: [
+                                            Row(
+                                              children: [
+                                                Text(
+                                                  "Mock Test \nProgress",
                                                   style: AppTextStyles.regular12
                                                       .copyWith(
                                                         color: AppColors
                                                             .blackColor,
                                                       ),
                                                 ),
-                                              ),
-                                            ],
-                                          ),
-                                        ],
+                                                Spacer(),
+                                                Image.asset(
+                                                  ImagePath.frameImage,
+                                                  scale: 5,
+                                                ),
+                                              ],
+                                            ),
+                                            SizedBox(height: 14),
+                                            Text(
+                                              '${controller.mockTestAnalytics.isNotEmpty ? controller.mockTestAnalytics[0].mocktestProgress : 0}%',
+                                              style: AppTextStyles.bold24
+                                                  .copyWith(
+                                                    color: AppColors.greyBlack,
+                                                  ),
+                                            ),
+                                            SizedBox(height: 14),
+                                            Row(
+                                              children: [
+                                                Expanded(
+                                                  child: Text(
+                                                    'Keep it up!',
+                                                    maxLines: 1,
+                                                    overflow:
+                                                        TextOverflow.ellipsis,
+                                                    style: AppTextStyles
+                                                        .regular12
+                                                        .copyWith(
+                                                          color: AppColors
+                                                              .blackColor,
+                                                        ),
+                                                  ),
+                                                ),
+                                              ],
+                                            ),
+                                          ],
+                                        ),
                                       ),
                                     ),
-                                  ),
-
-                                  SizedBox(width: 14),
-
-                                  Expanded(
-                                    child: Container(
-                                      padding: const EdgeInsets.all(12),
-                                      decoration: BoxDecoration(
-                                        color: AppColors.whiteColor,
-                                        borderRadius: BorderRadius.circular(8),
-                                      ),
-                                      child: Column(
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.start,
-                                        children: [
-                                          Row(
-                                            children: [
-                                              Text(
-                                                "Overall\nAccuracy",
-                                                style: AppTextStyles.regular12
-                                                    .copyWith(
-                                                      color:
-                                                          AppColors.blackColor,
-                                                    ),
-                                              ),
-                                              Spacer(),
-                                              Image.asset(
-                                                ImagePath.frameImage,
-                                                scale: 5,
-                                              ),
-                                            ],
+                                    SizedBox(width: 14),
+                                    Expanded(
+                                      child: Container(
+                                        padding: const EdgeInsets.all(12),
+                                        decoration: BoxDecoration(
+                                          color: AppColors.whiteColor,
+                                          borderRadius: BorderRadius.circular(
+                                            8,
                                           ),
-                                          SizedBox(height: 6),
-
-                                          Text(
-                                            '${controller.mockTestAnalytics.isNotEmpty ? controller.mockTestAnalytics[0].mocktestAccuracy : 0}%',
-                                            style: AppTextStyles.bold24
-                                                .copyWith(
-                                                  color: AppColors.greyBlack,
+                                        ),
+                                        child: Column(
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
+                                          children: [
+                                            Row(
+                                              children: [
+                                                Text(
+                                                  "Overall\nAccuracy",
+                                                  style: AppTextStyles.regular12
+                                                      .copyWith(
+                                                        color: AppColors
+                                                            .blackColor,
+                                                      ),
                                                 ),
-                                          ),
-                                          SizedBox(height: 6),
-
-                                          Text(
-                                            "Above average performance",
-                                            style: AppTextStyles.regular12
-                                                .copyWith(
-                                                  color: AppColors.blackColor,
+                                                Spacer(),
+                                                Image.asset(
+                                                  ImagePath.frameImage,
+                                                  scale: 5,
                                                 ),
-                                          ),
-                                        ],
+                                              ],
+                                            ),
+                                            SizedBox(height: 6),
+                                            Text(
+                                              '${controller.mockTestAnalytics.isNotEmpty ? controller.mockTestAnalytics[0].mocktestAccuracy : 0}%',
+                                              style: AppTextStyles.bold24
+                                                  .copyWith(
+                                                    color: AppColors.greyBlack,
+                                                  ),
+                                            ),
+                                            SizedBox(height: 6),
+                                            Text(
+                                              "Above average performance",
+                                              style: AppTextStyles.regular12
+                                                  .copyWith(
+                                                    color: AppColors.blackColor,
+                                                  ),
+                                            ),
+                                          ],
+                                        ),
                                       ),
                                     ),
-                                  ),
-                                ],
+                                  ],
+                                ),
                               ),
-                            ),
-                          ],
+                            ],
+                          ),
                         ),
                       ),
                     ),
@@ -224,10 +228,30 @@ class MockExamsView extends GetView<MockExamsController> {
                     return 0;
                   });
 
+                  if (controller.isloading.value &&
+                      controller.allMockTests.isEmpty) {
+                    return SliverList(
+                      delegate: SliverChildBuilderDelegate(
+                        (context, index) => Padding(
+                          padding: EdgeInsets.symmetric(
+                            horizontal: 16.w,
+                            vertical: 16.h,
+                          ),
+                          child: ShimmerWrapper(
+                            isLoading: true,
+                            height: 300.h,
+                            child: const SizedBox.shrink(),
+                          ),
+                        ),
+                        childCount: 5,
+                      ),
+                    );
+                  }
+
                   if (list.isEmpty && !controller.isloading.value) {
                     return SliverToBoxAdapter(
                       child: Padding(
-                        padding: const EdgeInsets.symmetric(vertical: 60),
+                        padding: EdgeInsets.symmetric(vertical: 60.h),
                         child: Center(
                           child: Text(
                             'No Mock Test questions available.',
@@ -243,9 +267,9 @@ class MockExamsView extends GetView<MockExamsController> {
                   return SliverList(
                     delegate: SliverChildBuilderDelegate((context, index) {
                       return Padding(
-                        padding: const EdgeInsets.symmetric(
-                          horizontal: 16,
-                          vertical: 16,
+                        padding: EdgeInsets.symmetric(
+                          horizontal: 16.w,
+                          vertical: 16.h,
                         ),
                         child: spiFundamentalsCardWidget(sortedList[index]),
                       );
@@ -256,10 +280,14 @@ class MockExamsView extends GetView<MockExamsController> {
                 // Bottom loading indicator
                 Obx(() {
                   if (controller.isLoadingMore.value) {
-                    return const SliverToBoxAdapter(
+                    return SliverToBoxAdapter(
                       child: Padding(
-                        padding: EdgeInsets.all(16.0),
-                        child: Center(child: CircularProgressIndicator()),
+                        padding: EdgeInsets.all(16.sp),
+                        child: ShimmerWrapper(
+                          isLoading: true,
+                          height: 50.h,
+                          child: const SizedBox.shrink(),
+                        ),
                       ),
                     );
                   }

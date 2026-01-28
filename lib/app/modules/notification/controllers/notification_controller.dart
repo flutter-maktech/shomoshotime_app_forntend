@@ -10,6 +10,8 @@ class NotificationController extends GetxController {
   final errorMessage = ''.obs;
 
   final RxList<UserNotification> notifications = <UserNotification>[].obs;
+  bool get hasUnread => notifications.any((n) => !n.isRead);
+  int get unreadCount => notifications.where((n) => !n.isRead).length;
 
   final NetworkCaller networkCaller = NetworkCaller();
   final PusherService _pusherService = PusherService(); // ✅ SINGLE instance

@@ -8,6 +8,8 @@ import 'package:shomoshotime/app/data/image_path.dart';
 import 'package:shomoshotime/app/modules/common_widgets/custom_button.dart';
 import 'package:shomoshotime/app/modules/common_widgets/primary_app_bar.dart';
 
+import 'package:shomoshotime/app/modules/common_widgets/shimmer_effect.dart';
+
 import '../../../core/user_panel_model/question_set_response.dart';
 import '../../../routes/app_pages.dart';
 import '../../common_widgets/custom_text_form_field.dart';
@@ -28,12 +30,9 @@ class PracticeView extends GetView<PracticeController> {
           final accuracy = controller.userAnalyticsData.isNotEmpty
               ? controller.userAnalyticsData[0].practiceAccuracy
               : 0;
-          if (controller.isloading.value &&
-              controller.allQuestionSets.isEmpty) {
-            return Center(child: CircularProgressIndicator());
-          }
           if (controller.errorText.value.isNotEmpty &&
-              controller.allQuestionSets.isEmpty) {
+              controller.allQuestionSets.isEmpty &&
+              !controller.isloading.value) {
             return Center(child: Text(controller.errorText.value));
           }
           return RefreshIndicator(
@@ -150,139 +149,144 @@ class PracticeView extends GetView<PracticeController> {
                 SliverToBoxAdapter(
                   child: Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 16),
-                    child: DecoratedBox(
-                      decoration: BoxDecoration(
-                        color: AppColors.homeStack,
-                        borderRadius: BorderRadius.circular(8),
-                      ),
-                      child: Padding(
-                        padding: const EdgeInsets.symmetric(vertical: 14),
-                        child: Column(
-                          mainAxisSize: MainAxisSize.min, // IMPORTANT
-                          children: [
-                            Padding(
-                              padding: const EdgeInsets.symmetric(
-                                horizontal: 16,
-                              ),
-                              child: Row(
-                                children: [
-                                  Expanded(
-                                    child: Container(
-                                      padding: const EdgeInsets.all(12),
-                                      decoration: BoxDecoration(
-                                        color: AppColors.whiteColor,
-                                        borderRadius: BorderRadius.circular(8),
-                                      ),
-                                      child: Column(
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.start,
-                                        children: [
-                                          Row(
-                                            children: [
-                                              Text(
-                                                "Practice \nProgress",
-                                                style: AppTextStyles.regular12
-                                                    .copyWith(
-                                                      color:
-                                                          AppColors.blackColor,
-                                                    ),
-                                              ),
-                                              Spacer(),
-                                              Image.asset(
-                                                ImagePath.frameImage,
-                                                scale: 5,
-                                              ),
-                                            ],
+                    child: ShimmerWrapper(
+                      isLoading:
+                          controller.isloading.value &&
+                          controller.userAnalyticsData.isEmpty,
+                      height: 120.h,
+                      child: DecoratedBox(
+                        decoration: BoxDecoration(
+                          color: AppColors.homeStack,
+                          borderRadius: BorderRadius.circular(8),
+                        ),
+                        child: Padding(
+                          padding: const EdgeInsets.symmetric(vertical: 14),
+                          child: Column(
+                            mainAxisSize: MainAxisSize.min, // IMPORTANT
+                            children: [
+                              Padding(
+                                padding: const EdgeInsets.symmetric(
+                                  horizontal: 16,
+                                ),
+                                child: Row(
+                                  children: [
+                                    Expanded(
+                                      child: Container(
+                                        padding: const EdgeInsets.all(12),
+                                        decoration: BoxDecoration(
+                                          color: AppColors.whiteColor,
+                                          borderRadius: BorderRadius.circular(
+                                            8,
                                           ),
-
-                                          SizedBox(height: 14),
-                                          Text(
-                                            '$progress',
-                                            style: AppTextStyles.bold24
-                                                .copyWith(
-                                                  color: AppColors.greyBlack,
-                                                ),
-                                          ),
-                                          SizedBox(height: 14),
-
-                                          Row(
-                                            children: [
-                                              Expanded(
-                                                child: Text(
-                                                  'Keep it up!',
-                                                  maxLines: 1,
-                                                  overflow:
-                                                      TextOverflow.ellipsis,
+                                        ),
+                                        child: Column(
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
+                                          children: [
+                                            Row(
+                                              children: [
+                                                Text(
+                                                  "Practice \nProgress",
                                                   style: AppTextStyles.regular12
                                                       .copyWith(
                                                         color: AppColors
                                                             .blackColor,
                                                       ),
                                                 ),
-                                              ),
-                                            ],
-                                          ),
-                                        ],
+                                                Spacer(),
+                                                Image.asset(
+                                                  ImagePath.frameImage,
+                                                  scale: 5,
+                                                ),
+                                              ],
+                                            ),
+                                            SizedBox(height: 14),
+                                            Text(
+                                              '$progress',
+                                              style: AppTextStyles.bold24
+                                                  .copyWith(
+                                                    color: AppColors.greyBlack,
+                                                  ),
+                                            ),
+                                            SizedBox(height: 14),
+                                            Row(
+                                              children: [
+                                                Expanded(
+                                                  child: Text(
+                                                    'Keep it up!',
+                                                    maxLines: 1,
+                                                    overflow:
+                                                        TextOverflow.ellipsis,
+                                                    style: AppTextStyles
+                                                        .regular12
+                                                        .copyWith(
+                                                          color: AppColors
+                                                              .blackColor,
+                                                        ),
+                                                  ),
+                                                ),
+                                              ],
+                                            ),
+                                          ],
+                                        ),
                                       ),
                                     ),
-                                  ),
-
-                                  SizedBox(width: 14),
-
-                                  Expanded(
-                                    child: Container(
-                                      padding: const EdgeInsets.all(12),
-                                      decoration: BoxDecoration(
-                                        color: AppColors.whiteColor,
-                                        borderRadius: BorderRadius.circular(8),
-                                      ),
-                                      child: Column(
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.start,
-                                        children: [
-                                          Row(
-                                            children: [
-                                              Text(
-                                                "Overall\nAccuracy",
-                                                style: AppTextStyles.regular12
-                                                    .copyWith(
-                                                      color:
-                                                          AppColors.blackColor,
-                                                    ),
-                                              ),
-                                              Spacer(),
-                                              Image.asset(
-                                                ImagePath.frameImage,
-                                                scale: 5,
-                                              ),
-                                            ],
+                                    SizedBox(width: 14),
+                                    Expanded(
+                                      child: Container(
+                                        padding: const EdgeInsets.all(12),
+                                        decoration: BoxDecoration(
+                                          color: AppColors.whiteColor,
+                                          borderRadius: BorderRadius.circular(
+                                            8,
                                           ),
-                                          SizedBox(height: 6),
-
-                                          Text(
-                                            '$accuracy%',
-                                            style: AppTextStyles.bold24
-                                                .copyWith(
-                                                  color: AppColors.greyBlack,
+                                        ),
+                                        child: Column(
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
+                                          children: [
+                                            Row(
+                                              children: [
+                                                Text(
+                                                  "Overall\nAccuracy",
+                                                  style: AppTextStyles.regular12
+                                                      .copyWith(
+                                                        color: AppColors
+                                                            .blackColor,
+                                                      ),
                                                 ),
-                                          ),
-                                          SizedBox(height: 6),
-
-                                          Text(
-                                            "Above average performance",
-                                            style: AppTextStyles.regular12
-                                                .copyWith(
-                                                  color: AppColors.blackColor,
+                                                Spacer(),
+                                                Image.asset(
+                                                  ImagePath.frameImage,
+                                                  scale: 5,
                                                 ),
-                                          ),
-                                        ],
+                                              ],
+                                            ),
+                                            SizedBox(height: 6),
+                                            Text(
+                                              '$accuracy%',
+                                              style: AppTextStyles.bold24
+                                                  .copyWith(
+                                                    color: AppColors.greyBlack,
+                                                  ),
+                                            ),
+                                            SizedBox(height: 6),
+                                            Text(
+                                              "Above average performance",
+                                              style: AppTextStyles.regular12
+                                                  .copyWith(
+                                                    color: AppColors.blackColor,
+                                                  ),
+                                            ),
+                                          ],
+                                        ),
                                       ),
                                     ),
-                                  ),
-                                ],
+                                  ],
+                                ),
                               ),
-                            ),
-                          ],
+                            ],
+                          ),
                         ),
                       ),
                     ),
@@ -292,10 +296,30 @@ class PracticeView extends GetView<PracticeController> {
                 Obx(() {
                   final list = controller.filteredQuestionSets;
 
+                  if (controller.isloading.value &&
+                      controller.allQuestionSets.isEmpty) {
+                    return SliverList(
+                      delegate: SliverChildBuilderDelegate(
+                        (context, index) => Padding(
+                          padding: EdgeInsets.symmetric(
+                            horizontal: 16.w,
+                            vertical: 16.h,
+                          ),
+                          child: ShimmerWrapper(
+                            isLoading: true,
+                            height: 250.h,
+                            child: const SizedBox.shrink(),
+                          ),
+                        ),
+                        childCount: 5,
+                      ),
+                    );
+                  }
+
                   if (list.isEmpty && !controller.isloading.value) {
                     return SliverToBoxAdapter(
                       child: Padding(
-                        padding: const EdgeInsets.symmetric(vertical: 60),
+                        padding: EdgeInsets.symmetric(vertical: 60.h),
                         child: Center(
                           child: Text(
                             'No practice questions available for this category',
@@ -311,9 +335,9 @@ class PracticeView extends GetView<PracticeController> {
                   return SliverList(
                     delegate: SliverChildBuilderDelegate((context, index) {
                       return Padding(
-                        padding: const EdgeInsets.symmetric(
-                          horizontal: 16,
-                          vertical: 16,
+                        padding: EdgeInsets.symmetric(
+                          horizontal: 16.w,
+                          vertical: 16.h,
                         ),
                         child: spiFundamentalsCardWidget(list[index]),
                       );
@@ -324,10 +348,14 @@ class PracticeView extends GetView<PracticeController> {
                 // Bottom loader for pagination
                 Obx(() {
                   if (controller.isLoadingMore.value) {
-                    return const SliverToBoxAdapter(
+                    return SliverToBoxAdapter(
                       child: Padding(
-                        padding: EdgeInsets.all(16.0),
-                        child: Center(child: CircularProgressIndicator()),
+                        padding: EdgeInsets.all(16.sp),
+                        child: ShimmerWrapper(
+                          isLoading: true,
+                          height: 50.h,
+                          child: const SizedBox.shrink(),
+                        ),
                       ),
                     );
                   }

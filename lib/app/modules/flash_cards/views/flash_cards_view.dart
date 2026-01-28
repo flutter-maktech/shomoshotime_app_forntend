@@ -5,6 +5,7 @@ import 'package:get/get.dart';
 import 'package:shomoshotime/app/data/app_colors.dart';
 import 'package:shomoshotime/app/data/app_text_styles.dart';
 import 'package:shomoshotime/app/modules/common_widgets/primary_app_bar.dart';
+import 'package:shomoshotime/app/modules/common_widgets/shimmer_effect.dart';
 import 'package:shomoshotime/app/modules/flash_cards/widgets/flash_card_filter_bar.dart';
 
 import '../../../routes/app_pages.dart';
@@ -129,12 +130,20 @@ class FlashCardsView extends GetView<FlashCardsController> {
                 // Only show full loading if it's the first load and we have no cards
                 if (controller.isLoading.value &&
                     controller.allFlashCards.isEmpty) {
-                  return const SliverToBoxAdapter(
-                    child: Center(
-                      child: Padding(
-                        padding: EdgeInsets.only(top: 50),
-                        child: CircularProgressIndicator(),
+                  return SliverList(
+                    delegate: SliverChildBuilderDelegate(
+                      (context, index) => Padding(
+                        padding: EdgeInsets.symmetric(
+                          horizontal: 16.w,
+                          vertical: 16.h,
+                        ),
+                        child: ShimmerWrapper(
+                          isLoading: true,
+                          height: 180.h,
+                          child: const SizedBox.shrink(),
+                        ),
                       ),
+                      childCount: 5,
                     ),
                   );
                 }
@@ -143,7 +152,7 @@ class FlashCardsView extends GetView<FlashCardsController> {
                   return SliverToBoxAdapter(
                     child: Center(
                       child: Padding(
-                        padding: EdgeInsets.only(top: 50),
+                        padding: EdgeInsets.only(top: 50.h),
                         child: Text(
                           controller.searchController.text.isEmpty
                               ? 'No flashcards available for this category'
@@ -160,9 +169,9 @@ class FlashCardsView extends GetView<FlashCardsController> {
                 return SliverList(
                   delegate: SliverChildBuilderDelegate((context, index) {
                     return Padding(
-                      padding: const EdgeInsets.symmetric(
-                        horizontal: 16,
-                        vertical: 16,
+                      padding: EdgeInsets.symmetric(
+                        horizontal: 16.w,
+                        vertical: 16.h,
                       ),
                       child: FlashCardContainerWidget(
                         index: index,
@@ -176,9 +185,13 @@ class FlashCardsView extends GetView<FlashCardsController> {
               SliverToBoxAdapter(
                 child: Obx(() {
                   if (controller.isLoadingMore.value) {
-                    return const Padding(
-                      padding: EdgeInsets.all(16.0),
-                      child: Center(child: CircularProgressIndicator()),
+                    return Padding(
+                      padding: EdgeInsets.all(16.sp),
+                      child: ShimmerWrapper(
+                        isLoading: true,
+                        height: 50.h,
+                        child: const SizedBox.shrink(),
+                      ),
                     );
                   } else {
                     return const SizedBox.shrink();

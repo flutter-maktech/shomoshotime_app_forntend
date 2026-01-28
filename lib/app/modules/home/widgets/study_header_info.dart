@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:shomoshotime/app/modules/home/controllers/home_controller.dart';
+import 'package:shomoshotime/app/modules/common_widgets/shimmer_effect.dart';
 
 import '../../../data/app_colors.dart';
 import '../../../data/app_text_styles.dart';
@@ -42,13 +43,18 @@ class StudyHeaderInfo extends StatelessWidget {
                 ? controller.userAnalyticsData[0]
                 : null;
 
-            return HomeGridDetails(
-              studyGuideProgress:
-                  "${analytics?.studyAnalytics.progressPercent.toInt() ?? 0}%",
-              flashCardProgress:
-                  "${analytics?.flashcardAnalytics.progressPercent.toInt() ?? 0}%",
-              practiceAccuracy: "${analytics?.practiceAccuracy.toInt() ?? 0}%",
-              mockAccuracy: "${analytics?.mocktestAccuracy.toInt() ?? 0}%",
+            return ShimmerWrapper(
+              isLoading: controller.isLoading.value && analytics == null,
+              height: 160.h,
+              child: HomeGridDetails(
+                studyGuideProgress:
+                    "${analytics?.studyAnalytics.progressPercent.toInt() ?? 0}%",
+                flashCardProgress:
+                    "${analytics?.flashcardAnalytics.progressPercent.toInt() ?? 0}%",
+                practiceAccuracy:
+                    "${analytics?.practiceAccuracy.toInt() ?? 0}%",
+                mockAccuracy: "${analytics?.mocktestAccuracy.toInt() ?? 0}%",
+              ),
             );
           }),
         ],

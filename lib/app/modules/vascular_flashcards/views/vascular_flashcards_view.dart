@@ -170,11 +170,15 @@ class VascularFlashcardsView extends GetView<FlashcardsSetController> {
                     ),
                     SizedBox(width: 6.w),
                     Expanded(
-                      child: Obx(
-                        () => CustomButton(
+                      child: Obx(() {
+                        final isLastCard =
+                            controller.currentIndex.value == totalQuestion - 1;
+                        return CustomButton(
                           onTap: () {
                             controller.changeButton(1);
-                            if (controller.currentIndex.value <
+                            if (isLastCard) {
+                              Get.back(result: true);
+                            } else if (controller.currentIndex.value <
                                 totalQuestion - 1) {
                               controller.setIndex(
                                 controller.currentIndex.value + 1,
@@ -184,9 +188,9 @@ class VascularFlashcardsView extends GetView<FlashcardsSetController> {
                           buttonColor: controller.select.value == 1
                               ? AppColors.primaryColor
                               : AppColors.lightYellow,
-                          childText: 'Next',
-                        ),
-                      ),
+                          childText: isLastCard ? 'Done' : 'Next',
+                        );
+                      }),
                     ),
                   ],
                 ),

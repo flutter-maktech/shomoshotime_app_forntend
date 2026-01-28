@@ -9,6 +9,7 @@ import '../../common_widgets/header_section.dart';
 import '../../common_widgets/primary_app_bar.dart';
 import '../../flash_cards/widgets/flash_card_filter_bar.dart';
 import '../controllers/study_guides_controller.dart';
+import '../../common_widgets/shimmer_effect.dart';
 import '../widgets/spi_audio_card_list.dart';
 import '../widgets/spi_card_list.dart';
 
@@ -139,9 +140,13 @@ class StudyGuidesView extends GetView<StudyGuidesController> {
               SliverToBoxAdapter(
                 child: Obx(() {
                   if (controller.isLoadingMore.value) {
-                    return const Padding(
-                      padding: EdgeInsets.all(16.0),
-                      child: Center(child: CircularProgressIndicator()),
+                    return Padding(
+                      padding: EdgeInsets.all(16.sp),
+                      child: ShimmerWrapper(
+                        isLoading: true,
+                        height: 50.h,
+                        child: const SizedBox.shrink(),
+                      ),
                     );
                   } else {
                     return const SizedBox.shrink();

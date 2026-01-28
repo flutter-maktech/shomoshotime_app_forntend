@@ -1,6 +1,8 @@
 // SpiCardList.dart
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
+import 'package:shomoshotime/app/modules/common_widgets/shimmer_effect.dart';
 import '../controllers/study_guides_controller.dart';
 import 'spi_fundamentals_card.dart';
 
@@ -15,10 +17,17 @@ class SpiCardList extends StatelessWidget {
       // Loading state (Initial)
       if (studyGuidesController.isLoading.value &&
           studyGuidesController.allStudyGuides.isEmpty) {
-        return const SliverToBoxAdapter(
-          child: Padding(
-            padding: EdgeInsets.symmetric(vertical: 20),
-            child: Center(child: CircularProgressIndicator()),
+        return SliverList(
+          delegate: SliverChildBuilderDelegate(
+            (context, index) => Padding(
+              padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 16.h),
+              child: ShimmerWrapper(
+                isLoading: true,
+                height: 150.h,
+                child: const SizedBox.shrink(),
+              ),
+            ),
+            childCount: 5,
           ),
         );
       }

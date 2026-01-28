@@ -4,6 +4,23 @@ class AppPreference {
   static const String _tokenKey = 'auth_token';
   static const String _userIdKey = 'user_id';
   static const String _emailKey = 'user_email';
+  static const String _imageKey = 'user_image';
+
+  // PROFILE IMAGE
+  static Future<void> saveProfileImage(String url) async {
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.setString(_imageKey, url);
+  }
+
+  static Future<String?> getProfileImage() async {
+    final prefs = await SharedPreferences.getInstance();
+    return prefs.getString(_imageKey);
+  }
+
+  static Future<void> clearProfileImage() async {
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.remove(_imageKey);
+  }
 
   // TOKEN
   static Future<void> saveToken(String token) async {
@@ -69,5 +86,6 @@ class AppPreference {
     await prefs.remove(_tokenKey);
     await prefs.remove(_userIdKey);
     await prefs.remove(_emailKey);
+    await prefs.remove(_imageKey);
   }
 }
