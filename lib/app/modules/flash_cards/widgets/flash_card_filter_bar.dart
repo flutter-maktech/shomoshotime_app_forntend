@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import '../../../data/app_colors.dart';
 import '../../../data/app_text_styles.dart';
 
@@ -22,11 +23,11 @@ class FlashCardFilterBar extends StatelessWidget {
       onTap: onTap,
       child: Container(
         decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(4),
+          borderRadius: BorderRadius.circular(4.r),
           color: isSelected ? AppColors.primaryColor : AppColors.whiteColor,
         ),
         child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 8),
+          padding: EdgeInsets.symmetric(horizontal: 10.w, vertical: 8.h),
           child: Text(
             title,
             style: AppTextStyles.regular13.copyWith(
