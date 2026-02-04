@@ -3,7 +3,6 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_stripe/flutter_stripe.dart';
 import 'package:get/get.dart';
-import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:http/http.dart' as http;
 import 'package:shomoshotime/app/core/urls/urls.dart';
 import '../../../all_utils/app_preference.dart';
@@ -19,6 +18,10 @@ class SubscriptionPlanController extends GetxController {
   final errorMessage = ''.obs;
   final NetworkCaller networkCaller = NetworkCaller();
   final subscriptions = <Subscription>[].obs;
+
+  // Stripe keys from backend
+  RxString stripePublishableKey = ''.obs;
+  RxString stripeSecretKey = ''.obs;
   @override
   void onInit() {
     super.onInit();
@@ -51,6 +54,38 @@ class SubscriptionPlanController extends GetxController {
     }
   }
 
+  Future<bool> fetchStripeKeys() async {
+    try {
+      final token = await AppPreference.getToken();
+      final response = await networkCaller.postRequest(
+        Urls.stripeKeys,
+        {},
+        token: token,
+      );
+
+      if (response['success'] == true) {
+        stripePublishableKey.value = response['data']['publishable_key'] ?? '';
+        stripeSecretKey.value = response['data']['secret_key'] ?? '';
+
+        // Re-initialize Stripe with the new publishable key
+        Stripe.publishableKey = stripePublishableKey.value;
+        await Stripe.instance.applySettings();
+
+        return true;
+      } else {
+        errorMessage.value =
+            response['message'] ?? 'Failed to fetch payment keys';
+        return false;
+      }
+    } catch (e) {
+      if (kDebugMode) {
+        print('Error fetching Stripe keys: $e');
+      }
+      errorMessage.value = 'Failed to initialize payment system';
+      return false;
+    }
+  }
+
   // Store the BuildContext from the view
   BuildContext? _context;
 
@@ -72,6 +107,12 @@ class SubscriptionPlanController extends GetxController {
     setContext(context); // Store the context
     try {
       isLoading.value = true;
+
+      // Fetch keys first
+      final keysFetched = await fetchStripeKeys();
+      if (!keysFetched) {
+        throw Exception(errorMessage.value);
+      }
 
       // Create payment intent
       await createPaymentIntent(amount.toString(), currency);
@@ -109,7 +150,7 @@ class SubscriptionPlanController extends GetxController {
       var response = await http.post(
         Uri.parse('https://api.stripe.com/v1/payment_intents'),
         headers: {
-          'Authorization': 'Bearer ${dotenv.env['STRIPE_SECRET_KEY']}',
+          'Authorization': 'Bearer ${stripeSecretKey.value}',
           'Content-Type': 'application/x-www-form-urlencoded',
         },
         body: body,
@@ -226,6 +267,12 @@ class SubscriptionPlanController extends GetxController {
 
     try {
       isLoading.value = true;
+
+      // Fetch keys first
+      final keysFetched = await fetchStripeKeys();
+      if (!keysFetched) {
+        throw Exception(errorMessage.value);
+      }
 
       // Create payment intent
       await createPaymentIntent(amount.toString(), 'usd');
