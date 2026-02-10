@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
+import 'package:shomoshotime/app/all_utils/log.dart';
 import 'package:shomoshotime/app/data/app_colors.dart';
 import 'package:shomoshotime/app/data/image_path.dart';
 import 'package:shomoshotime/app/modules/notification/controllers/notification_controller.dart';
@@ -82,7 +83,7 @@ class PrimaryAppBar extends StatelessWidget {
                             Get.find<CustomBottomNavigationBarController>();
                         final imageUrl = navCtrl.profileImageUrl.value;
                         if (imageUrl.isNotEmpty) {
-                          print('✅✅$imageUrl');
+                          AppLogger.log('✅✅$imageUrl');
                           return Image.network(
                             imageUrl,
                             fit: BoxFit.cover,

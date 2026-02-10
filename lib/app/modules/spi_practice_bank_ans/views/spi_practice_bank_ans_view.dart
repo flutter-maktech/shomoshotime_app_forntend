@@ -1,9 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:get/get_connect/http/src/utils/utils.dart';
 import 'package:get/get_core/src/get_main.dart';
 import 'package:get/get_navigation/src/extension_navigation.dart';
-import 'package:get/get_state_manager/src/rx_flutter/rx_obx_widget.dart';
 import 'package:get/get_state_manager/src/simple/get_view.dart';
 import 'package:shomoshotime/app/data/app_colors.dart';
 import 'package:shomoshotime/app/data/app_text_styles.dart';
@@ -13,7 +11,6 @@ import 'package:shomoshotime/app/modules/common_widgets/custom_button.dart';
 import 'package:shomoshotime/app/modules/common_widgets/custom_progress.dart';
 import 'package:shomoshotime/app/routes/app_pages.dart';
 import '../../spi_practice_bank_qus/controllers/spi_practice_bank_qus_controller.dart';
-import '../../spi_practice_bank_qus/widget/custom_radio.dart';
 
 class SpiPracticeBankAnsView extends GetView<SpiPracticeBankQusController> {
   const SpiPracticeBankAnsView({super.key});

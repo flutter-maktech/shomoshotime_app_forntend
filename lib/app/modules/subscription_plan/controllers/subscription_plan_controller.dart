@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_stripe/flutter_stripe.dart';
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
+import 'package:shomoshotime/app/all_utils/log.dart';
 import 'package:shomoshotime/app/core/urls/urls.dart';
 import '../../../all_utils/app_preference.dart';
 import '../../../all_utils/show_app_snack_bar.dart';
@@ -79,7 +80,7 @@ class SubscriptionPlanController extends GetxController {
       }
     } catch (e) {
       if (kDebugMode) {
-        print('Error fetching Stripe keys: $e');
+        AppLogger.log('Error fetching Stripe keys: $e');
       }
       errorMessage.value = 'Failed to initialize payment system';
       return false;
@@ -124,7 +125,7 @@ class SubscriptionPlanController extends GetxController {
       await displayPaymentSheet(_context!);
     } catch (error) {
       if (kDebugMode) {
-        print('Payment Error: $error');
+        AppLogger.log('Payment Error: $error');
       }
       if (_context != null) {
         showAppSnackBar(
@@ -159,7 +160,7 @@ class SubscriptionPlanController extends GetxController {
       if (response.statusCode == 200) {
         paymentIntentData = jsonDecode(response.body);
         if (kDebugMode) {
-          print('Payment Intent Created: $paymentIntentData');
+          AppLogger.log('Payment Intent Created: $paymentIntentData');
         }
       } else {
         throw Exception(
@@ -189,7 +190,7 @@ class SubscriptionPlanController extends GetxController {
       );
 
       if (kDebugMode) {
-        print('Payment sheet initialized successfully');
+        AppLogger.log('Payment sheet initialized successfully');
       }
     } catch (error) {
       rethrow;
@@ -203,7 +204,7 @@ class SubscriptionPlanController extends GetxController {
 
       // Payment successful
       if (kDebugMode) {
-        print('Payment successful!');
+        AppLogger.log('Payment successful!');
       }
 
       // Show success snackbar
@@ -219,7 +220,7 @@ class SubscriptionPlanController extends GetxController {
       Get.back();
     } on StripeException catch (e) {
       if (kDebugMode) {
-        print('Stripe Exception: ${e.error.localizedMessage}');
+        AppLogger.log('Stripe Exception: ${e.error.localizedMessage}');
       }
 
       // Show error dialog
@@ -238,7 +239,7 @@ class SubscriptionPlanController extends GetxController {
       );
     } catch (error) {
       if (kDebugMode) {
-        print('General Error: $error');
+        AppLogger.log('General Error: $error');
       }
 
       showDialog(
@@ -304,7 +305,7 @@ class SubscriptionPlanController extends GetxController {
       Get.offNamed(Routes.CUSTOM_BOTTOM_NAVIGATION_BAR);
     } on StripeException catch (e) {
       if (kDebugMode) {
-        print('Error: ${e.error.localizedMessage}');
+        AppLogger.log('Error: ${e.error.localizedMessage}');
       }
       if (_context != null) {
         showAppSnackBar(
@@ -316,7 +317,7 @@ class SubscriptionPlanController extends GetxController {
       }
     } catch (e) {
       if (kDebugMode) {
-        print('Error: $e');
+        AppLogger.log('Error: $e');
       }
       if (_context != null) {
         showAppSnackBar(
@@ -350,16 +351,16 @@ class SubscriptionPlanController extends GetxController {
 
       if (response['status'] == 'success' || response['success'] == true) {
         if (kDebugMode) {
-          print('Payment info stored successfully');
+          AppLogger.log('Payment info stored successfully');
         }
       } else {
         if (kDebugMode) {
-          print('Failed to store payment info: ${response['message']}');
+          AppLogger.log('Failed to store payment info: ${response['message']}');
         }
       }
     } catch (e) {
       if (kDebugMode) {
-        print('Error storing payment info: $e');
+        AppLogger.log('Error storing payment info: $e');
       }
     }
   }

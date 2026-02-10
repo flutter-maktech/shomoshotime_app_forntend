@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
-import 'package:shomoshotime/app/all_utils/app_preference.dart';
+import 'package:shomoshotime/app/all_utils/log.dart';
 import 'package:shomoshotime/app/data/app_colors.dart';
 import 'package:shomoshotime/app/data/app_text_styles.dart';
 import 'package:shomoshotime/app/data/image_path.dart';
@@ -43,7 +43,7 @@ class ProfileView extends GetView<ProfileController> {
             final memberSince = controller.formatToMonthYear(
               profileData?.createdAt,
             );
-            print('---------✅user image: $userImage');
+            AppLogger.log('---------✅user image: $userImage');
 
             return Column(
               children: [
@@ -174,9 +174,7 @@ class ProfileView extends GetView<ProfileController> {
                           "Log Out",
                           Icons.logout_outlined,
                           () {
-                            AppPreference.clearToken();
-                            AppPreference.clearUserId();
-                            Get.offAllNamed(Routes.SIGN_IN);
+                            controller.logout();
                           },
                         ),
                       ],

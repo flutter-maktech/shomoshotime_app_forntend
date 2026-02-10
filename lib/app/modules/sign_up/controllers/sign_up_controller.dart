@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
+import 'package:shomoshotime/app/all_utils/log.dart';
 import 'package:shomoshotime/app/core/api_services/network_caller.dart';
 import 'package:shomoshotime/app/data/app_colors.dart';
 import '../../../all_utils/app_preference.dart';
@@ -75,7 +76,7 @@ class SignUpController extends GetxController {
         model.toJson(),
       );
 
-      print("API Response: $response");
+      AppLogger.log("API Response: $response");
 
       Map<String, dynamic> data;
 
@@ -94,7 +95,7 @@ class SignUpController extends GetxController {
         // TOKEN SAVE
         if (token.isNotEmpty) {
           await AppPreference.saveToken(token);
-          print('Token saved: $token');
+          AppLogger.log('Token saved: $token');
         }
 
         message.value = data['message'] ?? 'Registration successful';

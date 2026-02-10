@@ -51,8 +51,6 @@ class SubscriptionPlanView extends GetView<SubscriptionPlanController> {
               child: Column(
                 children: List.generate(sortedSubscriptions.length, (index) {
                   final subscription = sortedSubscriptions[index];
-                  final bool isSelected =
-                      controller.selectedValue.value == subscription.id;
 
                   return Column(
                     children: [
@@ -148,7 +146,7 @@ class SubscriptionPlanView extends GetView<SubscriptionPlanController> {
                                     SizedBox(height: 9.h),
                                   ],
                                 );
-                              }).toList(),
+                              }),
                               if (index == 1) // Monthly plan (Most Popular)
                                 Column(
                                   children: [

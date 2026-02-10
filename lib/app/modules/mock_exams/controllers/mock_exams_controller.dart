@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:shomoshotime/app/all_utils/log.dart';
 import 'package:shomoshotime/app/core/urls/urls.dart' show Urls;
 import 'package:shomoshotime/app/core/user_panel_model/user_analytics_response.dart';
 import 'package:shomoshotime/app/modules/home/controllers/home_controller.dart';
@@ -94,7 +95,7 @@ class MockExamsController extends GetxController {
         lastPage = responseData.meta.lastPage;
       }
     } catch (e) {
-      print('------$e');
+      AppLogger.log('------$e');
       errorText.value = 'An eeeerror occurred: $e';
     } finally {
       isloading.value = false;
@@ -113,7 +114,7 @@ class MockExamsController extends GetxController {
       await networkCaller.postRequest(Urls.startMockTest, body, token: token);
     } catch (e) {
       errorText.value = 'An eeeerror occurred: $e';
-      print('----------------$e');
+      AppLogger.log('----------------$e');
     } finally {
       isloading.value = false;
     }

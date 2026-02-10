@@ -1,5 +1,6 @@
 import 'package:get/get.dart';
 import 'package:audioplayers/audioplayers.dart';
+import 'package:shomoshotime/app/all_utils/log.dart';
 
 class AudioPlayCardController extends GetxController {
   final AudioPlayer audioPlayer = AudioPlayer();
@@ -28,7 +29,7 @@ class AudioPlayCardController extends GetxController {
   }
 
   Future<void> playAudio(String url) async {
-    print('AudioPlayCard: Streaming from fileUrl = $url');
+    AppLogger.log('AudioPlayCard: Streaming from fileUrl = $url');
     await audioPlayer.play(UrlSource(url));
   }
 

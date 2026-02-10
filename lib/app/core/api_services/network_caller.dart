@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'package:http/http.dart' as http;
+import 'package:shomoshotime/app/all_utils/log.dart';
 
 class NetworkCaller {
   // GET Request
@@ -15,13 +16,13 @@ class NetworkCaller {
         headers['Authorization'] = "Bearer $token";
       }
 
-      print("GET Request to: $url");
-      print("Headers: $headers");
+      AppLogger.log("GET Request to: $url");
+      AppLogger.log("Headers: $headers");
 
       final response = await http.get(Uri.parse(url), headers: headers);
 
-      print("GET Status: ${response.statusCode}");
-      print("GET Response: ${response.body}");
+      AppLogger.log("GET Status: ${response.statusCode}");
+      AppLogger.log("GET Response: ${response.body}");
 
       if (response.statusCode == 200) {
         return jsonDecode(response.body);
@@ -31,7 +32,7 @@ class NetworkCaller {
         throw Exception("Failed to load data: ${response.statusCode}");
       }
     } catch (e) {
-      print("GET Request Error: $e");
+      AppLogger.log("GET Request Error: $e");
       rethrow;
     }
   }
@@ -49,15 +50,15 @@ class NetworkCaller {
         headers['Authorization'] = "Bearer $token";
       }
 
-      print("POST Request to: $url");
-      print("Headers: $headers");
-      print("Body: $body");
+      AppLogger.log("POST Request to: $url");
+      AppLogger.log("Headers: $headers");
+      AppLogger.log("Body: $body");
 
       final response =
       await http.post(Uri.parse(url), headers: headers, body: jsonEncode(body));
 
-      print("POST Status: ${response.statusCode}");
-      print("POST Response: ${response.body}");
+      AppLogger.log("POST Status: ${response.statusCode}");
+      AppLogger.log("POST Response: ${response.body}");
 
       if (response.statusCode == 200 || response.statusCode == 201) {
         return jsonDecode(response.body);
@@ -66,7 +67,7 @@ class NetworkCaller {
             "Failed to post data:$url ${response.statusCode} - ${response.body}");
       }
     } catch (e) {
-      print("POST Request Error: $e");
+      AppLogger.log("POST Request Error: $e");
       rethrow;
     }
   }
@@ -84,15 +85,15 @@ class NetworkCaller {
         headers['Authorization'] = "Bearer $token";
       }
 
-      print("PUT Request to: $url");
-      print("Headers: $headers");
-      print("Body: $body");
+      AppLogger.log("PUT Request to: $url");
+      AppLogger.log("Headers: $headers");
+      AppLogger.log("Body: $body");
 
       final response =
       await http.patch(Uri.parse(url), headers: headers, body: jsonEncode(body));
 
-      print("PUT Status: ${response.statusCode}");
-      print("PUT Response: ${response.body}");
+      AppLogger.log("PUT Status: ${response.statusCode}");
+      AppLogger.log("PUT Response: ${response.body}");
 
       if (response.statusCode == 200 || response.statusCode == 201) {
         return jsonDecode(response.body);
@@ -101,7 +102,7 @@ class NetworkCaller {
             "Failed to update data: ${response.statusCode} - ${response.body}");
       }
     } catch (e) {
-      print("PUT Request Error: $e");
+      AppLogger.log("PUT Request Error: $e");
       rethrow;
     }
   }
@@ -118,20 +119,20 @@ class NetworkCaller {
         headers['Authorization'] = "Bearer $token";
       }
 
-      print("DELETE Request to: $url");
-      print("Headers: $headers");
+      AppLogger.log("DELETE Request to: $url");
+      AppLogger.log("Headers: $headers");
 
       final response = await http.delete(Uri.parse(url), headers: headers);
 
-      print("DELETE Status: ${response.statusCode}");
-      print("DELETE Response: ${response.body}");
+      AppLogger.log("DELETE Status: ${response.statusCode}");
+      AppLogger.log("DELETE Response: ${response.body}");
 
       if (response.statusCode != 200 && response.statusCode != 204) {
         throw Exception(
             "Failed to delete data: ${response.statusCode} - ${response.body}");
       }
     } catch (e) {
-      print("DELETE Request Error: $e");
+      AppLogger.log("DELETE Request Error: $e");
       rethrow;
     }
   }
@@ -148,9 +149,9 @@ class NetworkCaller {
         body: jsonEncode({}),
       );
 
-      print("url ====== $fullUrl");
-      print("Status Code: ${response.statusCode}");
-      print("Response: ${response.body}");
+      AppLogger.log("url ====== $fullUrl");
+      AppLogger.log("Status Code: ${response.statusCode}");
+      AppLogger.log("Response: ${response.body}");
 
       if (response.statusCode != 200 && response.statusCode != 201) {
         throw "Server Error: ${response.body}";

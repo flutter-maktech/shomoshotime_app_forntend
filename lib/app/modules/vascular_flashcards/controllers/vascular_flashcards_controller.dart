@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:shomoshotime/app/all_utils/log.dart';
 import 'package:shomoshotime/app/core/user_panel_model/flash_card_set_response.dart';
 
 import '../../../all_utils/app_preference.dart';
@@ -58,7 +59,7 @@ class FlashcardsSetController extends GetxController {
       flashCardSetResponse.value = FlashCardSetResponse.fromJson(response);
     } catch (e) {
       errorMessage.value = 'Failed to load flashcards: $e';
-      print('Error fetching flashcards: $e');
+      AppLogger.log('Error fetching flashcards: $e');
     } finally {
       isLoading.value = false;
     }
@@ -76,7 +77,7 @@ class FlashcardsSetController extends GetxController {
 
       await _networkCaller.postRequest(Urls.nextFlashCard, body, token: token);
     } catch (e) {
-      print('Next flash card API error: $e');
+      AppLogger.log('Next flash card API error: $e');
     }
   }
 

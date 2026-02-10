@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:shomoshotime/app/modules/home/controllers/home_controller.dart';
+import '../../all_utils/log.dart';
 import '../../core/user_panel_model/study_guide_response_model.dart';
 import '../../data/app_colors.dart';
 import 'custom_build_container.dart';
@@ -58,10 +59,10 @@ class CategoryFilterBar extends StatelessWidget {
     List<StudyGuide> studyGuides,
     bool isForAudio,
   ) {
-    // Debug prints
-    print('=== DEBUG: Category Filter ===');
-    print('isAudioView: $isForAudio');
-    print('Total study guides: ${studyGuides.length}');
+
+    AppLogger.log('=== DEBUG: Category Filter ===');
+    AppLogger.log('isAudioView: $isForAudio');
+    AppLogger.log('Total study guides: ${studyGuides.length}');
 
     // Use the same filtering logic as SpiCardList and SpiAudioCardList
     final filteredGuides = studyGuides.where((guide) {
@@ -79,7 +80,7 @@ class CategoryFilterBar extends StatelessWidget {
       }
     }).toList();
 
-    print('Filtered guides: ${filteredGuides.length}');
+    AppLogger.log('Filtered guides: ${filteredGuides.length}');
 
     // Extract unique categories
     final categories = filteredGuides
@@ -91,8 +92,8 @@ class CategoryFilterBar extends StatelessWidget {
     // Sort categories alphabetically
     categories.sort();
 
-    print('Categories found: $categories');
-    print('======================\n');
+    AppLogger.log('Categories found: $categories');
+    AppLogger.log('======================\n');
 
     return categories;
   }

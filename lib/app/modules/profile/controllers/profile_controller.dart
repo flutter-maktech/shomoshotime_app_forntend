@@ -3,23 +3,24 @@ import 'package:intl/intl.dart';
 import 'package:shomoshotime/app/core/user_panel_model/profile_response.dart';
 
 import '../../../all_utils/app_preference.dart';
+import '../../../core/api_services/firebase_services.dart';
 import '../../../core/api_services/network_caller.dart';
 import '../../../core/urls/urls.dart';
+import '../../../routes/app_pages.dart';
 
 class ProfileController extends GetxController {
   final RxBool isLoading = false.obs;
   final RxString errorMessage = ''.obs;
   final NetworkCaller _networkCaller = NetworkCaller();
-  final Rx<ProfileResponse?> profileResponse = Rx<ProfileResponse?>(
-    null,
-  );
+  final Rx<ProfileResponse?> profileResponse = Rx<ProfileResponse?>(null);
 
   @override
   void onInit() {
     super.onInit();
     fetchProfileData();
   }
-Future<void> fetchProfileData() async {
+
+  Future<void> fetchProfileData() async {
     try {
       isLoading.value = true;
       errorMessage.value = '';
@@ -41,17 +42,31 @@ Future<void> fetchProfileData() async {
       isLoading.value = false;
     }
   }
+
   String formatToMonthYear(String? dateString) {
-  try {
-    // Input: 14 Jan, 2026 08:42 AM
-    final DateTime date =
-        DateFormat('dd MMM, yyyy hh:mm a').parse(dateString?? '14 Jan, 2026 08:42 AM');
+    try {
+      // Input: 14 Jan, 2026 08:42 AM
+      final DateTime date = DateFormat(
+        'dd MMM, yyyy hh:mm a',
+      ).parse(dateString ?? '14 Jan, 2026 08:42 AM');
 
-    // Output: January 2026
-    return DateFormat('MMMM yyyy').format(date);
-  } catch (e) {
-    return '';
+      // Output: January 2026
+      return DateFormat('MMMM yyyy').format(date);
+    } catch (e) {
+      return '';
+    }
   }
-}
 
+  Future<void> logout() async {
+    try {
+      isLoading.value = true;
+      await FirebaseAuthService().signOut();
+      await AppPreference.clearAll();
+      Get.offAllNamed(Routes.SIGN_IN);
+    } catch (e) {
+      errorMessage.value = 'Logout failed: $e';
+    } finally {
+      isLoading.value = false;
+    }
+  }
 }

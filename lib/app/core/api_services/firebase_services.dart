@@ -1,5 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:google_sign_in/google_sign_in.dart';
+import 'package:shomoshotime/app/all_utils/log.dart';
 
 class FirebaseAuthService {
   final FirebaseAuth _auth = FirebaseAuth.instance;
@@ -38,10 +39,10 @@ class FirebaseAuthService {
 
       return null;
     } on FirebaseAuthException catch (e) {
-      print('Firebase Auth Error: ${e.code} - ${e.message}');
+      AppLogger.log('Firebase Auth Error: ${e.code} - ${e.message}');
       return null;
     } catch (e) {
-      print('Error signing in with Google: $e');
+      AppLogger.log('Error signing in with Google: $e');
       return null;
     }
   }
@@ -52,7 +53,7 @@ class FirebaseAuthService {
       await GoogleSignIn.instance.signOut();
       await _auth.signOut();
     } catch (e) {
-      print('Error signing out: $e');
+      AppLogger.log('Error signing out: $e');
     }
   }
 

@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:shomoshotime/app/all_utils/log.dart';
+import '../../home/controllers/home_controller.dart';
 import '../../../core/user_panel_model/flash_card_reponse_model.dart';
 import '../../../core/api_services/network_caller.dart';
 import '../../../core/urls/urls.dart';
@@ -32,8 +34,28 @@ class FlashCardsController extends GetxController {
       searchQuery.value = searchController.text;
     });
 
-    // Initial fetch
-    fetchFlashCards();
+    // Check if HomeController has already fetched the first page of flash cards
+    bool dataInitialized = false;
+    if (Get.isRegistered<HomeController>()) {
+      final homeController = Get.find<HomeController>();
+      final homeData = homeController.flashCardResponse.value;
+      if (homeData != null && homeData.data.isNotEmpty) {
+        allFlashCards.assignAll(homeData.data);
+        if (homeData.meta != null) {
+          currentPage = homeData.meta!.currentPage;
+          lastPage = homeData.meta!.lastPage;
+        }
+        dataInitialized = true;
+      AppLogger.log(
+          'FlashCardsController: Initialized from HomeController data',
+        );
+      }
+    }
+
+    // Initial fetch only if not initialized from HomeController
+    if (!dataInitialized) {
+      fetchFlashCards();
+    }
 
     // Scroll listener
     scrollController.addListener(_scrollListener);
@@ -90,7 +112,7 @@ class FlashCardsController extends GetxController {
         }
       }
     } catch (e) {
-      debugPrint('Error fetching flash cards: $e');
+    AppLogger.log('Error fetching flash cards: $e');
     } finally {
       isLoading.value = false;
       isLoadingMore.value = false;

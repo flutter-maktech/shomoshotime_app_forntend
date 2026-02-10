@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:shomoshotime/app/all_utils/app_preference.dart';
+import 'package:shomoshotime/app/all_utils/log.dart';
 import 'package:shomoshotime/app/core/api_services/network_caller.dart';
 import 'package:shomoshotime/app/core/urls/urls.dart';
 import 'package:shomoshotime/app/core/user_panel_model/question_set_response.dart';
@@ -179,7 +180,7 @@ class PracticeController extends GetxController {
         lastPage = responseData.meta.lastPage;
       }
     } catch (e) {
-      print('------------------An eeeerror occurred: $e');
+      AppLogger.log('------------------An eeeerror occurred: $e');
       errorText.value = 'An eeeerror occurred: $e';
     } finally {
       isloading.value = false;

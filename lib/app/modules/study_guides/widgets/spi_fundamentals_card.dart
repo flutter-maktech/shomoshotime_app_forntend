@@ -124,6 +124,9 @@ class SpiFundamentalsCard extends StatelessWidget {
                 'pdfUrl': fileUrl,
                 'title': cardTitle,
                 'contentId': contentId,
+                'lastPage': progressValue == 1.0
+                    ? 1
+                    : int.tryParse(pageNumber.split('/').first) ?? 1,
               },
             ),
           ),

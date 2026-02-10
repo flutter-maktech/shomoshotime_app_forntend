@@ -1,6 +1,8 @@
 import 'package:audioplayers/audioplayers.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:shomoshotime/app/all_utils/log.dart';
+import '../../home/controllers/home_controller.dart';
 
 import '../../../core/user_panel_model/study_guide_response_model.dart';
 import '../../../core/api_services/network_caller.dart';
@@ -14,11 +16,11 @@ class StudyGuidesController extends GetxController {
 
   void confirmFileUsage(StudyGuide guide) {
     if (guide.fileType?.toLowerCase() == 'pdf') {
-      print(
+      AppLogger.log(
         'PDF Usage Confirmed: Title = ${guide.title}, File = ${guide.file}',
       );
     } else {
-      print(
+      AppLogger.log(
         'Audio Usage Confirmed: Title = ${guide.title}, FileUrl = ${guide.fileUrl}',
       );
     }
@@ -34,14 +36,14 @@ class StudyGuidesController extends GetxController {
     // Clear search when switching tabs
     clearSearch();
 
-    print(
+    AppLogger.log(
       'Switched to ${index == 0 ? "PDF" : "Audio"} view, reset category to All',
     );
   }
 
   void onSearchChanged(String query) {
     searchQuery.value = query.trim();
-    print('Search query: $query');
+    AppLogger.log('Search query: $query');
   }
 
   void clearSearch() {
@@ -140,7 +142,7 @@ class StudyGuidesController extends GetxController {
   RxString currentAudioUrl = ''.obs;
 
   Future<void> playAudio(String url) async {
-    print('Confirming Audio usage: Source URL = $url (Using fileUrl field)');
+    AppLogger.log('Confirming Audio usage: Source URL = $url (Using fileUrl field)');
     try {
       if (currentAudioUrl.value != url) {
         await audioPlayer.stop(); // stop previous audio
@@ -156,7 +158,7 @@ class StudyGuidesController extends GetxController {
       isLoading.value = true;
       await audioPlayer.play(UrlSource(url));
     } catch (e) {
-      debugPrint('Audio play error: $e');
+      AppLogger.log('Audio play error: $e');
     } finally {
       isLoading.value = false;
     }
@@ -212,8 +214,26 @@ class StudyGuidesController extends GetxController {
 
     audioPlayer.setReleaseMode(ReleaseMode.loop);
 
-    // Initial fetch
-    fetchStudyGuides();
+    // Check if HomeController has already fetched the first page of study guides
+    bool dataInitialized = false;
+    if (Get.isRegistered<HomeController>()) {
+      final homeController = Get.find<HomeController>();
+      final homeData = homeController.studyGuideResponse.value;
+      if (homeData != null && homeData.data.isNotEmpty) {
+        allStudyGuides.assignAll(homeData.data);
+        currentPage = homeData.meta.currentPage;
+        lastPage = homeData.meta.lastPage;
+        dataInitialized = true;
+        (
+          'StudyGuidesController: Initialized from HomeController data',
+        );
+      }
+    }
+
+    // Initial fetch only if not initialized from HomeController
+    if (!dataInitialized) {
+      fetchStudyGuides();
+    }
 
     // Scroll listener for pagination
     scrollController.addListener(_scrollListener);
@@ -272,7 +292,7 @@ class StudyGuidesController extends GetxController {
         lastPage = studyGuideResponse.meta.lastPage;
       }
     } catch (e) {
-      debugPrint('Error fetching study guides: $e');
+      ('Error fetching study guides: $e');
     } finally {
       isLoading.value = false;
       isLoadingMore.value = false;

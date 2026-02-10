@@ -1,6 +1,8 @@
+import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
+import 'package:shomoshotime/app/all_utils/log.dart';
 import 'package:shomoshotime/app/data/app_colors.dart';
 import 'package:shomoshotime/app/data/app_text_styles.dart';
 import 'package:shomoshotime/app/modules/common_widgets/custom_app_bar.dart';
@@ -61,45 +63,49 @@ class SpiFundamentalsView extends GetView<SpiFundamentalsController> {
                   ),
                   child: Stack(
                     children: [
-                      SfPdfViewer.network(
-                        controller.pdfUrl.value,
-                        canShowScrollHead: false,
-                        pageSpacing: 0,
-                        canShowPageLoadingIndicator: false,
-                        pageLayoutMode: PdfPageLayoutMode.single,
-                        controller: controller.pdfViewerController,
-                        scrollDirection: PdfScrollDirection.horizontal,
-                        // In SpiFundamentalsView.dart - update the onDocumentLoaded callback
-                        onDocumentLoaded: (PdfDocumentLoadedDetails details) {
-                          // Get first page size
-                          final firstPage = details.document.pages[0];
-                          final pageWidth = firstPage.size.width;
-                          final pageHeight = firstPage.size.height;
+                      if (controller.localPdfPath.value.isNotEmpty)
+                        SfPdfViewer.file(
+                          File(controller.localPdfPath.value),
+                          canShowScrollHead: false,
+                          pageSpacing: 0,
+                          canShowPageLoadingIndicator: false,
+                          pageLayoutMode: PdfPageLayoutMode.single,
+                          controller: controller.pdfViewerController,
+                          scrollDirection: PdfScrollDirection.horizontal,
+                          // In SpiFundamentalsView.dart - update the onDocumentLoaded callback
+                          onDocumentLoaded: (PdfDocumentLoadedDetails details) {
+                            // Get first page size
+                            final firstPage = details.document.pages[0];
+                            final pageWidth = firstPage.size.width;
+                            final pageHeight = firstPage.size.height;
 
-                          // Store page size in controller
-                          controller.pageSize.value =
-                              '${pageWidth}x${pageHeight}';
+                            // Store page size in controller
+                            controller.pageSize.value =
+                                '${pageWidth}x${pageHeight}';
 
-                          // Calculate aspect ratio
-                          final aspectRatio = pageWidth / pageHeight;
-                          controller.aspectRatio.value = aspectRatio;
+                            // Calculate aspect ratio
+                            final aspectRatio = pageWidth / pageHeight;
+                            controller.aspectRatio.value = aspectRatio;
 
-                          controller.totalPages.value =
-                              details.document.pages.count;
-                          controller.isLoadingPdf.value = false;
-                          controller.pdfErrorMessage.value = '';
+                            controller.totalPages.value =
+                                details.document.pages.count;
+                            controller.isLoadingPdf.value = false;
+                            controller.pdfErrorMessage.value = '';
 
-                          // Track initial page view
-                          controller.trackInitialPageView();
-                        },
-                        onDocumentLoadFailed:
-                            (PdfDocumentLoadFailedDetails details) {
-                              controller.handlePdfError(details.description);
-                            },
-                        onPageChanged: (PdfPageChangedDetails details) {
-                          controller.page.value = details.newPageNumber;
-                        },
-                      ),
+                            // Track initial page view
+                            controller.trackInitialPageView();
+                          },
+                          onDocumentLoadFailed:
+                              (PdfDocumentLoadFailedDetails details) {
+                                controller.handlePdfError(details.description);
+                                AppLogger.log(
+                                  'PDF load failed: ${details.description}',
+                                );
+                              },
+                          onPageChanged: (PdfPageChangedDetails details) {
+                            controller.page.value = details.newPageNumber;
+                          },
+                        ),
 
                       // Loading indicator
                       if (controller.isLoadingPdf.value)

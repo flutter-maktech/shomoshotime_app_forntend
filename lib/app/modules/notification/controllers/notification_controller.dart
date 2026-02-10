@@ -1,4 +1,5 @@
 import 'package:get/get.dart';
+import 'package:shomoshotime/app/all_utils/log.dart';
 import '../../../core/api_services/pusher_services.dart';
 import '../../../core/user_panel_model/notification_model.dart';
 import 'package:shomoshotime/app/all_utils/app_preference.dart';
@@ -26,7 +27,7 @@ class NotificationController extends GetxController {
     // ✅ 2. Listen for real-time updates
     _pusherService.initPusher(
       onNotificationReceived: (data) {
-        print('🔔 PUSHER EVENT RECEIVED: $data');
+        AppLogger.log('🔔 PUSHER EVENT RECEIVED: $data');
         // Refresh notifications when admin sends one
         fetchNotifications();
       },
