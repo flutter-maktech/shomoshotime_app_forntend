@@ -6,7 +6,7 @@ plugins {
 }
 
 android {
-    namespace = "com.shomoshotime.shomoshotime"
+    namespace = "com.shomoshotime.app"
     compileSdk = flutter.compileSdkVersion
     ndkVersion = "27.0.12077973"
 
@@ -20,7 +20,7 @@ android {
     }
 
     defaultConfig {
-        applicationId = "com.shomoshotime.shomoshotime"
+        applicationId = "com.shomoshotime.app"
         minSdk = flutter.minSdkVersion
         targetSdk = flutter.targetSdkVersion
         versionCode = flutter.versionCode

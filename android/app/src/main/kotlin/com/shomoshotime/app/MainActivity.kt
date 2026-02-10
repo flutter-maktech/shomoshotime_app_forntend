@@ -1,4 +1,4 @@
-package com.shomoshotime.shomoshotime
+package com.shomoshotime.app
 
 import io.flutter.embedding.android.FlutterFragmentActivity
 
