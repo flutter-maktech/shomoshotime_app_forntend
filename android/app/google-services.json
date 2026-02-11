@@ -7,18 +7,18 @@
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:823677183565:android:1dd916ffd0fa929b2a5e04",
+        "mobilesdk_app_id": "1:823677183565:android:3e532bb597f06dc02a5e04",
         "android_client_info": {
-          "package_name": "com.shomoshotime.shomoshotime"
+          "package_name": "com.shomoshotime.app"
         }
       },
       "oauth_client": [
         {
-          "client_id": "823677183565-264p65da2qq6l4dvqe61s6tbb9r7n0ok.apps.googleusercontent.com",
+          "client_id": "823677183565-6vdukv63aqg740mdtlfsj4bcb76buh10.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
-            "package_name": "com.shomoshotime.shomoshotime",
-            "certificate_hash": "76fefedc42b8da47cfcdf26f7454eb9227f94843"
+            "package_name": "com.shomoshotime.app",
+            "certificate_hash": "fd3ad3e78fa9489b4b3ee7408b177aa7fcca3740"
           }
         },
         {
@@ -37,6 +37,14 @@
             {
               "client_id": "823677183565-cicrk6okc1fjramadss8i5rf28louvrg.apps.googleusercontent.com",
               "client_type": 3
+            },
+            {
+              "client_id": "823677183565-ikslj6qc1mi7hlqslv504rvb6kcde9p3.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.shomoshotime.app",
+                "app_store_id": "6758763057"
+              }
             }
           ]
         }

@@ -51,7 +51,7 @@ class DefaultFirebaseOptions {
 
   static const FirebaseOptions android = FirebaseOptions(
     apiKey: 'AIzaSyAiEdp36FoKxKRHzNtqZ1Y8CjUnj8CR5cE',
-    appId: '1:823677183565:android:1dd916ffd0fa929b2a5e04',
+    appId: '1:823677183565:android:3e532bb597f06dc02a5e04',
     messagingSenderId: '823677183565',
     projectId: 'shtime-57731',
     storageBucket: 'shtime-57731.firebasestorage.app',
@@ -59,13 +59,13 @@ class DefaultFirebaseOptions {
 
   static const FirebaseOptions ios = FirebaseOptions(
     apiKey: 'AIzaSyDpKJvpkAORQV0HiP6as8-W7U5juWhRjIU',
-    appId: '1:823677183565:ios:ff78dc331a7f5b252a5e04',
+    appId: '1:823677183565:ios:29c64434017e155d2a5e04',
     messagingSenderId: '823677183565',
     projectId: 'shtime-57731',
     storageBucket: 'shtime-57731.firebasestorage.app',
     androidClientId: '823677183565-264p65da2qq6l4dvqe61s6tbb9r7n0ok.apps.googleusercontent.com',
-    iosClientId: '823677183565-mte35og76ek1fat5ffq3obi5mtf5bbij.apps.googleusercontent.com',
-    iosBundleId: 'com.shomoshotime.shomoshotime',
+    iosClientId: '823677183565-m9chgafnc018aal9ljq7mkbu47ool0dr.apps.googleusercontent.com',
+    iosBundleId: 'com.shomoshotime.app',
   );
 
 }

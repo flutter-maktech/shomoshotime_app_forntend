@@ -4,15 +4,10 @@
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"
         />
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"
-        />
     
 
     <!-- For Android 10+ (API 29+) -->
     <uses-permission android:name="android.permission.ACCESS_MEDIA_LOCATION" />
-    
-    <!-- For managing external storage -->
-    <uses-permission android:name="android.permission.MANAGE_EXTERNAL_STORAGE" />
     
     <!-- To request package installation (optional) -->
     <uses-permission android:name="android.permission.REQUEST_INSTALL_PACKAGES" />
@@ -21,7 +16,10 @@
         android:label="shomoshotime"
         android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher"
-        android:requestLegacyExternalStorage="true"> <!-- Add this line -->
+        android:enableOnBackInvokedCallback="true"
+        android:hardwareAccelerated="true"
+        android:usesCleartextTraffic="true"
+        > 
         <activity
             android:name=".MainActivity"
             android:exported="true"
@@ -30,6 +28,7 @@
             android:theme="@style/LaunchTheme"
             android:configChanges="orientation|keyboardHidden|keyboard|screenSize|smallestScreenSize|locale|layoutDirection|fontScale|screenLayout|density|uiMode"
             android:hardwareAccelerated="true"
+            android:enableOnBackInvokedCallback="true"
             android:windowSoftInputMode="adjustResize">
             <!-- Specifies an Android theme to apply to this Activity as soon as
                  the Android process has started. This theme is visible to the user
