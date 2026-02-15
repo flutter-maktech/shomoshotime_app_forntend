@@ -12,6 +12,9 @@ import '../../../routes/app_pages.dart';
 import '../../custom_bottom_navigation_bar/controllers/custom_bottom_navigation_bar_controller.dart';
 
 class SignInController extends GetxController {
+    late TextEditingController emailController ;
+  late TextEditingController passwordController ;
+  late FocusNode focusNode;
   // Password visibility
   RxBool isVisible = true.obs;
 
@@ -22,8 +25,7 @@ class SignInController extends GetxController {
   // Form validation
   final formKey = GlobalKey<FormState>();
 
-  final emailController = TextEditingController();
-  final passwordController = TextEditingController();
+
 
   // API
   final NetworkCaller networkCaller = NetworkCaller();
@@ -33,7 +35,8 @@ class SignInController extends GetxController {
 
   // Sign in button action
   Future<void> signIn() async {
-    if (!formKey.currentState!.validate()) return;
+    try {
+      if (!formKey.currentState!.validate()) return;
 
     final model = SignInModel(
       email: emailController.text.trim(),
@@ -56,6 +59,9 @@ class SignInController extends GetxController {
         message: message.value,
         backgroundColor: AppColors.readColor,
       );
+    }
+    } catch (e) {
+      ////
     }
   }
 
@@ -86,7 +92,7 @@ class SignInController extends GetxController {
         final image = data['data']['image'];
 
         // Save token, user ID, and image
-        AppPreference.saveToken(token);
+        AppPreference.saveToken(token.toString());
         AppPreference.saveUserId(userId);
         if (image != null) {
           AppPreference.saveProfileImage(image);
@@ -104,7 +110,7 @@ class SignInController extends GetxController {
         return false;
       }
     } catch (e) {
-      message.value = 'Login failed: ${e.toString()}';
+      message.value = 'Login failed: invalid credential';
       return false;
     } finally {
       isLoading.value = false;
@@ -210,10 +216,35 @@ class SignInController extends GetxController {
     }
   }
 
+void onAppInitial(){
+  try {
+       emailController = TextEditingController();
+   passwordController  = TextEditingController();
+   focusNode = FocusNode();
+  } catch (e) {
+  ////
+  }
+}
+
+void onAppClose(){
+  try {
+        emailController.dispose();
+    passwordController.dispose();
+    focusNode.dispose();
+  } catch (e) {
+    ////
+  }
+}
+
+@override
+  void onInit() {
+    onAppInitial();
+    super.onInit();
+  }
+
   @override
   void onClose() {
-    emailController.dispose();
-    passwordController.dispose();
+onAppClose();
     super.onClose();
   }
 }

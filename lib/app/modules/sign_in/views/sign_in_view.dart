@@ -41,16 +41,27 @@ class SignInView extends GetView<SignInController> {
                   ),
                   CustomTextField(
                     controller: controller.emailController,
+
                     hintText: 'youremail@here',
                     topHintText: 'Email',
+                    keyboardType: TextInputType.emailAddress,
+                    textInputAction: TextInputAction.next,
                     validator: AppValidators.email,
+                    onFieldSubmitted: (_) {
+                      FocusManager.instance.primaryFocus?.unfocus();
+                      FocusScope.of(context).requestFocus(controller.focusNode);
+                      // FocusScope.of(context).nextFocus();
+                    },
                   ),
+
                   Obx(
                     () => CustomTextField(
                       controller: controller.passwordController,
+                      focusNode: controller.focusNode,
                       hintText: '**********',
                       topHintText: 'Password',
                       obscureText: controller.isVisible.value,
+                      textInputAction: TextInputAction.done,
                       suffixIcon: IconButton(
                         onPressed: controller.visibleOnTap,
                         icon: Icon(
@@ -62,6 +73,7 @@ class SignInView extends GetView<SignInController> {
                       validator: AppValidators.password,
                     ),
                   ),
+
                   SizedBox(height: 8.h),
                   Align(
                     alignment: AlignmentDirectional.centerEnd,

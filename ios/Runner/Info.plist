@@ -72,6 +72,20 @@
     <key>LSSupportsOpeningDocumentsInPlace</key>
     <true/>
 
+  <key>GIDClientID</key>
+  <string>823677183565-ikslj6qc1mi7hlqslv504rvb6kcde9p3.apps.googleusercontent.com</string>
+
+	<key>CFBundleURLTypes</key>
+	<array>
+	<dict>
+		<key>CFBundleTypeRole</key>
+		<string>Editor</string>
+		<key>CFBundleURLSchemes</key>
+		<array>
+		<string>com.googleusercontent.apps.823677183565-ikslj6qc1mi7hlqslv504rvb6kcde9p3</string>
+		</array>
+	</dict>
+	</array>
 
 </dict>
 </plist>
