@@ -10,10 +10,7 @@ class FirebaseAuthService {
 
       await googleSignIn.initialize();
 
-      final GoogleSignInAccount? googleUser = await googleSignIn.authenticate();
-      if (googleUser == null) {
-        return null;
-      }
+      final GoogleSignInAccount googleUser = await googleSignIn.authenticate();
 
       final GoogleSignInAuthentication googleAuth = googleUser.authentication;
 

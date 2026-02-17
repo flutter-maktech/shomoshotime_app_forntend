@@ -7,21 +7,21 @@ class CustomSubscription extends StatelessWidget {
   final String textTitel;
   final String textSubTitel;
   final String status;
-  final Color? StatusColor;
-  final Color? TextColor;
+  final Color? statusColor;
+  final Color? textColor;
   final double? statusWidth;
   final double? statushigth;
-  final String? Textpersan;
+  final String? textpersan;
 
   const CustomSubscription({
     super.key,
     required this.textTitel,
     required this.textSubTitel,
     required this.status,
-    this.StatusColor = AppColors.profileActive,
-    this.TextColor = AppColors.whiteColor,
+    this.statusColor = AppColors.profileActive,
+    this.textColor = AppColors.whiteColor,
     this.statusWidth,
-    this.Textpersan,
+    this.textpersan,
     this.statushigth,
   });
 
@@ -55,9 +55,9 @@ class CustomSubscription extends StatelessWidget {
               flex: 1,
               child: Column(
                 children: [
-                  if (Textpersan != null)
+                  if (textpersan != null)
                     Text(
-                      Textpersan!,
+                      textpersan!,
                       style: AppTextStyles.spaceGroteskMedium32,
                       overflow: TextOverflow.ellipsis,
                     ),
@@ -67,13 +67,13 @@ class CustomSubscription extends StatelessWidget {
                     width: statusWidth,
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(4),
-                      color: StatusColor,
+                      color: statusColor,
                     ),
                     child: Center(
                       child: Text(
                         status,
                         style: AppTextStyles.regular14.copyWith(
-                          color: TextColor,
+                          color: textColor,
                         ),
                       ),
                     ),

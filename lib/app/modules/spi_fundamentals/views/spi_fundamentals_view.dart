@@ -83,7 +83,7 @@ class SpiFundamentalsView extends GetView<SpiFundamentalsController> {
 
                                       // Store page size in controller
                                       controller.pageSize.value =
-                                          '${pageWidth}x${pageHeight}';
+                                          '${pageWidth}x$pageHeight';
 
                                       // Calculate aspect ratio
                                       final aspectRatio =

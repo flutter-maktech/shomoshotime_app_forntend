@@ -65,7 +65,7 @@ class OnboardingView extends GetView<OnboardingController> {
                             decoration: BoxDecoration(
                               color: controller.currentIndex.value == index
                                   ? AppColors.primaryColor
-                                  : Colors.grey.withOpacity(0.4),
+                                  : Colors.grey.withValues(alpha: 0.4),
                               borderRadius: BorderRadius.circular(999.r),
                             ),
                           ),

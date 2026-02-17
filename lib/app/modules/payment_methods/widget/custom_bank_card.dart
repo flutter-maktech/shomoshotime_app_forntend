@@ -58,7 +58,7 @@ class CustomBankCard extends StatelessWidget {
                 value: value,
                 groupValue: controller.selectedValue.value,
                 onChanged: (v) {
-                  controller.UpdateSelection(v!);
+                  controller.updateSelection(v!);
                 },
               ),
             ),

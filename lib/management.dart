@@ -17,7 +17,7 @@ class Management extends StatelessWidget {
         title: "Application",
         theme: themeData(),
         debugShowCheckedModeBanner: false,
-        initialRoute: AppPages.INITIAL,
+        initialRoute: AppPages.initial,
         getPages: AppPages.routes,
       ),
     );
