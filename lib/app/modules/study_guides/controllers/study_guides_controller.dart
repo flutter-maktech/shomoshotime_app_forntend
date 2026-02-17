@@ -142,12 +142,22 @@ class StudyGuidesController extends GetxController {
   RxString currentAudioUrl = ''.obs;
 
   Future<void> playAudio(String url) async {
-    AppLogger.log('Confirming Audio usage: Source URL = $url (Using fileUrl field)');
+    AppLogger.log(
+      'Confirming Audio usage: Source URL = $url (Using fileUrl field)',
+    );
     try {
       if (currentAudioUrl.value != url) {
         await audioPlayer.stop(); // stop previous audio
         position.value = Duration.zero;
         currentAudioUrl.value = url;
+
+        // Restore progress
+        final savedSeconds = await AppPreference.getAudioProgress(url);
+        if (savedSeconds > 0) {
+          position.value = Duration(seconds: savedSeconds);
+          await audioPlayer.seek(position.value);
+          AppLogger.log('Restored audio progress: $savedSeconds seconds');
+        }
       }
 
       if (isPlaying.value && currentAudioUrl.value == url) {
@@ -166,6 +176,12 @@ class StudyGuidesController extends GetxController {
 
   Future<void> pauseAudio() async {
     await audioPlayer.pause();
+    if (currentAudioUrl.value.isNotEmpty) {
+      await AppPreference.saveAudioProgress(
+        currentAudioUrl.value,
+        position.value.inSeconds,
+      );
+    }
   }
 
   Future<void> resumeAudio() async {
@@ -210,6 +226,12 @@ class StudyGuidesController extends GetxController {
 
     audioPlayer.onPositionChanged.listen((p) {
       position.value = p;
+      // Save progress every 5 seconds
+      if (p.inSeconds > 0 &&
+          p.inSeconds % 5 == 0 &&
+          currentAudioUrl.value.isNotEmpty) {
+        AppPreference.saveAudioProgress(currentAudioUrl.value, p.inSeconds);
+      }
     });
 
     audioPlayer.setReleaseMode(ReleaseMode.loop);
@@ -224,9 +246,7 @@ class StudyGuidesController extends GetxController {
         currentPage = homeData.meta.currentPage;
         lastPage = homeData.meta.lastPage;
         dataInitialized = true;
-        (
-          'StudyGuidesController: Initialized from HomeController data',
-        );
+        ('StudyGuidesController: Initialized from HomeController data',);
       }
     }
 
@@ -240,10 +260,14 @@ class StudyGuidesController extends GetxController {
   }
 
   void _scrollListener() {
-    if (scrollController.position.pixels ==
-        scrollController.position.maxScrollExtent) {
-      if (currentPage < lastPage && !isLoadingMore.value) {
-        fetchStudyGuides(page: currentPage + 1);
+    if (!scrollController.hasClients) return;
+
+    for (final position in scrollController.positions) {
+      if (position.pixels >= position.maxScrollExtent) {
+        if (currentPage < lastPage && !isLoadingMore.value) {
+          fetchStudyGuides(page: currentPage + 1);
+          break; // Trigger once
+        }
       }
     }
   }

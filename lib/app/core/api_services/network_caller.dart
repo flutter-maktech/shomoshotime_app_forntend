@@ -1,6 +1,8 @@
 import 'dart:convert';
 import 'package:http/http.dart' as http;
+import 'package:get/get.dart';
 import 'package:shomoshotime/app/all_utils/log.dart';
+import 'package:shomoshotime/app/routes/app_pages.dart';
 
 class NetworkCaller {
   // GET Request
@@ -9,7 +11,7 @@ class NetworkCaller {
       final headers = {
         "accept": "application/json",
         "Content-Type": "application/json",
-        'Authorization':"Bearer$token"
+        'Authorization': "Bearer$token",
       };
 
       if (token != null && token.isNotEmpty) {
@@ -27,6 +29,7 @@ class NetworkCaller {
       if (response.statusCode == 200) {
         return jsonDecode(response.body);
       } else if (response.statusCode == 401) {
+        _handleSessionExpired();
         throw Exception("Unauthorized: Invalid Token");
       } else {
         throw Exception("Failed to load data: ${response.statusCode}");
@@ -38,8 +41,11 @@ class NetworkCaller {
   }
 
   // POST Request
-  Future<dynamic> postRequest(String url, Map<String, dynamic> body,
-      {String? token}) async {
+  Future<dynamic> postRequest(
+    String url,
+    Map<String, dynamic> body, {
+    String? token,
+  }) async {
     try {
       final headers = {
         "accept": "application/json",
@@ -54,17 +60,24 @@ class NetworkCaller {
       AppLogger.log("Headers: $headers");
       AppLogger.log("Body: $body");
 
-      final response =
-      await http.post(Uri.parse(url), headers: headers, body: jsonEncode(body));
+      final response = await http.post(
+        Uri.parse(url),
+        headers: headers,
+        body: jsonEncode(body),
+      );
 
       AppLogger.log("POST Status: ${response.statusCode}");
       AppLogger.log("POST Response: ${response.body}");
 
       if (response.statusCode == 200 || response.statusCode == 201) {
         return jsonDecode(response.body);
+      } else if (response.statusCode == 401) {
+        _handleSessionExpired();
+        throw Exception("Unauthorized: Invalid Token");
       } else {
         throw Exception(
-            "Failed to post data:$url ${response.statusCode} - ${response.body}");
+          "Failed to post data:$url ${response.statusCode} - ${response.body}",
+        );
       }
     } catch (e) {
       AppLogger.log("POST Request Error: $e");
@@ -73,8 +86,11 @@ class NetworkCaller {
   }
 
   // PUT Request
-  Future<dynamic> patchRequest(String url, Map<String, dynamic> body,
-      {String? token}) async {
+  Future<dynamic> patchRequest(
+    String url,
+    Map<String, dynamic> body, {
+    String? token,
+  }) async {
     try {
       final headers = {
         "accept": "application/json",
@@ -89,17 +105,24 @@ class NetworkCaller {
       AppLogger.log("Headers: $headers");
       AppLogger.log("Body: $body");
 
-      final response =
-      await http.patch(Uri.parse(url), headers: headers, body: jsonEncode(body));
+      final response = await http.patch(
+        Uri.parse(url),
+        headers: headers,
+        body: jsonEncode(body),
+      );
 
       AppLogger.log("PUT Status: ${response.statusCode}");
       AppLogger.log("PUT Response: ${response.body}");
 
       if (response.statusCode == 200 || response.statusCode == 201) {
         return jsonDecode(response.body);
+      } else if (response.statusCode == 401) {
+        _handleSessionExpired();
+        throw Exception("Unauthorized: Invalid Token");
       } else {
         throw Exception(
-            "Failed to update data: ${response.statusCode} - ${response.body}");
+          "Failed to update data: ${response.statusCode} - ${response.body}",
+        );
       }
     } catch (e) {
       AppLogger.log("PUT Request Error: $e");
@@ -127,15 +150,22 @@ class NetworkCaller {
       AppLogger.log("DELETE Status: ${response.statusCode}");
       AppLogger.log("DELETE Response: ${response.body}");
 
-      if (response.statusCode != 200 && response.statusCode != 204) {
+      if (response.statusCode == 200 || response.statusCode == 204) {
+        return;
+      } else if (response.statusCode == 401) {
+        _handleSessionExpired();
+        throw Exception("Unauthorized: Invalid Token");
+      } else {
         throw Exception(
-            "Failed to delete data: ${response.statusCode} - ${response.body}");
+          "Failed to delete data: ${response.statusCode} - ${response.body}",
+        );
       }
     } catch (e) {
       AppLogger.log("DELETE Request Error: $e");
       rethrow;
     }
   }
+
   Future<String> googleSignInRequest(String url, String accessToken) async {
     try {
       final fullUrl = '$url?access_token=$accessToken';
@@ -164,6 +194,7 @@ class NetworkCaller {
     }
   }
 
-
-
+  void _handleSessionExpired() {
+    Get.offAllNamed(Routes.SESSION_EXPIRED);
+  }
 }

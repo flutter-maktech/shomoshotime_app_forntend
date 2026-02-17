@@ -23,10 +23,20 @@ class SubscriptionPlanController extends GetxController {
   // Stripe keys from backend
   RxString stripePublishableKey = ''.obs;
   RxString stripeSecretKey = ''.obs;
+  RxString currentPlanName = ''.obs;
+
   @override
   void onInit() {
     super.onInit();
     fetchSubscriptionPlans();
+    _loadCurrentPlan();
+  }
+
+  Future<void> _loadCurrentPlan() async {
+    final plan = await AppPreference.getCurrentPlan();
+    if (plan != null) {
+      currentPlanName.value = plan;
+    }
   }
 
   Future<void> fetchSubscriptionPlans() async {
@@ -350,6 +360,14 @@ class SubscriptionPlanController extends GetxController {
       );
 
       if (response['status'] == 'success' || response['success'] == true) {
+        String? currentPlan;
+        if (response['data']['plans']['current'] != null) {
+          currentPlan = response['data']['plans']['current']['name'];
+          AppLogger.log('✅ $currentPlan');
+        }
+        if (currentPlan != null) {
+          AppPreference.saveCurrentPlan(currentPlan);
+        }
         if (kDebugMode) {
           AppLogger.log('Payment info stored successfully');
         }
@@ -362,6 +380,39 @@ class SubscriptionPlanController extends GetxController {
       if (kDebugMode) {
         AppLogger.log('Error storing payment info: $e');
       }
+    }
+  }
+
+  Future<void> cancelSubscription() async {
+    try {
+      isLoading.value = true;
+      final token = await AppPreference.getToken();
+      final response = await networkCaller.postRequest(
+        Urls.cancelSubscription,
+        {},
+        token: token,
+      );
+      if (response['success'] == true) {
+        await AppPreference.clearCurrentPlan();
+        Get.offAllNamed(Routes.EXPLORE_PLAN);
+        showAppSnackBar(
+          context: _context!,
+          message: 'Subscription cancelled successfully',
+          backgroundColor: Colors.green,
+        );
+      } else {
+        showAppSnackBar(
+          context: _context!,
+          message: 'Failed to cancel subscription: ${response['message']}',
+          backgroundColor: Colors.red,
+        );
+      }
+    } catch (e) {
+      if (kDebugMode) {
+        AppLogger.log('Error cancelling subscription: $e');
+      }
+    } finally {
+      isLoading.value = false;
     }
   }
 }

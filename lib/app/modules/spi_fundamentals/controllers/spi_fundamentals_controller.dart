@@ -1,12 +1,7 @@
 import 'dart:io';
-
-import 'package:device_info_plus/device_info_plus.dart';
 import 'package:dio/dio.dart';
-import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:open_filex/open_filex.dart';
 import 'package:path_provider/path_provider.dart';
-import 'package:permission_handler/permission_handler.dart';
 import 'package:shomoshotime/app/all_utils/app_preference.dart';
 import 'package:shomoshotime/app/all_utils/log.dart';
 import 'package:syncfusion_flutter_pdfviewer/pdfviewer.dart';
@@ -23,6 +18,7 @@ class SpiFundamentalsController extends GetxController {
   RxString localPdfPath = ''.obs;
   int lastReadPage = 1;
   final NetworkCaller _networkCaller = NetworkCaller();
+  final Dio _dio = Dio();
 
   // Track previous page to avoid duplicate API calls
   int _lastTrackedPage = 0;
@@ -31,11 +27,6 @@ class SpiFundamentalsController extends GetxController {
   // Page tracking
   RxInt page = 1.obs;
   RxInt totalPages = 0.obs;
-
-  // Download state
-  RxBool isDownloading = false.obs;
-  RxDouble downloadProgress = 0.0.obs;
-  RxString downloadStatus = ''.obs;
 
   // Authentication
   RxString authToken = ''.obs;
@@ -117,6 +108,11 @@ class SpiFundamentalsController extends GetxController {
 
     try {
       final directory = await getApplicationDocumentsDirectory();
+      // Ensure the directory exists
+      if (!await directory.exists()) {
+        await directory.create(recursive: true);
+      }
+
       final fileName = url.split('/').last;
       final filePath = '${directory.path}/$fileName';
       final file = File(filePath);
@@ -126,34 +122,45 @@ class SpiFundamentalsController extends GetxController {
         localPdfPath.value = filePath;
         isLoadingPdf.value = false;
       } else {
-        AppLogger.log('Downloading PDF to local cache...');
-        downloadStatus.value = 'Downloading PDF...';
-
-        final dio = Dio();
-        final Map<String, String> headers = {
-          'Authorization': 'Bearer ${authToken.value}',
-        };
-
-        await dio.download(
-          url,
-          filePath,
-          options: Options(headers: headers),
-          onReceiveProgress: (received, total) {
-            if (total != -1) {
-              downloadProgress.value = received / total;
-            }
-          },
-        );
-
-        localPdfPath.value = filePath;
-        isLoadingPdf.value = false;
-        AppLogger.log('PDF downloaded to: $filePath');
+        AppLogger.log('PDF not found locally, starting download...');
+        await _downloadPdf(url, filePath);
       }
     } catch (e) {
       AppLogger.log('Error handling local PDF: $e');
-      // If local storage fails, we can fall back to network if needed,
-      // but the user explicitly asked to download and THEN show.
       handlePdfError('Failed to prepare PDF: $e');
+    }
+  }
+
+  Future<void> _downloadPdf(String url, String savePath) async {
+    try {
+      isLoadingPdf.value = true;
+      AppLogger.log('Downloading PDF from: $url');
+
+      await _dio.download(
+        url,
+        savePath,
+        onReceiveProgress: (received, total) {
+          if (total != -1) {
+            AppLogger.log(
+              'Download progress: ${(received / total * 100).toStringAsFixed(0)}%',
+            );
+          }
+        },
+      );
+
+      final file = File(savePath);
+      if (await file.exists()) {
+        AppLogger.log('PDF downloaded successfully to: $savePath');
+        localPdfPath.value = savePath;
+        isLoadingPdf.value = false;
+      } else {
+        throw Exception('File was not saved correctly.');
+      }
+    } catch (e) {
+      AppLogger.log('Error downloading PDF: $e');
+      handlePdfError(
+        'Failed to download PDF. Please check your internet connection.',
+      );
     }
   }
 
@@ -248,142 +255,6 @@ class SpiFundamentalsController extends GetxController {
 
   void jumpToPage(int pageNumber) {
     pdfViewerController.jumpToPage(pageNumber);
-  }
-
-  // Download PDF method
-  Future<void> downloadPdf() async {
-    try {
-      // Check storage permission
-      if (!await _requestStoragePermission()) {
-        if (Get.context != null) {
-          ScaffoldMessenger.of(Get.context!).showSnackBar(
-            SnackBar(
-              content: Text('Storage permission is required to download files'),
-              backgroundColor: Colors.red,
-              duration: Duration(seconds: 3),
-            ),
-          );
-        }
-        return;
-      }
-
-      isDownloading.value = true;
-      downloadStatus.value = 'Preparing download...';
-      downloadProgress.value = 0.0;
-
-      // Get downloads directory
-      final directory = await getDownloadsDirectory();
-      if (directory == null) {
-        throw Exception('Could not access downloads directory');
-      }
-
-      // Create file name from URL
-      final fileName = pdfUrl.value.split('/').last;
-      final filePath = '${directory.path}/$fileName';
-
-      // If file exists in local cache, copy it instead of downloading again
-      if (localPdfPath.value.isNotEmpty &&
-          await File(localPdfPath.value).exists()) {
-        downloadStatus.value = 'Saving to file manager...';
-        downloadProgress.value = 0.5;
-        await File(localPdfPath.value).copy(filePath);
-        downloadProgress.value = 1.0;
-      } else {
-        // Download using Dio
-        final dio = Dio();
-
-        // Add authorization header with your token
-        final Map<String, String> headers = {
-          'Authorization': 'Bearer ${authToken.value}',
-          'Content-Type': 'application/pdf',
-          'Accept': 'application/pdf',
-        };
-
-        await dio.download(
-          pdfUrl.value,
-          filePath,
-          onReceiveProgress: (received, total) {
-            if (total != -1) {
-              downloadProgress.value = received / total;
-              downloadStatus.value =
-                  'Downloading: ${(downloadProgress.value * 100).toStringAsFixed(1)}%';
-            }
-          },
-          options: Options(headers: headers),
-        );
-      }
-
-      // Download complete
-      isDownloading.value = false;
-      downloadStatus.value = 'Download complete!';
-
-      // Show success message
-      if (Get.context != null) {
-        ScaffoldMessenger.of(Get.context!).showSnackBar(
-          SnackBar(
-            content: Text('PDF downloaded successfully!'),
-            backgroundColor: Colors.green,
-            duration: Duration(seconds: 2),
-          ),
-        );
-      }
-
-      // Open the downloaded file
-      final result = await OpenFilex.open(filePath);
-      AppLogger.log('Open file result: ${result.message}');
-    } catch (e) {
-      isDownloading.value = false;
-      downloadStatus.value = 'Download failed: $e';
-      AppLogger.log('Download error details: $e');
-
-      // Show error message
-      if (Get.context != null) {
-        ScaffoldMessenger.of(Get.context!).showSnackBar(
-          SnackBar(
-            content: Text('Failed to download PDF. Please try again.'),
-            backgroundColor: Colors.red,
-            duration: Duration(seconds: 3),
-          ),
-        );
-      }
-    }
-  }
-
-  // Request storage permission
-  Future<bool> _requestStoragePermission() async {
-    try {
-      if (Platform.isAndroid) {
-        final androidInfo = await DeviceInfoPlugin().androidInfo;
-        final sdkInt = androidInfo.version.sdkInt;
-
-        if (sdkInt >= 33) {
-          final status = await Permission.photos.status;
-          if (!status.isGranted) {
-            final result = await Permission.photos.request();
-            return result.isGranted;
-          }
-          return true;
-        } else {
-          final status = await Permission.storage.status;
-          if (!status.isGranted) {
-            final result = await Permission.storage.request();
-            return result.isGranted;
-          }
-          return true;
-        }
-      } else if (Platform.isIOS) {
-        final status = await Permission.photos.status;
-        if (!status.isGranted) {
-          final result = await Permission.photos.request();
-          return result.isGranted;
-        }
-        return true;
-      }
-      return false;
-    } catch (e) {
-      AppLogger.log('Permission error: $e');
-      return false;
-    }
   }
 
   @override

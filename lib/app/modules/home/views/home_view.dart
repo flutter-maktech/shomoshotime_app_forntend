@@ -35,6 +35,7 @@ class HomeView extends GetView<HomeController> {
                 // Scrollable content area
                 Expanded(
                   child: SingleChildScrollView(
+                    controller: controller.scrollController,
                     child: Column(
                       children: [
                         // User welcome section with study statistics

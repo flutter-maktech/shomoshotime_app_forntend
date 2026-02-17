@@ -58,6 +58,8 @@ import '../modules/subscription_plan/bindings/subscription_plan_binding.dart';
 import '../modules/subscription_plan/views/subscription_plan_view.dart';
 import '../modules/vascular_flashcards/bindings/vascular_flashcards_binding.dart';
 import '../modules/vascular_flashcards/views/vascular_flashcards_view.dart';
+import '../modules/session_expired/bindings/session_expired_binding.dart';
+import '../modules/session_expired/views/session_expired_view.dart';
 
 part 'app_routes.dart';
 
@@ -211,6 +213,11 @@ class AppPages {
       name: _Paths.APP_GATE,
       page: () => const AppGateView(),
       binding: AppGateBinding(),
+    ),
+    GetPage(
+      name: _Paths.SESSION_EXPIRED,
+      page: () => const SessionExpiredView(),
+      binding: SessionExpiredBinding(),
     ),
   ];
 }

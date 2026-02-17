@@ -24,7 +24,11 @@ class SubscriptionPlanView extends GetView<SubscriptionPlanController> {
           child: Obx(() {
             // 🔄 Loading
             if (controller.isLoading.value) {
-              return const Center(child: CircularProgressIndicator());
+              return SizedBox(
+                height: Get.height,
+                width: Get.width,
+                child: const Center(child: CircularProgressIndicator()),
+              );
             }
 
             // ❌ Error
@@ -51,74 +55,43 @@ class SubscriptionPlanView extends GetView<SubscriptionPlanController> {
               child: Column(
                 children: List.generate(sortedSubscriptions.length, (index) {
                   final subscription = sortedSubscriptions[index];
+                  final isCurrentPlan =
+                      subscription.duration.toLowerCase() ==
+                      controller.currentPlanName.value.toLowerCase();
 
-                  return Column(
-                    children: [
-                      if (index == 0) // First item (presumably Weekly)
+                  return Container(
+                    margin: EdgeInsets.only(bottom: 20.h),
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadiusGeometry.circular(8.r),
+                      color: index.isEven ? Color(0xffC7C7C7) : Colors.black,
+                    ),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
                         Container(
-                          width: double.infinity,
-                          decoration: BoxDecoration(
-                            color: AppColors.subscriptionPlanSelectedPlan,
-                            borderRadius: BorderRadius.only(
-                              topLeft: Radius.circular(8),
-                              topRight: Radius.circular(8),
-                            ),
-                          ),
-                          child: Padding(
-                            padding: EdgeInsets.symmetric(
-                              vertical: 16.h,
-                              horizontal: 24.w,
-                            ),
-                            child: Text(
-                              "Your Selected plan",
-                              style: AppTextStyles.regular16,
-                            ),
-                          ),
-                        ),
-
-                      Container(
-                        width: double.infinity,
-                        decoration: BoxDecoration(
-                          borderRadius: _getBorderRadius(
-                            index,
-                            sortedSubscriptions.length,
-                          ),
-                          color: _getPlanColor(index),
-                        ),
-                        child: Padding(
-                          padding: EdgeInsets.all(16.sp),
+                          padding: EdgeInsets.all(10.sp),
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
                                 children: [
                                   Text(
                                     subscription.duration,
-                                    style: AppTextStyles.medium20,
-                                  ),
-                                  Obx(
-                                    () => Transform.scale(
-                                      scale: 1.6,
-                                      child: RadioMenuButton(
-                                        style: ButtonStyle(),
-                                        value: subscription.id,
-                                        groupValue:
-                                            controller.selectedValue.value,
-                                        onChanged: (value) {
-                                          controller.updateSelection(value!);
-                                        },
-                                        child: Text(""),
-                                      ),
-                                    ),
+                                    style: index.isOdd
+                                        ? AppTextStyles.medium20.apply(
+                                            color: Colors.white,
+                                          )
+                                        : AppTextStyles.medium20,
                                   ),
                                 ],
                               ),
                               SizedBox(height: 7.h),
                               CustomDolarPlan(
-                                Dolartext: "\$${subscription.price}",
-                                Daytext:
+                                color: index.isEven
+                                    ? Colors.black
+                                    : Colors.white,
+                                dolartext: "\$${subscription.price}",
+                                daytext:
                                     '/ ${_getDurationText(subscription.duration)}',
                               ),
                               SizedBox(height: 7.h),
@@ -130,7 +103,9 @@ class SubscriptionPlanView extends GetView<SubscriptionPlanController> {
                               if (index == 1)
                                 Text(
                                   "Every Month",
-                                  style: AppTextStyles.light16,
+                                  style: AppTextStyles.light16.apply(
+                                    color: Colors.white,
+                                  ),
                                 ),
                               if (index == 2)
                                 Text(
@@ -138,45 +113,96 @@ class SubscriptionPlanView extends GetView<SubscriptionPlanController> {
                                   style: AppTextStyles.light16,
                                 ),
                               SizedBox(height: 24.h),
-                              // Display features from API
-                              ...subscription.features.map((feature) {
-                                return Column(
-                                  children: [
-                                    SelectedPlanActivity(text: feature),
-                                    SizedBox(height: 9.h),
-                                  ],
-                                );
-                              }),
-                              if (index == 1) // Monthly plan (Most Popular)
-                                Column(
-                                  children: [
-                                    SizedBox(height: 24.h),
-                                    Container(
-                                      height: 35.h,
-                                      width: 124.w,
-                                      decoration: BoxDecoration(
-                                        borderRadius: BorderRadius.circular(4),
-                                        color: AppColors
-                                            .subscriptionPlanMostPapular,
-                                      ),
-                                      child: Center(
-                                        child: Text(
-                                          "Most Popular",
-                                          style: AppTextStyles.regular14
-                                              .copyWith(
-                                                color: AppColors.whiteColor,
-                                              ),
-                                        ),
-                                      ),
-                                    ),
-                                    SizedBox(height: 24.h),
-                                  ],
-                                ),
                               CustomButton(
-                                childText: "Get Started",
-                                buttonChildColor: AppColors.whiteColor,
-                                buttonColor: AppColors.blackColor,
+                                childText: isCurrentPlan
+                                    ? "Cancel Plan"
+                                    : "Get Started",
+                                buttonChildColor: index.isEven
+                                    ? AppColors.whiteColor
+                                    : AppColors.blackColor,
+                                buttonColor: index.isEven
+                                    ? AppColors.blackColor
+                                    : AppColors.whiteColor,
                                 onTap: () {
+                                  // 1️⃣ If this is current plan → Cancel
+                                  if (isCurrentPlan) {
+                                    showDialog(
+                                      context: context,
+                                      builder: (_) {
+                                        return AlertDialog(
+                                          backgroundColor: AppColors.whiteColor,
+                                          title: Text(
+                                            "Cancel Subscription",
+                                            style: AppTextStyles.medium20,
+                                          ),
+                                          content: Text(
+                                            "Are you sure you want to cancel your subscription? You will no longer have to access to the premium features.",
+                                            style: AppTextStyles.light16,
+                                          ),
+                                          actions: [
+                                            TextButton(
+                                              onPressed: () =>
+                                                  Navigator.pop(context),
+                                              child: Text(
+                                                "Cancel",
+                                                style: AppTextStyles.medium16
+                                                    .apply(
+                                                      color:
+                                                          AppColors.blackColor,
+                                                    ),
+                                              ),
+                                            ),
+                                            TextButton(
+                                              onPressed: () {
+                                                controller.cancelSubscription();
+                                                Navigator.pop(context);
+                                              },
+                                              child: Text(
+                                                "Confirm",
+                                                style: AppTextStyles.medium16
+                                                    .apply(
+                                                      color:
+                                                          AppColors.readColor,
+                                                    ),
+                                              ),
+                                            ),
+                                          ],
+                                        );
+                                      },
+                                    );
+                                    return;
+                                  }
+
+                                  // 2️⃣ If user already has ANY active plan
+                                  if (controller
+                                      .currentPlanName
+                                      .value
+                                      .isNotEmpty) {
+                                    showDialog(
+                                      context: context,
+                                      builder: (_) {
+                                        return AlertDialog(
+                                          backgroundColor: AppColors.whiteColor,
+                                          title: const Text(
+                                            'You already have a subscription',
+                                          ),
+                                          content: const Text(
+                                            'You cannot subscribe to another plan until you cancel your current subscription.',
+                                          ),
+                                          actions: [
+                                            TextButton(
+                                              onPressed: () =>
+                                                  Navigator.pop(context),
+                                              child: const Text('OK'),
+                                            ),
+                                          ],
+                                        );
+                                      },
+                                    );
+                                    return;
+                                  }
+
+                                  // 3️⃣ Otherwise → Allow payment
                                   controller.makeSimplePayment(
                                     subscription.price.toDouble(),
                                     subscription.id,
@@ -187,10 +213,44 @@ class SubscriptionPlanView extends GetView<SubscriptionPlanController> {
                             ],
                           ),
                         ),
-                      ),
-                      if (index < sortedSubscriptions.length - 1)
-                        SizedBox(height: 24.h),
-                    ],
+                        SizedBox(height: 16.h),
+                        // Display features from API
+                        Container(
+                          padding: EdgeInsets.only(
+                            bottom: index < sortedSubscriptions.length - 1
+                                ? 5.h
+                                : 0,
+                            top: 15.h,
+                          ),
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.only(
+                              bottomLeft: Radius.circular(8.r),
+                              bottomRight: Radius.circular(8.r),
+                            ),
+                            color: index.isEven
+                                ? Color(0xffe8e6e6)
+                                : Color(0xffe5cf87),
+                          ),
+                          child: Padding(
+                            padding: EdgeInsets.all(10.r),
+                            child: Column(
+                              children: subscription.features.map((feature) {
+                                return Column(
+                                  children: [
+                                    SelectedPlanActivity(text: feature),
+                                    Divider(
+                                      color: Colors.black,
+                                      thickness: 0.5,
+                                    ),
+                                    SizedBox(height: 9.h),
+                                  ],
+                                );
+                              }).toList(),
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
                   );
                 }),
               ),
@@ -199,31 +259,6 @@ class SubscriptionPlanView extends GetView<SubscriptionPlanController> {
         ),
       ),
     );
-  }
-
-  // Helper method to get border radius based on index
-  BorderRadius _getBorderRadius(int index, int totalItems) {
-    if (index == 0) {
-      return BorderRadius.only(
-        bottomLeft: Radius.circular(8),
-        bottomRight: Radius.circular(8),
-      );
-    }
-    return BorderRadius.circular(8);
-  }
-
-  // Helper method to get plan color based on index
-  Color _getPlanColor(int index) {
-    switch (index) {
-      case 0:
-        return AppColors.subscriptionPlanWeekly;
-      case 1:
-        return AppColors.subscriptionPlanMonthly;
-      case 2:
-        return AppColors.subscriptionPlanAnnually;
-      default:
-        return AppColors.subscriptionPlanWeekly;
-    }
   }
 
   // Helper method to format duration text

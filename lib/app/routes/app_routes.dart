@@ -34,6 +34,7 @@ abstract class Routes {
   static const SPLASH = _Paths.SPLASH;
   static const EXPLORE_PLAN = _Paths.EXPLORE_PLAN;
   static const APP_GATE = _Paths.APP_GATE;
+  static const SESSION_EXPIRED = _Paths.SESSION_EXPIRED;
 }
 
 abstract class _Paths {
@@ -68,4 +69,5 @@ abstract class _Paths {
   static const SPLASH = '/splash';
   static const EXPLORE_PLAN = '/explore-plan';
   static const APP_GATE = '/app-gate';
+  static const SESSION_EXPIRED = '/session-expired';
 }

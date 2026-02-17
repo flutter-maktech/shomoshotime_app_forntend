@@ -40,6 +40,16 @@ class SpiPracticeBankQusController extends GetxController {
         token: token,
       );
       questionListResponse.value = QuestionListResponse.fromJson(response);
+
+      // Restore progress
+      if (questionListResponse.value != null &&
+          questionListResponse.value!.data.isNotEmpty) {
+        final savedIndex = await AppPreference.getQuestionProgress(id);
+        if (savedIndex > 0 &&
+            savedIndex < questionListResponse.value!.data.length) {
+          currentQuestionIndex.value = savedIndex;
+        }
+      }
     } catch (e) {
       errorText.value = 'An error occurred: $e';
     } finally {
@@ -118,6 +128,12 @@ class SpiPracticeBankQusController extends GetxController {
       // ------------------------------
       if (currentQuestionIndex.value == questionList.length - 1) {
         isFinished.value = true;
+        // Reset progress on completion
+        final args = Get.arguments as Map<String, dynamic>?;
+        final int questionSetId = args?['id'] ?? 0;
+        if (questionSetId != 0) {
+          AppPreference.saveQuestionProgress(questionSetId, 0);
+        }
       }
     } catch (e) {
       errorText.value = e.toString();
@@ -132,6 +148,16 @@ class SpiPracticeBankQusController extends GetxController {
       currentQuestionIndex.value++;
       selectedIndex.value = -1;
       showResult.value = false;
+
+      // Save progress
+      final args = Get.arguments as Map<String, dynamic>?;
+      final int questionSetId = args?['id'] ?? 0;
+      if (questionSetId != 0) {
+        AppPreference.saveQuestionProgress(
+          questionSetId,
+          currentQuestionIndex.value,
+        );
+      }
     }
   }
 }

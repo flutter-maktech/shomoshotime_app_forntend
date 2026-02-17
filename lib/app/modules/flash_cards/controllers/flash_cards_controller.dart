@@ -46,7 +46,7 @@ class FlashCardsController extends GetxController {
           lastPage = homeData.meta!.lastPage;
         }
         dataInitialized = true;
-      AppLogger.log(
+        AppLogger.log(
           'FlashCardsController: Initialized from HomeController data',
         );
       }
@@ -62,10 +62,14 @@ class FlashCardsController extends GetxController {
   }
 
   void _scrollListener() {
-    if (scrollController.position.pixels ==
-        scrollController.position.maxScrollExtent) {
-      if (currentPage < lastPage && !isLoadingMore.value) {
-        fetchFlashCards(page: currentPage + 1);
+    if (!scrollController.hasClients) return;
+
+    for (final position in scrollController.positions) {
+      if (position.pixels >= position.maxScrollExtent) {
+        if (currentPage < lastPage && !isLoadingMore.value) {
+          fetchFlashCards(page: currentPage + 1);
+          break; // Trigger once
+        }
       }
     }
   }
@@ -112,7 +116,7 @@ class FlashCardsController extends GetxController {
         }
       }
     } catch (e) {
-    AppLogger.log('Error fetching flash cards: $e');
+      AppLogger.log('Error fetching flash cards: $e');
     } finally {
       isLoading.value = false;
       isLoadingMore.value = false;

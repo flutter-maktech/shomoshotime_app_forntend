@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
 import 'package:shomoshotime/app/all_utils/app_preference.dart';
+import 'package:shomoshotime/app/all_utils/log.dart';
 import 'package:shomoshotime/app/core/api_services/firebase_services.dart';
 import 'package:shomoshotime/app/core/api_services/network_caller.dart';
 import 'package:shomoshotime/app/data/app_colors.dart';
@@ -12,8 +13,8 @@ import '../../../routes/app_pages.dart';
 import '../../custom_bottom_navigation_bar/controllers/custom_bottom_navigation_bar_controller.dart';
 
 class SignInController extends GetxController {
-    late TextEditingController emailController ;
-  late TextEditingController passwordController ;
+  late TextEditingController emailController;
+  late TextEditingController passwordController;
   late FocusNode focusNode;
   // Password visibility
   RxBool isVisible = true.obs;
@@ -24,8 +25,6 @@ class SignInController extends GetxController {
 
   // Form validation
   final formKey = GlobalKey<FormState>();
-
-
 
   // API
   final NetworkCaller networkCaller = NetworkCaller();
@@ -38,28 +37,28 @@ class SignInController extends GetxController {
     try {
       if (!formKey.currentState!.validate()) return;
 
-    final model = SignInModel(
-      email: emailController.text.trim(),
-      password: passwordController.text.trim(),
-      fcmToken: "dummy_fcm_token",
-    );
-
-    final success = await loginUser(model);
-
-    if (success) {
-      showAppSnackBar(
-        context: Get.context!,
-        message: message.value,
-        backgroundColor: AppColors.greenColor,
+      final model = SignInModel(
+        email: emailController.text.trim(),
+        password: passwordController.text.trim(),
+        fcmToken: "dummy_fcm_token",
       );
-      Get.offAllNamed(Routes.APP_GATE);
-    } else {
-      showAppSnackBar(
-        context: Get.context!,
-        message: message.value,
-        backgroundColor: AppColors.readColor,
-      );
-    }
+
+      final success = await loginUser(model);
+
+      if (success) {
+        showAppSnackBar(
+          context: Get.context!,
+          message: message.value,
+          backgroundColor: AppColors.greenColor,
+        );
+        Get.offAllNamed(Routes.APP_GATE);
+      } else {
+        showAppSnackBar(
+          context: Get.context!,
+          message: message.value,
+          backgroundColor: AppColors.readColor,
+        );
+      }
     } catch (e) {
       ////
     }
@@ -90,10 +89,18 @@ class SignInController extends GetxController {
         final token = data['data']['token'];
         final userId = data['data']['user_id'];
         final image = data['data']['image'];
+        String? currentPlan;
+        if (data['data']['plans']['current'] != null) {
+          currentPlan = data['data']['plans']['current']['name'];
+          AppLogger.log('✅ $currentPlan');
+        }
 
         // Save token, user ID, and image
         AppPreference.saveToken(token.toString());
         AppPreference.saveUserId(userId);
+        if (currentPlan != null) {
+          AppPreference.saveCurrentPlan(currentPlan);
+        }
         if (image != null) {
           AppPreference.saveProfileImage(image);
           if (Get.isRegistered<CustomBottomNavigationBarController>()) {
@@ -110,7 +117,8 @@ class SignInController extends GetxController {
         return false;
       }
     } catch (e) {
-      message.value = 'Login failed: invalid credential';
+      message.value = 'Login failed: $e';
+      AppLogger.log('❌ $e');
       return false;
     } finally {
       isLoading.value = false;
@@ -191,10 +199,18 @@ class SignInController extends GetxController {
         final token = data['data']['token'];
         final userId = data['data']['user_id'];
         final image = data['data']['image'];
+        String? currentPlan;
+        if (data['data']['plans']['current'] != null) {
+          currentPlan = data['data']['plans']['current']['name'];
+          AppLogger.log('✅ $currentPlan');
+        }
 
         // Save token, user ID, and image
         AppPreference.saveToken(token);
         AppPreference.saveUserId(userId);
+        if (currentPlan != null) {
+          AppPreference.saveCurrentPlan(currentPlan);
+        }
         if (image != null) {
           AppPreference.saveProfileImage(image);
           if (Get.isRegistered<CustomBottomNavigationBarController>()) {
@@ -216,27 +232,27 @@ class SignInController extends GetxController {
     }
   }
 
-void onAppInitial(){
-  try {
-       emailController = TextEditingController();
-   passwordController  = TextEditingController();
-   focusNode = FocusNode();
-  } catch (e) {
-  ////
+  void onAppInitial() {
+    try {
+      emailController = TextEditingController();
+      passwordController = TextEditingController();
+      focusNode = FocusNode();
+    } catch (e) {
+      ////
+    }
   }
-}
 
-void onAppClose(){
-  try {
-        emailController.dispose();
-    passwordController.dispose();
-    focusNode.dispose();
-  } catch (e) {
-    ////
+  void onAppClose() {
+    try {
+      emailController.dispose();
+      passwordController.dispose();
+      focusNode.dispose();
+    } catch (e) {
+      ////
+    }
   }
-}
 
-@override
+  @override
   void onInit() {
     onAppInitial();
     super.onInit();
@@ -244,7 +260,7 @@ void onAppClose(){
 
   @override
   void onClose() {
-onAppClose();
+    onAppClose();
     super.onClose();
   }
 }

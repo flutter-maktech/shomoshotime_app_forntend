@@ -83,7 +83,6 @@ class PrimaryAppBar extends StatelessWidget {
                             Get.find<CustomBottomNavigationBarController>();
                         final imageUrl = navCtrl.profileImageUrl.value;
                         if (imageUrl.isNotEmpty) {
-                          AppLogger.log('✅✅$imageUrl');
                           return Image.network(
                             imageUrl,
                             fit: BoxFit.cover,

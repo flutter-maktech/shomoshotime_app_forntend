@@ -2,7 +2,6 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
-import 'package:shomoshotime/app/all_utils/log.dart';
 import 'package:shomoshotime/app/data/app_colors.dart';
 import 'package:shomoshotime/app/data/app_text_styles.dart';
 import 'package:shomoshotime/app/modules/common_widgets/custom_app_bar.dart';
@@ -63,101 +62,124 @@ class SpiFundamentalsView extends GetView<SpiFundamentalsController> {
                   ),
                   child: Stack(
                     children: [
-                      if (controller.localPdfPath.value.isNotEmpty)
-                        SfPdfViewer.file(
-                          File(controller.localPdfPath.value),
-                          canShowScrollHead: false,
-                          pageSpacing: 0,
-                          canShowPageLoadingIndicator: false,
-                          pageLayoutMode: PdfPageLayoutMode.single,
-                          controller: controller.pdfViewerController,
-                          scrollDirection: PdfScrollDirection.horizontal,
-                          // In SpiFundamentalsView.dart - update the onDocumentLoaded callback
-                          onDocumentLoaded: (PdfDocumentLoadedDetails details) {
-                            // Get first page size
-                            final firstPage = details.document.pages[0];
-                            final pageWidth = firstPage.size.width;
-                            final pageHeight = firstPage.size.height;
+                      // PDF Viewer
+                      Obx(
+                        () => controller.localPdfPath.value.isNotEmpty
+                            ? SfPdfViewer.file(
+                                File(controller.localPdfPath.value),
+                                canShowScrollHead: false,
+                                pageSpacing: 0,
+                                canShowPageLoadingIndicator: false,
+                                pageLayoutMode: PdfPageLayoutMode.single,
+                                controller: controller.pdfViewerController,
+                                scrollDirection: PdfScrollDirection.horizontal,
+                                onDocumentLoaded:
+                                    (PdfDocumentLoadedDetails details) {
+                                      // Get first page size
+                                      final firstPage =
+                                          details.document.pages[0];
+                                      final pageWidth = firstPage.size.width;
+                                      final pageHeight = firstPage.size.height;
 
-                            // Store page size in controller
-                            controller.pageSize.value =
-                                '${pageWidth}x${pageHeight}';
+                                      // Store page size in controller
+                                      controller.pageSize.value =
+                                          '${pageWidth}x${pageHeight}';
 
-                            // Calculate aspect ratio
-                            final aspectRatio = pageWidth / pageHeight;
-                            controller.aspectRatio.value = aspectRatio;
+                                      // Calculate aspect ratio
+                                      final aspectRatio =
+                                          pageWidth / pageHeight;
+                                      controller.aspectRatio.value =
+                                          aspectRatio;
 
-                            controller.totalPages.value =
-                                details.document.pages.count;
-                            controller.isLoadingPdf.value = false;
-                            controller.pdfErrorMessage.value = '';
+                                      controller.totalPages.value =
+                                          details.document.pages.count;
+                                      controller.isLoadingPdf.value = false;
+                                      controller.pdfErrorMessage.value = '';
 
-                            // Track initial page view
-                            controller.trackInitialPageView();
-                          },
-                          onDocumentLoadFailed:
-                              (PdfDocumentLoadFailedDetails details) {
-                                controller.handlePdfError(details.description);
-                                AppLogger.log(
-                                  'PDF load failed: ${details.description}',
-                                );
-                              },
-                          onPageChanged: (PdfPageChangedDetails details) {
-                            controller.page.value = details.newPageNumber;
-                          },
-                        ),
+                                      // Track initial page view
+                                      controller.trackInitialPageView();
+                                    },
+                                onDocumentLoadFailed:
+                                    (PdfDocumentLoadFailedDetails details) {
+                                      controller.handlePdfError(
+                                        details.description,
+                                      );
+                                    },
+                                onPageChanged: (PdfPageChangedDetails details) {
+                                  controller.page.value = details.newPageNumber;
+                                },
+                              )
+                            : const SizedBox.shrink(),
+                      ),
 
-                      // Loading indicator
-                      if (controller.isLoadingPdf.value)
-                        Container(
-                          color: AppColors.appBarBack,
-                          child: Center(
-                            child: CircularProgressIndicator(
-                              color: AppColors.primaryColor,
-                            ),
-                          ),
-                        ),
+                      // Loading indicator - persistent until PDF is fully loaded or local path is empty
+                      Obx(
+                        () => controller.isLoadingPdf.value
+                            ? Container(
+                                color: AppColors.appBarBack,
+                                child: Center(
+                                  child: Column(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: [
+                                      CircularProgressIndicator(
+                                        color: AppColors.primaryColor,
+                                      ),
+                                      SizedBox(height: 16),
+                                      Text(
+                                        'Preparing Study Material...',
+                                        style: AppTextStyles.regular14,
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              )
+                            : const SizedBox.shrink(),
+                      ),
 
                       // Error message
-                      if (controller.pdfErrorMessage.value.isNotEmpty)
-                        Container(
-                          color: AppColors.appBarBack,
-                          padding: EdgeInsets.all(20),
-                          child: Center(
-                            child: Column(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                Icon(
-                                  Icons.error_outline,
-                                  color: Colors.red,
-                                  size: 48,
-                                ),
-                                SizedBox(height: 16),
-                                Text(
-                                  'Failed to load PDF',
-                                  style: AppTextStyles.bold18,
-                                ),
-                                SizedBox(height: 8),
-                                Text(
-                                  controller.pdfErrorMessage.value,
-                                  textAlign: TextAlign.center,
-                                  style: AppTextStyles.regular14.copyWith(
-                                    color: Colors.grey[600],
+                      Obx(
+                        () => controller.pdfErrorMessage.value.isNotEmpty
+                            ? Container(
+                                color: AppColors.appBarBack,
+                                padding: EdgeInsets.all(20),
+                                child: Center(
+                                  child: Column(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: [
+                                      Icon(
+                                        Icons.error_outline,
+                                        color: Colors.red,
+                                        size: 48,
+                                      ),
+                                      SizedBox(height: 16),
+                                      Text(
+                                        'Failed to load PDF',
+                                        style: AppTextStyles.bold18,
+                                      ),
+                                      SizedBox(height: 8),
+                                      Text(
+                                        controller.pdfErrorMessage.value,
+                                        textAlign: TextAlign.center,
+                                        style: AppTextStyles.regular14.copyWith(
+                                          color: Colors.grey[600],
+                                        ),
+                                      ),
+                                      SizedBox(height: 24),
+                                      ElevatedButton(
+                                        onPressed: controller.retryPdfLoad,
+                                        style: ElevatedButton.styleFrom(
+                                          backgroundColor:
+                                              AppColors.primaryColor,
+                                          foregroundColor: Colors.white,
+                                        ),
+                                        child: Text('Retry'),
+                                      ),
+                                    ],
                                   ),
                                 ),
-                                SizedBox(height: 24),
-                                ElevatedButton(
-                                  onPressed: controller.retryPdfLoad,
-                                  style: ElevatedButton.styleFrom(
-                                    backgroundColor: AppColors.primaryColor,
-                                    foregroundColor: Colors.white,
-                                  ),
-                                  child: Text('Retry'),
-                                ),
-                              ],
-                            ),
-                          ),
-                        ),
+                              )
+                            : const SizedBox.shrink(),
+                      ),
                     ],
                   ),
                 ),
@@ -202,49 +224,6 @@ class SpiFundamentalsView extends GetView<SpiFundamentalsController> {
                     ),
                   ),
                 ],
-              ),
-            ),
-          ),
-
-          // Download button with progress indicator
-          SliverToBoxAdapter(
-            child: Obx(
-              () => Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 16),
-                child: Column(
-                  children: [
-                    if (controller.isDownloading.value)
-                      Column(
-                        children: [
-                          LinearProgressIndicator(
-                            value: controller.downloadProgress.value,
-                            backgroundColor: Colors.grey[200],
-                            valueColor: AlwaysStoppedAnimation<Color>(
-                              Colors.blue,
-                            ),
-                          ),
-                          SizedBox(height: 8),
-                          Text(
-                            controller.downloadStatus.value,
-                            style: TextStyle(fontSize: 12, color: Colors.grey),
-                          ),
-                          SizedBox(height: 8),
-                        ],
-                      ),
-
-                    CustomButton(
-                      childText: controller.isDownloading.value
-                          ? 'Downloading...'
-                          : 'Download PDF',
-                      onTap: controller.isDownloading.value
-                          ? null
-                          : controller.downloadPdf,
-                      buttonColor: controller.isDownloading.value
-                          ? AppColors.greenColor
-                          : AppColors.lightYellow,
-                    ),
-                  ],
-                ),
               ),
             ),
           ),

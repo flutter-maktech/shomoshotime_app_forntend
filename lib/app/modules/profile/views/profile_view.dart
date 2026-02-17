@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
-import 'package:shomoshotime/app/all_utils/log.dart';
 import 'package:shomoshotime/app/data/app_colors.dart';
 import 'package:shomoshotime/app/data/app_text_styles.dart';
 import 'package:shomoshotime/app/data/image_path.dart';
@@ -27,7 +26,11 @@ class ProfileView extends GetView<ProfileController> {
           padding: EdgeInsets.all(16.sp),
           child: Obx(() {
             if (controller.isLoading.value) {
-              return const Center(child: CircularProgressIndicator());
+              return SizedBox(
+                height: Get.height,
+                width: Get.width,
+                child: const Center(child: CircularProgressIndicator()),
+              );
             }
             if (controller.errorMessage.value.isNotEmpty) {
               return Center(
@@ -43,7 +46,6 @@ class ProfileView extends GetView<ProfileController> {
             final memberSince = controller.formatToMonthYear(
               profileData?.createdAt,
             );
-            AppLogger.log('---------✅user image: $userImage');
 
             return Column(
               children: [
@@ -207,108 +209,4 @@ class ProfileView extends GetView<ProfileController> {
       ),
     );
   }
-
-  // Container _examHistoryContainer() {
-  //   return Container(
-  //     width: double.infinity,
-  //     decoration: BoxDecoration(
-  //       color: AppColors.profileGray,
-  //       borderRadius: BorderRadius.circular(8.r),
-  //     ),
-  //     child: Padding(
-  //       padding: EdgeInsets.all(16.sp),
-  //       child: Column(
-  //         crossAxisAlignment: CrossAxisAlignment.start,
-  //         children: [
-  //           Text("Exam History", style: AppTextStyles.spaceGroteskMedium20),
-  //           SizedBox(height: 4.h),
-  //           Text(
-  //             "Your recent mock exam results",
-  //             style: AppTextStyles.regular14,
-  //           ),
-  //           SizedBox(height: 24.h),
-  //           CustomSubscription(
-  //             statushigth: 23.h,
-  //             Textpersan: "82%",
-  //             statusWidth: 64.w,
-  //             textTitel: "Exam History",
-  //             textSubTitel: "Feb 10, 2025",
-  //             status: "Passed",
-  //             StatusColor: AppColors.greenColor,
-  //             TextColor: AppColors.whiteColor,
-  //           ),
-  //           SizedBox(height: 16),
-  //           CustomSubscription(
-  //             statushigth: 23.h,
-  //             Textpersan: "82%",
-  //             statusWidth: 64.w,
-  //             textTitel: "Exam History",
-  //             textSubTitel: "Feb 10, 2025",
-  //             status: "Passed",
-  //             StatusColor: AppColors.greenColor,
-  //             TextColor: AppColors.whiteColor,
-  //           ),
-  //           SizedBox(height: 16),
-  //           CustomSubscription(
-  //             statushigth: 23.h,
-  //             Textpersan: "82%",
-  //             statusWidth: 64.w,
-  //             textTitel: "Exam History",
-  //             textSubTitel: "Feb 10, 2025",
-  //             status: "Failed",
-  //             StatusColor: AppColors.readColor,
-  //             TextColor: AppColors.whiteColor,
-  //           ),
-  //         ],
-  //       ),
-  //     ),
-  //   );
-  // }
-
-  // Container _buildContainer() {
-  //   return Container(
-  //     width: double.infinity,
-  //     decoration: BoxDecoration(
-  //       color: AppColors.profileGray,
-  //       borderRadius: BorderRadius.circular(8.r),
-  //     ),
-  //     child: Padding(
-  //       padding: EdgeInsets.all(16.sp),
-  //       child: Column(
-  //         crossAxisAlignment: CrossAxisAlignment.start,
-  //         children: [
-  //           Text(
-  //             "Subscription Details",
-  //             style: AppTextStyles.spaceGroteskMedium20,
-  //           ),
-  //           SizedBox(height: 4.h),
-  //           Text(
-  //             "Manage your plan and billing",
-  //             style: AppTextStyles.regular14,
-  //           ),
-  //           SizedBox(height: 16.h),
-  //           CustomSubscription(
-  //             statushigth: 28.h,
-  //             statusWidth: 59.w,
-  //             textTitel: "Current Plan",
-  //             textSubTitel: "Monthly",
-  //             status: "Active",
-  //             StatusColor: AppColors.profileActive,
-  //             TextColor: AppColors.whiteColor,
-  //           ),
-  //           SizedBox(height: 16.h),
-  //           CustomSubscription(
-  //             statushigth: 28.h,
-  //             statusWidth: 74.w,
-  //             textTitel: "Renewal Date",
-  //             textSubTitel: "March 15, 2025",
-  //             status: "Upgrade",
-  //             StatusColor: AppColors.profileGray,
-  //             TextColor: AppColors.profileBlack,
-  //           ),
-  //         ],
-  //       ),
-  //     ),
-  //   );
-  // }
 }

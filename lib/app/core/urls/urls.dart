@@ -31,4 +31,5 @@ class Urls {
   static String googleLogin = "$baseUrs/auth/google-login";
   static String subscriptionCheck = "$baseUrs/user/subscription-check";
   static String stripeKeys = "$baseUrs/user/stripe-keys";
+  static String cancelSubscription = "$baseUrs/user/subscription/cancel";
 }

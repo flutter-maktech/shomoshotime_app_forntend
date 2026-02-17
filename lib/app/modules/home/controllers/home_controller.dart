@@ -1,3 +1,4 @@
+import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:shomoshotime/app/all_utils/app_preference.dart';
 import 'package:shomoshotime/app/core/user_panel_model/flash_card_reponse_model.dart';
@@ -18,6 +19,7 @@ class HomeController extends GetxController {
       Rx<UserAnalyticsResponse?>(null);
   final RxBool isLoading = false.obs;
   final RxString errorMessage = ''.obs;
+  final ScrollController scrollController = ScrollController();
 
   @override
   void onInit() {
@@ -120,4 +122,10 @@ class HomeController extends GetxController {
       userAnalyticsResponse.value != null
       ? [userAnalyticsResponse.value!.data]
       : [];
+
+  @override
+  void onClose() {
+    scrollController.dispose();
+    super.onClose();
+  }
 }

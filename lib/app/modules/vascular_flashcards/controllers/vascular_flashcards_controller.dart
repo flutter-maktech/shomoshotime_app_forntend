@@ -57,6 +57,26 @@ class FlashcardsSetController extends GetxController {
       );
 
       flashCardSetResponse.value = FlashCardSetResponse.fromJson(response);
+
+      // Restore progress
+      if (flashCardSetResponse.value != null &&
+          flashCardSetResponse.value!.data.isNotEmpty) {
+        final savedIndex = await AppPreference.getFlashcardProgress(
+          contentId.value,
+        );
+        if (savedIndex > 0 &&
+            savedIndex < flashCardSetResponse.value!.data.length) {
+          currentIndex.value = savedIndex;
+          _previousPageIndex = savedIndex;
+          // Use jumpToPage instead of animateToPage during init to avoid visual scroll
+          Future.delayed(const Duration(milliseconds: 100), () {
+            if (pageController.hasClients) {
+              pageController.jumpToPage(savedIndex);
+            }
+          });
+          AppLogger.log('Restored flashcard progress: index $savedIndex');
+        }
+      }
     } catch (e) {
       errorMessage.value = 'Failed to load flashcards: $e';
       AppLogger.log('Error fetching flashcards: $e');
@@ -70,10 +90,7 @@ class FlashcardsSetController extends GetxController {
     try {
       final token = await AppPreference.getToken();
 
-      final body = {
-        "content_id": contentId.value,
-        "card_id": cardId,
-      };
+      final body = {"content_id": contentId.value, "card_id": cardId};
 
       await _networkCaller.postRequest(Urls.nextFlashCard, body, token: token);
     } catch (e) {
@@ -91,6 +108,9 @@ class FlashcardsSetController extends GetxController {
     // Update previous index for next button logic
     _previousPageIndex = index;
     currentIndex.value = index;
+
+    // Save progress
+    AppPreference.saveFlashcardProgress(contentId.value, index);
   }
 
   /// Set index programmatically (Back/Next buttons)

@@ -35,4 +35,6 @@ class ImagePath {
   static const String spiPracticeBank= '$baseUrl/spi_practice_bank.png';
   static const String incorrect= '$baseUrl/incorrect.png';
   static const String notificationImage= '$baseUrl/notification_image.png';
+  static const String brainIcon= '$baseUrl/brain_icon.png';
+  static const String cardIcon= '$baseUrl/card_icon.png';
 }
