@@ -79,7 +79,7 @@ class SignInView extends GetView<SignInController> {
                     alignment: AlignmentDirectional.centerEnd,
                     child: InkWell(
                       onTap: () {
-                        Get.toNamed(Routes.FORGOT_ENTER_EMAIL);
+                        Get.toNamed(Routes.forgotEnterEmail);
                       },
                       child: Text(
                         'Forgot password?',
@@ -146,7 +146,7 @@ class SignInView extends GetView<SignInController> {
                     firstText: "Don't have any account?",
                     secondText: 'Sign Up',
                     onTap: () {
-                      Get.toNamed(Routes.SIGN_UP);
+                      Get.toNamed(Routes.signUp);
                     },
                   ),
                 ],

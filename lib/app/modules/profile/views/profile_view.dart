@@ -19,7 +19,7 @@ class ProfileView extends GetView<ProfileController> {
       appBar: CustomAppBar(
         title: 'My Profile',
         subTitle: "Manage your account and track your progress",
-        onTap: () => Get.toNamed(Routes.CUSTOM_BOTTOM_NAVIGATION_BAR),
+        onTap: () => Get.toNamed(Routes.customBottomNavigationBar),
       ),
       body: SingleChildScrollView(
         child: Padding(
@@ -46,6 +46,7 @@ class ProfileView extends GetView<ProfileController> {
             final memberSince = controller.formatToMonthYear(
               profileData?.createdAt,
             );
+            final plan = controller.currentPlanName.value;
 
             return Column(
               children: [
@@ -140,18 +141,91 @@ class ProfileView extends GetView<ProfileController> {
                               width: 20.w,
                             ),
                             SizedBox(width: 8.w),
-                            Text(
-                              "Monthly Plan",
-                              style: AppTextStyles.regular12,
-                            ),
+                            Text("$plan Plan", style: AppTextStyles.regular12),
                           ],
                         ),
+                        SizedBox(height: 12.h),
+                        CustomProfileDistyle(
+                          icon: Icons.description,
+                          text: "Terms & Conditions",
+                          shouldBold: true,
+                          onTap: () => Get.toNamed(Routes.termsAndConditions),
+                        ),
+                        SizedBox(height: 12.h),
+                        CustomProfileDistyle(
+                          icon: Icons.article,
+                          text: "Privacy Policy",
+                          shouldBold: true,
+                          onTap: () => Get.toNamed(Routes.privacyPolicy),
+                        ),
+                        SizedBox(height: 12.h),
+                        CustomProfileDistyle(
+                          icon: Icons.info_outline,
+                          text: "About Us",
+                          shouldBold: true,
+                          onTap: () => Get.toNamed(Routes.aboutUs),
+                        ),
+                        SizedBox(height: 12.h),
+                        CustomProfileDistyle(
+                          icon: Icons.delete_forever,
+                          text: "Delete Account",
+                          shouldBold: true,
+                          color: AppColors.readColor,
+                          textColor: AppColors.readColor,
+                          onTap: () {
+                            showDialog(
+                              context: context,
+                              builder: (context) {
+                                return AlertDialog(
+                                  backgroundColor: AppColors.whiteColor,
+                                  title: Text(
+                                    "Delete Account",
+                                    style: AppTextStyles.bold18.apply(
+                                      color: AppColors.readColor,
+                                    ),
+                                  ),
+                                  content: Text(
+                                    "Are you sure you want to delete your account? All your data will be deleted.",
+                                    style: AppTextStyles.regular14,
+                                  ),
+                                  actions: [
+                                    TextButton(
+                                      onPressed: () {
+                                        Get.back();
+                                      },
+                                      child: Text(
+                                        "Cancel",
+                                        style: AppTextStyles.regular16.apply(
+                                          color: AppColors.blackColor,
+                                        ),
+                                      ),
+                                    ),
+                                    TextButton(
+                                      onPressed: () {
+                                        Get.back(); // Close dialog first
+                                        Get.toNamed(Routes.deleteAccount);
+                                      },
+                                      child: Text(
+                                        "Delete",
+                                        style: AppTextStyles.regular16.apply(
+                                          color: AppColors.readColor,
+                                        ),
+                                      ),
+                                    ),
+                                  ],
+                                );
+                              },
+                            );
+                          },
+                        ),
                         SizedBox(height: 16.h),
+
                         Divider(color: AppColors.profileLine, height: 2.h),
+
                         SizedBox(height: 16.h),
                         CustomButton(
                           childText: "Manage Subscription",
-                          onTap: () => Get.toNamed(Routes.SUBSCRIPTION_PLAN),
+                          onTap: () => Get.toNamed(Routes.subscriptionPlan),
                           buttonColor: AppColors.profileBlack,
                           buttonChildColor: AppColors.profileYellow,
                         ),
@@ -161,7 +235,7 @@ class ProfileView extends GetView<ProfileController> {
                           Icons.mode_edit_outline_outlined,
                           () async {
                             final result = await Get.toNamed(
-                              Routes.EDIT_PROFILE,
+                              Routes.editProfile,
                               arguments: {'userImage': userImage},
                             );
 

@@ -94,7 +94,7 @@ class SignUpOtpView extends GetView<SignUpOtpController> {
                           child: InkWell(
                             onTap: () {
                               if (controller.formKey.currentState!.validate()) {
-                                Get.offAllNamed(Routes.ONBOARDING);
+                                Get.offAllNamed(Routes.onboarding);
                               }
                             },
                             child: Obx(

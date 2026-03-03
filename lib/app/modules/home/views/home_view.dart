@@ -28,8 +28,8 @@ class HomeView extends GetView<HomeController> {
               children: [
                 // App bar with notification and profile navigation
                 PrimaryAppBar(
-                  notificationOnTap: () => Get.toNamed(Routes.NOTIFICATION),
-                  profileOnTap: () => Get.toNamed(Routes.PROFILE),
+                  notificationOnTap: () => Get.toNamed(Routes.notification),
+                  profileOnTap: () => Get.toNamed(Routes.profile),
                 ),
                 SizedBox(height: 10.h),
                 // Scrollable content area
@@ -51,7 +51,7 @@ class HomeView extends GetView<HomeController> {
                                 title: 'Flash Cards',
                                 subtitle: 'Pick up where you left off',
                                 onViewAllTap: () {
-                                  Get.toNamed(Routes.FLASH_CARDS);
+                                  Get.toNamed(Routes.flashCards);
                                 },
                               ),
 
@@ -67,7 +67,7 @@ class HomeView extends GetView<HomeController> {
                                 title: 'Study Guide',
                                 subtitle: 'Your mastery across specialties',
                                 onViewAllTap: () {
-                                  Get.toNamed(Routes.STUDY_GUIDES);
+                                  Get.toNamed(Routes.studyGuides);
                                 },
                               ),
 

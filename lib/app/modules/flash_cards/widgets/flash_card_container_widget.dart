@@ -119,7 +119,7 @@ class FlashCardContainerWidget extends StatelessWidget {
               childText: 'Continue Studying',
               onTap: () async {
                 final result = await Get.toNamed(
-                  Routes.VASCULAR_FLASHCARDS,
+                  Routes.vascularFlashcards,
                   arguments: {'title': card.title, 'contentId': contentId},
                 );
                 if (result == true) {

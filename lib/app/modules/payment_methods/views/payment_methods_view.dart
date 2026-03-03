@@ -59,7 +59,7 @@ class PaymentMethodsView extends GetView<PaymentMethodsController> {
                 ),
                 SizedBox(height: 16.h),
                 GestureDetector(
-                  onTap: () => Get.toNamed(Routes.ADD_CARD),
+                  onTap: () => Get.toNamed(Routes.addCard),
                   child: Container(
                     width: double.infinity,
                     decoration: BoxDecoration(
@@ -93,7 +93,7 @@ class PaymentMethodsView extends GetView<PaymentMethodsController> {
                 CustomButton(
                   childText: "Check out",
                   buttonColor: AppColors.profileYellow,
-                  onTap: () => Get.toNamed(Routes.ADD_CARD),
+                  onTap: () => Get.toNamed(Routes.addCard),
                 ),
               ],
             ),

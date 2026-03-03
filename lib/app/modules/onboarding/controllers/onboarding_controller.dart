@@ -31,7 +31,7 @@ class OnboardingController extends GetxController {
       currentIndex++;
     } else {
       // Last slide → Move to check premium status
-      Get.offAllNamed(Routes.APP_GATE);
+      Get.offAllNamed(Routes.appGate);
     }
   }
 }

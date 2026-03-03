@@ -71,7 +71,7 @@ class ForgotEnterCodeController extends GetxController {
       isLoading.value = false;
 
       if (response['success'] == true) {
-        Get.offAllNamed(Routes.FORGOT_ENTER_PASSWORD, arguments: {'email' : email});
+        Get.offAllNamed(Routes.forgotEnterPassword, arguments: {'email' : email});
         showAppSnackBar(
           context: Get.context!,
           message: response['message'] ?? 'OTP verified successfully',

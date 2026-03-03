@@ -52,7 +52,7 @@ class ForgotEnterEmailController extends GetxController {
       // Small delay to ensure snack bar is shown
       await Future.delayed(Duration(milliseconds: 300));
 
-      Get.toNamed(Routes.FORGOT_ENTER_CODE,arguments: {'email': emailController.text});
+      Get.toNamed(Routes.forgotEnterCode,arguments: {'email': emailController.text});
     } else {
       showAppSnackBar(
         context: Get.context!,

@@ -44,7 +44,7 @@ class ExplorePlanView extends GetView<ExplorePlanController> {
               CustomButton(
                 childText: 'Explore Plans',
                 onTap: () {
-                  Get.toNamed(Routes.SUBSCRIPTION_PLAN);
+                  Get.toNamed(Routes.subscriptionPlan);
                 },
                 buttonColor: AppColors.primaryColor,
               ),

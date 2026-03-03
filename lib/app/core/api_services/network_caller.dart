@@ -166,35 +166,7 @@ class NetworkCaller {
     }
   }
 
-  Future<String> googleSignInRequest(String url, String accessToken) async {
-    try {
-      final fullUrl = '$url?access_token=$accessToken';
-
-      final response = await http.post(
-        Uri.parse(fullUrl),
-        headers: {
-          "Accept": "application/json",
-          "Content-Type": "application/json",
-        },
-        body: jsonEncode({}),
-      );
-
-      AppLogger.log("url ====== $fullUrl");
-      AppLogger.log("Status Code: ${response.statusCode}");
-      AppLogger.log("Response: ${response.body}");
-
-      if (response.statusCode != 200 && response.statusCode != 201) {
-        throw "Server Error: ${response.body}";
-      }
-
-      final data = jsonDecode(response.body);
-      return data["access_token"];
-    } catch (e) {
-      throw "Google Authentication Request Failed: $e";
-    }
-  }
-
   void _handleSessionExpired() {
-    Get.offAllNamed(Routes.SESSION_EXPIRED);
+    Get.offAllNamed(Routes.sessionExpired);
   }
 }

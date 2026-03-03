@@ -139,7 +139,7 @@ class AddCardView extends GetView<AddCardController> {
                 CustomButton(
                   childText: "Pay Now",
                   buttonColor: AppColors.profileYellow,
-                  onTap: () => Get.toNamed(Routes.CUSTOM_BOTTOM_NAVIGATION_BAR),
+                  onTap: () => Get.toNamed(Routes.customBottomNavigationBar),
                 ),
               ],
             ),

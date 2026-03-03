@@ -117,7 +117,7 @@ class SignUpView extends GetView<SignUpController> {
                     firstText: 'Already have an account ?',
                     secondText: 'Sign In',
                     onTap: () {
-                      Get.toNamed(Routes.SIGN_IN);
+                      Get.toNamed(Routes.signIn);
                     },
                   ),
                 ],

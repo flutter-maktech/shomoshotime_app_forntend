@@ -28,8 +28,8 @@ class FlashCardsView extends GetView<FlashCardsController> {
             slivers: [
               SliverToBoxAdapter(
                 child: PrimaryAppBar(
-                  notificationOnTap: () => Get.toNamed(Routes.NOTIFICATION),
-                  profileOnTap: () => Get.toNamed(Routes.PROFILE),
+                  notificationOnTap: () => Get.toNamed(Routes.notification),
+                  profileOnTap: () => Get.toNamed(Routes.profile),
                 ),
               ),
               SliverToBoxAdapter(

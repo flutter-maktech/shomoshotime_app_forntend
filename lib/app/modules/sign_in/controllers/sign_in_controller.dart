@@ -51,7 +51,7 @@ class SignInController extends GetxController {
           message: message.value,
           backgroundColor: AppColors.greenColor,
         );
-        Get.offAllNamed(Routes.APP_GATE);
+        Get.offAllNamed(Routes.appGate);
       } else {
         showAppSnackBar(
           context: Get.context!,
@@ -156,7 +156,7 @@ class SignInController extends GetxController {
           message: message.value,
           backgroundColor: AppColors.greenColor,
         );
-        Get.offAllNamed(Routes.APP_GATE);
+        Get.offAllNamed(Routes.appGate);
       } else {
         showAppSnackBar(
           context: Get.context!,

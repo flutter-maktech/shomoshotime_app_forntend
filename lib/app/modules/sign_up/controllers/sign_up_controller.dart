@@ -51,7 +51,7 @@ class SignUpController extends GetxController {
     final success = await registerUser(model);
 
     if (success) {
-      Get.offAllNamed(Routes.SIGN_UP_OTP);
+      Get.offAllNamed(Routes.signUpOtp);
       showAppSnackBar(
         context: Get.context!,
         message: "OTP sent",

@@ -55,7 +55,7 @@ class StudyGuideListView extends StatelessWidget {
             title: studyGuide.title,
             onTap: () {
               Get.toNamed(
-                Routes.SPI_FUNDAMENTALS,
+                Routes.spiFundamentals,
                 arguments: {
                   'pdfUrl': studyGuide.file,
                   'title': studyGuide.title,

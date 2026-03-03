@@ -43,8 +43,8 @@ class PracticeView extends GetView<PracticeController> {
               slivers: [
                 SliverToBoxAdapter(
                   child: PrimaryAppBar(
-                    notificationOnTap: () => Get.toNamed(Routes.NOTIFICATION),
-                    profileOnTap: () => Get.toNamed(Routes.PROFILE),
+                    notificationOnTap: () => Get.toNamed(Routes.notification),
+                    profileOnTap: () => Get.toNamed(Routes.profile),
                   ),
                 ),
                 SliverToBoxAdapter(
@@ -430,6 +430,7 @@ class PracticeView extends GetView<PracticeController> {
           ),
           SizedBox(height: 15.h),
           Row(
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Column(
                 children: [
@@ -475,17 +476,17 @@ class PracticeView extends GetView<PracticeController> {
                       color: AppColors.blackColor,
                     ),
                   ),
-                  SizedBox(height: 12.h),
-                  Text(
-                    'Difficulty',
-                    style: AppTextStyles.regular14.copyWith(
-                      color: AppColors.appBarSub,
-                    ),
-                  ),
-                  Text(
-                    statusLabel,
-                    style: AppTextStyles.regular14.copyWith(color: Colors.blue),
-                  ),
+                  // SizedBox(height: 12.h),
+                  // Text(
+                  //   'Difficulty',
+                  //   style: AppTextStyles.regular14.copyWith(
+                  //     color: AppColors.appBarSub,
+                  //   ),
+                  // ),
+                  // Text(
+                  //   statusLabel,
+                  //   style: AppTextStyles.regular14.copyWith(color: Colors.blue),
+                  // ),
                 ],
               ),
             ],
@@ -495,7 +496,7 @@ class PracticeView extends GetView<PracticeController> {
             childText: 'Continue Reading',
             onTap: () async {
               final result = await Get.toNamed(
-                Routes.SPI_PRACTICE_BANK_QUS,
+                Routes.spiPracticeBankQus,
                 arguments: {
                   'id': questionSet.id,
                   'title': questionSet.title,

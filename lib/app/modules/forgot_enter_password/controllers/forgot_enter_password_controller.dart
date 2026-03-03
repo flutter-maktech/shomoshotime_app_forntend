@@ -66,7 +66,7 @@ class ForgotEnterPasswordController extends GetxController {
           message: "Password reset successfully",
           backgroundColor: AppColors.greenColor,
         );
-        Get.offAllNamed(Routes.SIGN_IN);
+        Get.offAllNamed(Routes.signIn);
       } else {
         showAppSnackBar(
           context: Get.context!,

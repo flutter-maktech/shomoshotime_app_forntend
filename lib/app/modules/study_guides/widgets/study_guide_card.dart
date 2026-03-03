@@ -88,7 +88,7 @@ class StudyGuideCard extends StatelessWidget {
           CustomButton(
             onTap: () {
               Get.toNamed(
-                Routes.AUDIO_PLAY_CARD,
+                Routes.audioPlayCard,
                 arguments: {
                   'title': cardTitle,
                   'subtitle': cardSubtitle,

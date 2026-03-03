@@ -20,10 +20,10 @@ class SplashController extends GetxController {
     Future.delayed(const Duration(seconds: 1), () {
       if (token != null && token!.isNotEmpty) {
         // If token exists, go to App Gate to check premium status
-        Get.offAllNamed(Routes.APP_GATE);
+        Get.offAllNamed(Routes.appGate);
       } else {
         // If no token, go to login screen
-        Get.offAllNamed(Routes.SIGN_IN); // Replace with your login route
+        Get.offAllNamed(Routes.signIn); // Replace with your login route
       }
     });
   }

@@ -24,7 +24,7 @@ class AppGateController extends GetxController {
       final token = await AppPreference.getToken();
 
       if (token == null || token.isEmpty) {
-        Get.offAllNamed(Routes.SIGN_IN);
+        Get.offAllNamed(Routes.signIn);
         return;
       }
 
@@ -38,9 +38,9 @@ class AppGateController extends GetxController {
         final bool isPremium = response['data']['is_premium'] ?? false;
 
         if (isPremium) {
-          Get.offAllNamed(Routes.CUSTOM_BOTTOM_NAVIGATION_BAR);
+          Get.offAllNamed(Routes.customBottomNavigationBar);
         } else {
-          Get.offAllNamed(Routes.EXPLORE_PLAN);
+          Get.offAllNamed(Routes.explorePlan);
         }
       } else {
         errorMessage.value =

@@ -312,7 +312,7 @@ class SubscriptionPlanController extends GetxController {
       }
 
       // Navigate to next screen
-      Get.offNamed(Routes.CUSTOM_BOTTOM_NAVIGATION_BAR);
+      Get.offNamed(Routes.customBottomNavigationBar);
     } on StripeException catch (e) {
       if (kDebugMode) {
         AppLogger.log('Error: ${e.error.localizedMessage}');
@@ -394,7 +394,7 @@ class SubscriptionPlanController extends GetxController {
       );
       if (response['success'] == true) {
         await AppPreference.clearCurrentPlan();
-        Get.offAllNamed(Routes.EXPLORE_PLAN);
+        Get.offAllNamed(Routes.explorePlan);
         showAppSnackBar(
           context: _context!,
           message: 'Subscription cancelled successfully',

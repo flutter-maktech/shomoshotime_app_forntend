@@ -11,7 +11,7 @@ class CustomTextField extends StatelessWidget {
   final TextInputType? keyboardType;
   final TextEditingController? controller;
   final String? Function(String?)? validator;
-final void Function(String)? onFieldSubmitted;
+  final void Function(String)? onFieldSubmitted;
   final TextInputAction? textInputAction;
   final FocusNode? focusNode;
 
@@ -26,7 +26,7 @@ final void Function(String)? onFieldSubmitted;
     this.keyboardType,
     this.textInputAction,
     this.onFieldSubmitted,
-    this.focusNode
+    this.focusNode,
   });
 
   @override
@@ -51,8 +51,7 @@ final void Function(String)? onFieldSubmitted;
             textInputAction: textInputAction,
             cursorColor: AppColors.profileLine,
 
-            onFieldSubmitted: onFieldSubmitted
-            ,
+            onFieldSubmitted: onFieldSubmitted,
 
             decoration: InputDecoration(
               hintText: hintText,

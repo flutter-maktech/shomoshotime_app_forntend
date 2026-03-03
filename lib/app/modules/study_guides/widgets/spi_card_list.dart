@@ -67,7 +67,7 @@ class SpiCardList extends StatelessWidget {
               cardTitle: studyGuide.title,
               cardSubtitle: studyGuide.subtitle,
               category: studyGuide.category,
-              fileUrl: studyGuide.file ?? '',
+              fileUrl: studyGuide.fileUrl ?? '',
               contentId: studyGuide.id,
               pageNumber:
                   '${studyGuide.studyGuideActivitiesCount}/${studyGuide.totalPage} Pages',

@@ -1,6 +1,6 @@
 class Urls {
-  static String baseUrs = "https://shomoshotime.mtscorporate.com/api/v1";
-  static String baseDomain = "https://shomoshotime.mtscorporate.com";
+  static String baseUrs = "https://api.sonographerpal.com/api/v1";
+  static String baseDomain = "https://api.sonographerpal.com";
 
   static String signUpUrl = "$baseUrs/auth/register";
   static String logInUrl = "$baseUrs/auth/login";
@@ -32,4 +32,6 @@ class Urls {
   static String subscriptionCheck = "$baseUrs/user/subscription-check";
   static String stripeKeys = "$baseUrs/user/stripe-keys";
   static String cancelSubscription = "$baseUrs/user/subscription/cancel";
+  static String cmsUrl = "$baseUrs/cms-pages/show";
+  static String deleteAccount = "$baseUrs/user/profile/delete";
 }

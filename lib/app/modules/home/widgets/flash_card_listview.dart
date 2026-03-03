@@ -65,7 +65,7 @@ class FlashCardListView extends StatelessWidget {
           return FlashCardInfo(
             onTap: () async {
               final result = await Get.toNamed(
-                Routes.VASCULAR_FLASHCARDS,
+                Routes.vascularFlashcards,
                 arguments: {
                   'title': flashCard.title,
                   'contentId': flashCard.id,

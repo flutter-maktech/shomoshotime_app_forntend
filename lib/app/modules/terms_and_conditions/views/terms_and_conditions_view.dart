@@ -1,0 +1,67 @@
+import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:get/get.dart';
+import 'package:shomoshotime/app/all_utils/log.dart';
+import 'package:shomoshotime/app/core/urls/urls.dart';
+import 'package:shomoshotime/app/data/app_colors.dart';
+import 'package:shomoshotime/app/data/app_text_styles.dart';
+import 'package:shomoshotime/app/modules/common_widgets/custom_app_bar.dart';
+
+import '../controllers/terms_and_conditions_controller.dart';
+
+class TermsAndConditionsView extends GetView<TermsAndConditionsController> {
+  const TermsAndConditionsView({super.key});
+  @override
+  Widget build(BuildContext context) {
+    // Fetch data for Terms and Conditions
+    controller.fetchCmsData(Urls.cmsUrl, "terms_condition");
+
+    return Scaffold(
+      appBar: CustomAppBar(
+        title: 'Terms & Conditions',
+        subTitle: "Please read our terms and conditions carefully",
+        onTap: () => Get.back(),
+      ),
+      body: Obx(() {
+        if (controller.isLoading.value) {
+          return const Center(child: CircularProgressIndicator());
+        }
+
+        if (controller.errorMessage.value.isNotEmpty) {
+          return Center(
+            child: Padding(
+              padding: EdgeInsets.all(16.sp),
+              child: Text(
+                controller.errorMessage.value,
+                style: AppTextStyles.regular14.copyWith(
+                  color: AppColors.readColor,
+                ),
+                textAlign: TextAlign.center,
+              ),
+            ),
+          );
+        }
+
+        final content = controller.cmsResponse.value?.data?.content;
+        final plainText = controller.getPlainText(content);
+
+        AppLogger.log('✅✅✅✅$plainText');
+
+        return SingleChildScrollView(
+          child: Padding(
+            padding: EdgeInsets.all(16.sp),
+            child: Container(
+              width: double.infinity,
+              padding: EdgeInsets.all(16.sp),
+              decoration: BoxDecoration(
+                color: AppColors.containerColor,
+                borderRadius: BorderRadius.circular(8.r),
+              ),
+              child: Text(plainText, style: AppTextStyles.regular14),
+            ),
+          ),
+        );
+      }),
+    );
+  }
+}

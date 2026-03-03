@@ -33,8 +33,8 @@ class MockExamsView extends GetView<MockExamsController> {
               slivers: [
                 SliverToBoxAdapter(
                   child: PrimaryAppBar(
-                    notificationOnTap: () => Get.toNamed(Routes.NOTIFICATION),
-                    profileOnTap: () => Get.toNamed(Routes.PROFILE),
+                    notificationOnTap: () => Get.toNamed(Routes.notification),
+                    profileOnTap: () => Get.toNamed(Routes.profile),
                   ),
                 ),
                 SliverToBoxAdapter(
@@ -454,7 +454,7 @@ class MockExamsView extends GetView<MockExamsController> {
                 ? () async {
                     controller.startMockTest(questionSet.id);
                     final result = await Get.toNamed(
-                      Routes.SPI_PRACTICE_BANK_QUS,
+                      Routes.spiPracticeBankQus,
                       arguments: {
                         'id': questionSet.id,
                         'title': questionSet.title,

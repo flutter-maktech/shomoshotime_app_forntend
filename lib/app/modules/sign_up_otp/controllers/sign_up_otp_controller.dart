@@ -77,7 +77,7 @@ class SignUpOtpController extends GetxController {
 
       if (response is Map && response['success'] == true) {
         // OTP correct, go to next page
-        Get.offAllNamed(Routes.ONBOARDING);
+        Get.offAllNamed(Routes.onboarding);
         showAppSnackBar(
           context: Get.context!,
           message: "Sign up successfully",

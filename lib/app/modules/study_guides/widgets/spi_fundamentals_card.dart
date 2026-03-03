@@ -119,7 +119,7 @@ class SpiFundamentalsCard extends StatelessWidget {
           CustomButton(
             childText: 'Continue Reading',
             onTap: () => Get.toNamed(
-              Routes.SPI_FUNDAMENTALS,
+              Routes.spiFundamentals,
               arguments: {
                 'pdfUrl': fileUrl,
                 'title': cardTitle,

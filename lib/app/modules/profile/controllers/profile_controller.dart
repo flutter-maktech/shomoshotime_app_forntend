@@ -13,6 +13,7 @@ class ProfileController extends GetxController {
   final RxString errorMessage = ''.obs;
   final NetworkCaller _networkCaller = NetworkCaller();
   final Rx<ProfileResponse?> profileResponse = Rx<ProfileResponse?>(null);
+  final RxString currentPlanName = ''.obs;
 
   @override
   void onInit() {
@@ -26,6 +27,8 @@ class ProfileController extends GetxController {
       errorMessage.value = '';
 
       final token = await AppPreference.getToken();
+      final plan = await AppPreference.getCurrentPlan();
+      currentPlanName.value = plan ?? 'N/A';
 
       // Use POST request with empty body since API only supports POST
       final response = await _networkCaller.postRequest(
@@ -62,7 +65,11 @@ class ProfileController extends GetxController {
       isLoading.value = true;
       await FirebaseAuthService().signOut();
       await AppPreference.clearAll();
-      Get.offAllNamed(Routes.SIGN_IN);
+      await AppPreference.clearCurrentPlan();
+      await AppPreference.clearProfileImage();
+      await AppPreference.clearToken();
+      await AppPreference.clearUserId();
+      Get.offAllNamed(Routes.signIn);
     } catch (e) {
       errorMessage.value = 'Logout failed: $e';
     } finally {
