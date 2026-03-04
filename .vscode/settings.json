@@ -1,3 +1,4 @@
 {
-    "cmake.sourceDirectory": "/Users/areefin/All flutter project/shomoshotime_app_forntend/windows"
+  "cmake.sourceDirectory": "/Users/areefin/All flutter project/shomoshotime_app_forntend/windows",
+  "dart.flutterSdkPath": ".fvm/versions/3.38.9"
 }

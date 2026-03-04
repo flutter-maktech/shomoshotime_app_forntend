@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:io';
 import 'package:http/http.dart' as http;
 import 'package:get/get.dart';
 import 'package:shomoshotime/app/all_utils/log.dart';
@@ -169,4 +170,60 @@ class NetworkCaller {
   void _handleSessionExpired() {
     Get.offAllNamed(Routes.sessionExpired);
   }
+  Future<dynamic> multipartRequest(
+  String url,
+  Map<String, String> fields, {
+  File? file,
+  String fileField = "file",
+  String? token,
+}) async {
+  try {
+    var request = http.MultipartRequest(
+      'POST',
+      Uri.parse(url),
+    );
+
+    request.headers['accept'] = 'application/json';
+
+    if (token != null && token.isNotEmpty) {
+      request.headers['Authorization'] = "Bearer $token";
+    }
+
+    // Add text fields
+    request.fields.addAll(fields);
+
+    // Add file if exists
+    if (file != null) {
+      request.files.add(
+        await http.MultipartFile.fromPath(
+          fileField,
+          file.path,
+        ),
+      );
+    }
+
+    AppLogger.log("MULTIPART Request to: $url");
+    AppLogger.log("Fields: $fields");
+    AppLogger.log("File: ${file?.path}");
+
+    final streamedResponse = await request.send();
+    final response = await http.Response.fromStream(streamedResponse);
+
+    AppLogger.log("MULTIPART Status: ${response.statusCode}");
+    AppLogger.log("MULTIPART Response: ${response.body}");
+
+    if (response.statusCode == 200 || response.statusCode == 201) {
+      return jsonDecode(response.body);
+    } else if (response.statusCode == 401) {
+      _handleSessionExpired();
+      throw Exception("Unauthorized");
+    } else {
+      throw Exception(
+          "Multipart failed: ${response.statusCode} - ${response.body}");
+    }
+  } catch (e) {
+    AppLogger.log("MULTIPART Error: $e");
+    rethrow;
+  }
+}
 }

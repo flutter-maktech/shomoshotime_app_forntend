@@ -27,47 +27,44 @@ class EditProfileController extends GetxController {
   }
 
   Future<bool> updateProfile() async {
-    try {
-      isLoading.value = true;
+  try {
+    isLoading.value = true;
 
-      final token = await AppPreference.getToken();
+    final token = await AppPreference.getToken();
 
-      final Map<String, dynamic> body = {};
+    final Map<String, String> fields = {};
 
-      if (nameController.text.trim().isNotEmpty) {
-        body['name'] = nameController.text.trim();
-      }
-
-      if (emailController.text.trim().isNotEmpty) {
-        body['email'] = emailController.text.trim();
-      }
-
-      if (selectedImage.value != null) {
-        body['file'] = selectedImage.value!;
-      }
-
-      if (body.isEmpty) {
-        return false;
-      }
-
-      final response = await networkCaller.postRequest(
-        Urls.profileUpdate,
-        body,
-        token: token,
-      );
-
-      // Check the "success" key in the response
-      if (response != null && response['success'] == true) {
-        return true;
-      } else {
-        return false;
-      }
-    } catch (_) {
-      return false;
-    } finally {
-      isLoading.value = false;
+    if (nameController.text.trim().isNotEmpty) {
+      fields['name'] = nameController.text.trim();
     }
+
+    if (emailController.text.trim().isNotEmpty) {
+      fields['email'] = emailController.text.trim();
+    }
+
+    if (fields.isEmpty && selectedImage.value == null) {
+      return false;
+    }
+
+    final response = await networkCaller.multipartRequest(
+      Urls.profileUpdate,
+      fields,
+      file: selectedImage.value,
+      fileField: "file",
+      token: token,
+    );
+
+    if (response != null && response['success'] == true) {
+      return true;
+    }
+
+    return false;
+  } catch (_) {
+    return false;
+  } finally {
+    isLoading.value = false;
   }
+}
 
   @override
   void onClose() {
