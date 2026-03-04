@@ -63,12 +63,10 @@ class ProfileController extends GetxController {
   Future<void> logout() async {
     try {
       isLoading.value = true;
+
       await FirebaseAuthService().signOut();
       await AppPreference.clearAll();
-      await AppPreference.clearCurrentPlan();
-      await AppPreference.clearProfileImage();
-      await AppPreference.clearToken();
-      await AppPreference.clearUserId();
+
       Get.offAllNamed(Routes.signIn);
     } catch (e) {
       errorMessage.value = 'Logout failed: $e';

@@ -16,7 +16,7 @@ class SubscriptionPlanView extends GetView<SubscriptionPlanController> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: CustomAppBar(
-        title: "Subscription Plan",
+        title: "MemberShip Plan",
         subTitle: "Update your plan",
       ),
       body: SingleChildScrollView(

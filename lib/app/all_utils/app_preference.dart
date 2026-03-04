@@ -119,8 +119,6 @@ class AppPreference {
   // CLEAR ALL - For logout
   static Future<void> clearAll() async {
     final prefs = await SharedPreferences.getInstance();
-    await prefs.remove(_tokenKey);
-    await prefs.remove(_userIdKey);
-    await prefs.remove(_imageKey);
+    await prefs.clear();
   }
 }
