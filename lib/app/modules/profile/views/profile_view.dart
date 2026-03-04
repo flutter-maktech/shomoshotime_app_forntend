@@ -65,7 +65,7 @@ class ProfileView extends GetView<ProfileController> {
                       children: [
                         CircleAvatar(
                           backgroundColor: AppColors.appBarCircleAvatar,
-                          maxRadius: 80,
+                          maxRadius: 75.r,
                           child: Padding(
                             padding: EdgeInsets.all(8.sp),
                             child: InkWell(
@@ -73,21 +73,25 @@ class ProfileView extends GetView<ProfileController> {
                               child: ClipRRect(
                                 borderRadius: BorderRadius.circular(100),
                                 child: userImage != null && userImage.isNotEmpty
-                                    ? Image.network(
-                                        userImage,
-                                        fit: BoxFit.cover,
-                                        errorBuilder: (_, _, _) {
-                                          return Container(
-                                            color: Colors.grey.shade300,
-                                            alignment: Alignment.center,
-                                            child: Icon(
-                                              Icons.person,
-                                              size: 40,
-                                              color: Colors.grey.shade600,
-                                            ),
-                                          );
-                                        },
-                                      )
+                                    ? SizedBox(
+                                      height: 150.h,
+                                      width: 150.w,
+                                      child: Image.network(
+                                          userImage,
+                                          fit: BoxFit.cover,
+                                          errorBuilder: (_, _, _) {
+                                            return Container(
+                                              color: Colors.grey.shade300,
+                                              alignment: Alignment.center,
+                                              child: Icon(
+                                                Icons.person,
+                                                size: 40,
+                                                color: Colors.grey.shade600,
+                                              ),
+                                            );
+                                          },
+                                        ),
+                                    )
                                     : Container(
                                         width: 80,
                                         height: 80,

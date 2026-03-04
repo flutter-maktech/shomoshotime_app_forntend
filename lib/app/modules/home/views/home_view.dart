@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
+import 'package:shomoshotime/app/modules/custom_bottom_navigation_bar/controllers/custom_bottom_navigation_bar_controller.dart';
 import '../../../routes/app_pages.dart';
 import '../../common_widgets/primary_app_bar.dart';
 import '../controllers/home_controller.dart';
@@ -51,7 +52,8 @@ class HomeView extends GetView<HomeController> {
                                 title: 'Flash Cards',
                                 subtitle: 'Pick up where you left off',
                                 onViewAllTap: () {
-                                  Get.toNamed(Routes.flashCards);
+                                  final bottomBarController = Get.find<CustomBottomNavigationBarController>();
+                                  bottomBarController.changeIndex(2);
                                 },
                               ),
 
@@ -67,7 +69,8 @@ class HomeView extends GetView<HomeController> {
                                 title: 'Study Guide',
                                 subtitle: 'Your mastery across specialties',
                                 onViewAllTap: () {
-                                  Get.toNamed(Routes.studyGuides);
+                                  final bottomBarController = Get.find<CustomBottomNavigationBarController>();
+                                  bottomBarController.changeIndex(1);
                                 },
                               ),
 
