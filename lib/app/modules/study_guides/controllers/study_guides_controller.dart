@@ -86,7 +86,12 @@ class StudyGuidesController extends GetxController {
     // Then filter by category
     List<StudyGuide> filteredByCategory = (category == 'All')
         ? filteredByType
-        : filteredByType.where((guide) => guide.category == category).toList();
+        : filteredByType
+              .where(
+                (guide) =>
+                    guide.category.toLowerCase() == category.toLowerCase(),
+              )
+              .toList();
 
     // Finally filter by search query
     if (searchQuery.isEmpty) {
