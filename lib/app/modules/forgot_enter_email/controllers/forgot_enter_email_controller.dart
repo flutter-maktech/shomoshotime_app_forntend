@@ -35,12 +35,16 @@ class ForgotEnterEmailController extends GetxController {
 
     _isLoading.value = false;
 
-    // Response handle
     final bool isSuccess = response['success'] == true;
     final String message = response['message'] ?? 'Something went wrong';
-    final token = response['data']['token'];
 
-    AppPreference.saveToken(token);
+    if (isSuccess) {
+      final token = response['data']?['token'];
+
+      if (token != null) {
+        await AppPreference.saveToken(token);
+      }
+    }
 
     if (isSuccess) {
       showAppSnackBar(
@@ -48,16 +52,15 @@ class ForgotEnterEmailController extends GetxController {
         message: message,
         backgroundColor: AppColors.greenColor,
       );
-
-      // Small delay to ensure snack bar is shown
-      await Future.delayed(Duration(milliseconds: 300));
-
-      Get.toNamed(Routes.forgotEnterCode,arguments: {'email': emailController.text});
+      Get.toNamed(
+        Routes.forgotEnterCode,
+        arguments: {'email': emailController.text},
+      );
     } else {
       showAppSnackBar(
         context: Get.context!,
         message: message,
-        backgroundColor: AppColors.grey,
+        backgroundColor: AppColors.readColor,
       );
     }
   }

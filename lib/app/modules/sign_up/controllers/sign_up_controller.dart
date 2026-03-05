@@ -90,9 +90,8 @@ class SignUpController extends GetxController {
       }
 
       if (data['success'] == true) {
-        //TOKEN EXTRACT
         final String token = data['data']?['token'] ?? '';
-        // TOKEN SAVE
+
         if (token.isNotEmpty) {
           await AppPreference.saveToken(token);
           AppLogger.log('Token saved: $token');
@@ -101,7 +100,25 @@ class SignUpController extends GetxController {
         message.value = data['message'] ?? 'Registration successful';
         return true;
       } else {
-        message.value = data['message'] ?? 'Registration failed';
+        // 🔥 Extract validation message properly
+        if (data['data'] != null && data['data'] is Map) {
+          final errorMap = data['data'] as Map<String, dynamic>;
+
+          if (errorMap.isNotEmpty) {
+            final firstError = errorMap.values.first;
+
+            if (firstError is List && firstError.isNotEmpty) {
+              message.value = firstError.first;
+            } else {
+              message.value = 'Registration failed';
+            }
+          } else {
+            message.value = 'Registration failed';
+          }
+        } else {
+          message.value = 'Registration failed';
+        }
+
         return false;
       }
     } catch (e) {
@@ -111,7 +128,6 @@ class SignUpController extends GetxController {
       isLoading.value = false;
     }
   }
-
 
   @override
   void onClose() {

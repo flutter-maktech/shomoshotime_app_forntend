@@ -113,7 +113,25 @@ class SignInController extends GetxController {
         message.value = data['message'] ?? 'Login successful';
         return true;
       } else {
-        message.value = data['message'] ?? 'Login failed';
+        // 🔥 Extract validation message properly
+        if (data['data'] != null && data['data'] is Map) {
+          final errorMap = data['data'] as Map<String, dynamic>;
+
+          if (errorMap.isNotEmpty) {
+            final firstError = errorMap.values.first;
+
+            if (firstError is List && firstError.isNotEmpty) {
+              message.value = firstError.first;
+            } else {
+              message.value = 'Login failed';
+            }
+          } else {
+            message.value = 'Login failed';
+          }
+        } else {
+          message.value = 'Login failed';
+        }
+
         return false;
       }
     } catch (e) {

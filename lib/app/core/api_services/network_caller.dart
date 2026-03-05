@@ -70,16 +70,13 @@ class NetworkCaller {
       AppLogger.log("POST Status: ${response.statusCode}");
       AppLogger.log("POST Response: ${response.body}");
 
-      if (response.statusCode == 200 || response.statusCode == 201) {
-        return jsonDecode(response.body);
-      } else if (response.statusCode == 401) {
+      if (response.statusCode == 401) {
         _handleSessionExpired();
         throw Exception("Unauthorized: Invalid Token");
-      } else {
-        throw Exception(
-          "Failed to post data:$url ${response.statusCode} - ${response.body}",
-        );
       }
+
+      // Always return response body (even 422)
+      return jsonDecode(response.body);
     } catch (e) {
       AppLogger.log("POST Request Error: $e");
       rethrow;
