@@ -15,6 +15,7 @@ class SubscriptionPlanView extends GetView<SubscriptionPlanController> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      //CustomAppBar
       appBar: CustomAppBar(
         title: "MemberShip Plan",
         subTitle: "Update your plan",
