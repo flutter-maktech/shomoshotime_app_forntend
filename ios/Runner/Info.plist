@@ -22,10 +22,59 @@
 	<string>$(FLUTTER_BUILD_NAME)</string>
 	<key>CFBundleSignature</key>
 	<string>????</string>
+	<key>CFBundleURLTypes</key>
+	<array>
+		<dict>
+			<key>CFBundleTypeRole</key>
+			<string>Editor</string>
+			<key>CFBundleURLSchemes</key>
+			<array>
+				<string>com.googleusercontent.apps.823677183565-ikslj6qc1mi7hlqslv504rvb6kcde9p3</string>
+			</array>
+		</dict>
+	</array>
 	<key>CFBundleVersion</key>
 	<string>$(FLUTTER_BUILD_NUMBER)</string>
+	<key>GIDClientID</key>
+	<string>823677183565-ikslj6qc1mi7hlqslv504rvb6kcde9p3.apps.googleusercontent.com</string>
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
+	<key>LSSupportsOpeningDocumentsInPlace</key>
+	<true/>
+	<key>NSAppTransportSecurity</key>
+	<dict>
+		<key>NSAllowsArbitraryLoads</key>
+		<true/>
+	</dict>
+	<key>NSCameraUsageDescription</key>
+	<string>This app needs access to your camera to capture photos or videos.</string>
+	<key>NSMicrophoneUsageDescription</key>
+	<string>This app needs access to your microphone for recording audio.</string>
+	<key>NSPhotoLibraryAddUsageDescription</key>
+	<string>This app needs permission to save files to your photo library.</string>
+	<key>NSPhotoLibraryUsageDescription</key>
+	<string>This app needs access to your photo library to select media files.</string>
+	<key>UIApplicationSceneManifest</key>
+	<dict>
+		<key>UIApplicationSupportsMultipleScenes</key>
+		<false/>
+		<key>UISceneConfigurations</key>
+		<dict>
+			<key>UIWindowSceneSessionRoleApplication</key>
+			<array>
+				<dict>
+					<key>UISceneClassName</key>
+					<string>UIWindowScene</string>
+					<key>UISceneConfigurationName</key>
+					<string>flutter</string>
+					<key>UISceneDelegateClassName</key>
+					<string>FlutterSceneDelegate</string>
+					<key>UISceneStoryboardFile</key>
+					<string>Main</string>
+				</dict>
+			</array>
+		</dict>
+	</dict>
 	<key>UIApplicationSupportsIndirectInputEvents</key>
 	<true/>
 	<key>UILaunchStoryboardName</key>
@@ -44,48 +93,5 @@
 		<string>UIInterfaceOrientationPortrait</string>
 		<string>UIInterfaceOrientationPortraitUpsideDown</string>
 	</array>
-
-	<!-- Internet (normally no permission needed, but for HTTP allow) -->
-    <key>NSAppTransportSecurity</key>
-    <dict>
-        <key>NSAllowsArbitraryLoads</key>
-        <true/>
-    </dict>
-
-    <!-- Photo Library Read -->
-    <key>NSPhotoLibraryUsageDescription</key>
-    <string>This app needs access to your photo library to select media files.</string>
-
-    <!-- Photo Library Write (save images/videos) -->
-    <key>NSPhotoLibraryAddUsageDescription</key>
-    <string>This app needs permission to save files to your photo library.</string>
-
-    <!-- Camera (if using camera) -->
-    <key>NSCameraUsageDescription</key>
-    <string>This app needs access to your camera to capture photos or videos.</string>
-
-    <!-- Microphone (if recording video/audio) -->
-    <key>NSMicrophoneUsageDescription</key>
-    <string>This app needs access to your microphone for recording audio.</string>
-
-    <!-- File access (Document Picker support) -->
-    <key>LSSupportsOpeningDocumentsInPlace</key>
-    <true/>
-
-  <key>GIDClientID</key>
-  <string>823677183565-ikslj6qc1mi7hlqslv504rvb6kcde9p3.apps.googleusercontent.com</string>
-
-	<key>CFBundleURLTypes</key>
-	<array>
-	<dict>
-		<key>CFBundleTypeRole</key>
-		<string>Editor</string>
-		<key>CFBundleURLSchemes</key>
-		<array>
-		<string>com.googleusercontent.apps.823677183565-ikslj6qc1mi7hlqslv504rvb6kcde9p3</string>
-		</array>
-	</dict>
-	</array>
-
 </dict>
 </plist>
