@@ -2,15 +2,14 @@
     
     <!-- Add these permissions BEFORE the application tag -->
     <uses-permission android:name="android.permission.INTERNET" />
-    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"
-        />
+    <!-- <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" /> -->
     
 
     <!-- For Android 10+ (API 29+) -->
-    <uses-permission android:name="android.permission.ACCESS_MEDIA_LOCATION" />
+    <!-- <uses-permission android:name="android.permission.ACCESS_MEDIA_LOCATION" /> -->
     
     <!-- To request package installation (optional) -->
-    <uses-permission android:name="android.permission.REQUEST_INSTALL_PACKAGES" />
+    <!-- <uses-permission android:name="android.permission.REQUEST_INSTALL_PACKAGES" /> -->
 
     <application
         android:label="Sonographer"
@@ -29,6 +28,8 @@
             android:configChanges="orientation|keyboardHidden|keyboard|screenSize|smallestScreenSize|locale|layoutDirection|fontScale|screenLayout|density|uiMode"
             android:hardwareAccelerated="true"
             android:enableOnBackInvokedCallback="true"
+            android:allowBackup="false"
+            android:fullBackupContent="false"
             android:windowSoftInputMode="adjustResize">
             <!-- Specifies an Android theme to apply to this Activity as soon as
                  the Android process has started. This theme is visible to the user

@@ -17,7 +17,7 @@ if (keystorePropertiesFile.exists()) {
 android {
     namespace = "com.shomoshotime.app"
     compileSdk = flutter.compileSdkVersion
-    ndkVersion = "27.0.12077973"
+    ndkVersion = flutter.ndkVersion
 
   compileOptions {
         sourceCompatibility = JavaVersion.VERSION_17
@@ -71,7 +71,7 @@ android {
         ndk {
            abiFilters.addAll(listOf("armeabi-v7a", "arm64-v8a", "x86_64"))
            debugSymbolLevel = "FULL"
-        }
+           }
         }
 
         release {
@@ -85,7 +85,7 @@ android {
         ndk {
            abiFilters.addAll(listOf("armeabi-v7a", "arm64-v8a", "x86_64"))
            debugSymbolLevel = "FULL"
-        }
+           }
         }
     }
 }
