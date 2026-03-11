@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
-import 'package:shomoshotime/app/modules/home/controllers/home_controller.dart';
-import 'package:shomoshotime/app/modules/common_widgets/shimmer_effect.dart';
+import '../controllers/home_controller.dart';
+import '../../common_widgets/shimmer_effect.dart';
 
 import '../../../routes/app_pages.dart';
 import '../../common_widgets/custom_progress_container.dart';

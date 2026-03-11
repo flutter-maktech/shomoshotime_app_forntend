@@ -2,13 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import 'package:get/get.dart';
-import 'package:shomoshotime/app/data/app_colors.dart';
-import 'package:shomoshotime/app/data/app_text_styles.dart';
-import 'package:shomoshotime/app/data/image_path.dart';
-import 'package:shomoshotime/app/modules/common_widgets/custom_button.dart';
-import 'package:shomoshotime/app/modules/common_widgets/primary_app_bar.dart';
+import '../../../data/app_colors.dart';
+import '../../../data/app_text_styles.dart';
+import '../../../data/image_path.dart';
+import '../../common_widgets/custom_button.dart';
+import '../../common_widgets/primary_app_bar.dart';
 
-import 'package:shomoshotime/app/modules/common_widgets/shimmer_effect.dart';
+import '../../common_widgets/shimmer_effect.dart';
 
 import '../../../core/user_panel_model/question_set_response.dart';
 import '../../../routes/app_pages.dart';
@@ -193,14 +193,14 @@ class PracticeView extends GetView<PracticeController> {
                                                             .blackColor,
                                                       ),
                                                 ),
-                                                Spacer(),
+                                                const Spacer(),
                                                 Image.asset(
                                                   ImagePath.frameImage,
                                                   scale: 5,
                                                 ),
                                               ],
                                             ),
-                                            SizedBox(height: 14),
+                                            const SizedBox(height: 14),
                                             Text(
                                               '$progress',
                                               style: AppTextStyles.bold24
@@ -208,7 +208,7 @@ class PracticeView extends GetView<PracticeController> {
                                                     color: AppColors.greyBlack,
                                                   ),
                                             ),
-                                            SizedBox(height: 14),
+                                            const SizedBox(height: 14),
                                             Row(
                                               children: [
                                                 Expanded(
@@ -231,7 +231,7 @@ class PracticeView extends GetView<PracticeController> {
                                         ),
                                       ),
                                     ),
-                                    SizedBox(width: 14),
+                                    const SizedBox(width: 14),
                                     Expanded(
                                       child: Container(
                                         padding: const EdgeInsets.all(12),
@@ -255,14 +255,14 @@ class PracticeView extends GetView<PracticeController> {
                                                             .blackColor,
                                                       ),
                                                 ),
-                                                Spacer(),
+                                                const Spacer(),
                                                 Image.asset(
                                                   ImagePath.frameImage,
                                                   scale: 5,
                                                 ),
                                               ],
                                             ),
-                                            SizedBox(height: 6),
+                                            const SizedBox(height: 6),
                                             Text(
                                               '$accuracy%',
                                               style: AppTextStyles.bold24
@@ -270,7 +270,7 @@ class PracticeView extends GetView<PracticeController> {
                                                     color: AppColors.greyBlack,
                                                   ),
                                             ),
-                                            SizedBox(height: 6),
+                                            const SizedBox(height: 6),
                                             Text(
                                               "Above average performance",
                                               style: AppTextStyles.regular12
@@ -377,14 +377,14 @@ class PracticeView extends GetView<PracticeController> {
     final title = questionSet.title;
     final subtitle = questionSet.subtitle;
     final totalQuestions = questionSet.totalQuestions;
-    final statusLabel = questionSet.statusLabel;
+    // final statusLabel = questionSet.statusLabel;
     final category = questionSet.category;
     final accuracy = practice?.accuracy ?? 0;
     final attempt = practice?.totalAttempts ?? 0;
     return Container(
       width: double.infinity,
       // height: 400,
-      padding: EdgeInsets.symmetric(horizontal: 18, vertical: 18),
+      padding: const EdgeInsets.symmetric(horizontal: 18, vertical: 18),
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(12),
         color: AppColors.appBarBack,
@@ -405,14 +405,14 @@ class PracticeView extends GetView<PracticeController> {
                   child: Image.asset(ImagePath.frameImage, scale: 4),
                 ),
               ),
-              Spacer(),
+              const Spacer(),
               DecoratedBox(
                 decoration: BoxDecoration(
                   color: Colors.white,
                   borderRadius: BorderRadius.circular(6),
                 ),
                 child: Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 10, vertical: 6),
+                  padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
                   child: Text(
                     category,
                     style: AppTextStyles.regular14.copyWith(
@@ -461,7 +461,7 @@ class PracticeView extends GetView<PracticeController> {
                   ),
                 ],
               ),
-              Spacer(),
+              const Spacer(),
               Column(
                 children: [
                   Text(
@@ -516,7 +516,7 @@ class PracticeView extends GetView<PracticeController> {
 
   Widget searchButtonWidget() {
     return TextFormField(
-      decoration: InputDecoration(
+      decoration: const InputDecoration(
         hintText: 'Search',
         prefixIcon: Icon(Icons.search, size: 16),
         filled: true,

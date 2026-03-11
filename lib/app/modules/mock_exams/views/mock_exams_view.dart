@@ -10,7 +10,7 @@ import '../../../data/image_path.dart';
 import '../../../routes/app_pages.dart';
 import '../../common_widgets/custom_button.dart';
 import '../../common_widgets/primary_app_bar.dart';
-import 'package:shomoshotime/app/modules/common_widgets/shimmer_effect.dart';
+import '../../common_widgets/shimmer_effect.dart';
 import '../controllers/mock_exams_controller.dart';
 
 class MockExamsView extends GetView<MockExamsController> {
@@ -108,14 +108,14 @@ class MockExamsView extends GetView<MockExamsController> {
                                                             .blackColor,
                                                       ),
                                                 ),
-                                                Spacer(),
+                                                const Spacer(),
                                                 Image.asset(
                                                   ImagePath.frameImage,
                                                   scale: 5,
                                                 ),
                                               ],
                                             ),
-                                            SizedBox(height: 14),
+                                            const SizedBox(height: 14),
                                             Text(
                                               '${controller.mockTestAnalytics.isNotEmpty ? controller.mockTestAnalytics[0].mocktestProgress : 0}%',
                                               style: AppTextStyles.bold24
@@ -123,7 +123,7 @@ class MockExamsView extends GetView<MockExamsController> {
                                                     color: AppColors.greyBlack,
                                                   ),
                                             ),
-                                            SizedBox(height: 14),
+                                            const SizedBox(height: 14),
                                             Row(
                                               children: [
                                                 Expanded(
@@ -146,7 +146,7 @@ class MockExamsView extends GetView<MockExamsController> {
                                         ),
                                       ),
                                     ),
-                                    SizedBox(width: 14),
+                                    const SizedBox(width: 14),
                                     Expanded(
                                       child: Container(
                                         padding: const EdgeInsets.all(12),
@@ -170,14 +170,14 @@ class MockExamsView extends GetView<MockExamsController> {
                                                             .blackColor,
                                                       ),
                                                 ),
-                                                Spacer(),
+                                                const Spacer(),
                                                 Image.asset(
                                                   ImagePath.frameImage,
                                                   scale: 5,
                                                 ),
                                               ],
                                             ),
-                                            SizedBox(height: 6),
+                                            const SizedBox(height: 6),
                                             Text(
                                               '${controller.mockTestAnalytics.isNotEmpty ? controller.mockTestAnalytics[0].mocktestAccuracy : 0}%',
                                               style: AppTextStyles.bold24
@@ -185,7 +185,7 @@ class MockExamsView extends GetView<MockExamsController> {
                                                     color: AppColors.greyBlack,
                                                   ),
                                             ),
-                                            SizedBox(height: 6),
+                                            const SizedBox(height: 6),
                                             Text(
                                               "Above average performance",
                                               style: AppTextStyles.regular12
@@ -316,7 +316,7 @@ class MockExamsView extends GetView<MockExamsController> {
     return Container(
       width: double.infinity,
       // height: 400,
-      padding: EdgeInsets.symmetric(horizontal: 18, vertical: 18),
+      padding: const EdgeInsets.symmetric(horizontal: 18, vertical: 18),
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(12),
         color: AppColors.appBarBack,
@@ -337,14 +337,14 @@ class MockExamsView extends GetView<MockExamsController> {
                   child: Image.asset(ImagePath.frameImage, scale: 4),
                 ),
               ),
-              Spacer(),
+              const Spacer(),
               DecoratedBox(
                 decoration: BoxDecoration(
                   color: Colors.white,
                   borderRadius: BorderRadius.circular(6),
                 ),
                 child: Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 10, vertical: 6),
+                  padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
                   child: Text(
                     category,
                     style: AppTextStyles.regular14.copyWith(
@@ -432,7 +432,7 @@ class MockExamsView extends GetView<MockExamsController> {
                     'Attempt Accuracy',
                     style: AppTextStyles.regular14.copyWith(color: Colors.grey),
                   ),
-                  Spacer(),
+                  const Spacer(),
                   Text(
                     '$scorePercentage %',
                     style: AppTextStyles.regular24.copyWith(

@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import 'package:get/get.dart';
-import 'package:shomoshotime/app/modules/common_widgets/custom_app_bar.dart';
+import '../../common_widgets/custom_app_bar.dart';
 
 import '../../common_widgets/custom_progress_container.dart';
 import '../controllers/continue_learning_controller.dart';
@@ -13,7 +13,7 @@ class ContinueLearningView extends GetView<ContinueLearningController> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: CustomAppBar(
+      appBar: const CustomAppBar(
         title: 'Continue Learning',
         subTitle: 'Pick up where you left off',
       ),
@@ -24,7 +24,7 @@ class ContinueLearningView extends GetView<ContinueLearningController> {
           padding: EdgeInsets.zero,
           shrinkWrap: true,
           primary: false,
-          itemBuilder: (context, index) => CustomProgressContainer(
+          itemBuilder: (context, index) => const CustomProgressContainer(
             title: 'SPI Study Guide - Chapter 5',
             subTitleContainerText: 'Study',
             subTitleText: '2 Hours Ago',

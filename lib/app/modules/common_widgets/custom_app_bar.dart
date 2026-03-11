@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
-import 'package:shomoshotime/app/data/image_path.dart';
+import '../../data/image_path.dart';
 import '../../data/app_colors.dart';
 import '../../data/app_text_styles.dart';
 

@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:shomoshotime/app/all_utils/log.dart';
-import 'package:shomoshotime/app/core/urls/urls.dart' show Urls;
-import 'package:shomoshotime/app/core/user_panel_model/user_analytics_response.dart';
-import 'package:shomoshotime/app/modules/home/controllers/home_controller.dart';
-import 'package:shomoshotime/app/modules/practice/controllers/practice_controller.dart';
+import '../../../all_utils/log.dart';
+import '../../../core/urls/urls.dart' show Urls;
+import '../../../core/user_panel_model/user_analytics_response.dart';
+import '../../home/controllers/home_controller.dart';
+import '../../practice/controllers/practice_controller.dart';
 
 import '../../../all_utils/app_preference.dart';
 import '../../../core/api_services/network_caller.dart';

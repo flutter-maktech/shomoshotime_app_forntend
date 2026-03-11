@@ -3,13 +3,13 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get_core/src/get_main.dart';
 import 'package:get/get_navigation/src/extension_navigation.dart';
 import 'package:get/get_state_manager/src/simple/get_view.dart';
-import 'package:shomoshotime/app/data/app_colors.dart';
-import 'package:shomoshotime/app/data/app_text_styles.dart';
-import 'package:shomoshotime/app/data/image_path.dart';
-import 'package:shomoshotime/app/modules/common_widgets/custom_app_bar.dart';
-import 'package:shomoshotime/app/modules/common_widgets/custom_button.dart';
-import 'package:shomoshotime/app/modules/common_widgets/custom_progress.dart';
-import 'package:shomoshotime/app/routes/app_pages.dart';
+import '../../../data/app_colors.dart';
+import '../../../data/app_text_styles.dart';
+import '../../../data/image_path.dart';
+import '../../common_widgets/custom_app_bar.dart';
+import '../../common_widgets/custom_button.dart';
+import '../../common_widgets/custom_progress.dart';
+import '../../../routes/app_pages.dart';
 import '../../spi_practice_bank_qus/controllers/spi_practice_bank_qus_controller.dart';
 
 class SpiPracticeBankAnsView extends GetView<SpiPracticeBankQusController> {
@@ -28,7 +28,7 @@ class SpiPracticeBankAnsView extends GetView<SpiPracticeBankQusController> {
         ? args['staus_label'] as String
         : 'N/A';
     return Scaffold(
-      appBar: CustomAppBar(title: 'Back to Practice'),
+      appBar: const CustomAppBar(title: 'Back to Practice'),
       body: Padding(
         padding: EdgeInsets.symmetric(horizontal: 16.w),
         child: SingleChildScrollView(
@@ -49,7 +49,7 @@ class SpiPracticeBankAnsView extends GetView<SpiPracticeBankQusController> {
                     ),
                   ),
                   SizedBox(height: 6.h),
-                  CustomProgress(
+                  const CustomProgress(
                     progress: .2,
                     progressColor: AppColors.appBarCircleAvatarColor,
                   ),

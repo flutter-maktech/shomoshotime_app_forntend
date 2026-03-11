@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+
 import '../../../data/app_text_styles.dart';
 
 class CustomRadio extends StatelessWidget {
@@ -27,7 +28,7 @@ class CustomRadio extends StatelessWidget {
       onTap: onTap,
       child: Container(
         width: double.infinity,
-        margin: EdgeInsets.symmetric(vertical: 6),
+        margin: const EdgeInsets.symmetric(vertical: 6),
         decoration: BoxDecoration(
           color: boxColor,
           borderRadius: BorderRadius.circular(4.r),

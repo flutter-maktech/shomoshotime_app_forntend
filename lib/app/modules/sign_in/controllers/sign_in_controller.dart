@@ -1,11 +1,11 @@
 import 'dart:convert';
 import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
-import 'package:shomoshotime/app/all_utils/app_preference.dart';
-import 'package:shomoshotime/app/all_utils/log.dart';
-import 'package:shomoshotime/app/core/api_services/firebase_services.dart';
-import 'package:shomoshotime/app/core/api_services/network_caller.dart';
-import 'package:shomoshotime/app/data/app_colors.dart';
+import '../../../all_utils/app_preference.dart';
+import '../../../all_utils/log.dart';
+import '../../../core/api_services/firebase_services.dart';
+import '../../../core/api_services/network_caller.dart';
+import '../../../data/app_colors.dart';
 import '../../../all_utils/show_app_snack_bar.dart';
 import '../../../core/auth_model/sign_in_model.dart';
 import '../../../core/urls/urls.dart';

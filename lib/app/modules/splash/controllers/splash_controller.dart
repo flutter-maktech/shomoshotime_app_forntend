@@ -1,5 +1,5 @@
 import 'package:get/get.dart';
-import 'package:shomoshotime/app/all_utils/app_preference.dart';
+import '../../../all_utils/app_preference.dart';
 
 import '../../../routes/app_pages.dart';
 

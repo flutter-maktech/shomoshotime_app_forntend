@@ -39,7 +39,7 @@ class StudyGuidesView extends GetView<StudyGuidesController> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      HeaderSection(),
+                      const HeaderSection(),
                       SizedBox(height: 12.h),
                       Obx(
                         () => CustomTextFormField(
@@ -132,9 +132,9 @@ class StudyGuidesView extends GetView<StudyGuidesController> {
               // Content section
               Obx(() {
                 if (controller.select.value == 0) {
-                  return SpiCardList();
+                  return const SpiCardList();
                 } else {
-                  return SpiAudioCardList();
+                  return const SpiAudioCardList();
                 }
               }),
               SliverToBoxAdapter(

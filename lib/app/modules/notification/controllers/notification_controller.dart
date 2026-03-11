@@ -1,10 +1,10 @@
 import 'package:get/get.dart';
-import 'package:shomoshotime/app/all_utils/log.dart';
+import '../../../all_utils/log.dart';
 import '../../../core/api_services/pusher_services.dart';
 import '../../../core/user_panel_model/notification_model.dart';
-import 'package:shomoshotime/app/all_utils/app_preference.dart';
-import 'package:shomoshotime/app/core/api_services/network_caller.dart';
-import 'package:shomoshotime/app/core/urls/urls.dart';
+import '../../../all_utils/app_preference.dart';
+import '../../../core/api_services/network_caller.dart';
+import '../../../core/urls/urls.dart';
 
 class NotificationController extends GetxController {
   final isLoading = false.obs;

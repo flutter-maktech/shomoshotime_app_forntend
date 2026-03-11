@@ -1,8 +1,8 @@
 import 'package:get/get.dart';
-import 'package:shomoshotime/app/all_utils/app_preference.dart';
-import 'package:shomoshotime/app/core/api_services/network_caller.dart';
-import 'package:shomoshotime/app/core/urls/urls.dart';
-import 'package:shomoshotime/app/routes/app_pages.dart';
+import '../../../all_utils/app_preference.dart';
+import '../../../core/api_services/network_caller.dart';
+import '../../../core/urls/urls.dart';
+import '../../../routes/app_pages.dart';
 
 class AppGateController extends GetxController {
   final NetworkCaller _networkCaller = NetworkCaller();

@@ -1,7 +1,7 @@
 import 'package:get/get.dart';
-import 'package:shomoshotime/app/modules/home/controllers/home_controller.dart';
-import 'package:shomoshotime/app/modules/mock_exams/controllers/mock_exams_controller.dart';
-import 'package:shomoshotime/app/modules/practice/controllers/practice_controller.dart';
+import '../../home/controllers/home_controller.dart';
+import '../../mock_exams/controllers/mock_exams_controller.dart';
+import '../../practice/controllers/practice_controller.dart';
 
 import '../../flash_cards/controllers/flash_cards_controller.dart';
 import '../../spi_practice_bank_ans/controllers/spi_practice_bank_ans_controller.dart';

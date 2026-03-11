@@ -1,6 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
-import 'package:shomoshotime/app/data/app_colors.dart';
+import '../../../data/app_colors.dart';
 import '../../../all_utils/app_preference.dart';
 import '../../../routes/app_pages.dart';
 import '../../../core/api_services/network_caller.dart';

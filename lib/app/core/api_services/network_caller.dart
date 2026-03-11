@@ -2,8 +2,8 @@ import 'dart:convert';
 import 'dart:io';
 import 'package:http/http.dart' as http;
 import 'package:get/get.dart';
-import 'package:shomoshotime/app/all_utils/log.dart';
-import 'package:shomoshotime/app/routes/app_pages.dart';
+import '../../all_utils/log.dart';
+import '../../routes/app_pages.dart';
 
 class NetworkCaller {
   // GET Request

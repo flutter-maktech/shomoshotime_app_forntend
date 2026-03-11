@@ -49,7 +49,7 @@ class SpiCardList extends StatelessWidget {
               studyGuidesController.selectedCategory.value == 'All'
                   ? 'No PDF study guides available'
                   : 'No PDF study guides found for ${studyGuidesController.selectedCategory.value}',
-              style: TextStyle(color: Colors.grey),
+              style: const TextStyle(color: Colors.grey),
               textAlign: TextAlign.center,
             ),
           ),

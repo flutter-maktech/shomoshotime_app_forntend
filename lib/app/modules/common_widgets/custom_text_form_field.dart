@@ -23,14 +23,14 @@ class CustomTextFormField extends StatelessWidget {
       onChanged: onChanged,
       decoration: InputDecoration(
         hintText: 'Search',
-        prefixIcon: Icon(Icons.search, size: 16),
+        prefixIcon: const Icon(Icons.search, size: 16),
         filled: true,
         fillColor: AppColors.appBarBack,
-        contentPadding: EdgeInsets.symmetric(horizontal: 16, vertical: 12),
-        border: OutlineInputBorder(borderSide: BorderSide.none),
-        focusedBorder: OutlineInputBorder(borderSide: BorderSide.none),
+        contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+        border: const OutlineInputBorder(borderSide: BorderSide.none),
+        focusedBorder: const OutlineInputBorder(borderSide: BorderSide.none),
         suffixIcon: isSearchQueryNotEmpty
-            ? IconButton(icon: Icon(Icons.clear, size: 16), onPressed: onClear)
+            ? IconButton(icon: const Icon(Icons.clear, size: 16), onPressed: onClear)
             : null,
       ),
     );

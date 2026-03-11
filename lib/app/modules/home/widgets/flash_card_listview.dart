@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
-import 'package:shomoshotime/app/modules/common_widgets/shimmer_effect.dart';
+import '../../common_widgets/shimmer_effect.dart';
 
 import '../../../routes/app_pages.dart';
 import '../controllers/home_controller.dart';
@@ -34,17 +34,17 @@ class FlashCardListView extends StatelessWidget {
       // Show error message
       if (homeController.errorMessage.value.isNotEmpty) {
         return Padding(
-          padding: EdgeInsets.symmetric(vertical: 20),
+          padding: const EdgeInsets.symmetric(vertical: 20),
           child: Text(
             homeController.errorMessage.value,
-            style: TextStyle(color: Colors.red),
+            style: const TextStyle(color: Colors.red),
             textAlign: TextAlign.center,
           ),
         );
       }
       // Show empty state
       if (homeController.studyGuides.isEmpty) {
-        return Padding(
+        return const Padding(
           padding: EdgeInsets.symmetric(vertical: 20),
           child: Text(
             'No flashcards available',
@@ -57,7 +57,7 @@ class FlashCardListView extends StatelessWidget {
       return ListView.builder(
         itemCount: item > 4 ? 4 : item,
         padding: EdgeInsets.zero,
-        physics: NeverScrollableScrollPhysics(),
+        physics: const NeverScrollableScrollPhysics(),
         shrinkWrap: true,
         primary: false,
         itemBuilder: (context, index) {

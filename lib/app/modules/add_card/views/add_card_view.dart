@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
-import 'package:shomoshotime/app/data/app_colors.dart';
-import 'package:shomoshotime/app/modules/common_widgets/custom_app_bar.dart';
-import 'package:shomoshotime/app/modules/common_widgets/custom_button.dart';
-import 'package:shomoshotime/app/routes/app_pages.dart';
+import '../../../data/app_colors.dart';
+import '../../common_widgets/custom_app_bar.dart';
+import '../../common_widgets/custom_button.dart';
+import '../../../routes/app_pages.dart';
 import '../../../data/app_text_styles.dart';
 import '../../../data/image_path.dart';
 import '../controllers/add_card_controller.dart';
@@ -16,7 +16,7 @@ class AddCardView extends GetView<AddCardController> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: CustomAppBar(title: "Add Card"),
+      appBar: const CustomAppBar(title: "Add Card"),
       body: SingleChildScrollView(
         child: SafeArea(
           child: Padding(
@@ -64,13 +64,13 @@ class AddCardView extends GetView<AddCardController> {
                           style: AppTextStyles.regular12,
                         ),
                         SizedBox(height: 8.h),
-                        CustomAddCard(text: "Credit/Debit Card"),
+                        const CustomAddCard(text: "Credit/Debit Card"),
                         SizedBox(height: 24.h),
                         Text(
                           "Credit/Debit Card",
                           style: AppTextStyles.regular12,
                         ),
-                        CustomAddCard(text: "Credit/Debit Card"),
+                        const CustomAddCard(text: "Credit/Debit Card"),
                         SizedBox(height: 24.h),
                         Row(
                           crossAxisAlignment: CrossAxisAlignment.start,
@@ -85,7 +85,7 @@ class AddCardView extends GetView<AddCardController> {
                                     overflow: TextOverflow.ellipsis,
                                   ),
                                   SizedBox(height: 8.h),
-                                  CustomAddCard(text: "02/2028"),
+                                  const CustomAddCard(text: "02/2028"),
                                 ],
                               ),
                             ),
@@ -96,7 +96,7 @@ class AddCardView extends GetView<AddCardController> {
                                 children: [
                                   Text("CVV", style: AppTextStyles.regular12),
                                   SizedBox(height: 8.h),
-                                  CustomAddCard(text: "02/2028"),
+                                  const CustomAddCard(text: "02/2028"),
                                 ],
                               ),
                             ),
@@ -114,7 +114,7 @@ class AddCardView extends GetView<AddCardController> {
                                   borderRadius: BorderRadius.circular(6),
                                   color: AppColors.addCardCheck,
                                 ),
-                                child: Icon(
+                                child: const Icon(
                                   Icons.check,
                                   color: AppColors.whiteColor,
                                 ),

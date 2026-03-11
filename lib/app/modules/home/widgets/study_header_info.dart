@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
-import 'package:shomoshotime/app/modules/home/controllers/home_controller.dart';
-import 'package:shomoshotime/app/modules/common_widgets/shimmer_effect.dart';
+import '../controllers/home_controller.dart';
+import '../../common_widgets/shimmer_effect.dart';
 
 import '../../../data/app_colors.dart';
 import '../../../data/app_text_styles.dart';
@@ -25,7 +25,7 @@ class StudyHeaderInfo extends StatelessWidget {
             color: AppColors.homeStack.withAlpha(200),
             blurRadius: 10,
             spreadRadius: 8,
-            offset: Offset(0, 5),
+            offset: const Offset(0, 5),
           ),
         ],
       ),

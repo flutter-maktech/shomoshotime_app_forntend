@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:shomoshotime/app/data/app_colors.dart';
-import 'package:shomoshotime/app/data/app_text_styles.dart';
+import '../../../data/app_colors.dart';
+import '../../../data/app_text_styles.dart';
 import '../controllers/app_gate_controller.dart';
 
 class AppGateView extends GetView<AppGateController> {

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
-import 'package:shomoshotime/app/modules/custom_bottom_navigation_bar/controllers/custom_bottom_navigation_bar_controller.dart';
+import '../../custom_bottom_navigation_bar/controllers/custom_bottom_navigation_bar_controller.dart';
 import '../../../routes/app_pages.dart';
 import '../../common_widgets/primary_app_bar.dart';
 import '../controllers/home_controller.dart';
@@ -20,7 +20,7 @@ class HomeView extends GetView<HomeController> {
       body: Stack(
         children: [
           // Background container with decorative design
-          BackGroundContainer(),
+          const BackGroundContainer(),
 
           // Main content area
           SafeArea(
@@ -30,7 +30,9 @@ class HomeView extends GetView<HomeController> {
                 // App bar with notification and profile navigation
                 PrimaryAppBar(
                   notificationOnTap: () => Get.toNamed(Routes.notification),
-                  profileOnTap: () => Get.toNamed(Routes.profile),
+                  profileOnTap: () {
+                    Get.toNamed(Routes.profile);
+                  },
                 ),
                 SizedBox(height: 10.h),
                 // Scrollable content area
@@ -40,7 +42,7 @@ class HomeView extends GetView<HomeController> {
                     child: Column(
                       children: [
                         // User welcome section with study statistics
-                        StudyHeaderInfo(),
+                        const StudyHeaderInfo(),
 
                         // Main content sections
                         Padding(
@@ -52,7 +54,10 @@ class HomeView extends GetView<HomeController> {
                                 title: 'Flash Cards',
                                 subtitle: 'Pick up where you left off',
                                 onViewAllTap: () {
-                                  final bottomBarController = Get.find<CustomBottomNavigationBarController>();
+                                  final bottomBarController =
+                                      Get.find<
+                                        CustomBottomNavigationBarController
+                                      >();
                                   bottomBarController.changeIndex(2);
                                 },
                               ),
@@ -60,7 +65,7 @@ class HomeView extends GetView<HomeController> {
                               SizedBox(height: 22.h),
 
                               // List of flash cards
-                              FlashCardListView(),
+                              const FlashCardListView(),
 
                               SizedBox(height: 45.h),
 
@@ -69,7 +74,10 @@ class HomeView extends GetView<HomeController> {
                                 title: 'Study Guide',
                                 subtitle: 'Your mastery across specialties',
                                 onViewAllTap: () {
-                                  final bottomBarController = Get.find<CustomBottomNavigationBarController>();
+                                  final bottomBarController =
+                                      Get.find<
+                                        CustomBottomNavigationBarController
+                                      >();
                                   bottomBarController.changeIndex(1);
                                 },
                               ),
@@ -77,7 +85,7 @@ class HomeView extends GetView<HomeController> {
                               SizedBox(height: 22.h),
 
                               // List of study guides with progress indicators
-                              StudyGuideListView(),
+                              const StudyGuideListView(),
 
                               // Bottom spacing
                               SizedBox(height: 25.h),

@@ -48,7 +48,7 @@ class SpiAudioCardList extends StatelessWidget {
               studyGuidesController.searchQuery.value.isNotEmpty
                   ? 'No audio study guides found for "${studyGuidesController.searchQuery.value}"'
                   : 'No audio study guides available',
-              style: TextStyle(color: Colors.grey),
+              style: const TextStyle(color: Colors.grey),
               textAlign: TextAlign.center,
             ),
           ),

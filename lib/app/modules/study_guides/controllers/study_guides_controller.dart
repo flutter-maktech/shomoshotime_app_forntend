@@ -1,7 +1,7 @@
 import 'package:audioplayers/audioplayers.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:shomoshotime/app/all_utils/log.dart';
+import '../../../all_utils/log.dart';
 import '../../home/controllers/home_controller.dart';
 
 import '../../../core/user_panel_model/study_guide_response_model.dart';

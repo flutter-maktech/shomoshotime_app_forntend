@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
-import 'package:shomoshotime/app/data/app_colors.dart';
-import 'package:shomoshotime/app/data/app_text_styles.dart';
-import 'package:shomoshotime/app/data/image_path.dart';
-import 'package:shomoshotime/app/modules/common_widgets/custom_app_bar.dart';
-import 'package:shomoshotime/app/modules/common_widgets/custom_button.dart';
-import 'package:shomoshotime/app/routes/app_pages.dart';
+import '../../../data/app_colors.dart';
+import '../../../data/app_text_styles.dart';
+import '../../../data/image_path.dart';
+import '../../common_widgets/custom_app_bar.dart';
+import '../../common_widgets/custom_button.dart';
+import '../../../routes/app_pages.dart';
 import '../controllers/profile_controller.dart';
 import '../widget/custom_icons.dart';
 
@@ -19,7 +19,9 @@ class ProfileView extends GetView<ProfileController> {
       appBar: CustomAppBar(
         title: 'My Profile',
         subTitle: "Manage your account and track your progress",
-        onTap: () => Get.toNamed(Routes.customBottomNavigationBar),
+        onTap: () {
+          Get.back();
+        },
       ),
       body: SingleChildScrollView(
         child: Padding(
@@ -74,9 +76,9 @@ class ProfileView extends GetView<ProfileController> {
                                 borderRadius: BorderRadius.circular(100),
                                 child: userImage != null && userImage.isNotEmpty
                                     ? SizedBox(
-                                      height: 150.h,
-                                      width: 150.w,
-                                      child: Image.network(
+                                        height: 150.h,
+                                        width: 150.w,
+                                        child: Image.network(
                                           userImage,
                                           fit: BoxFit.cover,
                                           errorBuilder: (_, _, _) {
@@ -91,7 +93,7 @@ class ProfileView extends GetView<ProfileController> {
                                             );
                                           },
                                         ),
-                                    )
+                                      )
                                     : Container(
                                         width: 80,
                                         height: 80,
@@ -112,13 +114,13 @@ class ProfileView extends GetView<ProfileController> {
                           userName ?? 'No user name found',
                           style: AppTextStyles.spaceGroteskLarge16,
                         ),
-                        SizedBox(height: 4),
+                        const SizedBox(height: 4),
                         Text(
                           userEmail ?? 'No email found.',
                           style: AppTextStyles.regular14,
                           overflow: TextOverflow.ellipsis,
                         ),
-                        SizedBox(height: 24),
+                        const SizedBox(height: 24),
                         Image.asset(
                           ImagePath.profilePremium,
                           height: 36.h,

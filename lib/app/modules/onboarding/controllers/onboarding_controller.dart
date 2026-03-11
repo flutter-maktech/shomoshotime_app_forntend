@@ -1,6 +1,6 @@
 import 'package:get/get.dart';
-import 'package:shomoshotime/app/data/image_path.dart';
-import 'package:shomoshotime/app/routes/app_pages.dart';
+import '../../../data/image_path.dart';
+import '../../../routes/app_pages.dart';
 
 class OnboardingController extends GetxController {
   var currentIndex = 0.obs;

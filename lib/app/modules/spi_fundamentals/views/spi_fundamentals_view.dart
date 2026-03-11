@@ -2,10 +2,10 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
-import 'package:shomoshotime/app/data/app_colors.dart';
-import 'package:shomoshotime/app/data/app_text_styles.dart';
-import 'package:shomoshotime/app/modules/common_widgets/custom_app_bar.dart';
-import 'package:shomoshotime/app/modules/common_widgets/custom_button.dart';
+import '../../../data/app_colors.dart';
+import '../../../data/app_text_styles.dart';
+import '../../common_widgets/custom_app_bar.dart';
+import '../../common_widgets/custom_button.dart';
 import 'package:syncfusion_flutter_pdfviewer/pdfviewer.dart';
 import '../controllers/spi_fundamentals_controller.dart';
 
@@ -121,10 +121,10 @@ class SpiFundamentalsView extends GetView<SpiFundamentalsController> {
                                   child: Column(
                                     mainAxisAlignment: MainAxisAlignment.center,
                                     children: [
-                                      CircularProgressIndicator(
+                                      const CircularProgressIndicator(
                                         color: AppColors.primaryColor,
                                       ),
-                                      SizedBox(height: 16),
+                                      const SizedBox(height: 16),
                                       Text(
                                         'Preparing Study Material...',
                                         style: AppTextStyles.regular14,
@@ -141,22 +141,22 @@ class SpiFundamentalsView extends GetView<SpiFundamentalsController> {
                         () => controller.pdfErrorMessage.value.isNotEmpty
                             ? Container(
                                 color: AppColors.appBarBack,
-                                padding: EdgeInsets.all(20),
+                                padding: const EdgeInsets.all(20),
                                 child: Center(
                                   child: Column(
                                     mainAxisAlignment: MainAxisAlignment.center,
                                     children: [
-                                      Icon(
+                                      const Icon(
                                         Icons.error_outline,
                                         color: Colors.red,
                                         size: 48,
                                       ),
-                                      SizedBox(height: 16),
+                                      const SizedBox(height: 16),
                                       Text(
                                         'Failed to load PDF',
                                         style: AppTextStyles.bold18,
                                       ),
-                                      SizedBox(height: 8),
+                                      const SizedBox(height: 8),
                                       Text(
                                         controller.pdfErrorMessage.value,
                                         textAlign: TextAlign.center,
@@ -164,7 +164,7 @@ class SpiFundamentalsView extends GetView<SpiFundamentalsController> {
                                           color: Colors.grey[600],
                                         ),
                                       ),
-                                      SizedBox(height: 24),
+                                      const SizedBox(height: 24),
                                       ElevatedButton(
                                         onPressed: controller.retryPdfLoad,
                                         style: ElevatedButton.styleFrom(
@@ -172,7 +172,7 @@ class SpiFundamentalsView extends GetView<SpiFundamentalsController> {
                                               AppColors.primaryColor,
                                           foregroundColor: Colors.white,
                                         ),
-                                        child: Text('Retry'),
+                                        child: const Text('Retry'),
                                       ),
                                     ],
                                   ),

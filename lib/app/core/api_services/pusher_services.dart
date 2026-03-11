@@ -4,7 +4,7 @@ import 'package:http/http.dart' as http;
 
 import 'package:pusher_channels_flutter/pusher_channels_flutter.dart';
 
-import 'package:shomoshotime/app/all_utils/app_preference.dart';
+import '../../all_utils/app_preference.dart';
 
 class PusherService {
   final PusherChannelsFlutter _pusher = PusherChannelsFlutter.getInstance();

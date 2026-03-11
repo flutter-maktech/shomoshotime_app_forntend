@@ -45,7 +45,7 @@ class StudyGuideCard extends StatelessWidget {
                   child: Image.asset(ImagePath.bookImage, scale: 4),
                 ),
               ),
-              Spacer(),
+              const Spacer(),
               DecoratedBox(
                 decoration: BoxDecoration(
                   color: Colors.white,

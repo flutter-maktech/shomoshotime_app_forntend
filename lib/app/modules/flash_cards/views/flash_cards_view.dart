@@ -2,11 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import 'package:get/get.dart';
-import 'package:shomoshotime/app/data/app_colors.dart';
-import 'package:shomoshotime/app/data/app_text_styles.dart';
-import 'package:shomoshotime/app/modules/common_widgets/primary_app_bar.dart';
-import 'package:shomoshotime/app/modules/common_widgets/shimmer_effect.dart';
-import 'package:shomoshotime/app/modules/flash_cards/widgets/flash_card_filter_bar.dart';
+import '../../../data/app_colors.dart';
+import '../../../data/app_text_styles.dart';
+import '../../common_widgets/primary_app_bar.dart';
+import '../../common_widgets/shimmer_effect.dart';
+import '../widgets/flash_card_filter_bar.dart';
 
 import '../../../routes/app_pages.dart';
 import '../../common_widgets/custom_text_form_field.dart';

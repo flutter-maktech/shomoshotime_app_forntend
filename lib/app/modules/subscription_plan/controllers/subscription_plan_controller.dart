@@ -4,8 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_stripe/flutter_stripe.dart';
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
-import 'package:shomoshotime/app/all_utils/log.dart';
-import 'package:shomoshotime/app/core/urls/urls.dart';
+import '../../../all_utils/log.dart';
+import '../../../core/urls/urls.dart';
 import '../../../all_utils/app_preference.dart';
 import '../../../all_utils/show_app_snack_bar.dart';
 import '../../../core/api_services/network_caller.dart';
@@ -237,12 +237,12 @@ class SubscriptionPlanController extends GetxController {
       showDialog(
         context: _context!,
         builder: (context) => AlertDialog(
-          title: Text('Payment Error'),
+          title: const Text('Payment Error'),
           content: Text(e.error.localizedMessage ?? 'Payment cancelled'),
           actions: [
             TextButton(
               onPressed: () => Navigator.pop(context),
-              child: Text('OK'),
+              child: const Text('OK'),
             ),
           ],
         ),
@@ -255,12 +255,12 @@ class SubscriptionPlanController extends GetxController {
       showDialog(
         context: _context!,
         builder: (context) => AlertDialog(
-          title: Text('Error'),
+          title: const Text('Error'),
           content: Text(error.toString()),
           actions: [
             TextButton(
               onPressed: () => Navigator.pop(context),
-              child: Text('OK'),
+              child: const Text('OK'),
             ),
           ],
         ),

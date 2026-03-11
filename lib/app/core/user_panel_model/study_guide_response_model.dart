@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:intl/intl.dart';
+
 import '../urls/urls.dart';
 
 // Main API response model

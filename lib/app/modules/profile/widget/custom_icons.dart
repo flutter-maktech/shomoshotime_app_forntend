@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+
 import '../../../data/app_colors.dart';
 import '../../../data/app_text_styles.dart';
 
@@ -28,7 +29,7 @@ class CustomProfileDistyle extends StatelessWidget {
       child: Row(
         children: [
           Icon(icon, color: color),
-          SizedBox(width: 8),
+          const SizedBox(width: 8),
           Text(
             text,
             style: shouldBold

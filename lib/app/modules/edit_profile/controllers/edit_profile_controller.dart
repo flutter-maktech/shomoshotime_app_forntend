@@ -1,11 +1,13 @@
 import 'dart:io';
 
+import 'package:flutter/foundation.dart';
 import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:shomoshotime/app/all_utils/app_preference.dart';
-import 'package:shomoshotime/app/core/api_services/network_caller.dart';
-import 'package:shomoshotime/app/core/urls/urls.dart';
+import '../../custom_bottom_navigation_bar/controllers/custom_bottom_navigation_bar_controller.dart';
+import '../../../all_utils/app_preference.dart';
+import '../../../core/api_services/network_caller.dart';
+import '../../../core/urls/urls.dart';
 
 class EditProfileController extends GetxController {
   final nameController = TextEditingController();
@@ -27,44 +29,55 @@ class EditProfileController extends GetxController {
   }
 
   Future<bool> updateProfile() async {
-  try {
-    isLoading.value = true;
+    try {
+      isLoading.value = true;
 
-    final token = await AppPreference.getToken();
+      final token = await AppPreference.getToken();
 
-    final Map<String, String> fields = {};
+      final Map<String, String> fields = {};
 
-    if (nameController.text.trim().isNotEmpty) {
-      fields['name'] = nameController.text.trim();
-    }
+      if (nameController.text.trim().isNotEmpty) {
+        fields['name'] = nameController.text.trim();
+      }
 
-    if (emailController.text.trim().isNotEmpty) {
-      fields['email'] = emailController.text.trim();
-    }
+      if (emailController.text.trim().isNotEmpty) {
+        fields['email'] = emailController.text.trim();
+      }
 
-    if (fields.isEmpty && selectedImage.value == null) {
+      if (fields.isEmpty && selectedImage.value == null) {
+        return false;
+      }
+
+      final response = await networkCaller.multipartRequest(
+        Urls.profileUpdate,
+        fields,
+        file: selectedImage.value,
+        fileField: "file",
+        token: token,
+      );
+      if (response != null && response['success'] == true) {
+        String newImageUrl = response['data']['image'] ?? '';
+        AppPreference.clearProfileImage();
+        AppPreference.saveProfileImage(newImageUrl);
+        
+        // Update CustomBottomNavigationBarController to reflect changes on Home screen
+        try {
+          final navCtrl = Get.find<CustomBottomNavigationBarController>();
+          navCtrl.updateProfileImage(newImageUrl);
+        } catch (e) {
+          debugPrint('CustomBottomNavigationBarController not found: $e');
+        }
+        
+        return true;
+      }
+
       return false;
+    } catch (_) {
+      return false;
+    } finally {
+      isLoading.value = false;
     }
-
-    final response = await networkCaller.multipartRequest(
-      Urls.profileUpdate,
-      fields,
-      file: selectedImage.value,
-      fileField: "file",
-      token: token,
-    );
-
-    if (response != null && response['success'] == true) {
-      return true;
-    }
-
-    return false;
-  } catch (_) {
-    return false;
-  } finally {
-    isLoading.value = false;
   }
-}
 
   @override
   void onClose() {

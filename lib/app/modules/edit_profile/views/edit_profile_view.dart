@@ -2,10 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import 'package:get/get.dart';
-import 'package:shomoshotime/app/data/app_colors.dart';
-import 'package:shomoshotime/app/data/app_text_styles.dart';
-import 'package:shomoshotime/app/modules/common_widgets/custom_app_bar.dart';
-import 'package:shomoshotime/app/modules/common_widgets/custom_button.dart';
+import '../../../data/app_colors.dart';
+import '../../../data/app_text_styles.dart';
+import '../../common_widgets/custom_app_bar.dart';
+import '../../common_widgets/custom_button.dart';
 
 import '../controllers/edit_profile_controller.dart';
 import '../widget/custom_edit_profile_textfield.dart';
@@ -18,7 +18,7 @@ class EditProfileView extends GetView<EditProfileController> {
     final argu = Get.arguments as Map<String, dynamic>;
     final userImage = argu['userImage'];
     return Scaffold(
-      appBar: CustomAppBar(title: "Edit Profile"),
+      appBar: const CustomAppBar(title: "Edit Profile"),
       body: SingleChildScrollView(
         child: SafeArea(
           child: Padding(
@@ -112,7 +112,7 @@ class EditProfileView extends GetView<EditProfileController> {
                   controller: controller.emailController,
                   text: "deanna.curtis@example.com",
                 ),
-                SizedBox(height: 100),
+                const SizedBox(height: 100),
                 CustomButton(
                   childText: "Save",
                   buttonChildColor: AppColors.blackColor,

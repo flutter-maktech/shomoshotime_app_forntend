@@ -1,7 +1,7 @@
 import 'package:get/get.dart';
 import 'dart:async';
 import 'package:flutter/material.dart';
-import 'package:shomoshotime/app/data/app_colors.dart';
+import '../../../data/app_colors.dart';
 import '../../../all_utils/app_preference.dart';
 import '../../../all_utils/show_app_snack_bar.dart';
 import '../../../core/api_services/network_caller.dart';

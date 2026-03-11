@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:shomoshotime/app/all_utils/app_preference.dart';
+import '../../../all_utils/app_preference.dart';
 
 import '../../flash_cards/views/flash_cards_view.dart';
 import '../../home/views/home_view.dart';
@@ -46,17 +46,17 @@ class CustomBottomNavigationBarController extends GetxController {
   Widget _buildPage(int index) {
     switch (index) {
       case 0:
-        return HomeView();
+        return const HomeView();
       case 1:
-        return StudyGuidesView();
+        return const StudyGuidesView();
       case 2:
-        return FlashCardsView();
+        return const FlashCardsView();
       case 3:
-        return PracticeView();
+        return const PracticeView();
       case 4:
-        return MockExamsView();
+        return const MockExamsView();
       default:
-        return HomeView();
+        return const HomeView();
     }
   }
 }

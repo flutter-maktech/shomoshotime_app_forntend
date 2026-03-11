@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:shomoshotime/app/data/app_colors.dart';
+import '../../data/app_colors.dart';
 
 class CustomProgress extends StatelessWidget {
   final double progress; // 0.0 to 1.0
@@ -35,7 +35,7 @@ class CustomProgress extends StatelessWidget {
               child: Container(
                 decoration: BoxDecoration(
                   color: progressColor,
-                  gradient: progressColor == null ?  LinearGradient(
+                  gradient: progressColor == null ?  const LinearGradient(
                     colors: [ AppColors.whiteColor, AppColors.primaryColor],
                   ) : null,
                   borderRadius: BorderRadius.circular(100),

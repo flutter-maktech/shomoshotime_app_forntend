@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:shomoshotime/app/all_utils/app_preference.dart';
-import 'package:shomoshotime/app/all_utils/log.dart';
-import 'package:shomoshotime/app/core/api_services/network_caller.dart';
-import 'package:shomoshotime/app/core/urls/urls.dart';
-import 'package:shomoshotime/app/core/user_panel_model/question_set_response.dart';
-import 'package:shomoshotime/app/core/user_panel_model/user_analytics_response.dart';
-import 'package:shomoshotime/app/modules/home/controllers/home_controller.dart';
+import '../../../all_utils/app_preference.dart';
+import '../../../all_utils/log.dart';
+import '../../../core/api_services/network_caller.dart';
+import '../../../core/urls/urls.dart';
+import '../../../core/user_panel_model/question_set_response.dart';
+import '../../../core/user_panel_model/user_analytics_response.dart';
+import '../../home/controllers/home_controller.dart';
 
 class PracticeController extends GetxController {
   RxBool isloading = false.obs;

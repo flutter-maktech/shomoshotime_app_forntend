@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-
 import 'package:get/get.dart';
 
 import '../../../data/app_colors.dart';
@@ -48,7 +47,7 @@ class OnboardingView extends GetView<OnboardingController> {
                         onTap: () {
                           controller.nextSlide();
                         },
-                        child: CustomButton(childText: 'NEXT'),
+                        child: const CustomButton(childText: 'NEXT'),
                       ),
                       SizedBox(height: 24.h),
                       Row(

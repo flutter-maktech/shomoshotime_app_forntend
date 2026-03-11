@@ -1,6 +1,6 @@
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
-import 'package:shomoshotime/app/core/user_panel_model/profile_response.dart';
+import '../../../core/user_panel_model/profile_response.dart';
 
 import '../../../all_utils/app_preference.dart';
 import '../../../core/api_services/firebase_services.dart';

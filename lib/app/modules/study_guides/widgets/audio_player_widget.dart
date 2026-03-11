@@ -1,6 +1,7 @@
 // audio_player_widget.dart
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+
 import '../controllers/study_guides_controller.dart';
 
 class AudioPlayerWidget extends StatelessWidget {
@@ -57,22 +58,22 @@ class AudioPlayerWidget extends StatelessWidget {
             ],
           ),
 
-          SizedBox(height: 15),
+          const SizedBox(height: 15),
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               // 1 sec BACK button
               IconButton(
-                icon: Icon(Icons.replay_10, size: 30),
+                icon: const Icon(Icons.replay_10, size: 30),
                 onPressed: () async {
                   final newPos =
-                      controller.position.value - Duration(seconds: 10);
+                      controller.position.value - const Duration(seconds: 10);
                   await controller.seekTo(
                     newPos.isNegative ? Duration.zero : newPos,
                   );
                 },
               ),
-              SizedBox(width: 20),
+              const SizedBox(width: 20),
               CircleAvatar(
                 radius: 35,
                 backgroundColor: Colors.black,
@@ -113,13 +114,13 @@ class AudioPlayerWidget extends StatelessWidget {
                 }),
               ),
 
-              SizedBox(width: 20),
+              const SizedBox(width: 20),
 
               IconButton(
-                icon: Icon(Icons.forward_10, size: 30),
+                icon: const Icon(Icons.forward_10, size: 30),
                 onPressed: () async {
                   final newPos =
-                      controller.position.value + Duration(seconds: 10);
+                      controller.position.value + const Duration(seconds: 10);
 
                   if (newPos < controller.duration.value) {
                     await controller.seekTo(newPos);

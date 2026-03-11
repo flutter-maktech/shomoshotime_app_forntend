@@ -2,9 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import 'package:get/get.dart';
-import 'package:shomoshotime/app/data/app_colors.dart';
-import 'package:shomoshotime/app/data/app_text_styles.dart';
-import 'package:shomoshotime/app/modules/common_widgets/custom_app_bar.dart';
+import '../../../data/app_colors.dart';
+import '../../../data/app_text_styles.dart';
+import '../../common_widgets/custom_app_bar.dart';
 
 import '../controllers/notification_controller.dart';
 
@@ -15,12 +15,12 @@ class NotificationView extends GetView<NotificationController> {
   Widget build(BuildContext context) {
     controller;
     return Scaffold(
-      appBar: CustomAppBar(title: "Notification"),
+      appBar: const CustomAppBar(title: "Notification"),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
         child: Obx(() {
           if (controller.isLoading.value) {
-            return Center(child: CircularProgressIndicator());
+            return const Center(child: CircularProgressIndicator());
           }
         
           if (controller.errorMessage.value.isNotEmpty) {
@@ -28,7 +28,7 @@ class NotificationView extends GetView<NotificationController> {
           }
         
           if (controller.notifications.isEmpty) {
-            return Center(
+            return const Center(
               child: Text("No notifications"),
             );
           }
@@ -72,7 +72,7 @@ class NotificationView extends GetView<NotificationController> {
                                 decoration: BoxDecoration(
                                   shape: BoxShape.circle,
                                   border: Border.all(
-                                    color: Color(0xFFD6D6D6),
+                                    color: const Color(0xFFD6D6D6),
                                     width: 8.0,
                                   ),
                                 ),
@@ -81,7 +81,7 @@ class NotificationView extends GetView<NotificationController> {
                                   backgroundColor: AppColors.primaryColor,
                                   child: Text(
                                     firstChar,
-                                    style: TextStyle(
+                                    style: const TextStyle(
                                       fontSize: 28,
                                       fontWeight: FontWeight.bold,
                                       color: Colors.white,
@@ -89,7 +89,7 @@ class NotificationView extends GetView<NotificationController> {
                                   ),
                                 ),
                               ),
-                              SizedBox(width: 15),
+                              const SizedBox(width: 15),
                               Column(
                                 crossAxisAlignment:
                                     CrossAxisAlignment.start,
@@ -98,7 +98,7 @@ class NotificationView extends GetView<NotificationController> {
                                     notiTitle,
                                     style: AppTextStyles.regular16,
                                   ),
-                                  SizedBox(height: 4),
+                                  const SizedBox(height: 4),
                                   Text(
                                     notiMessage,
                                     style: AppTextStyles.regular12,
@@ -115,7 +115,7 @@ class NotificationView extends GetView<NotificationController> {
                             Container(
                               height: 10.h,
                               width: 10.w,
-                              decoration: BoxDecoration(
+                              decoration: const BoxDecoration(
                                 shape: BoxShape.circle,
                                 color: Colors.red,
                               ),

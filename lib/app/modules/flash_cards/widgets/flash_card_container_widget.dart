@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
-import 'package:shomoshotime/app/modules/common_widgets/custom_progress.dart';
+import '../../common_widgets/custom_progress.dart';
 
 import '../../../data/app_colors.dart';
 import '../../../data/app_text_styles.dart';
@@ -27,13 +27,13 @@ class FlashCardContainerWidget extends StatelessWidget {
 
       // Check if we have cards for the current index
       if (index >= filteredCards.length) {
-        return SizedBox.shrink(); // Return empty if index out of bounds
+        return const SizedBox.shrink(); // Return empty if index out of bounds
       }
       final card = filteredCards[index]; // Use the filtered card
       return Container(
         width: double.infinity,
         // height: 400,
-        padding: EdgeInsets.symmetric(horizontal: 18, vertical: 18),
+        padding: const EdgeInsets.symmetric(horizontal: 18, vertical: 18),
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(12),
           color: AppColors.appBarBack,
@@ -54,14 +54,14 @@ class FlashCardContainerWidget extends StatelessWidget {
                     child: Image.asset(ImagePath.bookImage, scale: 4),
                   ),
                 ),
-                Spacer(),
+                const Spacer(),
                 DecoratedBox(
                   decoration: BoxDecoration(
                     color: Colors.white,
                     borderRadius: BorderRadius.circular(6),
                   ),
                   child: Padding(
-                    padding: EdgeInsets.symmetric(horizontal: 10, vertical: 6),
+                    padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
                     child: Text(
                       card.category,
                       style: AppTextStyles.regular14.copyWith(

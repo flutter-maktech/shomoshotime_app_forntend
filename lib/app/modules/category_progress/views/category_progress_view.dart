@@ -12,7 +12,7 @@ class CategoryProgressView extends GetView<CategoryProgressController> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: CustomAppBar(
+      appBar: const CustomAppBar(
         title: 'Category Progress',
         subTitle: 'Your mastery across specialties',
       ),
@@ -23,7 +23,7 @@ class CategoryProgressView extends GetView<CategoryProgressController> {
           padding: EdgeInsets.zero,
           shrinkWrap: true,
           primary: false,
-          itemBuilder: (context, index) => CustomProgressContainer(
+          itemBuilder: (context, index) => const CustomProgressContainer(
             title: 'SPI Study Guide - Chapter 5',
             suffixTitle: '156 / 240',
             progress: .8,

@@ -27,7 +27,7 @@ class HeaderSection extends StatelessWidget {
         SizedBox(
           height: 56.h,
           width: double.infinity,
-          child: CustomToggleButton(),
+          child: const CustomToggleButton(),
         ),
       ],
     );

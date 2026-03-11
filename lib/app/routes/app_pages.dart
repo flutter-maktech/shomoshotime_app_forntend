@@ -94,7 +94,7 @@ class AppPages {
     ),
     GetPage(
       name: _Paths.studyGuides,
-      page: () => StudyGuidesView(),
+      page: () => const StudyGuidesView(),
       binding: StudyGuidesBinding(),
     ),
     GetPage(

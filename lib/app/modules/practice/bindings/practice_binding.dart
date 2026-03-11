@@ -1,5 +1,5 @@
 import 'package:get/get.dart';
-import 'package:shomoshotime/app/modules/spi_practice_bank_ans/controllers/spi_practice_bank_ans_controller.dart';
+import '../../spi_practice_bank_ans/controllers/spi_practice_bank_ans_controller.dart';
 
 import '../../spi_practice_bank_qus/controllers/spi_practice_bank_qus_controller.dart';
 import '../controllers/practice_controller.dart';

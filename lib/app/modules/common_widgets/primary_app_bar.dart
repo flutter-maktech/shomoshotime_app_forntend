@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
-import 'package:shomoshotime/app/data/app_colors.dart';
-import 'package:shomoshotime/app/data/image_path.dart';
-import 'package:shomoshotime/app/modules/notification/controllers/notification_controller.dart';
+import '../../data/app_colors.dart';
+import '../../data/image_path.dart';
+import '../notification/controllers/notification_controller.dart';
 import '../custom_bottom_navigation_bar/controllers/custom_bottom_navigation_bar_controller.dart';
 
 class PrimaryAppBar extends StatelessWidget {
@@ -43,8 +43,8 @@ class PrimaryAppBar extends StatelessWidget {
                           child: Container(
                             height: 16.h,
                             width: 16.w,
-                            padding: EdgeInsets.all(2),
-                            decoration: BoxDecoration(
+                            padding: const EdgeInsets.all(2),
+                            decoration: const BoxDecoration(
                               color: Colors.redAccent,
                               shape: BoxShape.circle,
                             ),
@@ -63,12 +63,12 @@ class PrimaryAppBar extends StatelessWidget {
                           ),
                         );
                       }
-                      return SizedBox.shrink();
+                      return const SizedBox.shrink();
                     }),
                   ],
                 ),
               ),
-              SizedBox(width: 8),
+              const SizedBox(width: 8),
               CircleAvatar(
                 backgroundColor: AppColors.appBarCircleAvatar,
                 child: Padding(

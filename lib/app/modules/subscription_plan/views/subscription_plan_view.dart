@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
-import 'package:shomoshotime/app/data/app_colors.dart';
-import 'package:shomoshotime/app/data/app_text_styles.dart';
-import 'package:shomoshotime/app/modules/common_widgets/custom_app_bar.dart';
+import '../../../data/app_colors.dart';
+import '../../../data/app_text_styles.dart';
+import '../../common_widgets/custom_app_bar.dart';
 import '../../common_widgets/custom_button.dart';
 import '../controllers/subscription_plan_controller.dart';
 import '../widget/custom_dolar_plan.dart';
@@ -16,7 +16,7 @@ class SubscriptionPlanView extends GetView<SubscriptionPlanController> {
   Widget build(BuildContext context) {
     return Scaffold(
       //CustomAppBar
-      appBar: CustomAppBar(
+      appBar: const CustomAppBar(
         title: "MemberShip Plan",
         subTitle: "Update your plan",
       ),
@@ -64,7 +64,7 @@ class SubscriptionPlanView extends GetView<SubscriptionPlanController> {
                     margin: EdgeInsets.only(bottom: 20.h),
                     decoration: BoxDecoration(
                       borderRadius: BorderRadiusGeometry.circular(8.r),
-                      color: index.isEven ? Color(0xffC7C7C7) : Colors.black,
+                      color: index.isEven ? const Color(0xffC7C7C7) : Colors.black,
                     ),
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
@@ -229,8 +229,8 @@ class SubscriptionPlanView extends GetView<SubscriptionPlanController> {
                               bottomRight: Radius.circular(8.r),
                             ),
                             color: index.isEven
-                                ? Color(0xffe8e6e6)
-                                : Color(0xffe5cf87),
+                                ? const Color(0xffe8e6e6)
+                                : const Color(0xffe5cf87),
                           ),
                           child: Padding(
                             padding: EdgeInsets.all(10.r),
@@ -239,7 +239,7 @@ class SubscriptionPlanView extends GetView<SubscriptionPlanController> {
                                 return Column(
                                   children: [
                                     SelectedPlanActivity(text: feature),
-                                    Divider(
+                                    const Divider(
                                       color: Colors.black,
                                       thickness: 0.5,
                                     ),

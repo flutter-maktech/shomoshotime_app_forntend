@@ -2,9 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import 'package:get/get.dart';
-import 'package:shomoshotime/app/data/app_colors.dart';
-import 'package:shomoshotime/app/modules/common_widgets/custom_app_bar.dart';
-import 'package:shomoshotime/app/modules/study_guides/widgets/audio_player_widget.dart';
+import '../../../data/app_colors.dart';
+import '../../common_widgets/custom_app_bar.dart';
+import '../../study_guides/widgets/audio_player_widget.dart';
 
 import '../controllers/audio_play_card_controller.dart';
 
@@ -30,7 +30,7 @@ class AudioPlayCardView extends GetView<AudioPlayCardController> {
                 child: Container(
                   width: double.infinity,
                   // height: 400,
-                  padding: EdgeInsets.symmetric(horizontal: 12, vertical: 18),
+                  padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 18),
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(12),
                     color: AppColors.appBarBack,

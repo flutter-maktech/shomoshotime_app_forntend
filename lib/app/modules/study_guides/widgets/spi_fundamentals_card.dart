@@ -2,12 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get_core/src/get_main.dart';
 import 'package:get/get_navigation/src/extension_navigation.dart';
-import 'package:shomoshotime/app/data/app_colors.dart';
-import 'package:shomoshotime/app/data/app_text_styles.dart';
-import 'package:shomoshotime/app/data/image_path.dart';
-import 'package:shomoshotime/app/modules/common_widgets/custom_button.dart';
-import 'package:shomoshotime/app/modules/common_widgets/custom_progress.dart';
-import 'package:shomoshotime/app/routes/app_pages.dart';
+import '../../../data/app_colors.dart';
+import '../../../data/app_text_styles.dart';
+import '../../../data/image_path.dart';
+import '../../common_widgets/custom_button.dart';
+import '../../common_widgets/custom_progress.dart';
+import '../../../routes/app_pages.dart';
 
 class SpiFundamentalsCard extends StatelessWidget {
   final double progressValue;
@@ -36,7 +36,7 @@ class SpiFundamentalsCard extends StatelessWidget {
     return Container(
       width: double.infinity,
       // height: 400,
-      padding: EdgeInsets.symmetric(horizontal: 18, vertical: 18),
+      padding: const EdgeInsets.symmetric(horizontal: 18, vertical: 18),
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(12),
         color: AppColors.appBarBack,
@@ -57,14 +57,14 @@ class SpiFundamentalsCard extends StatelessWidget {
                   child: Image.asset(ImagePath.bookImage, scale: 4),
                 ),
               ),
-              Spacer(),
+              const Spacer(),
               DecoratedBox(
                 decoration: BoxDecoration(
                   color: Colors.white,
                   borderRadius: BorderRadius.circular(6),
                 ),
                 child: Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 10, vertical: 6),
+                  padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
                   child: Text(
                     category,
                     style: AppTextStyles.regular14.copyWith(

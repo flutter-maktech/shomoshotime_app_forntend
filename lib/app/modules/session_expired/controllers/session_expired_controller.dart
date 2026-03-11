@@ -1,6 +1,6 @@
 import 'package:get/get.dart';
-import 'package:shomoshotime/app/all_utils/app_preference.dart';
-import 'package:shomoshotime/app/routes/app_pages.dart';
+import '../../../all_utils/app_preference.dart';
+import '../../../routes/app_pages.dart';
 
 class SessionExpiredController extends GetxController {
   Future<void> logoutAndRedirect() async {

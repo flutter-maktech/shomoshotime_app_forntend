@@ -1,13 +1,14 @@
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
-import '../../../all_utils/validators.dart';
-import '../controllers/forgot_enter_password_controller.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:get/get.dart';
+
+import '../../../all_utils/validators.dart';
 import '../../../data/app_colors.dart';
 import '../../../data/app_text_styles.dart';
 import '../../../data/image_path.dart';
 import '../../common_widgets/custom_button.dart';
 import '../../common_widgets/custom_text_field.dart';
+import '../controllers/forgot_enter_password_controller.dart';
 
 class ForgotEnterPasswordView extends GetView<ForgotEnterPasswordController> {
   const ForgotEnterPasswordView({super.key});

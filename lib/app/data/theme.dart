@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+
 import 'app_colors.dart';
 import 'app_text_styles.dart';
 
@@ -7,7 +8,7 @@ ThemeData themeData() {
   return ThemeData(
     fontFamily: 'Arial',
     scaffoldBackgroundColor: AppColors.whiteColor,
-    appBarTheme: AppBarTheme(
+    appBarTheme: const AppBarTheme(
       backgroundColor: AppColors.whiteColor,
     ),
     elevatedButtonTheme: ElevatedButtonThemeData(

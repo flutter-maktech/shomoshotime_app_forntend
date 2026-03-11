@@ -1,7 +1,7 @@
 import 'package:get/get.dart';
 import 'package:audioplayers/audioplayers.dart';
-import 'package:shomoshotime/app/all_utils/app_preference.dart';
-import 'package:shomoshotime/app/all_utils/log.dart';
+import '../../../all_utils/app_preference.dart';
+import '../../../all_utils/log.dart';
 
 class AudioPlayCardController extends GetxController {
   final AudioPlayer audioPlayer = AudioPlayer();

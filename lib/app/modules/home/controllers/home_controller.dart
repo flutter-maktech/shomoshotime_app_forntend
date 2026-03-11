@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:shomoshotime/app/all_utils/app_preference.dart';
-import 'package:shomoshotime/app/core/user_panel_model/flash_card_reponse_model.dart';
+import '../../../all_utils/app_preference.dart';
+import '../../../core/user_panel_model/flash_card_reponse_model.dart';
 import '../../../core/api_services/network_caller.dart';
 import '../../../core/urls/urls.dart';
 import '../../../core/user_panel_model/study_guide_response_model.dart';

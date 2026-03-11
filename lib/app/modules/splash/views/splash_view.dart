@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 import 'package:get/get.dart';
-import 'package:shomoshotime/app/data/image_path.dart';
+import '../../../data/image_path.dart';
 
 import '../controllers/splash_controller.dart';
 
