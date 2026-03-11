@@ -1,3 +1,4 @@
 {
-    "cmake.sourceDirectory": "C:/Users/HP/Flutter Projects/shomoshotime_app_forntend/linux"
+  "cmake.sourceDirectory": "C:/Users/HP/Flutter Projects/shomoshotime_app_forntend/linux",
+  "dart.flutterSdkPath": ".fvm/versions/3.38.9"
 }
