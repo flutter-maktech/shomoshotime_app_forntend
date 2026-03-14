@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
@@ -122,6 +124,7 @@ class SignInView extends GetView<SignInController> {
                       ),
                     ],
                   ),
+                  if(Platform.isAndroid)
                   Padding(
                     padding: EdgeInsets.symmetric(vertical: 16.h),
                     child: OutlinedButton(
@@ -146,8 +149,11 @@ class SignInView extends GetView<SignInController> {
                       ),
                     ),
                   ),
+                  if(Platform.isIOS)
                   OutlinedButton(
-                    onPressed: () {},
+                    onPressed: () {
+                      controller.signInWithApple();
+                    },
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [

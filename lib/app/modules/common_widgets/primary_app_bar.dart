@@ -88,14 +88,14 @@ class PrimaryAppBar extends StatelessWidget {
                             height: double.infinity,
                             width: double.infinity,
                             errorBuilder: (context, error, stackTrace) =>
-                                Image.asset(
-                                  ImagePath.profile,
+                                Image.network(
+                                  'https://img.freepik.com/free-vector/illustration-gallery-icon_53876-27002.jpg',
                                   fit: BoxFit.cover,
                                 ),
                           );
                         }
-                        return Image.asset(
-                          ImagePath.profile,
+                        return Image.network(
+                          "https://img.freepik.com/free-vector/illustration-gallery-icon_53876-27002.jpg",
                           fit: BoxFit.cover,
                         );
                       }),

@@ -1,5 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:google_sign_in/google_sign_in.dart';
+import 'package:sign_in_with_apple/sign_in_with_apple.dart';
 import '../../all_utils/log.dart';
 
 class FirebaseAuthService {
@@ -53,6 +54,41 @@ class FirebaseAuthService {
       AppLogger.log('Error signing out: $e');
     }
   }
+
+Future<Map<String, String>?> signInWithApple() async {
+  try {
+    final appleCredential = await SignInWithApple.getAppleIDCredential(
+      scopes: [
+        AppleIDAuthorizationScopes.email,
+        AppleIDAuthorizationScopes.fullName,
+      ],
+    );
+
+    final oauthCredential = OAuthProvider("apple.com").credential(
+      idToken: appleCredential.identityToken,
+      accessToken: appleCredential.authorizationCode,
+    );
+
+    final userCredential =
+        await FirebaseAuth.instance.signInWithCredential(oauthCredential);
+
+    final user = userCredential.user;
+
+    if (user != null) {
+      return {
+        'google_id': user.uid,
+        'email': user.email ?? '',
+        'name': user.displayName ?? 'App User',
+        'image': user.photoURL?? "https://img.freepik.com/free-vector/illustration-gallery-icon_53876-27002.jpg",
+      };
+    }
+
+    return null;
+  } catch (e) {
+    AppLogger.log('Apple Sign-In Error: $e');
+    return null;
+  }
+}
 
   /// Get current user
   User? get currentUser => _auth.currentUser;
