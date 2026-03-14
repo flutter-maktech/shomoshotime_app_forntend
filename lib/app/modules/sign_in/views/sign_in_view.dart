@@ -150,27 +150,30 @@ class SignInView extends GetView<SignInController> {
                     ),
                   ),
                   if(Platform.isIOS)
-                  OutlinedButton(
-                    onPressed: () {
-                      controller.signInWithApple();
-                    },
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Padding(
-                          padding: EdgeInsets.symmetric(vertical: 5.h),
-                          child: Image.asset(
-                            ImagePath.appleLogo,
-                            height: 20.h,
-                            width: 20.w,
+                  Padding(
+                    padding: EdgeInsets.symmetric(vertical: 5.h),
+                    child: OutlinedButton(
+                      onPressed: () {
+                        controller.signInWithApple();
+                      },
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Padding(
+                            padding: EdgeInsets.symmetric(vertical: 5.h),
+                            child: Image.asset(
+                              ImagePath.appleLogo,
+                              height: 20.h,
+                              width: 20.w,
+                            ),
                           ),
-                        ),
-                        SizedBox(width: 9.w),
-                        Text(
-                          'Sign In With Apple',
-                          style: AppTextStyles.regular16,
-                        ),
-                      ],
+                          SizedBox(width: 9.w),
+                          Text(
+                            'Sign In With Apple',
+                            style: AppTextStyles.regular16,
+                          ),
+                        ],
+                      ),
                     ),
                   ),
                   CustomRichText(
