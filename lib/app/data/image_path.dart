@@ -21,6 +21,7 @@ class ImagePath {
   static const String frameImage = '$baseUrl/frame.png';
   static const String frame21Image = '$baseUrl/Frame 21.png';
   static const String googleLogo = '$baseUrl/google_logo.png';
+  static const String appleLogo = '$baseUrl/apple-logo.png';
   static const String comprehensiveStudy = '$baseUrl/comprehensive_study.png';
   static const String interactive = '$baseUrl/interactive_flashcards.png';
   static const String practice = '$baseUrl/practice_questions.png';
