@@ -151,7 +151,7 @@ class SignInView extends GetView<SignInController> {
                   ),
                   if(Platform.isIOS)
                   Padding(
-                    padding: EdgeInsets.symmetric(vertical: 5.h),
+                    padding: EdgeInsets.symmetric(vertical: 16.h),
                     child: OutlinedButton(
                       onPressed: () {
                         controller.signInWithApple();
