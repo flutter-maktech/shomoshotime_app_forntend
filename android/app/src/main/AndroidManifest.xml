@@ -1,6 +1,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"    xmlns:tools="http://schemas.android.com/tools">
     
     <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="com.android.vending.BILLING" />
     <uses-permission android:name="android.permission.READ_MEDIA_IMAGES" tools:node="remove"/>
     <uses-permission android:name="android.permission.READ_MEDIA_VIDEO" tools:node="remove"/>
 
@@ -11,6 +12,9 @@
         android:enableOnBackInvokedCallback="true"
         android:hardwareAccelerated="true"
         android:usesCleartextTraffic="true"
+        android:allowBackup="false"
+        android:fullBackupContent="false"
+        tools:replace="android:allowBackup"
         > 
         <activity
             android:name=".MainActivity"
@@ -21,8 +25,6 @@
             android:configChanges="orientation|keyboardHidden|keyboard|screenSize|smallestScreenSize|locale|layoutDirection|fontScale|screenLayout|density|uiMode"
             android:hardwareAccelerated="true"
             android:enableOnBackInvokedCallback="true"
-            android:allowBackup="false"
-            android:fullBackupContent="false"
             android:windowSoftInputMode="adjustResize">
   
             <meta-data

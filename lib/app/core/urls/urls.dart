@@ -30,7 +30,7 @@ class Urls {
   static String paymentInfo = "$baseUrs/user/payment/store";
   static String googleLogin = "$baseUrs/auth/google-login";
   static String subscriptionCheck = "$baseUrs/user/subscription-check";
-  static String stripeKeys = "$baseUrs/user/stripe-keys";
+
   static String cancelSubscription = "$baseUrs/user/subscription/cancel";
   static String cmsUrl = "$baseUrs/cms-pages/show";
   static String deleteAccount = "$baseUrs/user/profile/delete";

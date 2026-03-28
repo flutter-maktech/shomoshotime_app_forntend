@@ -22,6 +22,14 @@
           }
         },
         {
+          "client_id": "823677183565-k7jrdoji2hnsni8am2pm7m2c64n22rf5.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.shomoshotime.app",
+            "certificate_hash": "d0b5f469ca3e3eda7a5cc16756cb24f5827dfd52"
+          }
+        },
+        {
           "client_id": "823677183565-cicrk6okc1fjramadss8i5rf28louvrg.apps.googleusercontent.com",
           "client_type": 3
         }

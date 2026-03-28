@@ -1,9 +1,9 @@
-import 'dart:convert';
+import 'package:purchases_flutter/purchases_flutter.dart';
+import 'dart:io' show Platform;
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_stripe/flutter_stripe.dart';
+import 'package:flutter/services.dart';
 import 'package:get/get.dart';
-import 'package:http/http.dart' as http;
 import '../../../all_utils/log.dart';
 import '../../../core/urls/urls.dart';
 import '../../../all_utils/app_preference.dart';
@@ -14,22 +14,64 @@ import '../../../routes/app_pages.dart';
 
 class SubscriptionPlanController extends GetxController {
   RxInt selectedValue = 1.obs;
-  Map<String, dynamic>? paymentIntentData;
   RxBool isLoading = false.obs;
   final errorMessage = ''.obs;
   final NetworkCaller networkCaller = NetworkCaller();
   final subscriptions = <Subscription>[].obs;
 
-  // Stripe keys from backend
-  RxString stripePublishableKey = ''.obs;
-  RxString stripeSecretKey = ''.obs;
+  // RevenueCat offerings
+  final offerings = Rxn<Offerings>();
   RxString currentPlanName = ''.obs;
 
   @override
   void onInit() {
     super.onInit();
+    initPlatformState();
     fetchSubscriptionPlans();
     _loadCurrentPlan();
+  }
+
+  Future<void> initPlatformState() async {
+    await Purchases.setLogLevel(LogLevel.debug);
+
+    PurchasesConfiguration? configuration;
+    if (Platform.isAndroid) {
+      configuration = PurchasesConfiguration(
+        "test_KaLVTEQGcvCtFjanBoYLdZmtXQh",
+      );
+    } else if (Platform.isIOS) {
+      configuration = PurchasesConfiguration(
+        "test_KaLVTEQGcvCtFjanBoYLdZmtXQh",
+      );
+    }
+
+    if (configuration != null) {
+      await Purchases.configure(configuration);
+      _setupCustomerInfoListener();
+    }
+  }
+
+  void _setupCustomerInfoListener() {
+    Purchases.addCustomerInfoUpdateListener((customerInfo) {
+      _updateSubscriptionStatus(customerInfo);
+    });
+  }
+
+  Future<void> _updateSubscriptionStatus(CustomerInfo customerInfo) async {
+    if (customerInfo.entitlements.active.isNotEmpty) {
+      final activeEntitlement = customerInfo.entitlements.active.values.first;
+      // If we already have a plan name from the backend/preference, don't overwrite it with the entitlement ID
+      // unless we are sure it's more accurate. Usually the UI needs the duration (e.g. "weekly").
+      if (currentPlanName.value.isEmpty) {
+        currentPlanName.value = activeEntitlement.identifier;
+        AppPreference.saveCurrentPlan(activeEntitlement.identifier);
+      }
+    } else {
+      // Only clear if we are sure there is no plan. 
+      // If the backend says there is a plan, we might want to keep it.
+      // currentPlanName.value = '';
+      // AppPreference.clearCurrentPlan();
+    }
   }
 
   Future<void> _loadCurrentPlan() async {
@@ -43,8 +85,16 @@ class SubscriptionPlanController extends GetxController {
     try {
       isLoading.value = true;
       errorMessage.value = '';
-      final token = await AppPreference.getToken();
 
+      // Fetch from RevenueCat
+      try {
+        offerings.value = await Purchases.getOfferings();
+      } catch (e) {
+        AppLogger.log('Error fetching offerings: $e');
+      }
+
+      // Fetch from backend
+      final token = await AppPreference.getToken();
       final response = await networkCaller.postRequest(
         Urls.subscriptionList,
         {},
@@ -52,287 +102,112 @@ class SubscriptionPlanController extends GetxController {
       );
       if (response['success'] == true) {
         final subscriptionResponse = SubscriptionResponse.fromJson(response);
-
         subscriptions.assignAll(subscriptionResponse.data);
       } else {
         errorMessage.value =
             response['message'] ?? 'Failed to load subscriptions';
       }
     } catch (e) {
-      errorMessage.value = 'Something went wrong';
+      errorMessage.value = 'Something went wrong: $e';
     } finally {
       isLoading.value = false;
     }
-  }
-
-  Future<bool> fetchStripeKeys() async {
-    try {
-      final token = await AppPreference.getToken();
-      final response = await networkCaller.postRequest(
-        Urls.stripeKeys,
-        {},
-        token: token,
-      );
-
-      if (response['success'] == true) {
-        stripePublishableKey.value = response['data']['publishable_key'] ?? '';
-        stripeSecretKey.value = response['data']['secret_key'] ?? '';
-
-        // Re-initialize Stripe with the new publishable key
-        Stripe.publishableKey = stripePublishableKey.value;
-        await Stripe.instance.applySettings();
-
-        return true;
-      } else {
-        errorMessage.value =
-            response['message'] ?? 'Failed to fetch payment keys';
-        return false;
-      }
-    } catch (e) {
-      if (kDebugMode) {
-        AppLogger.log('Error fetching Stripe keys: $e');
-      }
-      errorMessage.value = 'Failed to initialize payment system';
-      return false;
-    }
-  }
-
-  // Store the BuildContext from the view
-  BuildContext? _context;
-
-  // Method to set context from the view
-  void setContext(BuildContext context) {
-    _context = context;
   }
 
   void updateSelection(int value) {
     selectedValue.value = value;
   }
 
-  // Main payment handler
-  Future<void> handlePayment(
-    double amount,
-    String currency,
-    BuildContext context,
-  ) async {
-    setContext(context); // Store the context
-    try {
-      isLoading.value = true;
-
-      // Fetch keys first
-      final keysFetched = await fetchStripeKeys();
-      if (!keysFetched) {
-        throw Exception(errorMessage.value);
-      }
-
-      // Create payment intent
-      await createPaymentIntent(amount.toString(), currency);
-
-      // Initialize payment sheet
-      await initializePaymentSheet();
-
-      // Display payment sheet
-      await displayPaymentSheet(_context!);
-    } catch (error) {
-      if (kDebugMode) {
-        AppLogger.log('Payment Error: $error');
-      }
-      if (_context != null) {
-        showAppSnackBar(
-          context: _context!,
-          message: 'Payment failed: ${error.toString()}',
-          backgroundColor: Colors.red,
-        );
-      }
-    } finally {
-      isLoading.value = false;
+  Package? getPackageForSubscription(String duration) {
+    if (offerings.value == null) {
+      AppLogger.log('❌ Offerings is null');
+      return null;
     }
+
+    // Use current offering if available, otherwise look through all offerings
+    List<Package> availablePackages = [];
+    if (offerings.value!.current != null) {
+      availablePackages = offerings.value!.current!.availablePackages;
+    } else if (offerings.value!.all.isNotEmpty) {
+      AppLogger.log('⚠️ Current offering is null, checking all offerings as fallback');
+      for (var offering in offerings.value!.all.values) {
+        availablePackages.addAll(offering.availablePackages);
+      }
+    }
+
+    if (availablePackages.isEmpty) {
+      AppLogger.log('❌ No packages available in any offering');
+      return null;
+    }
+
+    AppLogger.log('🔍 Matching duration: "$duration"');
+    String search = duration.toLowerCase().trim();
+    
+    // Normalize common duration strings
+    if (search.contains('annual')) search = 'annual';
+    else if (search.contains('yearly')) search = 'annual';
+    else if (search.contains('month')) search = 'monthly';
+    else if (search.contains('week')) search = 'weekly';
+    
+    for (var package in availablePackages) {
+      String packageTypeStr = package.packageType.toString().toLowerCase();
+      String packageId = package.identifier.toLowerCase();
+      
+      // Strict matching for package type first
+      if (packageTypeStr == 'packagetype.$search' || packageTypeStr.endsWith('.$search')) {
+        return package;
+      }
+      
+      // Fallback to identifier matching
+      if (packageId.contains(search)) {
+        return package;
+      }
+      
+      // Special cases for annual/yearly
+      if (search == 'annual' && (packageTypeStr.contains('yearly') || packageId.contains('yearly'))) {
+        return package;
+      }
+    }
+    return null;
   }
 
-  // Create payment intent on Stripe
-  Future<void> createPaymentIntent(String amount, String currency) async {
+  Future<void> purchasePlan(Package package, int subscriptionId) async {
     try {
-      Map<String, dynamic> body = {
-        'amount': (double.parse(amount) * 100).toStringAsFixed(0),
-        'currency': currency,
-        'payment_method_types[]': 'card',
-      };
+      isLoading.value = true;
+      // Using the latest purchase method
+      CustomerInfo customerInfo = (await Purchases.purchase(
+        PurchaseParams.package(package),
+      )).customerInfo;
 
-      var response = await http.post(
-        Uri.parse('https://api.stripe.com/v1/payment_intents'),
-        headers: {
-          'Authorization': 'Bearer ${stripeSecretKey.value}',
-          'Content-Type': 'application/x-www-form-urlencoded',
-        },
-        body: body,
-      );
+      if (customerInfo.entitlements.active.isNotEmpty) {
+        final amount = package.storeProduct.price;
+        await storePaymentInfo(subscriptionId, amount);
 
-      if (response.statusCode == 200) {
-        paymentIntentData = jsonDecode(response.body);
-        if (kDebugMode) {
-          AppLogger.log('Payment Intent Created: $paymentIntentData');
+        Get.offNamed(Routes.customBottomNavigationBar);
+        if (Get.context != null) {
+          showAppSnackBar(
+            context: Get.context!,
+            message: 'Purchase successful!',
+            backgroundColor: Colors.green,
+          );
         }
-      } else {
-        throw Exception(
-          'Failed to create payment intent: ${response.statusCode}',
-        );
       }
-    } catch (error) {
-      rethrow;
-    }
-  }
-
-  // Initialize the payment sheet - SIMPLIFIED VERSION
-  Future<void> initializePaymentSheet() async {
-    try {
-      if (paymentIntentData == null ||
-          paymentIntentData!['client_secret'] == null) {
-        throw Exception('Payment intent not created properly');
-      }
-
-      await Stripe.instance.initPaymentSheet(
-        paymentSheetParameters: SetupPaymentSheetParameters(
-          paymentIntentClientSecret: paymentIntentData!['client_secret'],
-          merchantDisplayName: 'Shomoshotime',
-          // Minimal configuration to avoid errors
-          customFlow: false,
-        ),
-      );
-
-      if (kDebugMode) {
-        AppLogger.log('Payment sheet initialized successfully');
-      }
-    } catch (error) {
-      rethrow;
-    }
-  }
-
-  // Display the payment sheet
-  Future<void> displayPaymentSheet(BuildContext context) async {
-    try {
-      await Stripe.instance.presentPaymentSheet();
-
-      // Payment successful
-      if (kDebugMode) {
-        AppLogger.log('Payment successful!');
-      }
-
-      // Show success snackbar
-      if (_context != null) {
-        showAppSnackBar(
-          context: _context!,
-          message: 'Payment completed successfully!',
-          backgroundColor: Colors.green,
-        );
-      }
-
-      // Navigate to success page or next screen
-      Get.back();
-    } on StripeException catch (e) {
-      if (kDebugMode) {
-        AppLogger.log('Stripe Exception: ${e.error.localizedMessage}');
-      }
-
-      // Show error dialog
-      showDialog(
-        context: _context!,
-        builder: (context) => AlertDialog(
-          title: const Text('Payment Error'),
-          content: Text(e.error.localizedMessage ?? 'Payment cancelled'),
-          actions: [
-            TextButton(
-              onPressed: () => Navigator.pop(context),
-              child: const Text('OK'),
-            ),
-          ],
-        ),
-      );
-    } catch (error) {
-      if (kDebugMode) {
-        AppLogger.log('General Error: $error');
-      }
-
-      showDialog(
-        context: _context!,
-        builder: (context) => AlertDialog(
-          title: const Text('Error'),
-          content: Text(error.toString()),
-          actions: [
-            TextButton(
-              onPressed: () => Navigator.pop(context),
-              child: const Text('OK'),
-            ),
-          ],
-        ),
-      );
-    }
-  }
-
-  // Alternative simplified payment method
-  Future<void> makeSimplePayment(
-    double amount,
-    int subscriptionId,
-    BuildContext context,
-  ) async {
-    setContext(context); // Store the context
-
-    try {
-      isLoading.value = true;
-
-      // Fetch keys first
-      final keysFetched = await fetchStripeKeys();
-      if (!keysFetched) {
-        throw Exception(errorMessage.value);
-      }
-
-      // Create payment intent
-      await createPaymentIntent(amount.toString(), 'usd');
-
-      // Initialize payment sheet - ULTRA SIMPLE
-      await Stripe.instance.initPaymentSheet(
-        paymentSheetParameters: SetupPaymentSheetParameters(
-          paymentIntentClientSecret: paymentIntentData!['client_secret'],
-          merchantDisplayName: 'Shomoshotime',
-        ),
-      );
-
-      // Present payment sheet
-      await Stripe.instance.presentPaymentSheet();
-
-      // Store Payment Info
-      await storePaymentInfo(subscriptionId, amount);
-
-      // Success
-      if (_context != null) {
-        showAppSnackBar(
-          context: _context!,
-          message: 'Payment of \$$amount completed!',
-          backgroundColor: Colors.green,
-        );
-      }
-
-      // Navigate to next screen
-      Get.offNamed(Routes.customBottomNavigationBar);
-    } on StripeException catch (e) {
-      if (kDebugMode) {
-        AppLogger.log('Error: ${e.error.localizedMessage}');
-      }
-      if (_context != null) {
-        showAppSnackBar(
-          context: _context!,
-          message:
-              'Payment Failed: ${e.error.localizedMessage ?? "Payment cancelled"}',
-          backgroundColor: Colors.red,
-        );
+    } on PlatformException catch (e) {
+      var errorCode = PurchasesErrorHelper.getErrorCode(e);
+      if (errorCode != PurchasesErrorCode.purchaseCancelledError) {
+        if (Get.context != null) {
+          showAppSnackBar(
+            context: Get.context!,
+            message: 'Error: ${e.message}',
+            backgroundColor: Colors.red,
+          );
+        }
       }
     } catch (e) {
-      if (kDebugMode) {
-        AppLogger.log('Error: $e');
-      }
-      if (_context != null) {
+      if (Get.context != null) {
         showAppSnackBar(
-          context: _context!,
-          message: 'Something went wrong: $e',
+          context: Get.context!,
+          message: 'Error: $e',
           backgroundColor: Colors.red,
         );
       }
@@ -349,8 +224,8 @@ class SubscriptionPlanController extends GetxController {
       Map<String, dynamic> body = {
         "user_id": userId,
         "subscription_id": subscriptionId,
-        "payment_intent_data": jsonEncode(paymentIntentData),
         "amount": amount,
+        "payment_method": "revenuecat",
       };
 
       final response = await networkCaller.postRequest(
@@ -361,11 +236,14 @@ class SubscriptionPlanController extends GetxController {
 
       if (response['status'] == 'success' || response['success'] == true) {
         String? currentPlan;
-        if (response['data']['plans']['current'] != null) {
+        if (response['data'] != null &&
+            response['data']['plans'] != null &&
+            response['data']['plans']['current'] != null) {
           currentPlan = response['data']['plans']['current']['name'];
           AppLogger.log('✅ $currentPlan');
         }
         if (currentPlan != null) {
+          currentPlanName.value = currentPlan;
           AppPreference.saveCurrentPlan(currentPlan);
         }
         if (kDebugMode) {
@@ -394,18 +272,23 @@ class SubscriptionPlanController extends GetxController {
       );
       if (response['success'] == true) {
         await AppPreference.clearCurrentPlan();
+        currentPlanName.value = '';
         Get.offAllNamed(Routes.explorePlan);
-        showAppSnackBar(
-          context: _context!,
-          message: 'Subscription cancelled successfully',
-          backgroundColor: Colors.green,
-        );
+        if (Get.context != null) {
+          showAppSnackBar(
+            context: Get.context!,
+            message: 'Subscription cancelled successfully',
+            backgroundColor: Colors.green,
+          );
+        }
       } else {
-        showAppSnackBar(
-          context: _context!,
-          message: 'Failed to cancel subscription: ${response['message']}',
-          backgroundColor: Colors.red,
-        );
+        if (Get.context != null) {
+          showAppSnackBar(
+            context: Get.context!,
+            message: 'Failed to cancel subscription: ${response['message']}',
+            backgroundColor: Colors.red,
+          );
+        }
       }
     } catch (e) {
       if (kDebugMode) {

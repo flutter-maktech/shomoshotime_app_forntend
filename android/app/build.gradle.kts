@@ -106,6 +106,9 @@ dependencies {
 
     // Multidex support if you use multidex
     implementation("androidx.multidex:multidex:2.0.1")
+    // Material Components
+    implementation("com.google.android.material:material:1.12.0")
+
     coreLibraryDesugaring("com.android.tools:desugar_jdk_libs:2.1.4")
 }
 

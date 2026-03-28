@@ -8,6 +8,7 @@ import '../../common_widgets/custom_button.dart';
 import '../controllers/subscription_plan_controller.dart';
 import '../widget/custom_dolar_plan.dart';
 import '../widget/selected_plan_activity.dart';
+import '../../../all_utils/show_app_snack_bar.dart';
 
 class SubscriptionPlanView extends GetView<SubscriptionPlanController> {
   const SubscriptionPlanView({super.key});
@@ -64,7 +65,9 @@ class SubscriptionPlanView extends GetView<SubscriptionPlanController> {
                     margin: EdgeInsets.only(bottom: 20.h),
                     decoration: BoxDecoration(
                       borderRadius: BorderRadiusGeometry.circular(8.r),
-                      color: index.isEven ? const Color(0xffC7C7C7) : Colors.black,
+                      color: index.isEven
+                          ? const Color(0xffC7C7C7)
+                          : Colors.black,
                     ),
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
@@ -204,11 +207,22 @@ class SubscriptionPlanView extends GetView<SubscriptionPlanController> {
                                   }
 
                                   // 3️⃣ Otherwise → Allow payment
-                                  controller.makeSimplePayment(
-                                    subscription.price.toDouble(),
-                                    subscription.id,
-                                    context,
-                                  );
+                                  final package = controller
+                                      .getPackageForSubscription(
+                                        subscription.duration,
+                                      );
+                                  if (package != null) {
+                                    controller.purchasePlan(
+                                      package,
+                                      subscription.id,
+                                    );
+                                  } else {
+                                    showAppSnackBar(
+                                      context: context,
+                                      message: 'Plan not available in store',
+                                      backgroundColor: Colors.orange,
+                                    );
+                                  }
                                 },
                               ),
                             ],

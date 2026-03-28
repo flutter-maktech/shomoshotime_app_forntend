@@ -6,6 +6,7 @@ import '../../../core/urls/urls.dart';
 import '../../../data/app_colors.dart';
 import '../../../data/app_text_styles.dart';
 import '../../common_widgets/custom_app_bar.dart';
+import '../../common_widgets/quill_delta_renderer.dart';
 
 import '../controllers/terms_and_conditions_controller.dart';
 
@@ -43,9 +44,8 @@ class TermsAndConditionsView extends GetView<TermsAndConditionsController> {
         }
 
         final content = controller.cmsResponse.value?.data?.content;
-        final plainText = controller.getPlainText(content);
 
-        AppLogger.log('✅✅✅✅$plainText');
+        AppLogger.log('✅✅✅✅$content');
 
         return SingleChildScrollView(
           child: Padding(
@@ -57,7 +57,10 @@ class TermsAndConditionsView extends GetView<TermsAndConditionsController> {
                 color: AppColors.containerColor,
                 borderRadius: BorderRadius.circular(8.r),
               ),
-              child: Text(plainText, style: AppTextStyles.regular14),
+              child: QuillDeltaRenderer(
+                deltaString: content,
+                baseStyle: AppTextStyles.regular14.apply(color: Colors.black),
+              ),
             ),
           ),
         );
