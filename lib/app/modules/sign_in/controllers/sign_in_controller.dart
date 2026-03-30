@@ -147,7 +147,6 @@ class SignInController extends GetxController {
     isLoading.value = true;
 
     final firebaseService = FirebaseAuthService();
-    print('Came here');
 
     final userData = await firebaseService.signInWithApple();
 

@@ -18,38 +18,45 @@ class SubscriptionPlanController extends GetxController {
   final errorMessage = ''.obs;
   final NetworkCaller networkCaller = NetworkCaller();
   final subscriptions = <Subscription>[].obs;
+  static bool _isRevenueCatInitialized = false;
 
   // RevenueCat offerings
   final offerings = Rxn<Offerings>();
   RxString currentPlanName = ''.obs;
 
   @override
-  void onInit() {
-    super.onInit();
-    initPlatformState();
-    fetchSubscriptionPlans();
-    _loadCurrentPlan();
-  }
+void onInit() {
+  super.onInit();
+  _initialize();
+}
+
+Future<void> _initialize() async {
+  await initPlatformState();        // ✅ wait until configured
+  await fetchSubscriptionPlans();   // ✅ safe now
+  await _loadCurrentPlan();
+}
 
   Future<void> initPlatformState() async {
-    await Purchases.setLogLevel(LogLevel.debug);
+  await Purchases.setLogLevel(LogLevel.debug);
 
-    PurchasesConfiguration? configuration;
-    if (Platform.isAndroid) {
-      configuration = PurchasesConfiguration(
-        "test_KaLVTEQGcvCtFjanBoYLdZmtXQh",
-      );
-    } else if (Platform.isIOS) {
-      configuration = PurchasesConfiguration(
-        "test_KaLVTEQGcvCtFjanBoYLdZmtXQh",
-      );
-    }
+  if (_isRevenueCatInitialized) return;
 
-    if (configuration != null) {
-      await Purchases.configure(configuration);
-      _setupCustomerInfoListener();
-    }
+  PurchasesConfiguration? configuration;
+
+  if (Platform.isAndroid) {
+    configuration = PurchasesConfiguration(
+      "test_IUXJtYkZVKXyktOneEjdJTBUOuF",
+    );
+  }else if(Platform.isIOS){
+    configuration = PurchasesConfiguration("appl_zhFlCcmajBDpMYOSpjhKClrjzaj");
   }
+
+  if (configuration != null) {
+    await Purchases.configure(configuration);
+    _setupCustomerInfoListener();
+    _isRevenueCatInitialized = true; // ✅ mark initialized
+  }
+}
 
   void _setupCustomerInfoListener() {
     Purchases.addCustomerInfoUpdateListener((customerInfo) {
