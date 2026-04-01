@@ -9,7 +9,8 @@ class CustomDolarPlan extends StatelessWidget {
   const CustomDolarPlan({
     super.key,
     required this.dolartext,
-    required this.daytext, this.color,
+    required this.daytext,
+    this.color,
   });
 
   @override
@@ -18,7 +19,7 @@ class CustomDolarPlan extends StatelessWidget {
       children: [
         Text(dolartext, style: AppTextStyles.bold32.apply(color: color)),
         SizedBox(width: 8.w),
-        Text(daytext, style: AppTextStyles.regular12.apply(color: color)),
+        Text(daytext, style: AppTextStyles.regular14.apply(color: color)),
       ],
     );
   }
