@@ -29,7 +29,7 @@ class Subscription {
   final int id;
   final int sortOrder;
   final String duration;
-  final int price;
+  final double price;
   final List<String> features;
   final int? tag;
   final int status;
@@ -59,7 +59,7 @@ class Subscription {
       id: json['id'],
       sortOrder: json['sort_order'],
       duration: json['duration'],
-      price: json['price'],
+      price: double.tryParse("${json['price']??0}")??0,
       features: List<String>.from(json['features']),
       tag: json['tag'],
       status: json['status'],

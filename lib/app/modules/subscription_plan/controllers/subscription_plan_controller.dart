@@ -60,28 +60,47 @@ Future<void> _initialize() async {
 
   void _setupCustomerInfoListener() {
     Purchases.addCustomerInfoUpdateListener((customerInfo) {
-      _updateSubscriptionStatus(customerInfo);
+      // We no longer rely on RevenueCat to update subscription status.
+      // Logic shifted to rely on backend subscription-check API response.
     });
   }
 
-  Future<void> _updateSubscriptionStatus(CustomerInfo customerInfo) async {
-    if (customerInfo.entitlements.active.isNotEmpty) {
-      final activeEntitlement = customerInfo.entitlements.active.values.first;
-      // If we already have a plan name from the backend/preference, don't overwrite it with the entitlement ID
-      // unless we are sure it's more accurate. Usually the UI needs the duration (e.g. "weekly").
-      if (currentPlanName.value.isEmpty) {
-        currentPlanName.value = activeEntitlement.identifier;
-        AppPreference.saveCurrentPlan(activeEntitlement.identifier);
-      }
-    } else {
-      // Only clear if we are sure there is no plan. 
-      // If the backend says there is a plan, we might want to keep it.
-      // currentPlanName.value = '';
-      // AppPreference.clearCurrentPlan();
-    }
-  }
-
   Future<void> _loadCurrentPlan() async {
+    try {
+      final token = await AppPreference.getToken();
+      if (token != null && token.isNotEmpty) {
+        final response = await networkCaller.postRequest(
+          Urls.subscriptionCheck,
+          {},
+          token: token,
+        );
+
+        if (response != null && response['success'] == true) {
+          final data = response['data'];
+          final bool isPremium = data['is_premium'] ?? false;
+          
+          if (isPremium) {
+            final plans = data['plans'];
+            if (plans != null && plans['current'] != null) {
+              final currentPlan = plans['current']['name'];
+              if (currentPlan != null) {
+                currentPlanName.value = currentPlan;
+                AppPreference.saveCurrentPlan(currentPlan);
+                return;
+              }
+            }
+          } else {
+            currentPlanName.value = '';
+            AppPreference.clearCurrentPlan();
+            return;
+          }
+        }
+      }
+    } catch (e) {
+      AppLogger.log('Error checking subscription: $e');
+    }
+
+    // Fallback to local preference
     final plan = await AppPreference.getCurrentPlan();
     if (plan != null) {
       currentPlanName.value = plan;
@@ -151,10 +170,17 @@ Future<void> _initialize() async {
     String search = duration.toLowerCase().trim();
     
     // Normalize common duration strings
-    if (search.contains('annual')) search = 'annual';
-    else if (search.contains('yearly')) search = 'annual';
-    else if (search.contains('month')) search = 'monthly';
-    else if (search.contains('week')) search = 'weekly';
+    if (search.contains('annual')) {
+      search = 'annual';
+    } else if (search.contains('yearly')) {
+      search = 'annual';
+    }
+    else if (search.contains('month')) {
+      search = 'monthly';
+    }
+    else if (search.contains('week')) {
+      search = 'weekly';
+    }
     
     for (var package in availablePackages) {
       String packageTypeStr = package.packageType.toString().toLowerCase();

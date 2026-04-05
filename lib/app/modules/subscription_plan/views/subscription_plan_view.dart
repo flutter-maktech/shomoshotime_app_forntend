@@ -142,7 +142,7 @@ class SubscriptionPlanView extends GetView<SubscriptionPlanController> {
                                 SizedBox(height: 24.h),
                                 CustomButton(
                                   childText: isCurrentPlan
-                                      ? "Cancel Plan"
+                                      ? "Manage Subscription"
                                       : "Subscribe",
                                   buttonChildColor: index.isEven
                                       ? AppColors.whiteColor
@@ -151,54 +151,15 @@ class SubscriptionPlanView extends GetView<SubscriptionPlanController> {
                                       ? AppColors.blackColor
                                       : AppColors.whiteColor,
                                   onTap: () {
-                                    // 1️⃣ If this is current plan → Cancel
+                                    // 1️⃣ If this is current plan → Manage
                                     if (isCurrentPlan) {
-                                      showDialog(
-                                        context: context,
-                                        builder: (_) {
-                                          return AlertDialog(
-                                            backgroundColor:
-                                                AppColors.whiteColor,
-                                            title: Text(
-                                              "Cancel Subscription",
-                                              style: AppTextStyles.medium20,
-                                            ),
-                                            content: Text(
-                                              "Are you sure you want to cancel your subscription? You will no longer have access to premium features.",
-                                              style: AppTextStyles.light16,
-                                            ),
-                                            actions: [
-                                              TextButton(
-                                                onPressed: () =>
-                                                    Navigator.pop(context),
-                                                child: Text(
-                                                  "Cancel",
-                                                  style: AppTextStyles.medium16
-                                                      .apply(
-                                                        color: AppColors
-                                                            .blackColor,
-                                                      ),
-                                                ),
-                                              ),
-                                              TextButton(
-                                                onPressed: () {
-                                                  controller
-                                                      .cancelSubscription();
-                                                  Navigator.pop(context);
-                                                },
-                                                child: Text(
-                                                  "Confirm",
-                                                  style: AppTextStyles.medium16
-                                                      .apply(
-                                                        color:
-                                                            AppColors.readColor,
-                                                      ),
-                                                ),
-                                              ),
-                                            ],
-                                          );
-                                        },
-                                      );
+                                      final String url;
+                                      if (GetPlatform.isIOS) {
+                                        url = 'https://apps.apple.com/account/subscriptions';
+                                      } else {
+                                        url = 'https://play.google.com/store/account/subscriptions';
+                                      }
+                                      _launchUrl(url);
                                       return;
                                     }
 

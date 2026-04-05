@@ -56,6 +56,7 @@ class CustomBankCard extends StatelessWidget {
               scale: 1.4,
               child: Radio<int>(
                 value: value,
+                
                 groupValue: controller.selectedValue.value,
                 onChanged: (v) {
                   controller.updateSelection(v!);

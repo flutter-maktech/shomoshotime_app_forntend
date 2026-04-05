@@ -5,7 +5,6 @@ import '../../../all_utils/validators.dart';
 import '../../../data/app_colors.dart';
 import '../../../data/app_text_styles.dart';
 import '../../../data/image_path.dart';
-import '../../../routes/app_pages.dart';
 import '../../common_widgets/custom_button.dart';
 import '../../common_widgets/custom_rich_text.dart';
 import '../../common_widgets/custom_text_field.dart';
@@ -117,7 +116,7 @@ class SignUpView extends GetView<SignUpController> {
                     firstText: 'Already have an account ?',
                     secondText: 'Sign In',
                     onTap: () {
-                      Get.toNamed(Routes.signIn);
+                      Get.back();
                     },
                   ),
                 ],
