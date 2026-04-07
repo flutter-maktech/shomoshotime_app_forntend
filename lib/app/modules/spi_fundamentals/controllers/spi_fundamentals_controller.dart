@@ -12,8 +12,6 @@ import '../../../core/urls/urls.dart';
 class SpiFundamentalsController extends GetxController {
   // PDF Viewer Controller
   late PdfViewerController pdfViewerController;
-  RxString pageSize = ''.obs;
-  RxDouble aspectRatio = 0.0.obs;
   RxInt contentId = 0.obs;
   RxString localPdfPath = ''.obs;
   int lastReadPage = 1;

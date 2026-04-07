@@ -6,7 +6,7 @@
     <uses-permission android:name="android.permission.READ_MEDIA_VIDEO" tools:node="remove"/>
 
     <application
-        android:label="Sonographer PAL"
+        android:label="Sonographer Pal"
         android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher"
         android:enableOnBackInvokedCallback="true"
