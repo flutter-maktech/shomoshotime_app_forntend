@@ -32,9 +32,8 @@ class SpiAudioCardList extends StatelessWidget {
       }
 
       // Filter study guides
-      final filteredStudyGuides = studyGuidesController.filterStudyGuides(
+      final filteredStudyGuides = studyGuidesController.getLocalFilteredGuides(
         studyGuidesController.allStudyGuides,
-        studyGuidesController.selectedCategory.value,
         studyGuidesController.searchQuery.value,
         true, // isAudioView = true for Audio
       );

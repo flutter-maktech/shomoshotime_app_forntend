@@ -155,7 +155,11 @@ class PracticeController extends GetxController {
     }
     errorText.value = '';
     try {
-      final body = {"current_mode": "practice", "page": page.toString()};
+      final body = {
+        "current_mode": "practice",
+        "page": page.toString(),
+        "per_page": "100",
+      };
 
       final token = await AppPreference.getToken();
 

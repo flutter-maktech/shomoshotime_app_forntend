@@ -86,35 +86,35 @@ class FlashCardsView extends GetView<FlashCardsController> {
                               index: 0,
                               isSelected:
                                   controller.selectIndex.value == 0, // Dynamic
-                              onTap: () => controller.changeIndex(0),
+                              onTap: () => controller.filterFlashCards('All', 0),
                             ),
                             FlashCardFilterBar(
                               title: 'SPI',
                               index: 1,
                               isSelected:
                                   controller.selectIndex.value == 1, // Dynamic
-                              onTap: () => controller.changeIndex(1),
+                              onTap: () => controller.filterFlashCards('SPI', 1),
                             ),
                             FlashCardFilterBar(
                               title: 'Vascular',
                               index: 2,
                               isSelected:
                                   controller.selectIndex.value == 2, // Dynamic
-                              onTap: () => controller.changeIndex(2),
+                              onTap: () => controller.filterFlashCards('Vascular', 2),
                             ),
                             FlashCardFilterBar(
                               title: 'OB/GYN',
                               index: 3,
                               isSelected:
                                   controller.selectIndex.value == 3, // Dynamic
-                              onTap: () => controller.changeIndex(3),
+                              onTap: () => controller.filterFlashCards('OB/GYN', 3),
                             ),
                             FlashCardFilterBar(
                               title: 'Abdomen',
                               index: 4,
                               isSelected:
                                   controller.selectIndex.value == 4, // Dynamic
-                              onTap: () => controller.changeIndex(4),
+                              onTap: () => controller.filterFlashCards('Abdomen', 4),
                             ),
                           ],
                         ),

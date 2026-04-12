@@ -62,10 +62,14 @@ class StudyGuidesController extends GetxController {
     selectedCategory.value = category;
   }
 
-  // Filter by category AND search query
-  List<StudyGuide> filterStudyGuides(
+  Future<void> filterStudyGuides(String categoryName) async {
+    setSelectedCategory(categoryName);
+    await refreshStudyGuides();
+  }
+
+  // Filter by file type AND search query locally
+  List<StudyGuide> getLocalFilteredGuides(
     List<StudyGuide> studyGuides,
-    String category,
     String searchQuery,
     bool isAudioView,
   ) {
@@ -83,22 +87,12 @@ class StudyGuidesController extends GetxController {
       }
     }).toList();
 
-    // Then filter by category
-    List<StudyGuide> filteredByCategory = (category == 'All')
-        ? filteredByType
-        : filteredByType
-              .where(
-                (guide) =>
-                    guide.category.toLowerCase() == category.toLowerCase(),
-              )
-              .toList();
-
     // Finally filter by search query
     if (searchQuery.isEmpty) {
-      return filteredByCategory;
+      return filteredByType;
     }
 
-    return filteredByCategory.where((guide) {
+    return filteredByType.where((guide) {
       final title = guide.title.toLowerCase();
       final subtitle = guide.subtitle.toLowerCase();
       final category = guide.category.toLowerCase();
@@ -300,7 +294,11 @@ class StudyGuidesController extends GetxController {
 
       // Assuming API accepts 'page' in body or query param
       // Based on previous code, it's a POST request with body
-      final body = {'page': page.toString()};
+      final body = <String, dynamic>{'page': page.toString()};
+      
+      if (selectedCategory.value != 'All') {
+        body['category'] = selectedCategory.value;
+      }
 
       final response = await _networkCaller.postRequest(
         Urls.studyGuideList,

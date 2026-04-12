@@ -78,7 +78,7 @@ class StudyGuidesView extends GetView<StudyGuidesController> {
                                   controller.selectIndex.value == 0, // Dynamic
                               onTap: () {
                                 controller.changeIndex(0);
-                                controller.setSelectedCategory('All');
+                                controller.filterStudyGuides('All');
                               },
                             ),
                             FlashCardFilterBar(
@@ -88,7 +88,7 @@ class StudyGuidesView extends GetView<StudyGuidesController> {
                                   controller.selectIndex.value == 1, // Dynamic
                               onTap: () {
                                 controller.changeIndex(1);
-                                controller.setSelectedCategory('SPI');
+                                controller.filterStudyGuides('SPI');
                               },
                             ),
                             FlashCardFilterBar(
@@ -98,7 +98,7 @@ class StudyGuidesView extends GetView<StudyGuidesController> {
                                   controller.selectIndex.value == 2, // Dynamic
                               onTap: () {
                                 controller.changeIndex(2);
-                                controller.setSelectedCategory('Vascular');
+                                controller.filterStudyGuides('Vascular');
                               },
                             ),
                             FlashCardFilterBar(
@@ -108,7 +108,7 @@ class StudyGuidesView extends GetView<StudyGuidesController> {
                                   controller.selectIndex.value == 3, // Dynamic
                               onTap: () {
                                 controller.changeIndex(3);
-                                controller.setSelectedCategory('OB/GYN');
+                                controller.filterStudyGuides('OB/GYN');
                               },
                             ),
                             FlashCardFilterBar(
@@ -118,7 +118,7 @@ class StudyGuidesView extends GetView<StudyGuidesController> {
                                   controller.selectIndex.value == 4, // Dynamic
                               onTap: () {
                                 controller.changeIndex(4);
-                                controller.setSelectedCategory('Abdomen');
+                                controller.filterStudyGuides('Abdomen');
                               },
                             ),
                           ],

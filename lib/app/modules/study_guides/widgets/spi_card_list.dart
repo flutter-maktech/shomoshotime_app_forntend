@@ -33,9 +33,8 @@ class SpiCardList extends StatelessWidget {
       }
 
       // Filter study guides
-      final filteredStudyGuides = studyGuidesController.filterStudyGuides(
+      final filteredStudyGuides = studyGuidesController.getLocalFilteredGuides(
         studyGuidesController.allStudyGuides,
-        studyGuidesController.selectedCategory.value,
         studyGuidesController.searchQuery.value,
         false, // isAudioView = false for PDF
       );

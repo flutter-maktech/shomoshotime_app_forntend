@@ -25,38 +25,40 @@ class SubscriptionPlanController extends GetxController {
   RxString currentPlanName = ''.obs;
 
   @override
-void onInit() {
-  super.onInit();
-  _initialize();
-}
+  void onInit() {
+    super.onInit();
+    _initialize();
+  }
 
-Future<void> _initialize() async {
-  await initPlatformState();        // ✅ wait until configured
-  await fetchSubscriptionPlans();   // ✅ safe now
-  await _loadCurrentPlan();
-}
+  Future<void> _initialize() async {
+    await initPlatformState(); // ✅ wait until configured
+    await fetchSubscriptionPlans(); // ✅ safe now
+    await _loadCurrentPlan();
+  }
 
   Future<void> initPlatformState() async {
-  await Purchases.setLogLevel(LogLevel.debug);
+    await Purchases.setLogLevel(LogLevel.debug);
 
-  if (_isRevenueCatInitialized) return;
+    if (_isRevenueCatInitialized) return;
 
-  PurchasesConfiguration? configuration;
+    PurchasesConfiguration? configuration;
 
-  if (Platform.isAndroid) {
-    configuration = PurchasesConfiguration(
-      "test_IUXJtYkZVKXyktOneEjdJTBUOuF",
-    );
-  }else if(Platform.isIOS){
-    configuration = PurchasesConfiguration("appl_zhFlCcmajBDpMYOSpjhKClrjzaj");
+    if (Platform.isAndroid) {
+      configuration = PurchasesConfiguration(
+        "goog_YBgebgxKnmCSpIktDFrZxEgAIYG",
+      );
+    } else if (Platform.isIOS) {
+      configuration = PurchasesConfiguration(
+        "appl_zhFlCcmajBDpMYOSpjhKClrjzaj",
+      );
+    }
+
+    if (configuration != null) {
+      await Purchases.configure(configuration);
+      _setupCustomerInfoListener();
+      _isRevenueCatInitialized = true; // ✅ mark initialized
+    }
   }
-
-  if (configuration != null) {
-    await Purchases.configure(configuration);
-    _setupCustomerInfoListener();
-    _isRevenueCatInitialized = true; // ✅ mark initialized
-  }
-}
 
   void _setupCustomerInfoListener() {
     Purchases.addCustomerInfoUpdateListener((customerInfo) {
@@ -78,7 +80,7 @@ Future<void> _initialize() async {
         if (response != null && response['success'] == true) {
           final data = response['data'];
           final bool isPremium = data['is_premium'] ?? false;
-          
+
           if (isPremium) {
             final plans = data['plans'];
             if (plans != null && plans['current'] != null) {
@@ -155,7 +157,9 @@ Future<void> _initialize() async {
     if (offerings.value!.current != null) {
       availablePackages = offerings.value!.current!.availablePackages;
     } else if (offerings.value!.all.isNotEmpty) {
-      AppLogger.log('⚠️ Current offering is null, checking all offerings as fallback');
+      AppLogger.log(
+        '⚠️ Current offering is null, checking all offerings as fallback',
+      );
       for (var offering in offerings.value!.all.values) {
         availablePackages.addAll(offering.availablePackages);
       }
@@ -168,36 +172,36 @@ Future<void> _initialize() async {
 
     AppLogger.log('🔍 Matching duration: "$duration"');
     String search = duration.toLowerCase().trim();
-    
+
     // Normalize common duration strings
     if (search.contains('annual')) {
       search = 'annual';
     } else if (search.contains('yearly')) {
       search = 'annual';
-    }
-    else if (search.contains('month')) {
+    } else if (search.contains('month')) {
       search = 'monthly';
-    }
-    else if (search.contains('week')) {
+    } else if (search.contains('week')) {
       search = 'weekly';
     }
-    
+
     for (var package in availablePackages) {
       String packageTypeStr = package.packageType.toString().toLowerCase();
       String packageId = package.identifier.toLowerCase();
-      
+
       // Strict matching for package type first
-      if (packageTypeStr == 'packagetype.$search' || packageTypeStr.endsWith('.$search')) {
+      if (packageTypeStr == 'packagetype.$search' ||
+          packageTypeStr.endsWith('.$search')) {
         return package;
       }
-      
+
       // Fallback to identifier matching
       if (packageId.contains(search)) {
         return package;
       }
-      
+
       // Special cases for annual/yearly
-      if (search == 'annual' && (packageTypeStr.contains('yearly') || packageId.contains('yearly'))) {
+      if (search == 'annual' &&
+          (packageTypeStr.contains('yearly') || packageId.contains('yearly'))) {
         return package;
       }
     }

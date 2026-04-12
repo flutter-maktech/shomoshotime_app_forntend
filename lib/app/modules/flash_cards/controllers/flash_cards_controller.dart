@@ -13,6 +13,13 @@ class FlashCardsController extends GetxController {
 
   final RxString searchQuery = ''.obs;
   final RxInt selectIndex = 0.obs;
+  final RxString selectedCategory = 'All'.obs;
+
+  Future<void> filterFlashCards(String categoryName, int index) async {
+    changeIndex(index);
+    selectedCategory.value = categoryName;
+    await refreshFlashCards();
+  }
 
   // Pagination variables
   final allFlashCards = <FlashCardItem>[].obs;
@@ -94,7 +101,10 @@ class FlashCardsController extends GetxController {
 
       final token = await AppPreference.getToken();
 
-      final body = {'page': page.toString()};
+      final body = <String, dynamic>{'page': page.toString()};
+      if (selectedCategory.value != 'All') {
+        body['category'] = selectedCategory.value;
+      }
 
       final response = await _networkCaller.postRequest(
         Urls.flashCardList,
@@ -141,53 +151,7 @@ class FlashCardsController extends GetxController {
   }
 
   List<FlashCardItem> get filteredFlashCards {
-    final categoryFiltered = _filterByCategory();
-    return _filterBySearch(categoryFiltered);
-  }
-
-  List<FlashCardItem> _filterByCategory() {
-    if (selectIndex.value == 0) return flashCards;
-
-    final String selectedCategory;
-    switch (selectIndex.value) {
-      case 1:
-        selectedCategory = 'SPI';
-        break;
-      case 2:
-        selectedCategory = 'Vascular';
-        break;
-      case 3:
-        selectedCategory = 'OB/GYN';
-        break;
-      case 4:
-        selectedCategory = 'Abdomen';
-        break;
-      default:
-        return flashCards;
-    }
-
-    return flashCards.where((card) {
-      final cardCategory = card.category.toLowerCase().trim();
-      final filterCategory = selectedCategory.toLowerCase().trim();
-
-      if (cardCategory.contains(filterCategory) ||
-          filterCategory.contains(cardCategory)) {
-        return true;
-      }
-
-      if (selectedCategory == 'SPI' &&
-          (cardCategory.contains('spi') ||
-              cardCategory.contains('sonography'))) {
-        return true;
-      }
-
-      if (selectedCategory == 'OB/GYN' &&
-          (cardCategory.contains('ob') || cardCategory.contains('gyn'))) {
-        return true;
-      }
-
-      return false;
-    }).toList();
+    return _filterBySearch(flashCards);
   }
 
   List<FlashCardItem> _filterBySearch(List<FlashCardItem> list) {
