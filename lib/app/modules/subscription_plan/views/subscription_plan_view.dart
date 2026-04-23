@@ -81,8 +81,6 @@ class SubscriptionPlanView extends GetView<SubscriptionPlanController> {
                     final isCurrentPlan =
                         subscription.duration.toLowerCase() ==
                         controller.currentPlanName.value.toLowerCase();
-                    print("${controller.currentPlanName.value}");
-                    print("${subscription.duration}");
 
                     return Container(
                       margin: EdgeInsets.only(bottom: 20.h),
@@ -155,9 +153,11 @@ class SubscriptionPlanView extends GetView<SubscriptionPlanController> {
                                     if (isCurrentPlan) {
                                       final String url;
                                       if (GetPlatform.isIOS) {
-                                        url = 'https://apps.apple.com/account/subscriptions';
+                                        url =
+                                            'https://apps.apple.com/account/subscriptions';
                                       } else {
-                                        url = 'https://play.google.com/store/account/subscriptions';
+                                        url =
+                                            'https://play.google.com/store/account/subscriptions';
                                       }
                                       _launchUrl(url);
                                       return;
