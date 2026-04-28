@@ -122,28 +122,32 @@ class VascularFlashcardsView extends GetView<FlashcardsSetController> {
                 if (totalQuestion > 0)
                   Padding(
                     padding: EdgeInsets.only(bottom: 24.h),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: List.generate(totalQuestion, (index) {
-                        final isActive = controller.currentIndex.value == index;
+                    child: SingleChildScrollView(
+                      scrollDirection: Axis.horizontal,
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: List.generate(totalQuestion, (index) {
+                          final isActive =
+                              controller.currentIndex.value == index;
 
-                        return GestureDetector(
-                          onTap: () => controller.setIndex(index),
-                          child: AnimatedContainer(
-                            duration: const Duration(milliseconds: 250),
-                            curve: Curves.easeInOut,
-                            margin: EdgeInsets.symmetric(horizontal: 4.w),
-                            width: isActive ? 24.w : 10.w,
-                            height: 10.h,
-                            decoration: BoxDecoration(
-                              color: isActive
-                                  ? AppColors.primaryColor
-                                  : Colors.grey.shade300,
-                              borderRadius: BorderRadius.circular(8.r),
+                          return GestureDetector(
+                            onTap: () => controller.setIndex(index),
+                            child: AnimatedContainer(
+                              duration: const Duration(milliseconds: 250),
+                              curve: Curves.easeInOut,
+                              margin: EdgeInsets.symmetric(horizontal: 4.w),
+                              width: isActive ? 24.w : 10.w,
+                              height: 10.h,
+                              decoration: BoxDecoration(
+                                color: isActive
+                                    ? AppColors.primaryColor
+                                    : Colors.grey.shade300,
+                                borderRadius: BorderRadius.circular(8.r),
+                              ),
                             ),
-                          ),
-                        );
-                      }),
+                          );
+                        }),
+                      ),
                     ),
                   ),
 

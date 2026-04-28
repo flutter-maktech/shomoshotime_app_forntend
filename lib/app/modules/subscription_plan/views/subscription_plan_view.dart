@@ -81,8 +81,6 @@ class SubscriptionPlanView extends GetView<SubscriptionPlanController> {
                     final isCurrentPlan =
                         subscription.duration.toLowerCase() ==
                         controller.currentPlanName.value.toLowerCase();
-                    print("${controller.currentPlanName.value}");
-                    print("${subscription.duration}");
 
                     return Container(
                       margin: EdgeInsets.only(bottom: 20.h),
