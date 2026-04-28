@@ -154,9 +154,8 @@ class SpiPracticeBankAnsView extends GetView<SpiPracticeBankQusController> {
                       child: CustomButton(
                         childText: "Next Question",
                         childImage: ImagePath.arrowForward,
-                        onTap: () => Get.offAllNamed(
-                          Routes.customBottomNavigationBar,
-                        ),
+                        onTap: () =>
+                            Get.offAllNamed(Routes.customBottomNavigationBar),
                       ),
                     ),
                   ],

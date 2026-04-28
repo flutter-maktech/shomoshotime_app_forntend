@@ -19,7 +19,8 @@ class CustomRadio extends StatelessWidget {
     required this.icon,
     required this.borderColor,
     required this.textColor,
-    required this.iconColor, required this.boxColor,
+    required this.iconColor,
+    required this.boxColor,
   });
 
   @override
@@ -39,9 +40,11 @@ class CustomRadio extends StatelessWidget {
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Text(
-                title ?? '',
-                style: AppTextStyles.medium12.copyWith(color: textColor),
+              Flexible(
+                child: Text(
+                  title ?? '',
+                  style: AppTextStyles.medium12.copyWith(color: textColor),
+                ),
               ),
               Icon(icon, color: iconColor),
             ],
@@ -51,4 +54,3 @@ class CustomRadio extends StatelessWidget {
     );
   }
 }
-

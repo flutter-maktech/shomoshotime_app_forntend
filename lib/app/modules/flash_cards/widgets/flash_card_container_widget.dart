@@ -120,7 +120,11 @@ class FlashCardContainerWidget extends StatelessWidget {
               onTap: () async {
                 final result = await Get.toNamed(
                   Routes.vascularFlashcards,
-                  arguments: {'title': card.title, 'contentId': contentId},
+                  arguments: {
+                    'title': card.title,
+                    'contentId': contentId,
+                    'flashCardsCount': card.flashCardsCount
+                  },
                 );
                 if (result == true) {
                   controller.refreshFlashCards();

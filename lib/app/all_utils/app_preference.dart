@@ -3,6 +3,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 class AppPreference {
   static const String _tokenKey = 'auth_token';
   static const String _userIdKey = 'user_id';
+  static const String _nameKey = 'user_name';
   static const String _imageKey = 'user_image';
   static const String _planIdKey = 'current_plan_id';
   static const String _audioProgressPrefix = 'audio_progress_';
@@ -23,6 +24,22 @@ class AppPreference {
   static Future<void> clearProfileImage() async {
     final prefs = await SharedPreferences.getInstance();
     await prefs.remove(_imageKey);
+  }
+
+  // NAME
+  static Future<void> saveName(String name) async {
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.setString(_nameKey, name);
+  }
+
+  static Future<String?> getName() async {
+    final prefs = await SharedPreferences.getInstance();
+    return prefs.getString(_nameKey);
+  }
+
+  static Future<void> clearName() async {
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.remove(_nameKey);
   }
 
   // TOKEN

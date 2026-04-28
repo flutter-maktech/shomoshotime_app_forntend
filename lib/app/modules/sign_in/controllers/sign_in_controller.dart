@@ -89,15 +89,19 @@ class SignInController extends GetxController {
         final token = data['data']['token'];
         final userId = data['data']['user_id'];
         final image = data['data']['image'];
+        final name = data['data']['name'];
         String? currentPlan;
         if (data['data']['plans']['current'] != null) {
           currentPlan = data['data']['plans']['current']['name'];
           AppLogger.log('✅ $currentPlan');
         }
 
-        // Save token, user ID, and image
+        // Save token, user ID, image, and name
         AppPreference.saveToken(token.toString());
         AppPreference.saveUserId(userId);
+        if (name != null) {
+          AppPreference.saveName(name.toString());
+        }
         if (currentPlan != null) {
           AppPreference.saveCurrentPlan(currentPlan);
         }
@@ -241,15 +245,19 @@ class SignInController extends GetxController {
         final token = data['data']['token'];
         final userId = data['data']['user_id'];
         final image = data['data']['image'];
+        final name = data['data']['name'];
         String? currentPlan;
         if (data['data']['plans']['current'] != null) {
           currentPlan = data['data']['plans']['current']['name'];
           AppLogger.log('✅ $currentPlan');
         }
 
-        // Save token, user ID, and image
+        // Save token, user ID, image, and name
         AppPreference.saveToken(token);
         AppPreference.saveUserId(userId);
+        if (name != null) {
+          AppPreference.saveName(name.toString());
+        }
         if (currentPlan != null) {
           AppPreference.saveCurrentPlan(currentPlan);
         }

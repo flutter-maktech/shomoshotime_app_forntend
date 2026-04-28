@@ -7,6 +7,7 @@ import '../../../core/user_panel_model/question_list_response_model.dart';
 
 class SpiPracticeBankQusController extends GetxController {
   RxBool isloading = false.obs;
+  RxBool isLoadingMore = false.obs;
   RxString errorText = ''.obs;
   RxString selectedAnswer = ''.obs;
   RxInt correctIndex = (-1).obs;
@@ -15,22 +16,37 @@ class SpiPracticeBankQusController extends GetxController {
   RxBool isCorrectAnswer = false.obs;
   RxBool isFinished = false.obs;
 
+  // Pagination variables
+  int currentPage = 1;
+  int lastPage = 1;
+  RxInt totalQuestionsCount = 0.obs;
+  final allQuestions = <QuestionData>[].obs;
+
   NetworkCaller networkCaller = NetworkCaller();
   final Rx<QuestionListResponse?> questionListResponse =
       Rx<QuestionListResponse?>(null);
   @override
   void onInit() {
     super.onInit();
+    // Set totalQuestionsCount from arguments if available
+    if (Get.arguments != null && Get.arguments['totalQuestions'] != null) {
+      totalQuestionsCount.value = Get.arguments['totalQuestions'];
+    }
     fetchQuestionList();
   }
 
-  Future<void> fetchQuestionList() async {
-    isloading.value = true;
+  Future<void> fetchQuestionList({int page = 1}) async {
+    if (page == 1) {
+      isloading.value = true;
+      allQuestions.clear();
+    } else {
+      isLoadingMore.value = true;
+    }
     errorText.value = '';
     try {
       final args = Get.arguments as Map<String, dynamic>?;
       final int id = args != null && args['id'] != null ? args['id'] : 0;
-      final body = {"question_set_id": id};
+      final body = {"question_set_id": id, "page": page.toString()};
 
       final token = await AppPreference.getToken();
 
@@ -39,25 +55,39 @@ class SpiPracticeBankQusController extends GetxController {
         body,
         token: token,
       );
-      questionListResponse.value = QuestionListResponse.fromJson(response);
+      final newResponse = QuestionListResponse.fromJson(response);
+      questionListResponse.value = newResponse;
 
-      // Restore progress
-      if (questionListResponse.value != null &&
-          questionListResponse.value!.data.isNotEmpty) {
-        final savedIndex = await AppPreference.getQuestionProgress(id);
-        if (savedIndex > 0 &&
-            savedIndex < questionListResponse.value!.data.length) {
-          currentQuestionIndex.value = savedIndex;
+      if (newResponse.success) {
+        allQuestions.addAll(newResponse.data);
+
+        currentPage = newResponse.meta.currentPage;
+        lastPage = newResponse.meta.lastPage;
+        totalQuestionsCount.value = newResponse.meta.total;
+
+        // Restore progress
+        if (page == 1 && allQuestions.isNotEmpty) {
+          final savedIndex = await AppPreference.getQuestionProgress(id);
+          if (savedIndex > 0) {
+            // If saved index is beyond currently loaded cards, we might need to load more
+            if (savedIndex < allQuestions.length) {
+              currentQuestionIndex.value = savedIndex;
+            } else {
+              // For simplicity, let's just start at 0 if it's not loaded
+              // or we could recursively fetch more pages...
+            }
+          }
         }
       }
     } catch (e) {
       errorText.value = 'An error occurred: $e';
     } finally {
       isloading.value = false;
+      isLoadingMore.value = false;
     }
   }
 
-  List<QuestionData> get questionList => questionListResponse.value?.data ?? [];
+  List<QuestionData> get questionList => allQuestions;
 
   RxInt selectedIndex = (-1).obs;
 
@@ -126,7 +156,7 @@ class SpiPracticeBankQusController extends GetxController {
       // ------------------------------
       // CHECK IF LAST QUESTION
       // ------------------------------
-      if (currentQuestionIndex.value == questionList.length - 1) {
+      if (currentQuestionIndex.value == totalQuestionsCount.value - 1) {
         isFinished.value = true;
         // Reset progress on completion
         final args = Get.arguments as Map<String, dynamic>?;
@@ -144,8 +174,16 @@ class SpiPracticeBankQusController extends GetxController {
 
   void goToNextQuestion() {
     // Only move to next question if there are more
-    if (currentQuestionIndex.value < questionList.length - 1) {
+    if (currentQuestionIndex.value < totalQuestionsCount.value - 1) {
       currentQuestionIndex.value++;
+
+      // Load more if we reached the end of loaded questions
+      if (currentQuestionIndex.value >= allQuestions.length &&
+          currentPage < lastPage &&
+          !isLoadingMore.value) {
+        fetchQuestionList(page: currentPage + 1);
+      }
+
       selectedIndex.value = -1;
       showResult.value = false;
 

@@ -32,10 +32,13 @@ class StudyHeaderInfo extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text(
-            "Welcome back,\nSarah!",
-            style: AppTextStyles.spaceGroteskMedium20,
-          ),
+          Obx(() {
+            final controller = Get.find<HomeController>();
+            return Text(
+              "Welcome back,\n${controller.userName.value.split(' ').first}!",
+              style: AppTextStyles.spaceGroteskMedium20,
+            );
+          }),
           SizedBox(height: 22.h),
           Obx(() {
             final controller = Get.find<HomeController>();

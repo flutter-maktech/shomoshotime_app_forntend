@@ -45,7 +45,7 @@ class VascularFlashcardsView extends GetView<FlashcardsSetController> {
             }
 
             final cards = controller.cards;
-            final totalQuestion = cards.length;
+            final totalQuestion = controller.totalCards.value;
 
             // 3️⃣ EMPTY STATE (after loading finished)
             if (totalQuestion == 0) {
@@ -63,11 +63,22 @@ class VascularFlashcardsView extends GetView<FlashcardsSetController> {
             return Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text(
-                  'Question ${controller.currentIndex.value + 1} of $totalQuestion',
-                  style: AppTextStyles.medium16.copyWith(
-                    color: AppColors.greyLight,
-                  ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Text(
+                      'Question ${controller.currentIndex.value + 1} of $totalQuestion',
+                      style: AppTextStyles.medium16.copyWith(
+                        color: AppColors.greyLight,
+                      ),
+                    ),
+                    if (controller.isLoadingMore.value)
+                      SizedBox(
+                        height: 16.h,
+                        width: 16.w,
+                        child: const CircularProgressIndicator(strokeWidth: 2),
+                      ),
+                  ],
                 ),
                 SizedBox(height: 8.h),
 
@@ -77,6 +88,9 @@ class VascularFlashcardsView extends GetView<FlashcardsSetController> {
                     itemCount: totalQuestion,
                     onPageChanged: controller.onPageChanged,
                     itemBuilder: (context, index) {
+                      if (index >= cards.length) {
+                        return const Center(child: CircularProgressIndicator());
+                      }
                       final question = cards[index].question;
                       final answer = cards[index].answer;
 
@@ -122,16 +136,24 @@ class VascularFlashcardsView extends GetView<FlashcardsSetController> {
                 if (totalQuestion > 0)
                   Padding(
                     padding: EdgeInsets.only(bottom: 24.h),
-                    child: SingleChildScrollView(
-                      scrollDirection: Axis.horizontal,
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: List.generate(totalQuestion, (index) {
-                          final isActive =
-                              controller.currentIndex.value == index;
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: () {
+                        final batchIndex = controller.currentIndex.value ~/ 10;
+                        final start = batchIndex * 10;
+                        var end = (batchIndex + 1) * 10;
+                        if (end > totalQuestion) {
+                          end = totalQuestion;
+                        }
+                        final dotCount = end - start;
+                        final activeIndexInBatch =
+                            controller.currentIndex.value % 10;
+
+                        return List.generate(dotCount, (index) {
+                          final isActive = activeIndexInBatch == index;
 
                           return GestureDetector(
-                            onTap: () => controller.setIndex(index),
+                            onTap: () => controller.setIndex(start + index),
                             child: AnimatedContainer(
                               duration: const Duration(milliseconds: 250),
                               curve: Curves.easeInOut,
@@ -146,8 +168,8 @@ class VascularFlashcardsView extends GetView<FlashcardsSetController> {
                               ),
                             ),
                           );
-                        }),
-                      ),
+                        });
+                      }(),
                     ),
                   ),
 

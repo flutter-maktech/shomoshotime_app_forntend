@@ -502,6 +502,7 @@ class PracticeView extends GetView<PracticeController> {
                   'title': questionSet.title,
                   'category': questionSet.category,
                   'staus_label': questionSet.statusLabel,
+                  'totalQuestions': questionSet.totalQuestions,
                 },
               );
               if (result == true) {

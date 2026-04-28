@@ -19,14 +19,23 @@ class HomeController extends GetxController {
       Rx<UserAnalyticsResponse?>(null);
   final RxBool isLoading = false.obs;
   final RxString errorMessage = ''.obs;
+  final RxString userName = 'User'.obs;
   final ScrollController scrollController = ScrollController();
 
   @override
   void onInit() {
     super.onInit();
+    loadUserName();
     fetchStudyGuides();
     fetchFlashCards();
     fetchUserAnalytics();
+  }
+
+  Future<void> loadUserName() async {
+    final name = await AppPreference.getName();
+    if (name != null && name.isNotEmpty) {
+      userName.value = name;
+    }
   }
 
   // Fetch study guides using POST request

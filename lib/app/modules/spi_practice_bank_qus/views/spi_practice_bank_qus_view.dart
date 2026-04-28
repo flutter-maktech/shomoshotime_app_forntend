@@ -34,8 +34,10 @@ class SpiPracticeBankQusView extends GetView<SpiPracticeBankQusController> {
           if (controller.isloading.value) {
             return const Center(child: CircularProgressIndicator());
           }
-          if (controller.questionList.isEmpty) {
-            return const Center(child: Text('No questions available.'));
+          if (controller.questionList.isEmpty ||
+              controller.currentQuestionIndex.value >=
+                  controller.questionList.length) {
+            return const Center(child: CircularProgressIndicator());
           }
           final question =
               controller.questionList[controller.currentQuestionIndex.value];
@@ -50,16 +52,17 @@ class SpiPracticeBankQusView extends GetView<SpiPracticeBankQusController> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      'Question of ${controller.questionList.length}',
+                      'Question ${controller.currentQuestionIndex.value + 1} of ${controller.totalQuestionsCount.value}',
                       style: AppTextStyles.regular14.copyWith(
                         color: AppColors.appBarSub,
                       ),
                     ),
                     SizedBox(height: 6.h),
                     CustomProgress(
-                      progress:
-                          (controller.currentQuestionIndex.value + 1) /
-                          controller.questionList.length,
+                      progress: controller.totalQuestionsCount.value > 0
+                          ? (controller.currentQuestionIndex.value + 1) /
+                              controller.totalQuestionsCount.value
+                          : 0,
                     ),
                   ],
                 ),

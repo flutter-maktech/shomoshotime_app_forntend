@@ -11,9 +11,19 @@ class FlashcardsSetController extends GetxController {
   final NetworkCaller _networkCaller = NetworkCaller();
 
   final RxBool isLoading = false.obs;
+  final RxBool isLoadingMore = false.obs;
   final RxString errorMessage = ''.obs;
   final RxInt contentId = 0.obs;
   final currentIndex = 0.obs;
+  final RxInt totalCards = 0.obs;
+
+  // Pagination variables
+  int currentPage = 1;
+  int lastPage = 1;
+
+  // Use a list to store all cards from multiple pages
+  final allCards = <FlashCardSetItem>[].obs;
+
   final Rx<FlashCardSetResponse?> flashCardSetResponse =
       Rx<FlashCardSetResponse?>(null);
 
@@ -25,15 +35,20 @@ class FlashcardsSetController extends GetxController {
   int _previousPageIndex = 0;
 
   /// Returns list of cards safely
-  List<FlashCardSetItem> get cards => flashCardSetResponse.value?.data ?? [];
+  List<FlashCardSetItem> get cards => allCards;
 
   @override
   void onInit() {
     super.onInit();
 
-    // Set contentId from arguments
-    if (Get.arguments != null && Get.arguments['contentId'] != null) {
-      contentId.value = Get.arguments['contentId'];
+    // Set contentId and totalCards from arguments
+    if (Get.arguments != null) {
+      if (Get.arguments['contentId'] != null) {
+        contentId.value = Get.arguments['contentId'];
+      }
+      if (Get.arguments['flashCardsCount'] != null) {
+        totalCards.value = Get.arguments['flashCardsCount'];
+      }
     }
 
     pageController = PageController();
@@ -42,13 +57,21 @@ class FlashcardsSetController extends GetxController {
     fetchFlashCardsSet();
   }
 
-  Future<void> fetchFlashCardsSet() async {
+  Future<void> fetchFlashCardsSet({int page = 1}) async {
     try {
-      isLoading.value = true;
+      if (page == 1) {
+        isLoading.value = true;
+        allCards.clear();
+      } else {
+        isLoadingMore.value = true;
+      }
       errorMessage.value = '';
 
       final token = await AppPreference.getToken();
-      final requestBody = {"content_id": contentId.value};
+      final requestBody = {
+        "content_id": contentId.value,
+        "page": page.toString(),
+      };
 
       final response = await _networkCaller.postRequest(
         Urls.flashCardSetList,
@@ -56,25 +79,46 @@ class FlashcardsSetController extends GetxController {
         token: token,
       );
 
-      flashCardSetResponse.value = FlashCardSetResponse.fromJson(response);
+      final newResponse = FlashCardSetResponse.fromJson(response);
+      flashCardSetResponse.value = newResponse;
 
-      // Restore progress
-      if (flashCardSetResponse.value != null &&
-          flashCardSetResponse.value!.data.isNotEmpty) {
-        final savedIndex = await AppPreference.getFlashcardProgress(
-          contentId.value,
-        );
-        if (savedIndex > 0 &&
-            savedIndex < flashCardSetResponse.value!.data.length) {
-          currentIndex.value = savedIndex;
-          _previousPageIndex = savedIndex;
-          // Use jumpToPage instead of animateToPage during init to avoid visual scroll
-          Future.delayed(const Duration(milliseconds: 100), () {
-            if (pageController.hasClients) {
-              pageController.jumpToPage(savedIndex);
+      if (newResponse.success) {
+        allCards.addAll(newResponse.data);
+
+        if (newResponse.meta != null) {
+          currentPage = newResponse.meta!.currentPage;
+          lastPage = newResponse.meta!.lastPage;
+          // Only update total if it's 0 (from arguments)
+          if (totalCards.value == 0) {
+            totalCards.value = newResponse.meta!.total;
+          }
+        }
+
+        // Restore progress (only on first load)
+        if (page == 1 && allCards.isNotEmpty) {
+          final savedIndex = await AppPreference.getFlashcardProgress(
+            contentId.value,
+          );
+          if (savedIndex > 0) {
+            // If saved index is beyond currently loaded cards, we might need to load more
+            // but for now let's just cap it or handle it simply.
+            // Usually progress is restored to where the user left off.
+            if (savedIndex < allCards.length) {
+              currentIndex.value = savedIndex;
+              _previousPageIndex = savedIndex;
+              Future.delayed(const Duration(milliseconds: 100), () {
+                if (pageController.hasClients) {
+                  pageController.jumpToPage(savedIndex);
+                }
+              });
+            } else {
+              // If savedIndex is further, we might need to fetch all up to that index
+              // For simplicity, let's just start at 0 if it's not loaded
+              AppLogger.log(
+                'Saved index $savedIndex is beyond currently loaded cards',
+              );
             }
-          });
-          AppLogger.log('Restored flashcard progress: index $savedIndex');
+          }
         }
       }
     } catch (e) {
@@ -82,6 +126,7 @@ class FlashcardsSetController extends GetxController {
       AppLogger.log('Error fetching flashcards: $e');
     } finally {
       isLoading.value = false;
+      isLoadingMore.value = false;
     }
   }
 
@@ -111,6 +156,11 @@ class FlashcardsSetController extends GetxController {
 
     // Save progress
     AppPreference.saveFlashcardProgress(contentId.value, index);
+
+    // Load more if we're at the last card and there are more pages
+    if (index == cards.length - 1 && currentPage < lastPage && !isLoadingMore.value) {
+      fetchFlashCardsSet(page: currentPage + 1);
+    }
   }
 
   /// Set index programmatically (Back/Next buttons)

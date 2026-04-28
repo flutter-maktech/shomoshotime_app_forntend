@@ -153,9 +153,11 @@ class SubscriptionPlanView extends GetView<SubscriptionPlanController> {
                                     if (isCurrentPlan) {
                                       final String url;
                                       if (GetPlatform.isIOS) {
-                                        url = 'https://apps.apple.com/account/subscriptions';
+                                        url =
+                                            'https://apps.apple.com/account/subscriptions';
                                       } else {
-                                        url = 'https://play.google.com/store/account/subscriptions';
+                                        url =
+                                            'https://play.google.com/store/account/subscriptions';
                                       }
                                       _launchUrl(url);
                                       return;
