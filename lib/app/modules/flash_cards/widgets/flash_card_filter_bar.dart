@@ -30,7 +30,7 @@ class FlashCardFilterBar extends StatelessWidget {
           padding: EdgeInsets.symmetric(horizontal: 10.w, vertical: 8.h),
           child: Text(
             title,
-            style: AppTextStyles.regular13.copyWith(
+            style: AppTextStyles.regular12.copyWith(
               color: isSelected ? Colors.black : AppColors.grey,
             ),
           ),

@@ -5,6 +5,18 @@ import '../../../core/api_services/network_caller.dart';
 import '../../../core/urls/urls.dart';
 import '../../../core/user_panel_model/question_list_response_model.dart';
 
+class AnswerHistory {
+  final int selectedIndex;
+  final bool isCorrectAnswer;
+  final int correctIndex;
+
+  AnswerHistory({
+    required this.selectedIndex,
+    required this.isCorrectAnswer,
+    required this.correctIndex,
+  });
+}
+
 class SpiPracticeBankQusController extends GetxController {
   RxBool isloading = false.obs;
   RxBool isLoadingMore = false.obs;
@@ -21,6 +33,9 @@ class SpiPracticeBankQusController extends GetxController {
   int lastPage = 1;
   RxInt totalQuestionsCount = 0.obs;
   final allQuestions = <QuestionData>[].obs;
+
+  // Store answer history by question index
+  final RxMap<int, AnswerHistory> answerHistories = <int, AnswerHistory>{}.obs;
 
   NetworkCaller networkCaller = NetworkCaller();
   final Rx<QuestionListResponse?> questionListResponse =
@@ -153,6 +168,12 @@ class SpiPracticeBankQusController extends GetxController {
 
       showResult.value = true;
 
+      answerHistories[currentQuestionIndex.value] = AnswerHistory(
+        selectedIndex: selectedIndex.value,
+        isCorrectAnswer: isCorrectAnswer.value,
+        correctIndex: correctIndex.value,
+      );
+
       // ------------------------------
       // CHECK IF LAST QUESTION
       // ------------------------------
@@ -177,15 +198,14 @@ class SpiPracticeBankQusController extends GetxController {
     if (currentQuestionIndex.value < totalQuestionsCount.value - 1) {
       currentQuestionIndex.value++;
 
+      _restoreQuestionState();
+
       // Load more if we reached the end of loaded questions
       if (currentQuestionIndex.value >= allQuestions.length &&
           currentPage < lastPage &&
           !isLoadingMore.value) {
         fetchQuestionList(page: currentPage + 1);
       }
-
-      selectedIndex.value = -1;
-      showResult.value = false;
 
       // Save progress
       final args = Get.arguments as Map<String, dynamic>?;
@@ -196,6 +216,34 @@ class SpiPracticeBankQusController extends GetxController {
           currentQuestionIndex.value,
         );
       }
+    }
+  }
+
+  void goToPreviousQuestion() {
+    if (currentQuestionIndex.value > 0) {
+      currentQuestionIndex.value--;
+      _restoreQuestionState();
+    }
+  }
+
+  void _restoreQuestionState() {
+    if (answerHistories.containsKey(currentQuestionIndex.value)) {
+      final history = answerHistories[currentQuestionIndex.value]!;
+      selectedIndex.value = history.selectedIndex;
+      isCorrectAnswer.value = history.isCorrectAnswer;
+      correctIndex.value = history.correctIndex;
+      showResult.value = true;
+    } else {
+      selectedIndex.value = -1;
+      showResult.value = false;
+      isCorrectAnswer.value = false;
+      correctIndex.value = -1;
+    }
+
+    if (currentQuestionIndex.value == totalQuestionsCount.value - 1 && showResult.value) {
+      isFinished.value = true;
+    } else {
+      isFinished.value = false;
     }
   }
 }

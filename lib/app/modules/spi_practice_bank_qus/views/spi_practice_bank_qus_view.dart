@@ -61,7 +61,7 @@ class SpiPracticeBankQusView extends GetView<SpiPracticeBankQusController> {
                     CustomProgress(
                       progress: controller.totalQuestionsCount.value > 0
                           ? (controller.currentQuestionIndex.value + 1) /
-                              controller.totalQuestionsCount.value
+                                controller.totalQuestionsCount.value
                           : 0,
                     ),
                   ],
@@ -179,22 +179,41 @@ class SpiPracticeBankQusView extends GetView<SpiPracticeBankQusController> {
                           ),
                         ),
                       SizedBox(height: 20.h),
-                      // Submit / Next / Done Button
-                      CustomButton(
-                        childText: controller.isFinished.value
-                            ? "Done"
-                            : controller.showResult.value
-                            ? "Next"
-                            : "Submit Answer",
-                        onTap: () {
-                          if (controller.isFinished.value) {
-                            Get.back(result: true);
-                          } else if (controller.showResult.value) {
-                            controller.goToNextQuestion();
-                          } else {
-                            controller.submitAnswer();
-                          }
-                        },
+                      // Previous and Submit / Next / Done Buttons
+                      Row(
+                        children: [
+                          if (controller.currentQuestionIndex.value > 0) ...[
+                            Expanded(
+                              child: CustomButton(
+                                childText: "Previous",
+                                buttonColor: AppColors.progressBg,
+                                buttonChildColor: AppColors.blackColor,
+                                onTap: () {
+                                  controller.goToPreviousQuestion();
+                                },
+                              ),
+                            ),
+                            SizedBox(width: 16.w),
+                          ],
+                          Expanded(
+                            child: CustomButton(
+                              childText: controller.isFinished.value
+                                  ? "Done"
+                                  : controller.showResult.value
+                                  ? "Next"
+                                  : "Submit Answer",
+                              onTap: () {
+                                if (controller.isFinished.value) {
+                                  Get.back(result: true);
+                                } else if (controller.showResult.value) {
+                                  controller.goToNextQuestion();
+                                } else {
+                                  controller.submitAnswer();
+                                }
+                              },
+                            ),
+                          ),
+                        ],
                       ),
                     ],
                   ),
@@ -236,13 +255,6 @@ class SpiPracticeBankQusView extends GetView<SpiPracticeBankQusController> {
                     ),
                   ),
                 ),
-              ),
-            ),
-            SizedBox(width: 10.w),
-            Text(
-              statusLabel,
-              style: AppTextStyles.regular14.copyWith(
-                color: AppColors.appBarSub,
               ),
             ),
           ],
