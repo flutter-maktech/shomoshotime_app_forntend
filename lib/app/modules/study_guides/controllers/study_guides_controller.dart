@@ -2,7 +2,6 @@ import 'package:audioplayers/audioplayers.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import '../../../all_utils/log.dart';
-import '../../home/controllers/home_controller.dart';
 
 import '../../../core/user_panel_model/study_guide_response_model.dart';
 import '../../../core/api_services/network_caller.dart';
@@ -27,6 +26,8 @@ class StudyGuidesController extends GetxController {
   }
 
   void changeValue(int index) {
+    if (select.value == index) return;
+    
     select.value = index;
 
     // Reset category filter when switching between PDF and Audio tabs
@@ -39,6 +40,8 @@ class StudyGuidesController extends GetxController {
     AppLogger.log(
       'Switched to ${index == 0 ? "PDF" : "Audio"} view, reset category to All',
     );
+    
+    refreshStudyGuides();
   }
 
   void onSearchChanged(String query) {
@@ -235,24 +238,7 @@ class StudyGuidesController extends GetxController {
 
     audioPlayer.setReleaseMode(ReleaseMode.loop);
 
-    // Check if HomeController has already fetched the first page of study guides
-    bool dataInitialized = false;
-    if (Get.isRegistered<HomeController>()) {
-      final homeController = Get.find<HomeController>();
-      final homeData = homeController.studyGuideResponse.value;
-      if (homeData != null && homeData.data.isNotEmpty) {
-        allStudyGuides.assignAll(homeData.data);
-        currentPage = homeData.meta.currentPage;
-        lastPage = homeData.meta.lastPage;
-        dataInitialized = true;
-        ('StudyGuidesController: Initialized from HomeController data',);
-      }
-    }
-
-    // Initial fetch only if not initialized from HomeController
-    if (!dataInitialized) {
-      fetchStudyGuides();
-    }
+    fetchStudyGuides();
 
     // Scroll listener for pagination
     scrollController.addListener(_scrollListener);
@@ -299,6 +285,8 @@ class StudyGuidesController extends GetxController {
       if (selectedCategory.value != 'All') {
         body['category'] = selectedCategory.value;
       }
+      
+      body['file_type'] = select.value == 0 ? 'pdf' : 'audio';
 
       final response = await _networkCaller.postRequest(
         Urls.studyGuideList,

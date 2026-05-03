@@ -46,10 +46,10 @@ class HomeController extends GetxController {
 
       final token = await AppPreference.getToken();
 
-      // Use POST request with empty body since API only supports POST
+      // Use POST request and pass file_type to ensure we get PDFs
       final response = await _networkCaller.postRequest(
         Urls.studyGuideList,
-        {}, // Empty body
+        {'file_type': 'pdf'}, 
         token: token,
       );
 
