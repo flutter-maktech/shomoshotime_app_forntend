@@ -11,6 +11,7 @@ import '../../../routes/app_pages.dart';
 import '../../common_widgets/custom_button.dart';
 import '../../common_widgets/primary_app_bar.dart';
 import '../../common_widgets/shimmer_effect.dart';
+import '../../flash_cards/widgets/flash_card_filter_bar.dart';
 import '../controllers/mock_exams_controller.dart';
 
 class MockExamsView extends GetView<MockExamsController> {
@@ -58,6 +59,62 @@ class MockExamsView extends GetView<MockExamsController> {
                         ),
                         const SizedBox(height: 16),
                       ],
+                    ),
+                  ),
+                ),
+                SliverToBoxAdapter(
+                  child: Padding(
+                    padding: EdgeInsets.symmetric(
+                      horizontal: 16,
+                      vertical: 16.h,
+                    ),
+                    child: Container(
+                      color: AppColors.appBarBack,
+                      width: double.infinity,
+                      height: 50.h,
+                      child: Padding(
+                        padding: EdgeInsets.symmetric(
+                          horizontal: 12.w,
+                          vertical: 8.h,
+                        ),
+                        child: Obx(
+                          () => Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              FlashCardFilterBar(
+                                title: 'All',
+                                index: 0,
+                                isSelected: controller.selectIndex.value == 0,
+                                onTap: () => controller.changeIndex(0),
+                              ),
+                              FlashCardFilterBar(
+                                title: 'SPI',
+                                index: 1,
+                                isSelected: controller.selectIndex.value == 1,
+                                onTap: () => controller.changeIndex(1),
+                              ),
+                              FlashCardFilterBar(
+                                title: 'Vascular',
+                                index: 2,
+                                isSelected: controller.selectIndex.value == 2,
+                                onTap: () => controller.changeIndex(2),
+                              ),
+                              FlashCardFilterBar(
+                                title: 'OB/GYN',
+                                index: 3,
+                                isSelected: controller.selectIndex.value == 3,
+                                onTap: () => controller.changeIndex(3),
+                              ),
+                              FlashCardFilterBar(
+                                title: 'Abdomen',
+                                index: 4,
+                                isSelected: controller.selectIndex.value == 4,
+                                onTap: () => controller.changeIndex(4),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
                     ),
                   ),
                 ),
@@ -213,20 +270,7 @@ class MockExamsView extends GetView<MockExamsController> {
                   // Make a copy of your original list
                   List<QuestionSetData> sortedList = [...list];
 
-                  // Sort by whether the user can retake the exam
-                  sortedList.sort((a, b) {
-                    final aCanRetake =
-                        a.mockTestAttempts.isEmpty ||
-                        a.mockTestAttempts.last.attemptNumber < 3;
-                    final bCanRetake =
-                        b.mockTestAttempts.isEmpty ||
-                        b.mockTestAttempts.last.attemptNumber < 3;
-
-                    // true comes before false
-                    if (aCanRetake && !bCanRetake) return -1;
-                    if (!aCanRetake && bCanRetake) return 1;
-                    return 0;
-                  });
+                  // No sorting needed since attempts are unlimited
 
                   if (controller.isloading.value &&
                       controller.allMockTests.isEmpty) {
@@ -254,7 +298,7 @@ class MockExamsView extends GetView<MockExamsController> {
                         padding: EdgeInsets.symmetric(vertical: 60.h),
                         child: Center(
                           child: Text(
-                            'No Mock Test questions available.',
+                            'No Mock Test questions available for this category.',
                             style: AppTextStyles.regular14.copyWith(
                               color: AppColors.appBarSub,
                             ),
@@ -309,10 +353,6 @@ class MockExamsView extends GetView<MockExamsController> {
     final scorePercentage = questionSet.mockTestAttempts.isNotEmpty
         ? questionSet.mockTestAttempts.last.scorePercentage
         : 0;
-    final attemptNumber = questionSet.mockTestAttempts.isNotEmpty
-        ? questionSet.mockTestAttempts.last.attemptNumber
-        : 0;
-    final bool canRetake = attemptNumber < 3;
     return Container(
       width: double.infinity,
       // height: 400,
@@ -344,7 +384,10 @@ class MockExamsView extends GetView<MockExamsController> {
                   borderRadius: BorderRadius.circular(6),
                 ),
                 child: Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 10,
+                    vertical: 6,
+                  ),
                   child: Text(
                     category,
                     style: AppTextStyles.regular14.copyWith(
@@ -446,64 +489,29 @@ class MockExamsView extends GetView<MockExamsController> {
           ),
           SizedBox(height: 14.h),
           CustomButton(
-            childText: canRetake ? 'Retake Exam' : 'Max Attempts Reached',
-            buttonColor: canRetake
-                ? AppColors.primaryColor
-                : AppColors.appBarBack,
-            onTap: canRetake
-                ? () async {
-                    controller.startMockTest(questionSet.id);
-                    final result = await Get.toNamed(
-                      Routes.spiPracticeBankQus,
-                      arguments: {
-                        'id': questionSet.id,
-                        'title': questionSet.title,
-                        'category': questionSet.category,
-                        'staus_label': questionSet.statusLabel,
-                      },
-                    );
-                    if (result == true) {
-                      controller.refreshMockTestData();
-                    }
-                  }
-                : null, // 👈 disables button
-          ),
-          SizedBox(height: 18.h),
-          Center(
-            child: Text(
-              'Attempted $attemptNumber times',
-              style: AppTextStyles.regular14.copyWith(color: Colors.grey),
-            ),
+            childText: 'Take Exam',
+            buttonColor: AppColors.primaryColor,
+            onTap: () async {
+              controller.startMockTest(questionSet.id);
+              final result = await Get.toNamed(
+                Routes.spiPracticeBankQus,
+                arguments: {
+                  'id': questionSet.id,
+                  'title': questionSet.title,
+                  'category': questionSet.category,
+                  'staus_label': questionSet.statusLabel,
+                },
+              );
+              if (result == true) {
+                controller.refreshMockTestData();
+              }
+            },
           ),
         ],
       ),
     );
   }
 
-  GestureDetector buildContainer(String title, int index) {
-    return GestureDetector(
-      onTap: () {
-        controller.changeIndex(index);
-      },
-      child: Container(
-        decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(4),
-          color: controller.selectIndex.value == index
-              ? AppColors.primaryColor
-              : AppColors.whiteColor,
-        ),
-        child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 4),
-          child: Text(
-            title,
-            style: AppTextStyles.regular13.copyWith(
-              color: controller.selectIndex.value == index
-                  ? Colors.black
-                  : AppColors.grey,
-            ),
-          ),
-        ),
-      ),
-    );
-  }
+
 }
+

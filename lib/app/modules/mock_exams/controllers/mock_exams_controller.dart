@@ -58,7 +58,52 @@ class MockExamsController extends GetxController {
   final Rx<QuestionSetResponse?> questionSetResponse = Rx<QuestionSetResponse?>(
     null,
   );
-  List<QuestionSetData> get questionSets => allMockTests; // Use paginated list
+  List<QuestionSetData> get questionSets => filteredMockTests; 
+
+  List<QuestionSetData> get filteredMockTests {
+    if (selectIndex.value == 0) return allMockTests;
+
+    final String selectedCategory;
+    switch (selectIndex.value) {
+      case 1:
+        selectedCategory = 'SPI';
+        break;
+      case 2:
+        selectedCategory = 'Vascular';
+        break;
+      case 3:
+        selectedCategory = 'OB/GYN';
+        break;
+      case 4:
+        selectedCategory = 'Abdomen';
+        break;
+      default:
+        return allMockTests;
+    }
+
+    return allMockTests.where((card) {
+      final cardCategory = card.category.toLowerCase().trim();
+      final filterCategory = selectedCategory.toLowerCase().trim();
+
+      if (cardCategory.contains(filterCategory) ||
+          filterCategory.contains(cardCategory)) {
+        return true;
+      }
+
+      if (selectedCategory == 'SPI' &&
+          (cardCategory.contains('spi') ||
+              cardCategory.contains('sonography'))) {
+        return true;
+      }
+
+      if (selectedCategory == 'OB/GYN' &&
+          (cardCategory.contains('ob') || cardCategory.contains('gyn'))) {
+        return true;
+      }
+
+      return false;
+    }).toList();
+  }
 
   List<UserAnalyticsData> get mockTestAnalytics =>
       _homeController.userAnalyticsData;
@@ -71,7 +116,12 @@ class MockExamsController extends GetxController {
     }
     errorText.value = '';
     try {
-      final body = {"current_mode": "mock_test", "page": page.toString()};
+      final body = {
+        "current_mode": "mock_test",
+        "type": "1",
+        "page": page.toString(),
+        "per_page": "100",
+      };
 
       final token = await AppPreference.getToken();
 

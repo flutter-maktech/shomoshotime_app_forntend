@@ -31,6 +31,8 @@ class QuestionData {
   final int sortOrder;
   final int questionSetId;
   final String file;
+  final String fileAttributes;
+  final String? rationale;
   final String question;
   final String optionA;
   final String optionB;
@@ -48,6 +50,8 @@ class QuestionData {
     required this.sortOrder,
     required this.questionSetId,
     required this.file,
+    required this.fileAttributes,
+    required this.rationale,
     required this.question,
     required this.optionA,
     required this.optionB,
@@ -67,6 +71,8 @@ class QuestionData {
       sortOrder: json['sort_order'] ?? 0,
       questionSetId: json['question_set_id'] ?? 0,
       file: json['file'] ?? '',
+      fileAttributes: json['file_attributes'] ?? '',
+      rationale: json['rationale'],
       question: json['question'] ?? '',
       optionA: json['option_a'] ?? '',
       optionB: json['option_b'] ?? '',

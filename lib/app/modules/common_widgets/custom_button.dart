@@ -10,6 +10,7 @@ class CustomButton extends StatelessWidget {
   final VoidCallback? onTap;
   final Color? buttonColor;
   final Color? buttonChildColor;
+  final TextStyle? textStyle;
 
   const CustomButton({
     super.key,
@@ -19,6 +20,7 @@ class CustomButton extends StatelessWidget {
     this.buttonChildColor,
     this.childImage,
     this.childImageColor,
+    this.textStyle,
   });
 
   @override
@@ -39,7 +41,7 @@ class CustomButton extends StatelessWidget {
           children: [
             Text(
               childText,
-              style: AppTextStyles.spaceGroteskMedium16.copyWith(
+              style:textStyle?? AppTextStyles.spaceGroteskMedium16.copyWith(
                 color: buttonChildColor ?? AppColors.blackColor,
               ),
             ),

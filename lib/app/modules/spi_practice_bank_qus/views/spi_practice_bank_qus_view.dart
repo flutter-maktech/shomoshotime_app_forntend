@@ -34,10 +34,38 @@ class SpiPracticeBankQusView extends GetView<SpiPracticeBankQusController> {
           if (controller.isloading.value) {
             return const Center(child: CircularProgressIndicator());
           }
+          if (controller.errorText.value.isNotEmpty) {
+            return Center(
+              child: Padding(
+                padding: EdgeInsets.symmetric(horizontal: 20.w),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Text(
+                      controller.errorText.value,
+                      textAlign: TextAlign.center,
+                      style: AppTextStyles.medium18.copyWith(
+                        color: AppColors.blackColor,
+                      ),
+                    ),
+                    SizedBox(height: 20.h),
+                    CustomButton(childText: "Go Back", onTap: () => Get.back()),
+                  ],
+                ),
+              ),
+            );
+          }
           if (controller.questionList.isEmpty ||
               controller.currentQuestionIndex.value >=
                   controller.questionList.length) {
-            return const Center(child: CircularProgressIndicator());
+            return Center(
+              child: Text(
+                "No questions available.",
+                style: AppTextStyles.medium18.copyWith(
+                  color: AppColors.blackColor,
+                ),
+              ),
+            );
           }
           final question =
               controller.questionList[controller.currentQuestionIndex.value];
@@ -78,18 +106,35 @@ class SpiPracticeBankQusView extends GetView<SpiPracticeBankQusController> {
                     children: [
                       // Question Text
                       Text(question.question, style: AppTextStyles.regular16),
-                      SizedBox(height: 10.h),
+                      SizedBox(height: 20.h),
                       // Question Image
-                      if (question.file.isNotEmpty)
+                      if (question.file.isNotEmpty &&
+                          question.file !=
+                              'https://api.sonographerpal.com/default_img/no_img.jpg') ...[
                         Image.network(
                           question.file,
                           height: 200.h,
                           fit: BoxFit.contain,
                           errorBuilder: (context, error, stackTrace) {
-                            return const Text('Image not available');
+                            return const SizedBox.shrink();
                           },
                         ),
-                      SizedBox(height: 20.h),
+                        SizedBox(height: 5.h),
+                        if (question.fileAttributes.isNotEmpty) ...[
+                          Align(
+                            alignment: Alignment.centerLeft,
+                            child: Padding(
+                              padding: EdgeInsets.symmetric(horizontal: 10.w),
+                              child: Text(
+                                question.fileAttributes,
+                                style: AppTextStyles.light10,
+                              ),
+                            ),
+                          ),
+                          SizedBox(height: 5.h),
+                        ],
+                        SizedBox(height: 20.h),
+                      ],
                       // Options
                       ...List.generate(4, (index) {
                         final options = [
@@ -139,7 +184,7 @@ class SpiPracticeBankQusView extends GetView<SpiPracticeBankQusController> {
                       }),
                       SizedBox(height: 20.h),
                       // Correct / Incorrect Box
-                      if (controller.showResult.value)
+                      if (controller.showResult.value) ...[
                         Container(
                           padding: EdgeInsets.all(12.sp),
                           width: double.infinity,
@@ -178,6 +223,45 @@ class SpiPracticeBankQusView extends GetView<SpiPracticeBankQusController> {
                             ],
                           ),
                         ),
+                        if (question.rationale != null && question.rationale!.isNotEmpty) ...[
+                          SizedBox(height: 12.h),
+                          Container(
+                            padding: EdgeInsets.all(12.sp),
+                            width: double.infinity,
+                            decoration: BoxDecoration(
+                              color: controller.isCorrectAnswer.value
+                                  ? AppColors.greenColor.withAlpha(20)
+                                  : AppColors.readColor.withAlpha(20),
+                              borderRadius: BorderRadius.circular(4.r),
+                              border: Border.all(
+                                color: controller.isCorrectAnswer.value
+                                    ? AppColors.greenColor
+                                    : AppColors.readColor,
+                              ),
+                            ),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  "Rationale",
+                                  style: AppTextStyles.medium16.copyWith(
+                                    color: controller.isCorrectAnswer.value
+                                        ? AppColors.greenColor
+                                        : AppColors.readColor,
+                                  ),
+                                ),
+                                SizedBox(height: 8.h),
+                                Text(
+                                  question.rationale!,
+                                  style: AppTextStyles.regular14.copyWith(
+                                    color: AppColors.blackColor,
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ],
+                      ],
                       SizedBox(height: 20.h),
                       // Previous and Submit / Next / Done Buttons
                       Row(
@@ -185,6 +269,7 @@ class SpiPracticeBankQusView extends GetView<SpiPracticeBankQusController> {
                           if (controller.currentQuestionIndex.value > 0) ...[
                             Expanded(
                               child: CustomButton(
+                                textStyle: AppTextStyles.regular16,
                                 childText: "Previous",
                                 buttonColor: AppColors.progressBg,
                                 buttonChildColor: AppColors.blackColor,
@@ -197,6 +282,7 @@ class SpiPracticeBankQusView extends GetView<SpiPracticeBankQusController> {
                           ],
                           Expanded(
                             child: CustomButton(
+                              textStyle: AppTextStyles.regular16,
                               childText: controller.isFinished.value
                                   ? "Done"
                                   : controller.showResult.value

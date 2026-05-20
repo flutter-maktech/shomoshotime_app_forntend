@@ -93,6 +93,8 @@ class SpiPracticeBankQusController extends GetxController {
             }
           }
         }
+      } else {
+        errorText.value = newResponse.message;
       }
     } catch (e) {
       errorText.value = 'An error occurred: $e';
