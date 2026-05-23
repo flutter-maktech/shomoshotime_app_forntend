@@ -45,7 +45,7 @@ class SpiFundamentalsView extends GetView<SpiFundamentalsController> {
             return SliverToBoxAdapter(
               child: Container(
                 height: MediaQuery.of(context).size.height * 0.7,
-                width: double.infinity,
+                width: MediaQuery.of(context).size.width,
                 margin: EdgeInsets.symmetric(horizontal: 16.w),
                 decoration: const BoxDecoration(color: AppColors.appBarBack),
                 child: Stack(

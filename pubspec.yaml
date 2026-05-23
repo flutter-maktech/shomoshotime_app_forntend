@@ -57,6 +57,7 @@ dependencies:
   google_sign_in: ^7.2.0
   sign_in_with_apple: ^7.0.1
   flutter_html: ^3.0.0
+  syncfusion_flutter_pdf: ^32.2.9
   # just_audio: ^0.10.5
 
 dev_dependencies:
