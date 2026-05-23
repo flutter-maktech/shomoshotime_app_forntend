@@ -4,6 +4,7 @@ import 'package:get/get.dart';
 import 'package:path_provider/path_provider.dart';
 import '../../../all_utils/app_preference.dart';
 import '../../../all_utils/log.dart';
+import 'package:syncfusion_flutter_pdf/pdf.dart';
 import 'package:syncfusion_flutter_pdfviewer/pdfviewer.dart';
 
 import '../../../core/api_services/network_caller.dart';
@@ -17,6 +18,11 @@ class SpiFundamentalsController extends GetxController {
   int lastReadPage = 1;
   final NetworkCaller _networkCaller = NetworkCaller();
   final Dio _dio = Dio();
+
+  // Page dimensions & manual rotation maps
+  final RxMap<int, bool> pageLandscapeMap = <int, bool>{}.obs;
+  final RxBool isGlobalRotated = false.obs;
+  final RxBool showRotationTooltip = false.obs;
 
   // Track previous page to avoid duplicate API calls
   int _lastTrackedPage = 0;
@@ -240,6 +246,44 @@ class SpiFundamentalsController extends GetxController {
     pdfErrorMessage.value = '';
     _isInitialLoad = true;
     _lastTrackedPage = 0;
+  }
+
+  // Load page dimensions from PdfDocument loaded event details
+  void loadPageSizes(PdfDocument document) {
+    try {
+      pageLandscapeMap.clear();
+      for (int i = 0; i < document.pages.count; i++) {
+        final page = document.pages[i];
+        final size = page.size;
+        final pageNum = i + 1;
+        // If width > height, it is naturally landscape
+        final isLandscape = size.width > size.height;
+        pageLandscapeMap[pageNum] = isLandscape;
+        AppLogger.log(
+          'Page $pageNum size: ${size.width}x${size.height}, isLandscape: $isLandscape',
+        );
+      }
+    } catch (e) {
+      AppLogger.log('Error loading page sizes: $e');
+    }
+  }
+
+  // Toggle global rotation for the entire PDF
+  void togglePageRotation() {
+    isGlobalRotated.value = !isGlobalRotated.value;
+  }
+
+  // Trigger tooltip animation on screen load
+  void triggerTooltip() {
+    showRotationTooltip.value = true;
+    Future.delayed(const Duration(seconds: 3), () {
+      showRotationTooltip.value = false;
+    });
+  }
+
+  // Check if PDF viewer is rotated (global rotation)
+  bool isCurrentPageRotated() {
+    return isGlobalRotated.value;
   }
 
   // Navigation methods - simplified since tracking is automatic

@@ -287,7 +287,7 @@ class SpiPracticeBankQusView extends GetView<SpiPracticeBankQusController> {
                                   ? "Done"
                                   : controller.showResult.value
                                   ? "Next"
-                                  : "Submit Answer",
+                                  : "Submit",
                               onTap: () {
                                 if (controller.isFinished.value) {
                                   Get.back(result: true);

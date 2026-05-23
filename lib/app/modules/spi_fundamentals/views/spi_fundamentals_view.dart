@@ -51,38 +51,125 @@ class SpiFundamentalsView extends GetView<SpiFundamentalsController> {
                 child: Stack(
                   children: [
                     // PDF Viewer
-                    Obx(
-                      () => controller.localPdfPath.value.isNotEmpty
-                          ? SfPdfViewer.file(
-                              File(controller.localPdfPath.value),
-                              canShowScrollHead: false,
-                              pageSpacing: 0,
-                              canShowPageLoadingIndicator: false,
-                              pageLayoutMode: PdfPageLayoutMode.single,
-                              controller: controller.pdfViewerController,
-                              scrollDirection: PdfScrollDirection.horizontal,
-                              onDocumentLoaded:
-                                  (PdfDocumentLoadedDetails details) {
-                                    controller.totalPages.value =
-                                        details.document.pages.count;
-                                    controller.isLoadingPdf.value = false;
-                                    controller.pdfErrorMessage.value = '';
+                    Obx(() {
+                      if (controller.localPdfPath.value.isEmpty) {
+                        return const SizedBox.shrink();
+                      }
+                      return RotatedBox(
+                        quarterTurns: controller.isCurrentPageRotated() ? 1 : 0,
+                        child: SfPdfViewer.file(
+                          File(controller.localPdfPath.value),
+                          canShowScrollHead: false,
+                          pageSpacing: 0,
+                          canShowPageLoadingIndicator: false,
+                          pageLayoutMode: PdfPageLayoutMode.single,
+                          controller: controller.pdfViewerController,
+                          scrollDirection: PdfScrollDirection.horizontal,
+                          onDocumentLoaded: (PdfDocumentLoadedDetails details) {
+                            controller.totalPages.value =
+                                details.document.pages.count;
+                            controller.isLoadingPdf.value = false;
+                            controller.pdfErrorMessage.value = '';
 
-                                    // Track initial page view
-                                    controller.trackInitialPageView();
-                                  },
-                              onDocumentLoadFailed:
-                                  (PdfDocumentLoadFailedDetails details) {
-                                    controller.handlePdfError(
-                                      details.description,
-                                    );
-                                  },
-                              onPageChanged: (PdfPageChangedDetails details) {
-                                controller.page.value = details.newPageNumber;
+                            // Load page dimensions/sizes
+                            controller.loadPageSizes(details.document);
+
+                            // Track initial page view
+                            controller.trackInitialPageView();
+
+                            // Show rotation tooltip next to the button for 3 seconds
+                            controller.triggerTooltip();
+                          },
+                          onDocumentLoadFailed:
+                              (PdfDocumentLoadFailedDetails details) {
+                                controller.handlePdfError(details.description);
                               },
-                            )
-                          : const SizedBox.shrink(),
-                    ),
+                          onPageChanged: (PdfPageChangedDetails details) {
+                            controller.page.value = details.newPageNumber;
+                          },
+                        ),
+                      );
+                    }),
+
+                    // Rotate Page Button & Tooltip
+                    Obx(() {
+                      if (controller.localPdfPath.value.isEmpty ||
+                          controller.isLoadingPdf.value ||
+                          controller.pdfErrorMessage.value.isNotEmpty) {
+                        return const SizedBox.shrink();
+                      }
+                      return Positioned(
+                        top: 12.h,
+                        right: 12.w,
+                        child: Row(
+                          mainAxisSize: MainAxisSize.min,
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: [
+                            // Beautiful animated tooltip message next to the button
+                            AnimatedOpacity(
+                              opacity: controller.showRotationTooltip.value
+                                  ? 1.0
+                                  : 0.0,
+                              duration: const Duration(milliseconds: 300),
+                              child: IgnorePointer(
+                                ignoring: !controller.showRotationTooltip.value,
+                                child: Container(
+                                  margin: EdgeInsets.only(right: 8.w),
+                                  padding: EdgeInsets.symmetric(
+                                    horizontal: 10.w,
+                                    vertical: 6.h,
+                                  ),
+                                  decoration: BoxDecoration(
+                                    color: AppColors.primaryColor,
+                                    borderRadius: BorderRadius.circular(8),
+                                    boxShadow: const [
+                                      BoxShadow(
+                                        color: Colors.black26,
+                                        blurRadius: 4,
+                                        offset: Offset(0, 2),
+                                      ),
+                                    ],
+                                  ),
+                                  child: Text(
+                                    'Tap here to view in landscape mode',
+                                    style: AppTextStyles.regular12.copyWith(
+                                      color: Colors.white,
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            ),
+
+                            // Rotate button itself
+                            Material(
+                              color: Colors.transparent,
+                              child: InkWell(
+                                onTap: controller.togglePageRotation,
+                                borderRadius: BorderRadius.circular(20),
+                                child: Container(
+                                  padding: EdgeInsets.all(8.h),
+                                  decoration: BoxDecoration(
+                                    color: Colors.black54,
+                                    shape: BoxShape.circle,
+                                    border: Border.all(
+                                      color: Colors.white24,
+                                      width: 1,
+                                    ),
+                                  ),
+                                  child: Icon(
+                                    controller.isCurrentPageRotated()
+                                        ? Icons.screen_rotation
+                                        : Icons.crop_rotate,
+                                    color: Colors.white,
+                                    size: 20.h,
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+                      );
+                    }),
 
                     // Loading indicator
                     Obx(
