@@ -45,7 +45,7 @@ class SpiFundamentalsView extends GetView<SpiFundamentalsController> {
             return SliverToBoxAdapter(
               child: Container(
                 height: MediaQuery.of(context).size.height * 0.7,
-                width: double.infinity,
+                width: MediaQuery.of(context).size.width,
                 margin: EdgeInsets.symmetric(horizontal: 16.w),
                 decoration: const BoxDecoration(color: AppColors.appBarBack),
                 child: Stack(
@@ -55,8 +55,10 @@ class SpiFundamentalsView extends GetView<SpiFundamentalsController> {
                       if (controller.localPdfPath.value.isEmpty) {
                         return const SizedBox.shrink();
                       }
-                      return RotatedBox(
-                        quarterTurns: controller.isCurrentPageRotated() ? 1 : 0,
+                      return AnimatedRotation(
+                        turns:
+                            controller.isCurrentPageRotated() ? 0.25 : 0.0,
+                        duration: const Duration(milliseconds: 300),
                         child: SfPdfViewer.file(
                           File(controller.localPdfPath.value),
                           canShowScrollHead: false,
