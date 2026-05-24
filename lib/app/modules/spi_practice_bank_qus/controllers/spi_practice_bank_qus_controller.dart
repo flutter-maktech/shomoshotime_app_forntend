@@ -142,11 +142,42 @@ class SpiPracticeBankQusController extends GetxController {
         "answer": answerMap[selectedIndex.value],
       };
 
-      final response = await networkCaller.postRequest(
+      var response = await networkCaller.postRequest(
         Urls.answerSubmit,
         body,
         token: token,
       );
+
+      // Handle the "Start a mock test before answering questions" response
+      if (response != null && response['success'] == false) {
+        final message = response['message']?.toString() ?? '';
+        if (message.contains("Start a mock test before answering questions")) {
+          final startBody = {"question_set_id": questionSetId.toString()};
+          await networkCaller.postRequest(
+            Urls.startMockTest,
+            startBody,
+            token: token,
+          );
+          await AppPreference.saveQuestionProgress(questionSetId, 0);
+
+          // Retry submitting the answer
+          response = await networkCaller.postRequest(
+            Urls.answerSubmit,
+            body,
+            token: token,
+          );
+        }
+      }
+
+      if (response == null || response['success'] == false || response['data'] == null) {
+        final msg = response != null ? response['message'] : 'Failed to submit answer';
+        Get.snackbar(
+          'Error',
+          msg ?? 'Failed to submit answer',
+          snackPosition: SnackPosition.BOTTOM,
+        );
+        return;
+      }
 
       // ------------------------------
       // HANDLE RESPONSE DATA
