@@ -61,7 +61,16 @@ class MockExamsController extends GetxController {
   List<QuestionSetData> get questionSets => filteredMockTests; 
 
   List<QuestionSetData> get filteredMockTests {
-    if (selectIndex.value == 0) return allMockTests;
+    if (selectIndex.value == 0) {
+      return allMockTests.where((card) {
+        final title = card.title.toLowerCase();
+        final subtitle = card.subtitle.toLowerCase();
+        final category = card.category.toLowerCase();
+        return title.contains('arrt') ||
+            subtitle.contains('arrt') ||
+            category.contains('arrt');
+      }).toList();
+    }
 
     final String selectedCategory;
     switch (selectIndex.value) {
@@ -78,12 +87,19 @@ class MockExamsController extends GetxController {
         selectedCategory = 'Abdomen';
         break;
       default:
-        return allMockTests;
+        return [];
     }
 
     return allMockTests.where((card) {
       final cardCategory = card.category.toLowerCase().trim();
       final filterCategory = selectedCategory.toLowerCase().trim();
+
+      // If we are filtering for other sections, exclude ARRT mock exams!
+      final title = card.title.toLowerCase();
+      final subtitle = card.subtitle.toLowerCase();
+      if (title.contains('arrt') || subtitle.contains('arrt')) {
+        return false;
+      }
 
       if (cardCategory.contains(filterCategory) ||
           filterCategory.contains(cardCategory)) {
@@ -162,6 +178,7 @@ class MockExamsController extends GetxController {
       final token = await AppPreference.getToken();
 
       await networkCaller.postRequest(Urls.startMockTest, body, token: token);
+      await AppPreference.saveQuestionProgress(id, 0);
     } catch (e) {
       errorText.value = 'An eeeerror occurred: $e';
       AppLogger.log('----------------$e');

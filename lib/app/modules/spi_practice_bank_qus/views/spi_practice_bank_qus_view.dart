@@ -30,8 +30,11 @@ class SpiPracticeBankQusView extends GetView<SpiPracticeBankQusController> {
       body: Padding(
         padding: EdgeInsets.symmetric(horizontal: 16.w),
         child: Obx(() {
-          // Show loading if question list is empty
-          if (controller.isloading.value) {
+          // Show loading if question list is loading or page is fetching next questions
+          if (controller.isloading.value ||
+              (controller.isLoadingMore.value &&
+                  controller.currentQuestionIndex.value >=
+                      controller.questionList.length)) {
             return const Center(child: CircularProgressIndicator());
           }
           if (controller.errorText.value.isNotEmpty) {

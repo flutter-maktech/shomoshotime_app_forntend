@@ -84,12 +84,14 @@ class SpiPracticeBankQusController extends GetxController {
         if (page == 1 && allQuestions.isNotEmpty) {
           final savedIndex = await AppPreference.getQuestionProgress(id);
           if (savedIndex > 0) {
-            // If saved index is beyond currently loaded cards, we might need to load more
+            // If saved index is beyond currently loaded cards, recursively load next pages
+            int targetPage = 1;
+            while (savedIndex >= allQuestions.length && currentPage < lastPage) {
+              targetPage++;
+              await fetchQuestionList(page: targetPage);
+            }
             if (savedIndex < allQuestions.length) {
               currentQuestionIndex.value = savedIndex;
-            } else {
-              // For simplicity, let's just start at 0 if it's not loaded
-              // or we could recursively fetch more pages...
             }
           }
         }
@@ -99,8 +101,11 @@ class SpiPracticeBankQusController extends GetxController {
     } catch (e) {
       errorText.value = 'An error occurred: $e';
     } finally {
-      isloading.value = false;
-      isLoadingMore.value = false;
+      if (page == 1) {
+        isloading.value = false;
+      } else {
+        isLoadingMore.value = false;
+      }
     }
   }
 

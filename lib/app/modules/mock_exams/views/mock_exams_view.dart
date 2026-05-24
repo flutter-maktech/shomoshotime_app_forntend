@@ -82,7 +82,7 @@ class MockExamsView extends GetView<MockExamsController> {
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
                               FlashCardFilterBar(
-                                title: 'All',
+                                title: 'ARRT',
                                 index: 0,
                                 isSelected: controller.selectIndex.value == 0,
                                 onTap: () => controller.changeIndex(0),
@@ -353,6 +353,10 @@ class MockExamsView extends GetView<MockExamsController> {
     final scorePercentage = questionSet.mockTestAttempts.isNotEmpty
         ? questionSet.mockTestAttempts.last.scorePercentage
         : 0;
+
+    final hasInProgressAttempt = questionSet.mockTestAttempts.isNotEmpty &&
+        questionSet.mockTestAttempts.any((attempt) => attempt.isInProgress);
+
     return Container(
       width: double.infinity,
       // height: 400,
@@ -489,10 +493,12 @@ class MockExamsView extends GetView<MockExamsController> {
           ),
           SizedBox(height: 14.h),
           CustomButton(
-            childText: 'Take Exam',
+            childText: hasInProgressAttempt ? 'Resume Exam' : 'Take Exam',
             buttonColor: AppColors.primaryColor,
             onTap: () async {
-              controller.startMockTest(questionSet.id);
+              if (!hasInProgressAttempt) {
+                await controller.startMockTest(questionSet.id);
+              }
               final result = await Get.toNamed(
                 Routes.spiPracticeBankQus,
                 arguments: {
@@ -500,6 +506,7 @@ class MockExamsView extends GetView<MockExamsController> {
                   'title': questionSet.title,
                   'category': questionSet.category,
                   'staus_label': questionSet.statusLabel,
+                  'totalQuestions': questionSet.totalQuestions,
                 },
               );
               if (result == true) {
