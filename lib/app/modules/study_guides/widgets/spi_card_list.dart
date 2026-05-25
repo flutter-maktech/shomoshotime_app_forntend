@@ -15,7 +15,7 @@ class SpiCardList extends StatelessWidget {
 
     return Obx(() {
       // Loading state (Initial)
-      if (studyGuidesController.isLoading.value &&
+      if (studyGuidesController.isFetching.value &&
           studyGuidesController.allStudyGuides.isEmpty) {
         return SliverList(
           delegate: SliverChildBuilderDelegate(

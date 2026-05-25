@@ -219,6 +219,7 @@ class StudyGuidesController extends GetxController {
   int lastPage = 1;
   var isLoadingMore = false.obs;
   var isRefreshing = false.obs;
+  var isFetching = false.obs;
 
   @override
   void onInit() {
@@ -273,6 +274,7 @@ class StudyGuidesController extends GetxController {
 
   Future<void> refreshStudyGuides() async {
     isRefreshing.value = true;
+    isFetching.value = true;
     currentPage = 1;
     lastPage = 1;
     allStudyGuides.clear();
@@ -285,7 +287,7 @@ class StudyGuidesController extends GetxController {
   Future<void> fetchStudyGuides({int page = 1}) async {
     try {
       if (page == 1) {
-        isLoading.value = true;
+        isFetching.value = true;
       } else {
         isLoadingMore.value = true;
       }
@@ -321,9 +323,9 @@ class StudyGuidesController extends GetxController {
         lastPage = studyGuideResponse.meta.lastPage;
       }
     } catch (e) {
-      ('Error fetching study guides: $e');
+      AppLogger.log('Error fetching study guides: $e');
     } finally {
-      isLoading.value = false;
+      isFetching.value = false;
       isLoadingMore.value = false;
     }
   }

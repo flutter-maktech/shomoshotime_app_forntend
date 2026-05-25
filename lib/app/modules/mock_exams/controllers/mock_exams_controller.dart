@@ -60,7 +60,7 @@ class MockExamsController extends GetxController {
   );
   List<QuestionSetData> get questionSets => filteredMockTests; 
 
-  List<QuestionSetData> get filteredMockTests {
+    List<QuestionSetData> get filteredMockTests {
     if (selectIndex.value == 0) {
       return allMockTests.where((card) {
         final title = card.title.toLowerCase();
@@ -90,11 +90,10 @@ class MockExamsController extends GetxController {
         return [];
     }
 
-    return allMockTests.where((card) {
+    final filtered = allMockTests.where((card) {
       final cardCategory = card.category.toLowerCase().trim();
       final filterCategory = selectedCategory.toLowerCase().trim();
 
-      // If we are filtering for other sections, exclude ARRT mock exams!
       final title = card.title.toLowerCase();
       final subtitle = card.subtitle.toLowerCase();
       if (title.contains('arrt') || subtitle.contains('arrt')) {
@@ -119,6 +118,12 @@ class MockExamsController extends GetxController {
 
       return false;
     }).toList();
+
+    if (selectedCategory == 'Vascular') {
+      return _sortOnlyArdmsRvtMockExams(filtered);
+    }
+
+    return filtered;
   }
 
   List<UserAnalyticsData> get mockTestAnalytics =>
@@ -196,5 +201,42 @@ class MockExamsController extends GetxController {
   void onClose() {
     scrollController.dispose();
     super.onClose();
+  }
+    bool _isArdmsRvtMockExam(QuestionSetData card) {
+    final normalizedTitle = card.title.trim().toLowerCase();
+    return RegExp(r'^\d+\.\s*ardms rvt mock exam$').hasMatch(normalizedTitle);
+  }
+
+  int _extractExamNumber(String title) {
+    final match = RegExp(r'^\s*(\d+)\.').firstMatch(title);
+    return int.tryParse(match?.group(1) ?? '') ?? 999999;
+  }
+
+  List<QuestionSetData> _sortOnlyArdmsRvtMockExams(
+    List<QuestionSetData> items,
+  ) {
+    final result = List<QuestionSetData>.from(items);
+
+    final rvtIndices = <int>[];
+    final rvtItems = <QuestionSetData>[];
+
+    for (int i = 0; i < items.length; i++) {
+      if (_isArdmsRvtMockExam(items[i])) {
+        rvtIndices.add(i);
+        rvtItems.add(items[i]);
+      }
+    }
+
+    rvtItems.sort(
+      (a, b) => _extractExamNumber(a.title).compareTo(
+        _extractExamNumber(b.title),
+      ),
+    );
+
+    for (int i = 0; i < rvtIndices.length; i++) {
+      result[rvtIndices[i]] = rvtItems[i];
+    }
+
+    return result;
   }
 }
