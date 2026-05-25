@@ -55,10 +55,8 @@ class SpiFundamentalsView extends GetView<SpiFundamentalsController> {
                       if (controller.localPdfPath.value.isEmpty) {
                         return const SizedBox.shrink();
                       }
-                      return AnimatedRotation(
-                        turns:
-                            controller.isCurrentPageRotated() ? 0.25 : 0.0,
-                        duration: const Duration(milliseconds: 300),
+                      return RotatedBox(
+                        quarterTurns: controller.isCurrentPageRotated() ? 1 : 0,
                         child: SfPdfViewer.file(
                           File(controller.localPdfPath.value),
                           canShowScrollHead: false,

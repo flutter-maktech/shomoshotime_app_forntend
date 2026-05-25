@@ -8,8 +8,15 @@ ThemeData themeData() {
   return ThemeData(
     fontFamily: 'Arial',
     scaffoldBackgroundColor: AppColors.whiteColor,
-    appBarTheme: const AppBarTheme(
-      backgroundColor: AppColors.whiteColor,
+    appBarTheme: const AppBarTheme(backgroundColor: AppColors.whiteColor),
+    colorScheme: ColorScheme.fromSeed(
+      seedColor: AppColors.primaryColor,
+      primary: AppColors.primaryColor,
+      surface: AppColors.whiteColor,
+    ),
+    progressIndicatorTheme: const ProgressIndicatorThemeData(
+      color: AppColors.primaryColor,
+      refreshBackgroundColor: AppColors.whiteColor,
     ),
     elevatedButtonTheme: ElevatedButtonThemeData(
       style: ElevatedButton.styleFrom(
