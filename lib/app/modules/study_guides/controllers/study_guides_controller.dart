@@ -1,6 +1,7 @@
-import 'package:audioplayers/audioplayers.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:just_audio/just_audio.dart';
+import 'package:just_audio_background/just_audio_background.dart';
 import '../../../all_utils/log.dart';
 
 import '../../../core/user_panel_model/study_guide_response_model.dart';
@@ -27,7 +28,7 @@ class StudyGuidesController extends GetxController {
 
   void changeValue(int index) {
     if (select.value == index) return;
-    
+
     select.value = index;
 
     // Reset category filter when switching between PDF and Audio tabs
@@ -40,7 +41,7 @@ class StudyGuidesController extends GetxController {
     AppLogger.log(
       'Switched to ${index == 0 ? "PDF" : "Audio"} view, reset category to All',
     );
-    
+
     refreshStudyGuides();
   }
 
@@ -143,7 +144,7 @@ class StudyGuidesController extends GetxController {
   var position = Duration.zero.obs;
   RxString currentAudioUrl = ''.obs;
 
-  Future<void> playAudio(String url) async {
+  Future<void> playAudio(String url, {String? title, String? subtitle}) async {
     AppLogger.log(
       'Confirming Audio usage: Source URL = $url (Using fileUrl field)',
     );
@@ -157,9 +158,22 @@ class StudyGuidesController extends GetxController {
         final savedSeconds = await AppPreference.getAudioProgress(url);
         if (savedSeconds > 0) {
           position.value = Duration(seconds: savedSeconds);
-          await audioPlayer.seek(position.value);
           AppLogger.log('Restored audio progress: $savedSeconds seconds');
         }
+
+        // Set just_audio source with metadata for lock screen integration
+        await audioPlayer.setAudioSource(
+          AudioSource.uri(
+            Uri.parse(url),
+            tag: MediaItem(
+              id: url,
+              album: "Study Guides",
+              title: title ?? "Study Guide Audio",
+              artist: subtitle ?? "Sonographer Pal",
+            ),
+          ),
+          initialPosition: position.value,
+        );
       }
 
       if (isPlaying.value && currentAudioUrl.value == url) {
@@ -167,12 +181,9 @@ class StudyGuidesController extends GetxController {
         return;
       }
 
-      isLoading.value = true;
-      await audioPlayer.play(UrlSource(url));
+      await audioPlayer.play();
     } catch (e) {
       AppLogger.log('Audio play error: $e');
-    } finally {
-      isLoading.value = false;
     }
   }
 
@@ -187,7 +198,7 @@ class StudyGuidesController extends GetxController {
   }
 
   Future<void> resumeAudio() async {
-    await audioPlayer.resume();
+    await audioPlayer.play();
   }
 
   Future<void> seekTo(Duration pos) async {
@@ -218,15 +229,18 @@ class StudyGuidesController extends GetxController {
       searchQuery.value = searchController.text.trim();
     });
 
-    audioPlayer.onPlayerStateChanged.listen((state) {
-      isPlaying.value = state == PlayerState.playing;
+    audioPlayer.playerStateStream.listen((state) {
+      isPlaying.value = state.playing;
+      isLoading.value =
+          state.processingState == ProcessingState.loading ||
+          state.processingState == ProcessingState.buffering;
     });
 
-    audioPlayer.onDurationChanged.listen((d) {
-      duration.value = d;
+    audioPlayer.durationStream.listen((d) {
+      duration.value = d ?? Duration.zero;
     });
 
-    audioPlayer.onPositionChanged.listen((p) {
+    audioPlayer.positionStream.listen((p) {
       position.value = p;
       // Save progress every 5 seconds
       if (p.inSeconds > 0 &&
@@ -236,7 +250,7 @@ class StudyGuidesController extends GetxController {
       }
     });
 
-    audioPlayer.setReleaseMode(ReleaseMode.loop);
+    audioPlayer.setLoopMode(LoopMode.one);
 
     fetchStudyGuides();
 
@@ -281,11 +295,11 @@ class StudyGuidesController extends GetxController {
       // Assuming API accepts 'page' in body or query param
       // Based on previous code, it's a POST request with body
       final body = <String, dynamic>{'page': page.toString()};
-      
+
       if (selectedCategory.value != 'All') {
         body['category'] = selectedCategory.value;
       }
-      
+
       body['file_type'] = select.value == 0 ? 'pdf' : 'audio';
 
       final response = await _networkCaller.postRequest(

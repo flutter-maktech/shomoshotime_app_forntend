@@ -1,5 +1,6 @@
 import 'package:get/get.dart';
-import 'package:audioplayers/audioplayers.dart';
+import 'package:just_audio/just_audio.dart';
+import 'package:just_audio_background/just_audio_background.dart';
 import '../../../all_utils/app_preference.dart';
 import '../../../all_utils/log.dart';
 
@@ -15,15 +16,15 @@ class AudioPlayCardController extends GetxController {
   void onInit() {
     super.onInit();
 
-    audioPlayer.onPlayerStateChanged.listen((state) {
-      isPlaying.value = state == PlayerState.playing;
+    audioPlayer.playerStateStream.listen((state) {
+      isPlaying.value = state.playing;
     });
 
-    audioPlayer.onDurationChanged.listen((d) {
-      duration.value = d;
+    audioPlayer.durationStream.listen((d) {
+      duration.value = d ?? Duration.zero;
     });
 
-    audioPlayer.onPositionChanged.listen((p) {
+    audioPlayer.positionStream.listen((p) {
       position.value = p;
       // Save progress every 5 seconds
       if (p.inSeconds > 0 &&
@@ -33,22 +34,37 @@ class AudioPlayCardController extends GetxController {
       }
     });
 
-    audioPlayer.setReleaseMode(ReleaseMode.loop);
+    audioPlayer.setLoopMode(LoopMode.one);
   }
 
-  Future<void> playAudio(String url) async {
+  Future<void> playAudio(String url, {String? title, String? subtitle}) async {
     AppLogger.log('AudioPlayCard: Streaming from fileUrl = $url');
     currentAudioUrl.value = url;
 
-    // Restore progress
-    final savedSeconds = await AppPreference.getAudioProgress(url);
-    if (savedSeconds > 0) {
-      position.value = Duration(seconds: savedSeconds);
-      await audioPlayer.play(UrlSource(url));
-      await audioPlayer.seek(position.value);
-      AppLogger.log('Restored audio progress: $savedSeconds seconds');
-    } else {
-      await audioPlayer.play(UrlSource(url));
+    try {
+      // Restore progress
+      final savedSeconds = await AppPreference.getAudioProgress(url);
+      if (savedSeconds > 0) {
+        position.value = Duration(seconds: savedSeconds);
+        AppLogger.log('Restored audio progress: $savedSeconds seconds');
+      }
+
+      await audioPlayer.setAudioSource(
+        AudioSource.uri(
+          Uri.parse(url),
+          tag: MediaItem(
+            id: url,
+            album: "Study Guides",
+            title: title ?? "Study Guide Audio",
+            artist: subtitle ?? "Sonographer Pal",
+          ),
+        ),
+        initialPosition: position.value,
+      );
+
+      await audioPlayer.play();
+    } catch (e) {
+      AppLogger.log('Audio play error: $e');
     }
   }
 
@@ -62,7 +78,7 @@ class AudioPlayCardController extends GetxController {
     }
   }
 
-  Future<void> resumeAudio() async => audioPlayer.resume();
+  Future<void> resumeAudio() async => audioPlayer.play();
 
   Future<void> seekTo(Duration pos) async => audioPlayer.seek(pos);
 

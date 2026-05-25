@@ -59,70 +59,68 @@ class StudyGuidesView extends GetView<StudyGuidesController> {
                   padding: EdgeInsets.symmetric(horizontal: 16, vertical: 16.h),
                   child: Container(
                     color: AppColors.appBarBack,
-                    width: double.infinity,
+                    width: MediaQuery.of(context).size.width,
                     height: 50.h,
-                    child: Padding(
-                      padding: EdgeInsets.symmetric(
-                        horizontal: 12.w,
-                        vertical: 8.h,
-                      ),
-                      child: Obx(
-                        () => Row(
-                          // Wrap with Obx
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            FlashCardFilterBar(
-                              title: 'All',
-                              index: 0,
-                              isSelected:
-                                  controller.selectIndex.value == 0, // Dynamic
-                              onTap: () {
-                                controller.changeIndex(0);
-                                controller.filterStudyGuides('All');
-                              },
-                            ),
-                            FlashCardFilterBar(
-                              title: 'SPI',
-                              index: 1,
-                              isSelected:
-                                  controller.selectIndex.value == 1, // Dynamic
-                              onTap: () {
-                                controller.changeIndex(1);
-                                controller.filterStudyGuides('SPI');
-                              },
-                            ),
-                            FlashCardFilterBar(
-                              title: 'Vascular',
-                              index: 2,
-                              isSelected:
-                                  controller.selectIndex.value == 2, // Dynamic
-                              onTap: () {
-                                controller.changeIndex(2);
-                                controller.filterStudyGuides('Vascular');
-                              },
-                            ),
-                            FlashCardFilterBar(
-                              title: 'OB/GYN',
-                              index: 3,
-                              isSelected:
-                                  controller.selectIndex.value == 3, // Dynamic
-                              onTap: () {
-                                controller.changeIndex(3);
-                                controller.filterStudyGuides('OB/GYN');
-                              },
-                            ),
-                            FlashCardFilterBar(
-                              title: 'Abdomen',
-                              index: 4,
-                              isSelected:
-                                  controller.selectIndex.value == 4, // Dynamic
-                              onTap: () {
-                                controller.changeIndex(4);
-                                controller.filterStudyGuides('Abdomen');
-                              },
-                            ),
-                          ],
-                        ),
+                    padding: EdgeInsets.symmetric(
+                      horizontal: 12.w,
+                      vertical: 8.h,
+                    ),
+                    child: Obx(
+                      () => Row(
+                        // Wrap with Obx
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          FlashCardFilterBar(
+                            title: 'All',
+                            index: 0,
+                            isSelected:
+                                controller.selectIndex.value == 0, // Dynamic
+                            onTap: () {
+                              controller.changeIndex(0);
+                              controller.filterStudyGuides('All');
+                            },
+                          ),
+                          FlashCardFilterBar(
+                            title: 'SPI',
+                            index: 1,
+                            isSelected:
+                                controller.selectIndex.value == 1, // Dynamic
+                            onTap: () {
+                              controller.changeIndex(1);
+                              controller.filterStudyGuides('SPI');
+                            },
+                          ),
+                          FlashCardFilterBar(
+                            title: 'Vascular',
+                            index: 2,
+                            isSelected:
+                                controller.selectIndex.value == 2, // Dynamic
+                            onTap: () {
+                              controller.changeIndex(2);
+                              controller.filterStudyGuides('Vascular');
+                            },
+                          ),
+                          FlashCardFilterBar(
+                            title: 'OB/GYN',
+                            index: 3,
+                            isSelected:
+                                controller.selectIndex.value == 3, // Dynamic
+                            onTap: () {
+                              controller.changeIndex(3);
+                              controller.filterStudyGuides('OB/GYN');
+                            },
+                          ),
+                          FlashCardFilterBar(
+                            title: 'Abdomen',
+                            index: 4,
+                            isSelected:
+                                controller.selectIndex.value == 4, // Dynamic
+                            onTap: () {
+                              controller.changeIndex(4);
+                              controller.filterStudyGuides('Abdomen');
+                            },
+                          ),
+                        ],
                       ),
                     ),
                   ),

@@ -21,13 +21,14 @@ class FlashCardFilterBar extends StatelessWidget {
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: onTap,
-      child: Container(
-        decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(4.r),
-          color: isSelected ? AppColors.primaryColor : AppColors.whiteColor,
-        ),
-        child: Padding(
+      child: FittedBox(
+        fit: BoxFit.scaleDown,
+        child: Container(
           padding: EdgeInsets.symmetric(horizontal: 10.w, vertical: 8.h),
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(4.r),
+            color: isSelected ? AppColors.primaryColor : AppColors.whiteColor,
+          ),
           child: Text(
             title,
             style: AppTextStyles.regular12.copyWith(

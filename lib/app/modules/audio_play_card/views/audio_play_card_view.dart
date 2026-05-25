@@ -30,7 +30,10 @@ class AudioPlayCardView extends GetView<AudioPlayCardController> {
                 child: Container(
                   width: double.infinity,
                   // height: 400,
-                  padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 18),
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 12,
+                    vertical: 18,
+                  ),
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(12),
                     color: AppColors.appBarBack,
@@ -62,7 +65,11 @@ class AudioPlayCardView extends GetView<AudioPlayCardController> {
                         ),
                       ),
                       SizedBox(height: 10.h),
-                      AudioPlayerWidget(audioUrl: audioUrl),
+                      AudioPlayerWidget(
+                        audioUrl: audioUrl,
+                        title: title,
+                        subtitle: subtitle,
+                      ),
                       SizedBox(height: 20.h),
                     ],
                   ),

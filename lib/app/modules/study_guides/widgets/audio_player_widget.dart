@@ -5,9 +5,16 @@ import 'package:get/get.dart';
 import '../controllers/study_guides_controller.dart';
 
 class AudioPlayerWidget extends StatelessWidget {
-  const AudioPlayerWidget({super.key, required this.audioUrl});
+  const AudioPlayerWidget({
+    super.key,
+    required this.audioUrl,
+    this.title,
+    this.subtitle,
+  });
 
   final String audioUrl;
+  final String? title;
+  final String? subtitle;
 
   @override
   Widget build(BuildContext context) {
@@ -107,7 +114,11 @@ class AudioPlayerWidget extends StatelessWidget {
                       if (isThisAudioPlaying) {
                         await controller.pauseAudio();
                       } else {
-                        await controller.playAudio(audioUrl);
+                        await controller.playAudio(
+                          audioUrl,
+                          title: title,
+                          subtitle: subtitle,
+                        );
                       }
                     },
                   );

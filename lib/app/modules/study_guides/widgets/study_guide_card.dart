@@ -80,7 +80,11 @@ class StudyGuideCard extends StatelessWidget {
           SizedBox(height: 15.h),
 
           // Audio player
-          AudioPlayerWidget(audioUrl: audioUrl),
+          AudioPlayerWidget(
+            audioUrl: audioUrl,
+            title: cardTitle,
+            subtitle: cardSubtitle,
+          ),
 
           SizedBox(height: 20.h),
 
