@@ -63,9 +63,9 @@ class ProfileController extends GetxController {
   Future<void> logout() async {
     try {
       isLoading.value = true;
+      await AppPreference.clearAll();
 
       await FirebaseAuthService().signOut();
-      await AppPreference.clearAll();
 
       Get.offAllNamed(Routes.signIn);
     } catch (e) {
