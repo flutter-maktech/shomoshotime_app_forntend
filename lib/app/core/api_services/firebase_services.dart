@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:sign_in_with_apple/sign_in_with_apple.dart';
@@ -48,8 +50,12 @@ class FirebaseAuthService {
   /// Sign out from Google and Firebase
   Future<void> signOut() async {
     try {
-      await GoogleSignIn.instance.signOut();
       await _auth.signOut();
+      if(Platform.isAndroid){
+        await GoogleSignIn.instance.signOut();
+      }
+    
+      
     } catch (e) {
       AppLogger.log('Error signing out: $e');
     }
