@@ -1,0 +1,354 @@
+import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:get/get.dart';
+import '../../../data/app_colors.dart';
+import '../../../data/app_text_styles.dart';
+import '../../common_widgets/custom_app_bar.dart';
+import '../../common_widgets/custom_button.dart';
+import '../../common_widgets/custom_progress.dart';
+import '../controllers/spi_practice_bank_qus_controller.dart';
+import '../widget/custom_radio.dart';
+
+class SpiPracticeBankQusView extends GetView<SpiPracticeBankQusController> {
+  const SpiPracticeBankQusView({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    final args = Get.arguments as Map<String, dynamic>?;
+    final String title = args != null && args['title'] != null
+        ? args['title'] as String
+        : 'No title available';
+    final String category = args != null && args['category'] != null
+        ? args['category'] as String
+        : 'N/A';
+    final String statusLabel = args != null && args['staus_label'] != null
+        ? args['staus_label'] as String
+        : 'N/A';
+
+    return Scaffold(
+      appBar: const CustomAppBar(title: 'Back to Practice'),
+      body: Padding(
+        padding: EdgeInsets.symmetric(horizontal: 16.w),
+        child: Obx(() {
+          // Show loading if question list is loading or page is fetching next questions
+          if (controller.isloading.value ||
+              (controller.isLoadingMore.value &&
+                  controller.currentQuestionIndex.value >=
+                      controller.questionList.length)) {
+            return const Center(child: CircularProgressIndicator());
+          }
+          if (controller.errorText.value.isNotEmpty) {
+            return Center(
+              child: Padding(
+                padding: EdgeInsets.symmetric(horizontal: 20.w),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Text(
+                      controller.errorText.value,
+                      textAlign: TextAlign.center,
+                      style: AppTextStyles.medium18.copyWith(
+                        color: AppColors.blackColor,
+                      ),
+                    ),
+                    SizedBox(height: 20.h),
+                    CustomButton(childText: "Go Back", onTap: () => Get.back()),
+                  ],
+                ),
+              ),
+            );
+          }
+          if (controller.questionList.isEmpty ||
+              controller.currentQuestionIndex.value >=
+                  controller.questionList.length) {
+            return Center(
+              child: Text(
+                "No questions available.",
+                style: AppTextStyles.medium18.copyWith(
+                  color: AppColors.blackColor,
+                ),
+              ),
+            );
+          }
+          final question =
+              controller.questionList[controller.currentQuestionIndex.value];
+          return SingleChildScrollView(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                SizedBox(height: 30.h),
+                spiRow(title, category, statusLabel),
+                SizedBox(height: 14.h),
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      'Question ${controller.currentQuestionIndex.value + 1} of ${controller.totalQuestionsCount.value}',
+                      style: AppTextStyles.regular14.copyWith(
+                        color: AppColors.appBarSub,
+                      ),
+                    ),
+                    SizedBox(height: 6.h),
+                    CustomProgress(
+                      progress: controller.totalQuestionsCount.value > 0
+                          ? (controller.currentQuestionIndex.value + 1) /
+                                controller.totalQuestionsCount.value
+                          : 0,
+                    ),
+                  ],
+                ),
+                Container(
+                  padding: EdgeInsets.all(14.sp),
+                  margin: EdgeInsets.symmetric(vertical: 30.h),
+                  width: double.infinity,
+                  decoration: BoxDecoration(
+                    color: AppColors.homeStack,
+                    borderRadius: BorderRadius.circular(8),
+                  ),
+                  child: Column(
+                    children: [
+                      // Question Text
+                      Text(question.question, style: AppTextStyles.regular16),
+                      SizedBox(height: 20.h),
+                      // Question Image
+                      if (question.file.isNotEmpty &&
+                          question.file !=
+                              'https://api.sonographerpal.com/default_img/no_img.jpg') ...[
+                        Image.network(
+                          question.file,
+                          height: 200.h,
+                          fit: BoxFit.contain,
+                          errorBuilder: (context, error, stackTrace) {
+                            return const SizedBox.shrink();
+                          },
+                        ),
+                        SizedBox(height: 5.h),
+                        if (question.fileAttributes.isNotEmpty) ...[
+                          Align(
+                            alignment: Alignment.centerLeft,
+                            child: Padding(
+                              padding: EdgeInsets.symmetric(horizontal: 10.w),
+                              child: Text(
+                                question.fileAttributes,
+                                style: AppTextStyles.light10,
+                              ),
+                            ),
+                          ),
+                          SizedBox(height: 5.h),
+                        ],
+                        SizedBox(height: 20.h),
+                      ],
+                      // Options
+                      ...List.generate(4, (index) {
+                        final options = [
+                          question.optionA,
+                          question.optionB,
+                          question.optionC,
+                          question.optionD,
+                        ];
+
+                        Color borderColor = AppColors.subscriptionPlanButton;
+                        Color textColor = AppColors.blackColor;
+                        Color iconColor = AppColors.subscriptionPlanButton;
+                        Color boxColor = AppColors.whiteColor;
+
+                        if (controller.showResult.value) {
+                          if (index == controller.correctIndex.value) {
+                            borderColor = AppColors.greenColor;
+                            textColor = AppColors.greenColor;
+                            iconColor = AppColors.greenColor;
+                            boxColor = AppColors.greenColor.withAlpha(20);
+                          } else if (index == controller.selectedIndex.value &&
+                              !controller.isCorrectAnswer.value) {
+                            borderColor = AppColors.readColor;
+                            textColor = AppColors.readColor;
+                            iconColor = AppColors.readColor;
+                            boxColor = AppColors.readColor.withAlpha(20);
+                          }
+                        } else if (controller.selectedIndex.value == index) {
+                          borderColor = AppColors.subscriptionPlanButton;
+                          iconColor = AppColors.subscriptionPlanButton;
+                          boxColor = AppColors.whiteColor;
+                        }
+
+                        return CustomRadio(
+                          title: options[index],
+                          icon: controller.selectedIndex.value == index
+                              ? Icons.radio_button_checked
+                              : Icons.radio_button_off,
+                          borderColor: borderColor,
+                          textColor: textColor,
+                          iconColor: iconColor,
+                          boxColor: boxColor,
+                          onTap: controller.showResult.value
+                              ? null
+                              : () => controller.selectOption(index),
+                        );
+                      }),
+                      SizedBox(height: 20.h),
+                      // Correct / Incorrect Box
+                      if (controller.showResult.value) ...[
+                        Container(
+                          padding: EdgeInsets.all(12.sp),
+                          width: double.infinity,
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(4.sp),
+                            color: controller.isCorrectAnswer.value
+                                ? AppColors.greenColor.withAlpha(20)
+                                : AppColors.readColor.withAlpha(20),
+                            border: Border.all(
+                              color: controller.isCorrectAnswer.value
+                                  ? AppColors.greenColor.withAlpha(35)
+                                  : AppColors.readColor.withAlpha(35),
+                            ),
+                          ),
+                          child: Row(
+                            children: [
+                              Icon(
+                                controller.isCorrectAnswer.value
+                                    ? Icons.check_circle
+                                    : Icons.cancel,
+                                color: controller.isCorrectAnswer.value
+                                    ? AppColors.greenColor
+                                    : AppColors.readColor,
+                              ),
+                              SizedBox(width: 8.w),
+                              Text(
+                                controller.isCorrectAnswer.value
+                                    ? "Correct Answer"
+                                    : "Incorrect Answer",
+                                style: AppTextStyles.regular14.copyWith(
+                                  color: controller.isCorrectAnswer.value
+                                      ? AppColors.greenColor
+                                      : AppColors.readColor,
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                        if (question.rationale != null && question.rationale!.isNotEmpty) ...[
+                          SizedBox(height: 12.h),
+                          Container(
+                            padding: EdgeInsets.all(12.sp),
+                            width: double.infinity,
+                            decoration: BoxDecoration(
+                              color: controller.isCorrectAnswer.value
+                                  ? AppColors.greenColor.withAlpha(20)
+                                  : AppColors.readColor.withAlpha(20),
+                              borderRadius: BorderRadius.circular(4.r),
+                              border: Border.all(
+                                color: controller.isCorrectAnswer.value
+                                    ? AppColors.greenColor
+                                    : AppColors.readColor,
+                              ),
+                            ),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  "Rationale",
+                                  style: AppTextStyles.medium16.copyWith(
+                                    color: controller.isCorrectAnswer.value
+                                        ? AppColors.greenColor
+                                        : AppColors.readColor,
+                                  ),
+                                ),
+                                SizedBox(height: 8.h),
+                                Text(
+                                  question.rationale!,
+                                  style: AppTextStyles.regular14.copyWith(
+                                    color: AppColors.blackColor,
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ],
+                      ],
+                      SizedBox(height: 20.h),
+                      // Previous and Submit / Next / Done Buttons
+                      Row(
+                        children: [
+                          if (controller.currentQuestionIndex.value > 0) ...[
+                            Expanded(
+                              child: CustomButton(
+                                textStyle: AppTextStyles.regular16,
+                                childText: "Previous",
+                                buttonColor: AppColors.progressBg,
+                                buttonChildColor: AppColors.blackColor,
+                                onTap: () {
+                                  controller.goToPreviousQuestion();
+                                },
+                              ),
+                            ),
+                            SizedBox(width: 16.w),
+                          ],
+                          Expanded(
+                            child: CustomButton(
+                              textStyle: AppTextStyles.regular16,
+                              childText: controller.isFinished.value
+                                  ? "Done"
+                                  : controller.showResult.value
+                                  ? "Next"
+                                  : "Submit",
+                              onTap: () {
+                                if (controller.isFinished.value) {
+                                  Get.back(result: true);
+                                } else if (controller.showResult.value) {
+                                  controller.goToNextQuestion();
+                                } else {
+                                  controller.submitAnswer();
+                                }
+                              },
+                            ),
+                          ),
+                        ],
+                      ),
+                    ],
+                  ),
+                ),
+              ],
+            ),
+          );
+        }),
+      ),
+    );
+  }
+
+  Row spiRow(String title, String category, String statusLabel) {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      children: [
+        Expanded(
+          child: Text(
+            title,
+            style: AppTextStyles.spaceGroteskMedium20,
+            // overflow: TextOverflow.ellipsis,
+            // maxLines: 1,
+          ),
+        ),
+        Row(
+          children: [
+            Container(
+              decoration: BoxDecoration(
+                color: AppColors.homeStack,
+                borderRadius: BorderRadius.circular(4),
+              ),
+              child: Padding(
+                padding: EdgeInsets.symmetric(horizontal: 8.w, vertical: 4.h),
+                child: Center(
+                  child: Text(
+                    category,
+                    style: AppTextStyles.regular14.copyWith(
+                      color: AppColors.appBarSub,
+                    ),
+                  ),
+                ),
+              ),
+            ),
+          ],
+        ),
+      ],
+    );
+  }
+}

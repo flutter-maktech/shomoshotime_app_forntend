@@ -1,0 +1,37 @@
+class Urls {
+  static String baseUrs = "https://api.sonographerpal.com/api/v1";
+  static String baseDomain = "https://api.sonographerpal.com";
+
+  static String signUpUrl = "$baseUrs/auth/register";
+  static String logInUrl = "$baseUrs/auth/login";
+  static String verifyOtp = "$baseUrs/auth/verify-otp";
+  static String resendOtp = "$baseUrs/auth/resend-otp";
+  static String changePassword = "$baseUrs/auth/change-password";
+  static String forgotPassword = "$baseUrs/auth/forgot-password";
+  static String forgotVerifyOtp = "$baseUrs/auth/forgot-verify-otp";
+  static String forgotResendOtp = "$baseUrs/auth/forgot-resend-otp";
+  static String resetPassword = "$baseUrs/auth/reset-password";
+  static String studyGuideList = "$baseUrs/user/content/study-guides";
+  static String nextPage = "$baseUrs/user/content/next-page";
+  static String flashCardList = "$baseUrs/user/content/flash-cards";
+  static String flashCardSetList = "$baseUrs/user/content/flash-cards/sets";
+  static String nextFlashCard =
+      "$baseUrs/user/content/flash-cards/next-question";
+  static String userAnalytics = "$baseUrs/user/userAnalytics";
+  static String praciceQuesionSet = "$baseUrs/user/question/sets";
+  static String praciceQuesion = "$baseUrs/user/question/sets/questions";
+  static String answerSubmit = "$baseUrs/user/question/submit-answer";
+  static String userProfile = "$baseUrs/user/profile";
+  static String profileUpdate = "$baseUrs/user/profile/update";
+  static String startMockTest = "$baseUrs/user/question/start-mock-test";
+  static String notification = "$baseUrs/user/user-notifications";
+  static String notificationMarkAsRead = "$baseUrs/user/mark-notification-read";
+  static String subscriptionList = "$baseUrs/user/subscription/list";
+  static String paymentInfo = "$baseUrs/user/payment/store";
+  static String googleLogin = "$baseUrs/auth/google-login";
+  static String subscriptionCheck = "$baseUrs/user/subscription-check";
+
+  static String cancelSubscription = "$baseUrs/user/subscription/cancel";
+  static String cmsUrl = "$baseUrs/cms-pages/show";
+  static String deleteAccount = "$baseUrs/user/profile/delete";
+}

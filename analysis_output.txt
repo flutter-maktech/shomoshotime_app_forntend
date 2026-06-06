@@ -1,0 +1,8 @@
+Analyzing firebase_services.dart...                             
+
+  error - The method 'signIn' isn't defined for the type 'GoogleSignIn' - lib\app\core\api_services\firebase_services.dart:19:66 - undefined_method
+   info - Uses 'await' on an instance of 'GoogleSignInAuthentication', which is not a subtype of 'Future' - lib\app\core\api_services\firebase_services.dart:28:11 - await_only_futures
+   info - Don't invoke 'print' in production code - lib\app\core\api_services\firebase_services.dart:53:7 - avoid_print
+   info - Don't invoke 'print' in production code - lib\app\core\api_services\firebase_services.dart:56:7 - avoid_print
+   info - Don't invoke 'print' in production code - lib\app\core\api_services\firebase_services.dart:67:7 - avoid_print
+
