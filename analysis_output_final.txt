@@ -1,0 +1,7 @@
+Analyzing firebase_services.dart...                             
+
+   info - Type could be non-nullable - lib\app\core\api_services\firebase_services.dart:19:34 - unnecessary_nullable_for_final_variable_declarations
+   info - Don't invoke 'print' in production code - lib\app\core\api_services\firebase_services.dart:52:7 - avoid_print
+   info - Don't invoke 'print' in production code - lib\app\core\api_services\firebase_services.dart:55:7 - avoid_print
+   info - Don't invoke 'print' in production code - lib\app\core\api_services\firebase_services.dart:66:7 - avoid_print
+
