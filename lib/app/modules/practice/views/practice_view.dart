@@ -375,7 +375,7 @@ class PracticeView extends GetView<PracticeController> {
         : null;
 
     final title = questionSet.title;
-    final subtitle = questionSet.subtitle;
+    // final subtitle = questionSet.subtitle;
     final totalQuestions = questionSet.totalQuestions;
     // final statusLabel = questionSet.statusLabel;
     final category = questionSet.category;
@@ -412,7 +412,10 @@ class PracticeView extends GetView<PracticeController> {
                   borderRadius: BorderRadius.circular(6),
                 ),
                 child: Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 10,
+                    vertical: 6,
+                  ),
                   child: Text(
                     category,
                     style: AppTextStyles.regular14.copyWith(
@@ -424,11 +427,11 @@ class PracticeView extends GetView<PracticeController> {
             ],
           ),
           Text(title, style: AppTextStyles.bold18),
-          Text(
-            subtitle,
-            style: AppTextStyles.regular14.copyWith(color: AppColors.appBarSub),
-          ),
-          SizedBox(height: 15.h),
+          // Text(
+          //   subtitle,
+          //   style: AppTextStyles.regular14.copyWith(color: AppColors.appBarSub),
+          // ),
+          SizedBox(height: 5.h),
           Row(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
@@ -503,6 +506,7 @@ class PracticeView extends GetView<PracticeController> {
                   'category': questionSet.category,
                   'staus_label': questionSet.statusLabel,
                   'totalQuestions': questionSet.totalQuestions,
+                  'from': 'practice',
                 },
               );
               if (result == true) {

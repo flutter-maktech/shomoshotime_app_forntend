@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:get/get_state_manager/src/rx_flutter/rx_obx_widget.dart';
 import '../../../data/app_colors.dart';
 import '../../../data/app_text_styles.dart';
 import '../controllers/payment_methods_controller.dart';
@@ -51,17 +50,10 @@ class CustomBankCard extends StatelessWidget {
           ),
 
           /// Radio
-          Obx(
-                () => Transform.scale(
-              scale: 1.4,
-              child: Radio<int>(
-                value: value,
-                
-                groupValue: controller.selectedValue.value,
-                onChanged: (v) {
-                  controller.updateSelection(v!);
-                },
-              ),
+          Transform.scale(
+            scale: 1.4,
+            child: Radio<int>(
+              value: value,
             ),
           ),
         ],

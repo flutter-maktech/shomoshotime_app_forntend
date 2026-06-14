@@ -146,30 +146,31 @@ class SignInController extends GetxController {
       isLoading.value = false;
     }
   }
+
   Future<void> signInWithApple() async {
-  try {
-    isLoading.value = true;
+    try {
+      isLoading.value = true;
 
-    final firebaseService = FirebaseAuthService();
+      final firebaseService = FirebaseAuthService();
 
-    final userData = await firebaseService.signInWithApple();
+      final userData = await firebaseService.signInWithApple();
 
-    if (userData == null) {
-      message.value = 'Apple sign-in cancelled';
-      return;
+      if (userData == null) {
+        message.value = 'Apple sign-in cancelled';
+        return;
+      }
+
+      final success = await _googleLoginApi(userData);
+
+      if (success) {
+        Get.offAllNamed(Routes.appGate);
+      }
+    } catch (e) {
+      message.value = 'Apple sign-in failed';
+    } finally {
+      isLoading.value = false;
     }
-
-    final success = await _googleLoginApi(userData);
-
-    if (success) {
-      Get.offAllNamed(Routes.appGate);
-    }
-  } catch (e) {
-    message.value = 'Apple sign-in failed';
-  } finally {
-    isLoading.value = false;
   }
-}
 
   // Google Sign-In
   Future<void> signInWithGoogle() async {

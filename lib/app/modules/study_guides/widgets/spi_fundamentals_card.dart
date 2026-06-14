@@ -64,7 +64,10 @@ class SpiFundamentalsCard extends StatelessWidget {
                   borderRadius: BorderRadius.circular(6),
                 ),
                 child: Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 10,
+                    vertical: 6,
+                  ),
                   child: Text(
                     category,
                     style: AppTextStyles.regular14.copyWith(
@@ -77,11 +80,11 @@ class SpiFundamentalsCard extends StatelessWidget {
           ),
           SizedBox(height: 10.h),
           Text(cardTitle, style: AppTextStyles.bold18),
-          Text(
-            cardSubtitle,
-            style: AppTextStyles.regular14.copyWith(color: AppColors.appBarSub),
-          ),
-          SizedBox(height: 15.h),
+          // Text(
+          //   cardSubtitle,
+          //   style: AppTextStyles.regular14.copyWith(color: AppColors.appBarSub),
+          // ),
+          SizedBox(height: 5.h),
           Row(
             children: [
               Image.asset(ImagePath.arrowCircle, scale: 4),

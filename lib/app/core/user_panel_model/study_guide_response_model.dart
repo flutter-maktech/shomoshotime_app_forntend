@@ -97,7 +97,7 @@ class StudyGuide {
       id: json['id'] as int,
       sortOrder: json['sort_order'] as int,
       title: json['title'] as String,
-      subtitle: json['subtitle'] as String,
+      subtitle: json['subtitle'] as String? ??'',
       category: json['category'] as String,
       file: json['file'] as String?, // Nullable cast
       fileType: json['file_type'] as String?, // Nullable cast
@@ -165,36 +165,36 @@ class Links {
 // Meta model for pagination metadata
 class Meta {
   final int currentPage;
-  final int from;
+  final int? from;
   final int lastPage;
   final List<MetaLink> links;
   final String path;
   final int perPage;
-  final int to;
+  final int? to;
   final int total;
 
   Meta({
     required this.currentPage,
-    required this.from,
+    this.from,
     required this.lastPage,
     required this.links,
     required this.path,
     required this.perPage,
-    required this.to,
+    this.to,
     required this.total,
   });
 
   factory Meta.fromJson(Map<String, dynamic> json) {
     return Meta(
       currentPage: json['current_page'] as int,
-      from: json['from'] as int,
+      from: json['from'] as int?,
       lastPage: json['last_page'] as int,
       links: (json['links'] as List)
           .map((item) => MetaLink.fromJson(item))
           .toList(),
       path: json['path'] as String,
       perPage: json['per_page'] as int,
-      to: json['to'] as int,
+      to: json['to'] as int?,
       total: json['total'] as int,
     );
   }

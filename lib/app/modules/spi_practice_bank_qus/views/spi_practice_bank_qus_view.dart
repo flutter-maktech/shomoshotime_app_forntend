@@ -24,9 +24,14 @@ class SpiPracticeBankQusView extends GetView<SpiPracticeBankQusController> {
     final String statusLabel = args != null && args['staus_label'] != null
         ? args['staus_label'] as String
         : 'N/A';
+    final String from = args != null && args['from'] != null
+        ? args['from'] as String
+        : 'practice';
 
     return Scaffold(
-      appBar: const CustomAppBar(title: 'Back to Practice'),
+      appBar: CustomAppBar(
+        title: from == 'mock_exam' ? 'Back to Mock Exam' : 'Back to Practice',
+      ),
       body: Padding(
         padding: EdgeInsets.symmetric(horizontal: 16.w),
         child: Obx(() {
@@ -226,7 +231,8 @@ class SpiPracticeBankQusView extends GetView<SpiPracticeBankQusController> {
                             ],
                           ),
                         ),
-                        if (question.rationale != null && question.rationale!.isNotEmpty) ...[
+                        if (question.rationale != null &&
+                            question.rationale!.isNotEmpty) ...[
                           SizedBox(height: 12.h),
                           Container(
                             padding: EdgeInsets.all(12.sp),

@@ -72,12 +72,11 @@ class StudyGuideCard extends StatelessWidget {
           // Title and description
           Text(cardTitle, style: AppTextStyles.bold18),
 
-          Text(
-            cardSubtitle,
-            style: AppTextStyles.regular14.copyWith(color: AppColors.appBarSub),
-          ),
-
-          SizedBox(height: 15.h),
+          // Text(
+          //   cardSubtitle,
+          //   style: AppTextStyles.regular14.copyWith(color: AppColors.appBarSub),
+          // ),
+          SizedBox(height: 5.h),
 
           // Audio player
           AudioPlayerWidget(

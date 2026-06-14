@@ -61,7 +61,10 @@ class FlashCardContainerWidget extends StatelessWidget {
                     borderRadius: BorderRadius.circular(6),
                   ),
                   child: Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 10,
+                      vertical: 6,
+                    ),
                     child: Text(
                       card.category,
                       style: AppTextStyles.regular14.copyWith(
@@ -73,13 +76,13 @@ class FlashCardContainerWidget extends StatelessWidget {
               ],
             ),
             Text(card.title, style: AppTextStyles.bold18),
-            Text(
-              card.subtitle,
-              style: AppTextStyles.regular14.copyWith(
-                color: AppColors.appBarSub,
-              ),
-            ),
-            SizedBox(height: 15.h),
+            // Text(
+            //   card.subtitle,
+            //   style: AppTextStyles.regular14.copyWith(
+            //     color: AppColors.appBarSub,
+            //   ),
+            // ),
+            SizedBox(height: 5.h),
             Row(
               children: [
                 Image.asset(ImagePath.layerImage, scale: 4),
@@ -123,7 +126,7 @@ class FlashCardContainerWidget extends StatelessWidget {
                   arguments: {
                     'title': card.title,
                     'contentId': contentId,
-                    'flashCardsCount': card.flashCardsCount
+                    'flashCardsCount': card.flashCardsCount,
                   },
                 );
                 if (result == true) {

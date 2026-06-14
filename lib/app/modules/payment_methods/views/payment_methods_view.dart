@@ -44,17 +44,26 @@ class PaymentMethodsView extends GetView<PaymentMethodsController> {
                     ),
                   ],
                 ),
-                SizedBox(height: 24.h),
-                ListView.builder(
-                  itemCount: 4,
-                  shrinkWrap: true,
-                  physics: const NeverScrollableScrollPhysics(),
-                  itemBuilder: (context, index) => CustomBankCard(
-                    imagePath: ImagePath.paymentLogoMastercard,
-                    bankName: "Axis Bank",
-                    lastDigits: "1234",
-                    value: 1,
-                    controller: controller,
+                Obx(
+                  () => RadioGroup<int>(
+                    groupValue: controller.selectedValue.value,
+                    onChanged: (v) {
+                      if (v != null) {
+                        controller.updateSelection(v);
+                      }
+                    },
+                    child: ListView.builder(
+                      itemCount: 4,
+                      shrinkWrap: true,
+                      physics: const NeverScrollableScrollPhysics(),
+                      itemBuilder: (context, index) => CustomBankCard(
+                        imagePath: ImagePath.paymentLogoMastercard,
+                        bankName: "Axis Bank",
+                        lastDigits: "1234",
+                        value: index + 1,
+                        controller: controller,
+                      ),
+                    ),
                   ),
                 ),
                 SizedBox(height: 16.h),

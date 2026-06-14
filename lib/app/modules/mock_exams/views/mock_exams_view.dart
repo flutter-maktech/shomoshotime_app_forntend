@@ -347,14 +347,15 @@ class MockExamsView extends GetView<MockExamsController> {
 
   Widget spiFundamentalsCardWidget(QuestionSetData questionSet) {
     final title = questionSet.title;
-    final subtitle = questionSet.subtitle;
+    // final subtitle = questionSet.subtitle;
     final totalQuestions = questionSet.totalQuestions;
     final category = questionSet.category;
     final scorePercentage = questionSet.mockTestAttempts.isNotEmpty
         ? questionSet.mockTestAttempts.last.scorePercentage
         : 0;
 
-    final hasInProgressAttempt = questionSet.mockTestAttempts.isNotEmpty &&
+    final hasInProgressAttempt =
+        questionSet.mockTestAttempts.isNotEmpty &&
         questionSet.mockTestAttempts.any((attempt) => attempt.isInProgress);
 
     return Container(
@@ -403,11 +404,11 @@ class MockExamsView extends GetView<MockExamsController> {
             ],
           ),
           Text(title, style: AppTextStyles.bold18),
-          Text(
-            subtitle,
-            style: AppTextStyles.regular14.copyWith(color: AppColors.appBarSub),
-          ),
-          SizedBox(height: 15.h),
+          // Text(
+          //   subtitle,
+          //   style: AppTextStyles.regular14.copyWith(color: AppColors.appBarSub),
+          // ),
+          SizedBox(height: 5.h),
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
@@ -507,6 +508,7 @@ class MockExamsView extends GetView<MockExamsController> {
                   'category': questionSet.category,
                   'staus_label': questionSet.statusLabel,
                   'totalQuestions': questionSet.totalQuestions,
+                  'from': 'mock_exam',
                 },
               );
               if (result == true) {
@@ -518,7 +520,4 @@ class MockExamsView extends GetView<MockExamsController> {
       ),
     );
   }
-
-
 }
-
